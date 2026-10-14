@@ -21,12 +21,13 @@ Last updated: 2026-10-14
   - REA 6.5.0 CLI runs here; its doctor shows the Ghidra engine missing. Ghidra download from GitHub is blocked by the environment network policy.
   - The extract contains no images, levels or tuning data, so no feel numbers can come from it.
 
+- **Phase 3 (story and direction):** owner delegated the story choices; proposed storyline written to `docs/lore/owner-storyline.md` ("Requiem for Rome", Dietrich as main villain, 2 regions, 2 bosses) and full draft of `docs/creative-direction.md` (12 sections, ability mapping, 16-colour palette, sprite sizes).
+
 ## In progress
-- Phase 3 (story and direction) is next.
+- Waiting for owner approval of `docs/creative-direction.md` (no art until approved).
 
 ## Blockers
 - Optional: deeper binary analysis needs `github.com` allowed in the environment's Network access (to fetch Ghidra) — low value, see findings "Tooling status".
-- `docs/lore/owner-storyline.md` is still a template (needed in Phase 3).
 
 ## Owner must test (on phone)
 Open https://trinity-blood-fan-game.vercel.app in your phone browser, landscape. If Vercel asks you to log in, use your Vercel account.
@@ -45,4 +46,5 @@ Open https://trinity-blood-fan-game.vercel.app in your phone browser, landscape.
 
 ## Next step
 - Owner: fill in `docs/feel-spec.md` from playing Blasphemous (any time before Milestone 2).
-- Phase 3: storyline + creative direction draft.
+- Owner approves/changes creative direction.
+- Then Milestone 2: player controller (variable jump, coyote time, jump buffer, dodge with i-frames, tuning JSON).
