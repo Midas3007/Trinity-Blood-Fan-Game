@@ -1,6 +1,6 @@
-# Creative Direction (draft for owner approval)
+# Creative Direction
 
-Do not generate final art until the owner approves this document. Story source: `docs/lore/owner-storyline.md` (proposal, delegated by the owner).
+**Status: APPROVED by the owner on 2026-10-14** (with the music note in §12). Art may now be produced to this spec. Story source: `docs/lore/owner-storyline.md` (proposal, delegated by the owner).
 
 ## 1. Working title
 **Trinity Blood: Requiem for Rome** (unofficial fan game).
@@ -111,12 +111,17 @@ The first six and the crimson are already used by the Milestone 1 placeholders.
 - **Touch:** current layout kept; the ABIL button shows a hold-ring when Crusnik is available.
 
 ## 12. Audio direction
-- **Music:** sparse pipe organ, low choir pads, distant bells; boss themes add percussion and strings. Original compositions or CC0/CC-BY only, credited in the asset manifest.
+- **Music (owner note, 2026-10-14): real-world gothic / sacred classical music is allowed.** Use pieces whose **composition is public domain** (composer died 70+ years ago) **and** whose **recording** is free to use, because a recording has its own copyright even when the piece is centuries old:
+  - Recordings released as public domain / CC0 or CC-BY (e.g. Musopen, Wikimedia Commons, Internet Archive public-domain uploads) — check and record each licence in `docs/asset-manifest.md`.
+  - Or render our own performances from public-domain scores (IMSLP) — always safe.
+  - Never rip commercial CDs, streaming tracks, YouTube, the anime soundtrack or Blasphemous audio.
+- **Shortlist to look for** (all public-domain compositions; recordings still need checking): Bach — Toccata and Fugue in D minor BWV 565, Passacaglia in C minor BWV 582 (organ); Mozart — Requiem K. 626 (Lacrimosa, Dies irae); Allegri — Miserere; Victoria / Palestrina — requiem and motets (choir); Gregorian chant (Dies irae, Requiem aeternam); Fauré — Requiem; Saint-Saëns — Danse macabre; Liszt — Totentanz; Albinoni/Giazotto *Adagio* is **not** public domain (Giazotto, d. 1998) — avoid.
+  - Suggested use: chant / Allegri in the catacombs, organ (Bach) in the hub and Region 2, requiem movements for bosses, Danse macabre / Totentanz for the Grand Marionette.
 - **Ambience:** dripping water, wind through catacombs, creaking strings, faint singing from the Iron Choir.
-- **SFX:** heavy, dry impacts; revolver crack; scythe whoosh with a metallic ring; a distinct "Crusnik activation" cue (deep pulse + rising tone).
+- **SFX:** heavy, dry impacts; revolver crack; scythe whoosh with a metallic ring; a distinct "Crusnik activation" cue (deep pulse + rising tone). Original or CC0.
 - **Voice:** none; text only.
-- No ripped anime or game audio (CLAUDE.md Part 6).
+- **Tech:** music as compressed OGG/M4A, streamed per region, looped at musical phrase points; keep total size phone-friendly. Audio unlocks on first touch (CLAUDE.md Part 8).
 
 ---
 
-**Owner decisions needed before art:** (a) approve or change the story proposal, (b) approve the palette, (c) approve Abel ≈ 40 px in 64×64 frames, (d) confirm the ability button mapping.
+**Owner decisions (2026-10-14):** story, palette, Abel ≈ 40 px in 64×64 frames, and ability button mapping all approved.

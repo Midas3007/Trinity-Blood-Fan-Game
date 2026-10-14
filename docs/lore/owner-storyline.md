@@ -1,6 +1,6 @@
 # Owner's Storyline
 
-> **Status:** the owner delegated the choices on 2026-10-14 ("pick whatever is easiest to build", "during the anime", "pick from the anime", "all of Abel's abilities that fit, and bosses", "dark"). Everything below is Claude's **proposal**, written to match those answers. It becomes binding when the owner approves `docs/creative-direction.md`. Anything marked *(verify)* is an anime detail to double-check before it appears in-game.
+> **Status: APPROVED by the owner on 2026-10-14.** The owner delegated the choices on 2026-10-14 ("pick whatever is easiest to build", "during the anime", "pick from the anime", "all of Abel's abilities that fit, and bosses", "dark"). Everything below is Claude's **proposal**, written to match those answers.  Anything marked *(verify)* is an anime detail to double-check before it appears in-game.
 
 ---
 

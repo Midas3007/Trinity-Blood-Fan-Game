@@ -23,8 +23,10 @@ Last updated: 2026-10-14
 
 - **Phase 3 (story and direction):** owner delegated the story choices; proposed storyline written to `docs/lore/owner-storyline.md` ("Requiem for Rome", Dietrich as main villain, 2 regions, 2 bosses) and full draft of `docs/creative-direction.md` (12 sections, ability mapping, 16-colour palette, sprite sizes).
 
+- **Creative direction and storyline approved by owner.** Music note added: public-domain gothic/sacred classical music (with free-licensed recordings) is allowed.
+
 ## In progress
-- Waiting for owner approval of `docs/creative-direction.md` (no art until approved).
+- Nothing; waiting for go-ahead on Milestone 2.
 
 ## Blockers
 - Optional: deeper binary analysis needs `github.com` allowed in the environment's Network access (to fetch Ghidra) — low value, see findings "Tooling status".
@@ -46,5 +48,4 @@ Open https://trinity-blood-fan-game.vercel.app in your phone browser, landscape.
 
 ## Next step
 - Owner: fill in `docs/feel-spec.md` from playing Blasphemous (any time before Milestone 2).
-- Owner approves/changes creative direction.
 - Then Milestone 2: player controller (variable jump, coyote time, jump buffer, dodge with i-frames, tuning JSON).
