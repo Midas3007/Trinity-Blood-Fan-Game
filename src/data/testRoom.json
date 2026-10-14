@@ -1,14 +1,67 @@
 {
-  "_note": "Hand-written test room (internal pixels). The tall ledge at the right tests hard landings. Real rooms come from Tiled in Milestone 5.",
+  "_note": "Hand-written test room (internal pixels). Tall ledge on the right tests hard landings. Grey dummies are punching bags; the red one at the far right hurts on contact. Real rooms come from Tiled in Milestone 5.",
   "width": 960,
   "height": 270,
-  "spawn": { "x": 80, "y": 200 },
+  "spawn": {
+    "x": 80,
+    "y": 200
+  },
   "solids": [
-    { "x": 0, "y": 238, "w": 960, "h": 32 },
-    { "x": 220, "y": 190, "w": 80, "h": 10 },
-    { "x": 360, "y": 150, "w": 80, "h": 10 },
-    { "x": 500, "y": 112, "w": 70, "h": 10 },
-    { "x": 630, "y": 74, "w": 110, "h": 10 },
-    { "x": 820, "y": 206, "w": 40, "h": 32 }
+    {
+      "x": 0,
+      "y": 238,
+      "w": 960,
+      "h": 32
+    },
+    {
+      "x": 220,
+      "y": 190,
+      "w": 80,
+      "h": 10
+    },
+    {
+      "x": 360,
+      "y": 150,
+      "w": 80,
+      "h": 10
+    },
+    {
+      "x": 500,
+      "y": 112,
+      "w": 70,
+      "h": 10
+    },
+    {
+      "x": 630,
+      "y": 74,
+      "w": 110,
+      "h": 10
+    },
+    {
+      "x": 820,
+      "y": 206,
+      "w": 40,
+      "h": 32
+    }
+  ],
+  "dummies": [
+    {
+      "x": 300,
+      "maxHealth": 60,
+      "contactDamage": 0,
+      "respawnMs": 1500
+    },
+    {
+      "x": 420,
+      "maxHealth": 60,
+      "contactDamage": 0,
+      "respawnMs": 1500
+    },
+    {
+      "x": 720,
+      "maxHealth": 80,
+      "contactDamage": 15,
+      "respawnMs": 1500
+    }
   ]
 }

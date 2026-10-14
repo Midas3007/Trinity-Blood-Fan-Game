@@ -1,18 +1,22 @@
 import type { State } from './StateMachine';
 import type { PlayerTimers } from './PlayerTimers';
 import type { PlayerTuning } from './tuning';
-import { horizontalVelocity } from './movement';
+import { approach, horizontalVelocity } from './movement';
+import type { AttackRunner } from '../combat/AttackRunner';
+import { AIR_STARTER, GROUND_STARTER } from '../combat/attackData';
 
-export type PlayerStateKey = 'idle' | 'run' | 'jump' | 'fall' | 'dodge' | 'hardLand';
+export type PlayerStateKey = 'idle' | 'run' | 'jump' | 'fall' | 'dodge' | 'hardLand' | 'attack' | 'airAttack' | 'hurt';
 
 /** What the player states can see and change. Implemented by Player (Phaser) and by fakes in tests. */
 export interface PlayerContext {
   readonly tuning: PlayerTuning;
   readonly timers: PlayerTimers;
+  readonly combat: AttackRunner;
   readonly onGround: boolean;
   readonly moveX: number;
   readonly jumpHeld: boolean;
   readonly dodgePressed: boolean;
+  readonly attackPressed: boolean;
   /** Pixels fallen since the highest point of the current airborne stretch. */
   readonly fallDistance: number;
   vx: number;
@@ -31,16 +35,21 @@ function airControl(ctx: PlayerContext, dtMs: number): void {
   ctx.vx = horizontalVelocity(ctx.vx, ctx.moveX, dtMs, true, ctx.tuning);
 }
 
+function brake(ctx: PlayerContext, dtMs: number): void {
+  ctx.vx = approach(ctx.vx, 0, (ctx.tuning.groundDecel * dtMs) / 1000);
+}
+
 function canDodge(ctx: PlayerContext): boolean {
   return ctx.dodgePressed && ctx.onGround && ctx.timers.dodgeCooldown === 0;
 }
 
-/** Shared ground logic: falling, then jump, then dodge, then run/idle. */
+/** Shared ground logic, in priority order: jump, fall, attack, dodge, run/idle. */
 function groundUpdate(ctx: PlayerContext, dtMs: number): PlayerStateKey {
   faceInput(ctx);
   ctx.vx = horizontalVelocity(ctx.vx, ctx.moveX, dtMs, false, ctx.tuning);
   if (ctx.timers.canJump) return 'jump';
   if (!ctx.onGround) return 'fall';
+  if (ctx.attackPressed) return 'attack';
   if (canDodge(ctx)) return 'dodge';
   return ctx.moveX !== 0 || ctx.vx !== 0 ? 'run' : 'idle';
 }
@@ -67,6 +76,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
         ctx.vy *= ctx.tuning.jumpCutMultiplier;
         ctx.jumpCut = true;
       }
+      if (ctx.attackPressed) return 'airAttack';
       if (ctx.vy >= 0) return 'fall';
       return undefined;
     },
@@ -77,6 +87,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       airControl(ctx, dtMs);
       if (ctx.timers.canJump) return 'jump'; // coyote jump after walking off a ledge
       if (ctx.onGround) return landingState(ctx);
+      if (ctx.attackPressed) return 'airAttack';
       return undefined;
     },
   },
@@ -85,7 +96,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     enter(ctx) {
       faceInput(ctx);
       ctx.vx = ctx.facing * ctx.tuning.dodgeSpeed;
-      ctx.timers.invulnerable = ctx.tuning.dodgeInvulnerableMs;
+      ctx.timers.invulnerable = Math.max(ctx.timers.invulnerable, ctx.tuning.dodgeInvulnerableMs);
     },
     update(ctx, _dtMs, stateMs) {
       ctx.vx = ctx.facing * ctx.tuning.dodgeSpeed;
@@ -95,7 +106,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     },
     exit(ctx) {
       ctx.timers.dodgeCooldown = ctx.tuning.dodgeCooldownMs;
-      // Keep run speed if still holding a direction, otherwise let deceleration take over from run speed.
+      // Leave the slide at no more than run speed; normal deceleration takes over.
       ctx.vx = Math.sign(ctx.vx) * Math.min(Math.abs(ctx.vx), ctx.tuning.runSpeed);
     },
   },
@@ -107,6 +118,59 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     update(ctx, _dtMs, stateMs) {
       ctx.vx = 0;
       if (stateMs >= ctx.tuning.hardLandingLockMs) return ctx.moveX !== 0 ? 'run' : 'idle';
+      return undefined;
+    },
+  },
+
+  attack: {
+    enter(ctx) {
+      faceInput(ctx);
+      ctx.combat.begin(GROUND_STARTER);
+    },
+    update(ctx, dtMs) {
+      if (ctx.attackPressed) ctx.combat.pressAttack();
+      const stepBefore = ctx.combat.comboStep;
+      const phase = ctx.combat.tick(dtMs);
+      if (ctx.combat.comboStep !== stepBefore) faceInput(ctx); // may turn between combo swings
+      const def = ctx.combat.current;
+
+      if (!ctx.onGround) return 'fall';
+      if (ctx.dodgePressed && ctx.combat.canDodgeCancel && ctx.timers.dodgeCooldown === 0) return 'dodge';
+      if (def && def.stepSpeed > 0 && (phase === 'startup' || phase === 'active')) {
+        ctx.vx = ctx.facing * def.stepSpeed;
+      } else {
+        brake(ctx, dtMs);
+      }
+      if (phase === 'done') return ctx.moveX !== 0 ? 'run' : 'idle';
+      return undefined;
+    },
+    exit(ctx) {
+      ctx.combat.stop();
+    },
+  },
+
+  airAttack: {
+    enter(ctx) {
+      ctx.combat.begin(AIR_STARTER);
+    },
+    update(ctx, dtMs) {
+      // Steering continues, but facing is locked for the swing.
+      ctx.vx = horizontalVelocity(ctx.vx, ctx.moveX, dtMs, true, ctx.tuning);
+      const phase = ctx.combat.tick(dtMs);
+      if (ctx.onGround && ctx.vy >= 0) return landingState(ctx);
+      if (phase === 'done') return 'fall';
+      return undefined;
+    },
+    exit(ctx) {
+      ctx.combat.stop();
+    },
+  },
+
+  hurt: {
+    // Knockback velocity is set by whoever applied the hit before entering this state.
+    update(ctx, dtMs, stateMs) {
+      if (ctx.onGround && ctx.vy >= 0) brake(ctx, dtMs);
+      if (stateMs >= ctx.tuning.hurtStunMs) return ctx.onGround ? 'idle' : 'fall';
       return undefined;
     },
   },

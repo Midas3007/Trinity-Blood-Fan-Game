@@ -3,8 +3,18 @@ import { PlayerTimers } from '../src/player/PlayerTimers';
 import { gravityFor } from '../src/player/movement';
 import { playerStates, type PlayerContext, type PlayerStateKey } from '../src/player/playerStates';
 import { playerTuning, type PlayerTuning } from '../src/player/tuning';
+import { AttackRunner } from '../src/combat/AttackRunner';
+import { attackTable } from '../src/combat/attackData';
 
 export const DT = 1000 / 60;
+
+export interface SimInput {
+  moveX?: number;
+  jump?: boolean;
+  dodge?: boolean;
+  /** True on the frame the attack button is pressed. */
+  attack?: boolean;
+}
 
 /**
  * Minimal stand-in for Player + Arcade physics: a point on flat ground at y = 0
@@ -14,6 +24,8 @@ export const DT = 1000 / 60;
 export class SimPlayer implements PlayerContext {
   readonly tuning: PlayerTuning;
   readonly timers: PlayerTimers;
+  readonly combat = new AttackRunner(attackTable);
+  attackPressed = false;
   x = 0;
   y = 0;
   vx = 0;
@@ -50,13 +62,14 @@ export class SimPlayer implements PlayerContext {
   }
 
   /** One frame: input, game logic, then physics (like Phaser's next step). */
-  step(input: { moveX?: number; jump?: boolean; dodge?: boolean } = {}): void {
+  step(input: SimInput = {}): void {
     this.moveX = input.moveX ?? 0;
     const jump = input.jump ?? false;
     this.jumpPressedThisFrame = jump && !this.prevJump;
     this.prevJump = jump;
     this.jumpHeld = jump;
     this.dodgePressed = input.dodge ?? false;
+    this.attackPressed = input.attack ?? false;
 
     if (!this.onGround) this.airTopY = Math.min(this.airTopY, this.y);
     this.fallDistance = this.y - this.airTopY;
@@ -77,7 +90,7 @@ export class SimPlayer implements PlayerContext {
     this.maxHeight = Math.max(this.maxHeight, -this.y);
   }
 
-  run(frames: number, input: { moveX?: number; jump?: boolean; dodge?: boolean } = {}): void {
+  run(frames: number, input: SimInput = {}): void {
     for (let i = 0; i < frames; i++) this.step(input);
   }
 

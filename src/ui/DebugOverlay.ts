@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { COLORS } from '../core/constants';
 import { TapCounter } from '../systems/input/TapCounter';
+import type { Rect } from '../combat/types';
 
 export interface DebugInfo {
   state: string;
@@ -8,6 +9,7 @@ export interface DebugInfo {
   x: number;
   y: number;
   input: string;
+  hp: string;
 }
 
 export interface DebugToggleConfig {
@@ -24,13 +26,14 @@ export class DebugOverlay {
   private visible = false;
   private readonly text: Phaser.GameObjects.Text;
   private readonly taps: TapCounter;
+  private readonly boxes: Phaser.GameObjects.Graphics;
 
   constructor(
     private readonly scene: Phaser.Scene,
     private readonly toggle: DebugToggleConfig,
   ) {
     this.text = scene.add
-      .text(4, 4, '', {
+      .text(4, 18, '', {
         fontFamily: 'monospace',
         fontSize: '8px',
         color: COLORS.text,
@@ -41,6 +44,7 @@ export class DebugOverlay {
       .setDepth(2000)
       .setVisible(false);
     this.taps = new TapCounter(toggle.taps, toggle.windowMs);
+    this.boxes = scene.add.graphics().setDepth(1999);
 
     scene.input.on(Phaser.Input.Events.POINTER_DOWN, this.onPointerDown, this);
     scene.input.keyboard?.on('keydown-BACKTICK', this.flip, this);
@@ -50,11 +54,19 @@ export class DebugOverlay {
     });
   }
 
+  /** Outlines active attack hitboxes (world space). */
+  drawHitboxes(rects: readonly Rect[]): void {
+    this.boxes.clear();
+    if (!this.visible) return;
+    this.boxes.lineStyle(1, COLORS.hitbox, 1);
+    for (const r of rects) this.boxes.strokeRect(r.x, r.y, r.w, r.h);
+  }
+
   update(info: DebugInfo): void {
     if (!this.visible) return;
     const fps = this.scene.game.loop.actualFps.toFixed(0);
     this.text.setText(
-      [`fps ${fps}`, `state ${info.state}`, `pos ${info.x.toFixed(0)},${info.y.toFixed(0)}`, `vel ${info.vel}`, `in ${info.input}`].join(
+      [`fps ${fps}`, `state ${info.state}`, `pos ${info.x.toFixed(0)},${info.y.toFixed(0)}`, `vel ${info.vel}`, `in ${info.input}`, `hp ${info.hp}`].join(
         '\n',
       ),
     );

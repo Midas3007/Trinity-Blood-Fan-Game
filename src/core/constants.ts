@@ -16,6 +16,10 @@ export const COLORS = {
   floor: 0x3a3442,
   player: 0xc9c2d6,
   accent: 0x8e1b2c,
+  stone: 0x6f6676,
+  flash: 0xefeaf2,
+  spark: 0xd9963a,
+  hitbox: 0xd4283e,
   text: '#c9c2d6',
   textDim: '#8a8296',
 } as const;

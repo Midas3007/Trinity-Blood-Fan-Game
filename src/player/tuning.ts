@@ -22,6 +22,9 @@ export interface PlayerTuning {
   dodgeDurationMs: number;
   dodgeInvulnerableMs: number;
   dodgeCooldownMs: number;
+  maxHealth: number;
+  hurtStunMs: number;
+  hurtInvulnerableMs: number;
 }
 
 export const playerTuning: PlayerTuning = raw;

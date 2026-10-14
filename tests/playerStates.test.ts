@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { framesFor, SimPlayer } from './playerSim';
 import { jumpHeight } from '../src/player/movement';
 import { playerTuning as t } from '../src/player/tuning';
+import { attackTable } from '../src/combat/attackData';
 
 describe('player controller (Milestone 2)', () => {
   it('starts idle, runs when moving, returns to idle after decelerating', () => {
@@ -158,5 +159,64 @@ describe('player controller (Milestone 2)', () => {
     air.run(5, { jump: true });
     air.step({ jump: true, dodge: true });
     expect(air.state).not.toBe('dodge');
+  });
+});
+
+describe('player combat states (Milestone 3)', () => {
+  const p1 = attackTable['priest1']!;
+  const p2 = attackTable['priest2']!;
+
+  it('attack button on the ground starts the combo and stops running', () => {
+    const p = new SimPlayer();
+    p.run(20, { moveX: 1 });
+    p.step({ moveX: 1, attack: true });
+    expect(p.state).toBe('attack');
+    p.run(framesFor(p1.startupMs + p1.activeMs), { moveX: 1 });
+    expect(Math.abs(p.vx)).toBeLessThan(t.runSpeed);
+  });
+
+  it('pressing again during the swing chains to the next attack; not pressing ends the attack', () => {
+    const p = new SimPlayer();
+    p.step({ attack: true });
+    p.run(framesFor(p1.startupMs) + 1);
+    p.step({ attack: true });
+    p.run(framesFor(p1.activeMs) + 1);
+    expect(p.combat.current?.id).toBe('priest2');
+
+    const q = new SimPlayer();
+    q.step({ attack: true });
+    q.run(framesFor(p1.startupMs + p1.activeMs + p1.recoveryMs) + 2);
+    expect(q.state).toBe('idle');
+    expect(p2.damage).toBeGreaterThan(0);
+  });
+
+  it('recovery can be cancelled into a dodge', () => {
+    const p = new SimPlayer();
+    p.step({ attack: true });
+    p.run(framesFor(p1.startupMs + p1.activeMs) + 1);
+    p.step({ dodge: true });
+    expect(p.state).toBe('dodge');
+  });
+
+  it('attack in the air uses the air attack and ends on landing', () => {
+    const p = new SimPlayer();
+    p.run(5, { jump: true });
+    p.step({ jump: true, attack: true });
+    expect(p.state).toBe('airAttack');
+    expect(p.combat.current?.id).toBe('air');
+    p.run(120);
+    expect(['idle', 'run']).toContain(p.state);
+  });
+
+  it('hurt state: knocked back, cannot act during stun, then recovers', () => {
+    const p = new SimPlayer();
+    p.run(2);
+    p.vx = -150;
+    p.vy = -150;
+    p.fsm.transition('hurt');
+    p.step({ attack: true, jump: true });
+    expect(p.state).toBe('hurt');
+    p.run(framesFor(t.hurtStunMs) + 30);
+    expect(['idle', 'fall']).toContain(p.state);
   });
 });

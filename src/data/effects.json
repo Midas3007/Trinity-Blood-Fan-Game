@@ -1,0 +1,10 @@
+{
+  "_note": "Hit feedback. Set screenShake/sparks to false for a low-effects mode on weaker phones.",
+  "screenShake": true,
+  "sparks": true,
+  "maxSparks": 32,
+  "sparksPerHit": 6,
+  "sparkLifeMs": 220,
+  "sparkSpeed": 140,
+  "hitFlashMs": 70
+}

@@ -33,12 +33,12 @@ Record the screen while playing, scrub frame by frame, and use the character's h
 
 | Parameter | Researched | Owner observation | Value in game |
 |---|---|---|---|
-| Basic combo | 3 hits, third is stronger; becomes 4 after upgrade [R3] | | — |
+| Basic combo | 3 hits, third is stronger; becomes 4 after upgrade [R3] | | 3 hits: 10 / 12 / 22 damage; third has a lunge, launch and screen shake |
 | Parry | Timed block at the moment of impact; stuns some enemies → counter / execution [R5][R6] | | — |
 | Counter damage | ~3× sword damage, invulnerable while it plays [R6] | | — |
 | Execution | Finisher on stunned enemies, grants bonus resources [R3] | | — |
 | Feel | "Meaty", "demanding and deliberate", "brutal and unforgiving" [R2][R7][R8] | | — |
-| Hit pause / shake | Not published; slow-motion and shake presets exist in code (F7, F8) | | — |
+| Hit pause / shake | Not published; slow-motion and shake presets exist in code (F7, F8) | | hit pause 50–110 ms per attack; shake only on the finisher and when hurt |
 
 ## Progression and world (Milestone 5–7)
 

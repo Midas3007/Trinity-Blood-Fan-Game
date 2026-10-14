@@ -32,3 +32,16 @@
 | Dodge is ground-only, keeps full height (no slide-under-gaps yet) | Matches the reference slide; slide-under needs body resizing and level content, deferred | Shrinking the hitbox now |
 | Inputs latch presses between frames (keyboard via `key.timeDown`, touch via a tapped set) | A press and release inside one frame was being lost (found in the browser smoke test) | Reading input from events only |
 | Frame time clamped to 50 ms for player logic | Avoids huge steps after hitches or tab switches | No clamp |
+
+## 2026-10-14 — Milestone 3 combat
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Attacks are data (`src/data/attacks.json`): frame timings, damage, knockback, hit pause, shake, lunge, dodge-cancel, hitbox, `next` for combos; validated at load | "New attacks need only data" (CLAUDE.md Part 7); broken data fails loudly | Hard-coded attack classes |
+| Pure `AttackRunner` drives swings and combos; press after startup queues the next step, which starts at recovery | Testable without Phaser; simple, readable combo rule | Animation-event-driven combos (no art yet) |
+| One swing hits each target once (`registerHit`) | Prevents multi-hits from long active frames | Per-frame damage |
+| Hit-stop pauses physics and skips input reads (presses are kept for the next frame) | Freeze is total and nothing is lost | Time-scaling |
+| Feedback (hit-stop, shake, sparks, HUD) subscribes to a typed `EventBus`; combat code only emits events | Systems don't reach into each other (CLAUDE.md Part 7) | Direct calls |
+| Sparks use a fixed pool; `src/data/effects.json` can turn shake/sparks off | Phone performance; low-effects mode | Phaser particle emitters |
+| Training dummies (grey = punching bag, red = contact damage) stand in for enemies | Something to hit before Milestone 4's enemy AI | Building the first enemy now |
+| Player death = respawn at the room spawn with full health | Placeholder until checkpoints (Milestone 5) | Game-over screen |

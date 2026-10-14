@@ -23,5 +23,9 @@
   "dodgeSpeed": 240,
   "dodgeDurationMs": 380,
   "dodgeInvulnerableMs": 260,
-  "dodgeCooldownMs": 300
+  "dodgeCooldownMs": 300,
+
+  "maxHealth": 100,
+  "hurtStunMs": 320,
+  "hurtInvulnerableMs": 1000
 }

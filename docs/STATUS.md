@@ -3,36 +3,34 @@
 Last updated: 2026-10-14
 
 ## Done
-- Phase 0–3: kit docs, private reference setup, Milestone 1, reference findings, story + creative direction (**approved**; classical public-domain music allowed).
-- Web research for the feel spec: `docs/feel-spec.md` now has a "Researched" column with sources (mostly qualitative; healing numbers found; no movement timings published anywhere).
-- **Milestone 2 — Player controller (code complete):**
-  - Acceleration/deceleration on the ground, weaker air control.
-  - Variable jump height (release early = short hop), heavier fall than rise.
-  - Coyote time (100 ms) and jump buffer (110 ms).
-  - Hard landing after long falls (≥160 px), 350 ms lock.
-  - Dodge: ground slide 240 px/s for 380 ms, invulnerable for the first 260 ms (player turns see-through), 300 ms cooldown.
-  - All values in `src/data/player.json`. States: idle, run, jump, fall, dodge, hardLand.
-  - Test room: higher ledges on the right for testing hard landings.
-  - Debug overlay now also shows velocity and `INV` while invulnerable. A small red mark shows facing.
-  - Fixed: very quick taps/key presses could be missed between frames.
-- Verified here: type-check, build, **30/30 unit tests** (including simulated coyote/buffer/variable jump/hard landing/dodge cooldown). Headless browser: no errors; dodge shows state `dodge INV` at 240 px/s; tapped jump ≈17 px vs held jump ≈60 px.
+- Phases 0–3 and Milestones 1–2 (see git history and `docs/decisions.md`). Creative direction approved.
+- **Milestone 3 — Combat (code complete):**
+  - ATK on the ground: 3-hit combo (press again during a swing to continue). Third hit is a heavier lunge that launches the target, with a stronger hit pause and screen shake. Recovery can be cancelled into a dodge.
+  - ATK in the air: air attack (keeps steering).
+  - Hits: damage, knockback away from the player, white flash, impact sparks, short hit pause (freeze) per attack.
+  - Getting hurt: knocked back and up, 320 ms without control, 1 s invulnerability with blinking. Dodge invulnerability also protects. Death = respawn at the start with full health.
+  - Health bar (top-left). Debug overlay adds HP and outlines the active attack hitbox in red.
+  - Test room: two grey training dummies (punching bags, respawn after being destroyed) and one **red dummy that hurts on touch**.
+  - All attacks in `src/data/attacks.json`; adding an attack is a data change (tested). Effects can be turned down in `src/data/effects.json`.
+- Verified here: type-check, build, **49/49 unit tests** (attack data validation, phases, combo chaining, once-per-swing hits, mirrored hitboxes, damage/knockback, hit pause, event bus, attack/air-attack/dodge-cancel/hurt states). Headless browser: no errors; the 3-hit combo hit a dummy (health bar dropped, dummy pushed back); touching the red dummy cost health and knocked the player back.
 
 ## In progress
-- Waiting for the owner's phone test of Milestone 2.
+- Waiting for the owner's phone test of Milestones 2 and 3.
 
 ## Blockers
-- None. (Optional: deeper binary analysis needs `github.com` allowed in Network access.)
+- None.
 
 ## Owner must test (on phone)
-Open https://trinity-blood-fan-game.vercel.app (a hard refresh or reopening the app may be needed to get the update). Triple-tap the top-left corner to see the debug text.
-1. Push the stick → the rectangle speeds up quickly but not instantly; let go → it slides to a stop within a few pixels.
-2. Tap JUMP briefly → small hop. Hold JUMP → about twice the player's height. The fall should feel faster than the rise.
-3. Run off the edge of a ledge and press JUMP just after leaving it → it still jumps (coyote time).
-4. Press JUMP just before landing → it jumps as soon as it lands (jump buffer).
-5. Climb the ledges on the right to the highest one, then drop to the floor → it stops briefly (state `hardLand`) before you can move. Walking or jumping off the two lowest ledges should NOT do this.
-6. Tap DODGE → fast slide in the facing direction; the rectangle turns see-through at first (`INV`). Tapping DODGE again right away does nothing until the short cooldown ends. DODGE in the air does nothing.
-7. Report feel in plain words: too floaty / too heavy, too slow / too fast, dodge too long / too short. I will change the numbers.
+Open https://trinity-blood-fan-game.vercel.app (reopen the page/app to get the update). Triple-tap the top-left corner for debug text and hitbox outlines.
+1. Walk to the first grey dummy and tap ATK once → one swing; the dummy flashes white, sparks fly, it is pushed back, and its small red bar shrinks. You should feel a tiny freeze on impact.
+2. Tap ATK three times in rhythm → three swings; the third steps forward, knocks the dummy up and away, and shakes the screen.
+3. Keep hitting until a dummy disappears → it comes back after about 1.5 s.
+4. Tap ATK then DODGE quickly after the swing → the swing ends early and you slide.
+5. Jump and tap ATK → air attack; landing ends it.
+6. Walk into the **red** dummy → you lose some health (top-left bar), get knocked back, blink for about a second, and can't be hurt again while blinking. DODGE through it → no damage while see-through.
+7. Lose all health on the red dummy → you reappear at the start with full health.
+8. Tell me in plain words: are attacks too slow or too fast? Is the hit freeze noticeable, too strong, or too weak? Is the knockback when hurt too much?
 
 ## Next step
-- Owner phone test and feel notes → tune `src/data/player.json`.
-- Then Milestone 3: combat (attack states, hitboxes/hurtboxes, damage, knockback, hit-stop, i-frames, hit feedback; new attacks as data).
+- Owner phone test → tune `src/data/attacks.json` / `player.json`.
+- Then Milestone 4: first enemy (original design) with idle, patrol, detect, pursue, attack, hurt, die; object pooling.
