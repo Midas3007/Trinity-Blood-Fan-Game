@@ -1,0 +1,10 @@
+# PRIVATE reference material (Blasphemous extract) — never commit
+reference/
+
+node_modules/
+dist/
+dev-dist/
+.vercel/
+.env*
+*.log
+.DS_Store
