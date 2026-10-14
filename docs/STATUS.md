@@ -16,10 +16,16 @@ Last updated: 2026-10-14
 - Vercel project `trinity-blood-fan-game` (team midart) linked to this GitHub repo. First deploy READY; manifest served from it. Every push to a branch builds a preview automatically.
   - Play URL: https://trinity-blood-fan-game.vercel.app (production branch is currently `ccr-eae0b083-hu39a3`).
 
+- Owner phone test of Milestone 1: **passed** (all checks).
+- **Phase 2 (reference analysis):** `docs/reference-findings.md` written (engine facts + 12 evidence-backed findings from names in `global-metadata.dat`). `docs/feel-spec.md` expanded into a fill-in sheet linked to those findings, with current placeholder values.
+  - REA 6.5.0 CLI runs here; its doctor shows the Ghidra engine missing. Ghidra download from GitHub is blocked by the environment network policy.
+  - The extract contains no images, levels or tuning data, so no feel numbers can come from it.
+
 ## In progress
-- Waiting for the owner's phone test of Milestone 1.
+- Phase 3 (story and direction) is next.
 
 ## Blockers
+- Optional: deeper binary analysis needs `github.com` allowed in the environment's Network access (to fetch Ghidra) — low value, see findings "Tooling status".
 - `docs/lore/owner-storyline.md` is still a template (needed in Phase 3).
 
 ## Owner must test (on phone)
@@ -38,4 +44,5 @@ Open https://trinity-blood-fan-game.vercel.app in your phone browser, landscape.
 12. Report: are the buttons comfortable size/position? Anything hidden by the notch or rounded corners?
 
 ## Next step
-- Owner runs the phone checklist. Then Phase 2 (reference analysis).
+- Owner: fill in `docs/feel-spec.md` from playing Blasphemous (any time before Milestone 2).
+- Phase 3: storyline + creative direction draft.
