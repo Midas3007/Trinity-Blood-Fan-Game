@@ -1,0 +1,24 @@
+{
+  "name": "trinity-blood-fan-game",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Unofficial, non-commercial fan-made Metroidvania inspired by Trinity Blood.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "icons": "python3 -I scripts/make-icons.py"
+  },
+  "dependencies": {
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vite": "8.3.4",
+    "vite-plugin-pwa": "2.0.0",
+    "vitest": "5.0.4"
+  }
+}

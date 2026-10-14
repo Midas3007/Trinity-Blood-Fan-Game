@@ -1,17 +1,26 @@
-# Trinity Blood Fan Metroidvania — Starter Kit
+# Trinity Blood — Fan Metroidvania (mobile web)
 
-Unofficial fan-made, non-commercial project. Not affiliated with or endorsed by the rights holders of Trinity Blood or Blasphemous.
+> **Unofficial fan-made project. Not affiliated with or endorsed by the rights holders of Trinity Blood.**
+> Non-commercial. Gameplay inspired by *Blasphemous*; also not affiliated with its rights holders.
 
-## What is in this kit
-- `CLAUDE.md` — standing rules for Claude Code (10 parts)
-- `FIRST_PROMPT.md` — paste this as your first message
-- `docs/lore/trinity-blood-bible.md` — plot, themes, factions, characters, tone
-- `docs/lore/owner-storyline.md` — fill this in with your own story
-- `docs/references/reference-sources.md` — where to find references
-- `docs/templates/` — STATUS, findings, feel spec, asset manifest, creative direction
+A small 2D Metroidvania vertical slice built with Phaser 3 + TypeScript + Vite as an installable PWA, played in landscape on a phone.
 
-## How to use
-1. Create a GitHub repo and open it in Claude Code on the web.
-2. Upload this kit zip and your Blasphemous extract zip.
-3. Paste the contents of `FIRST_PROMPT.md` as your first message.
-4. Never commit the Blasphemous files. The first prompt makes Claude Code gitignore them.
+## Status
+See [`docs/STATUS.md`](docs/STATUS.md).
+
+## Scripts
+| Command | What it does |
+|---|---|
+| `npm run dev` | Dev server |
+| `npm run build` | Type-check + production build (`dist/`) |
+| `npm test` | Vitest unit tests |
+| `npm run typecheck` | TypeScript only |
+| `npm run icons` | Regenerate PWA icons (Python + Pillow) |
+
+## Controls
+- **Touch:** stick on the left; ATK, JUMP, DODGE, ABIL, HEAL on the right. Triple-tap the top-left corner for the debug overlay.
+- **Keyboard:** arrows/WASD move; Space/K/Z jump; J/X attack; L/Shift/C dodge; I/V ability; H/F heal; backtick = debug.
+- **Gamepad:** left stick/d-pad; A jump, X attack, B dodge, Y ability, RB heal.
+
+## Project rules
+`CLAUDE.md` is the rulebook. Lore lives in `docs/lore/`. `reference/` is private and gitignored.

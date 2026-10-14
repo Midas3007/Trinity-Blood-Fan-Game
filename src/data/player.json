@@ -1,0 +1,8 @@
+{
+  "_note": "Placeholder tuning for Milestone 1. Not taken from the reference game; adjust after phone playtests.",
+  "width": 14,
+  "height": 30,
+  "runSpeed": 110,
+  "jumpVelocity": 330,
+  "maxFallSpeed": 420
+}

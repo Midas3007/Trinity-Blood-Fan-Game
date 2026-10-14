@@ -1,0 +1,12 @@
+{
+  "_note": "Touch layout as fractions of the screen (x, y) and internal pixels (radius). Saved per-device overrides come in a later milestone.",
+  "stick": { "x": 0.16, "y": 0.72, "radius": 34, "knobRadius": 14, "deadZone": 0.2 },
+  "buttons": [
+    { "action": "attack",  "label": "ATK",  "x": 0.80, "y": 0.78, "radius": 20 },
+    { "action": "jump",    "label": "JUMP", "x": 0.91, "y": 0.62, "radius": 20 },
+    { "action": "dodge",   "label": "DODGE","x": 0.69, "y": 0.86, "radius": 16 },
+    { "action": "ability", "label": "ABIL", "x": 0.80, "y": 0.50, "radius": 16 },
+    { "action": "heal",    "label": "HEAL", "x": 0.91, "y": 0.36, "radius": 14 }
+  ],
+  "debugToggle": { "taps": 3, "windowMs": 600, "cornerSize": 48 }
+}
