@@ -13,15 +13,17 @@ Last updated: 2026-10-14
   - PWA: manifest (landscape, fullscreen), icons, service worker with auto-update.
 - Verified here: type-check passes, build passes, 16/16 unit tests pass. Headless Chromium smoke test (phone-sized landscape, touch emulation): no console errors; stick + ATK + JUMP held at once all registered; player ran and jumped; debug overlay toggled by triple-tap; manifest served; service worker registered.
 
+- Vercel project `trinity-blood-fan-game` (team midart) linked to this GitHub repo. First deploy READY; manifest served from it. Every push to a branch builds a preview automatically.
+  - Play URL: https://trinity-blood-fan-game.vercel.app (production branch is currently `ccr-eae0b083-hu39a3`).
+
 ## In progress
-- Connecting Vercel preview deploys.
+- Waiting for the owner's phone test of Milestone 1.
 
 ## Blockers
-- Vercel: see "Next step".
 - `docs/lore/owner-storyline.md` is still a template (needed in Phase 3).
 
 ## Owner must test (on phone)
-Open the Vercel preview URL in your phone browser, landscape.
+Open https://trinity-blood-fan-game.vercel.app in your phone browser, landscape. If Vercel asks you to log in, use your Vercel account.
 1. Hold the phone in portrait → a "Rotate your phone" message shows. Rotate to landscape → the title screen shows with the fan-made notice at the bottom.
 2. Tap anywhere → the test room loads (fullscreen on Android; iOS Safari stays in the browser, that's expected).
 3. Push the left stick right/left → the pale rectangle runs; the knob follows your thumb.
@@ -36,4 +38,4 @@ Open the Vercel preview URL in your phone browser, landscape.
 12. Report: are the buttons comfortable size/position? Anything hidden by the notch or rounded corners?
 
 ## Next step
-- Connect Vercel (owner action if I can't do it), run the phone checklist, then Phase 2 (reference analysis).
+- Owner runs the phone checklist. Then Phase 2 (reference analysis).
