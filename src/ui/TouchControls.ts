@@ -22,6 +22,8 @@ export class TouchControls {
   private stickVec: Vec2 = { x: 0, y: 0 };
   /** pointer id -> action it is currently holding */
   private buttonPointers = new Map<number, Action>();
+  /** Buttons pressed since the last read(), so a very quick tap is never lost between frames. */
+  private tappedSinceRead = new Set<Action>();
   private readonly knob: Phaser.GameObjects.Arc;
   private readonly buttons: ButtonView[];
   private readonly stickX: number;
@@ -73,6 +75,8 @@ export class TouchControls {
     f.moveX = this.stickVec.x;
     f.moveY = this.stickVec.y;
     for (const action of this.buttonPointers.values()) f.buttons[action] = true;
+    for (const action of this.tappedSinceRead) f.buttons[action] = true;
+    this.tappedSinceRead.clear();
     return f;
   }
 
@@ -81,6 +85,7 @@ export class TouchControls {
     this.stickPointerId = null;
     this.stickVec = { x: 0, y: 0 };
     this.buttonPointers.clear();
+    this.tappedSinceRead.clear();
     this.refreshVisuals();
   }
 
@@ -91,7 +96,10 @@ export class TouchControls {
       this.updateStick(p);
     } else {
       const b = buttonAt(this.layout.buttons, p.x, p.y, GAME_WIDTH, GAME_HEIGHT);
-      if (b) this.buttonPointers.set(p.id, b.action);
+      if (b) {
+        this.buttonPointers.set(p.id, b.action);
+        this.tappedSinceRead.add(b.action);
+      }
     }
     this.refreshVisuals();
   }

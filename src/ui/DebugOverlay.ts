@@ -4,6 +4,7 @@ import { TapCounter } from '../systems/input/TapCounter';
 
 export interface DebugInfo {
   state: string;
+  vel: string;
   x: number;
   y: number;
   input: string;
@@ -53,7 +54,7 @@ export class DebugOverlay {
     if (!this.visible) return;
     const fps = this.scene.game.loop.actualFps.toFixed(0);
     this.text.setText(
-      [`fps ${fps}`, `state ${info.state}`, `pos ${info.x.toFixed(0)},${info.y.toFixed(0)}`, `in ${info.input}`].join(
+      [`fps ${fps}`, `state ${info.state}`, `pos ${info.x.toFixed(0)},${info.y.toFixed(0)}`, `vel ${info.vel}`, `in ${info.input}`].join(
         '\n',
       ),
     );

@@ -24,19 +24,22 @@ describe('StateMachine', () => {
     expect(ctx.log).toEqual(['enter a']);
   });
 
-  it('stays put when update returns nothing', () => {
+  it('stays put when update returns nothing and accumulates state time', () => {
     const ctx: Ctx = { log: [], goB: false };
     const fsm = new StateMachine(states, 'a', ctx);
     fsm.update(16);
+    fsm.update(16);
     expect(fsm.current).toBe('a');
+    expect(fsm.stateMs).toBe(32);
     expect(ctx.log).toEqual(['enter a']);
   });
 
-  it('runs exit then enter on transition', () => {
+  it('runs exit then enter on transition and resets state time', () => {
     const ctx: Ctx = { log: [], goB: true };
     const fsm = new StateMachine(states, 'a', ctx);
     fsm.update(16);
     expect(fsm.current).toBe('b');
+    expect(fsm.stateMs).toBe(0);
     expect(ctx.log).toEqual(['enter a', 'exit a', 'enter b']);
   });
 });

@@ -3,49 +3,36 @@
 Last updated: 2026-10-14
 
 ## Done
-- Phase 0: kit docs in repo; Blasphemous extract in `reference/` (gitignored, 0 files tracked).
-- **Milestone 1 (Foundation) code:** Phaser 3.90 + TypeScript (strict) + Vite 8 + vite-plugin-pwa + Vitest.
-  - Boot → Menu (title, fan-made notice, "Tap to begin") → Play scene.
-  - Test room (floor + 4 ledges, wider than the screen, camera follows).
-  - Placeholder player rectangle: run, jump, fall (simple state machine).
-  - Multitouch controls: stick + ATK / JUMP / DODGE / ABIL / HEAL. Keyboard and gamepad also work.
-  - Debug overlay: fps, player state, position, held inputs, hitbox outlines.
-  - PWA: manifest (landscape, fullscreen), icons, service worker with auto-update.
-- Verified here: type-check passes, build passes, 16/16 unit tests pass. Headless Chromium smoke test (phone-sized landscape, touch emulation): no console errors; stick + ATK + JUMP held at once all registered; player ran and jumped; debug overlay toggled by triple-tap; manifest served; service worker registered.
-
-- Vercel project `trinity-blood-fan-game` (team midart) linked to this GitHub repo. First deploy READY; manifest served from it. Every push to a branch builds a preview automatically.
-  - Play URL: https://trinity-blood-fan-game.vercel.app (production branch is currently `ccr-eae0b083-hu39a3`).
-
-- Owner phone test of Milestone 1: **passed** (all checks).
-- **Phase 2 (reference analysis):** `docs/reference-findings.md` written (engine facts + 12 evidence-backed findings from names in `global-metadata.dat`). `docs/feel-spec.md` expanded into a fill-in sheet linked to those findings, with current placeholder values.
-  - REA 6.5.0 CLI runs here; its doctor shows the Ghidra engine missing. Ghidra download from GitHub is blocked by the environment network policy.
-  - The extract contains no images, levels or tuning data, so no feel numbers can come from it.
-
-- **Phase 3 (story and direction):** owner delegated the story choices; proposed storyline written to `docs/lore/owner-storyline.md` ("Requiem for Rome", Dietrich as main villain, 2 regions, 2 bosses) and full draft of `docs/creative-direction.md` (12 sections, ability mapping, 16-colour palette, sprite sizes).
-
-- **Creative direction and storyline approved by owner.** Music note added: public-domain gothic/sacred classical music (with free-licensed recordings) is allowed.
+- Phase 0–3: kit docs, private reference setup, Milestone 1, reference findings, story + creative direction (**approved**; classical public-domain music allowed).
+- Web research for the feel spec: `docs/feel-spec.md` now has a "Researched" column with sources (mostly qualitative; healing numbers found; no movement timings published anywhere).
+- **Milestone 2 — Player controller (code complete):**
+  - Acceleration/deceleration on the ground, weaker air control.
+  - Variable jump height (release early = short hop), heavier fall than rise.
+  - Coyote time (100 ms) and jump buffer (110 ms).
+  - Hard landing after long falls (≥160 px), 350 ms lock.
+  - Dodge: ground slide 240 px/s for 380 ms, invulnerable for the first 260 ms (player turns see-through), 300 ms cooldown.
+  - All values in `src/data/player.json`. States: idle, run, jump, fall, dodge, hardLand.
+  - Test room: higher ledges on the right for testing hard landings.
+  - Debug overlay now also shows velocity and `INV` while invulnerable. A small red mark shows facing.
+  - Fixed: very quick taps/key presses could be missed between frames.
+- Verified here: type-check, build, **30/30 unit tests** (including simulated coyote/buffer/variable jump/hard landing/dodge cooldown). Headless browser: no errors; dodge shows state `dodge INV` at 240 px/s; tapped jump ≈17 px vs held jump ≈60 px.
 
 ## In progress
-- Nothing; waiting for go-ahead on Milestone 2.
+- Waiting for the owner's phone test of Milestone 2.
 
 ## Blockers
-- Optional: deeper binary analysis needs `github.com` allowed in the environment's Network access (to fetch Ghidra) — low value, see findings "Tooling status".
+- None. (Optional: deeper binary analysis needs `github.com` allowed in Network access.)
 
 ## Owner must test (on phone)
-Open https://trinity-blood-fan-game.vercel.app in your phone browser, landscape. If Vercel asks you to log in, use your Vercel account.
-1. Hold the phone in portrait → a "Rotate your phone" message shows. Rotate to landscape → the title screen shows with the fan-made notice at the bottom.
-2. Tap anywhere → the test room loads (fullscreen on Android; iOS Safari stays in the browser, that's expected).
-3. Push the left stick right/left → the pale rectangle runs; the knob follows your thumb.
-4. Tap JUMP → it jumps; it cannot jump again in mid-air.
-5. Hold the stick AND press ATK or JUMP with the other thumb → both work at once (button turns brighter while held).
-6. Hold stick + ATK, then also tap JUMP (three fingers) → still runs and jumps.
-7. Triple-tap the top-left corner quickly → debug text (fps, state, pos, input) and coloured hitbox outlines appear. Triple-tap again → they disappear. Note the fps number.
-8. Swipe/pinch on the game → the page must not scroll, zoom, or pull-to-refresh.
-9. Switch to another app and back → nothing stays "stuck pressed".
-10. Browser menu → "Add to Home screen"/"Install app" → launch from the icon → opens landscape, full screen, with the cross-and-moon icon.
-11. Turn on airplane mode, reopen the installed app → it still loads.
-12. Report: are the buttons comfortable size/position? Anything hidden by the notch or rounded corners?
+Open https://trinity-blood-fan-game.vercel.app (a hard refresh or reopening the app may be needed to get the update). Triple-tap the top-left corner to see the debug text.
+1. Push the stick → the rectangle speeds up quickly but not instantly; let go → it slides to a stop within a few pixels.
+2. Tap JUMP briefly → small hop. Hold JUMP → about twice the player's height. The fall should feel faster than the rise.
+3. Run off the edge of a ledge and press JUMP just after leaving it → it still jumps (coyote time).
+4. Press JUMP just before landing → it jumps as soon as it lands (jump buffer).
+5. Climb the ledges on the right to the highest one, then drop to the floor → it stops briefly (state `hardLand`) before you can move. Walking or jumping off the two lowest ledges should NOT do this.
+6. Tap DODGE → fast slide in the facing direction; the rectangle turns see-through at first (`INV`). Tapping DODGE again right away does nothing until the short cooldown ends. DODGE in the air does nothing.
+7. Report feel in plain words: too floaty / too heavy, too slow / too fast, dodge too long / too short. I will change the numbers.
 
 ## Next step
-- Owner: fill in `docs/feel-spec.md` from playing Blasphemous (any time before Milestone 2).
-- Then Milestone 2: player controller (variable jump, coyote time, jump buffer, dodge with i-frames, tuning JSON).
+- Owner phone test and feel notes → tune `src/data/player.json`.
+- Then Milestone 3: combat (attack states, hitboxes/hurtboxes, damage, knockback, hit-stop, i-frames, hit feedback; new attacks as data).

@@ -15,7 +15,10 @@ const BINDINGS: Record<Action, number[]> = {
 export class KeyboardSource {
   private readonly keys: Record<string, Phaser.Input.Keyboard.Key>;
 
-  constructor(keyboard: Phaser.Input.Keyboard.KeyboardPlugin) {
+  constructor(
+    keyboard: Phaser.Input.Keyboard.KeyboardPlugin,
+    private readonly now: () => number,
+  ) {
     const codes = new Set<number>([KC.LEFT, KC.RIGHT, KC.UP, KC.DOWN, KC.A, KC.D, KC.W, KC.S]);
     Object.values(BINDINGS).forEach((list) => list.forEach((c) => codes.add(c)));
     this.keys = {};
@@ -24,8 +27,13 @@ export class KeyboardSource {
     });
   }
 
+  /** Time of the previous read(), so a press and release between two frames still counts once. */
+  private lastReadTime = 0;
+
   private down(code: number): boolean {
-    return this.keys[code]?.isDown ?? false;
+    const key = this.keys[code];
+    if (!key) return false;
+    return key.isDown || key.timeDown > this.lastReadTime;
   }
 
   read(): InputFrame {
@@ -35,6 +43,7 @@ export class KeyboardSource {
     for (const [action, codes] of Object.entries(BINDINGS) as [Action, number[]][]) {
       f.buttons[action] = codes.some((c) => this.down(c));
     }
+    this.lastReadTime = this.now();
     return f;
   }
 }

@@ -1,5 +1,5 @@
 {
-  "_note": "Hand-written Milestone 1 test room (internal pixels). Real rooms will come from Tiled in Milestone 5.",
+  "_note": "Hand-written test room (internal pixels). The tall ledge at the right tests hard landings. Real rooms come from Tiled in Milestone 5.",
   "width": 960,
   "height": 270,
   "spawn": { "x": 80, "y": 200 },
@@ -7,7 +7,8 @@
     { "x": 0, "y": 238, "w": 960, "h": 32 },
     { "x": 220, "y": 190, "w": 80, "h": 10 },
     { "x": 360, "y": 150, "w": 80, "h": 10 },
-    { "x": 520, "y": 190, "w": 120, "h": 10 },
-    { "x": 760, "y": 206, "w": 40, "h": 32 }
+    { "x": 500, "y": 112, "w": 70, "h": 10 },
+    { "x": 630, "y": 74, "w": 110, "h": 10 },
+    { "x": 820, "y": 206, "w": 40, "h": 32 }
   ]
 }

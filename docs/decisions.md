@@ -20,3 +20,15 @@
 | Story "Requiem for Rome": original side story during the anime, Dietrich as villain, 2 regions + hub | Owner delegated; easiest to build (one city, one villain idea explains all enemies), no retelling of episodes | Retelling an anime arc (harder, copyright-sensitive) |
 | Music: real-world gothic/sacred classical music | Owner request | Fully original score |
 | Only public-domain compositions **with** public-domain/CC recordings, or our own renders from PD scores | A recording carries its own copyright even when the piece is old | — |
+
+## 2026-10-14 — Milestone 2 player controller
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Movement values are design choices informed by researched behaviour (`docs/feel-spec.md`) | No public source gives the reference game's speeds or timings; the extract has no tuning data | Waiting for owner measurements |
+| Velocity-based accel/decel with separate air values; asymmetric gravity applied as a per-body extra on top of world gravity | Simple, tunable, keeps Arcade Physics | Custom integrator |
+| Pure `PlayerTimers` (coyote, buffer, dodge cooldown, invulnerability) and states that only touch a `PlayerContext` interface; tests drive them with a small simulated body (`tests/playerSim.ts`) | State logic testable without Phaser | Testing in a headless browser |
+| State time tracked by the `StateMachine` and passed to `update` | One place for timing; states stay small | Each state keeps its own timer |
+| Dodge is ground-only, keeps full height (no slide-under-gaps yet) | Matches the reference slide; slide-under needs body resizing and level content, deferred | Shrinking the hitbox now |
+| Inputs latch presses between frames (keyboard via `key.timeDown`, touch via a tapped set) | A press and release inside one frame was being lost (found in the browser smoke test) | Reading input from events only |
+| Frame time clamped to 50 ms for player logic | Avoids huge steps after hitches or tab switches | No clamp |

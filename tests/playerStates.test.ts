@@ -1,74 +1,162 @@
 import { describe, expect, it } from 'vitest';
-import { StateMachine } from '../src/player/StateMachine';
-import { playerStates, type PlayerContext, type PlayerStateKey } from '../src/player/playerStates';
+import { framesFor, SimPlayer } from './playerSim';
+import { jumpHeight } from '../src/player/movement';
+import { playerTuning as t } from '../src/player/tuning';
 
-class FakePlayer implements PlayerContext {
-  onGround = true;
-  velocityY = 0;
-  moveX = 0;
-  jumpPressed = false;
-  jumps = 0;
-  move(): void {}
-  jump(): void {
-    this.jumps += 1;
-    this.velocityY = -300;
-  }
-}
-
-function setup(initial: PlayerStateKey = 'idle') {
-  const p = new FakePlayer();
-  const fsm = new StateMachine(playerStates, initial, p as PlayerContext);
-  return { p, fsm };
-}
-
-describe('player states (Milestone 1 placeholder)', () => {
-  it('idle -> run when moving, run -> idle when stopping', () => {
-    const { p, fsm } = setup();
-    p.moveX = 1;
-    fsm.update(16);
-    expect(fsm.current).toBe('run');
-    p.moveX = 0;
-    fsm.update(16);
-    expect(fsm.current).toBe('idle');
+describe('player controller (Milestone 2)', () => {
+  it('starts idle, runs when moving, returns to idle after decelerating', () => {
+    const p = new SimPlayer();
+    p.run(1);
+    expect(p.state).toBe('idle');
+    p.run(30, { moveX: 1 });
+    expect(p.state).toBe('run');
+    expect(p.vx).toBeCloseTo(t.runSpeed);
+    p.run(30);
+    expect(p.vx).toBe(0);
+    expect(p.state).toBe('idle');
   });
 
-  it('jump press on the ground starts exactly one jump', () => {
-    const { p, fsm } = setup();
-    p.jumpPressed = true;
-    fsm.update(16);
-    expect(fsm.current).toBe('jump');
-    expect(p.jumps).toBe(1);
+  it('accelerates over time instead of reaching full speed instantly', () => {
+    const p = new SimPlayer();
+    p.step({ moveX: 1 });
+    expect(p.vx).toBeGreaterThan(0);
+    expect(p.vx).toBeLessThan(t.runSpeed);
   });
 
-  it('cannot jump while airborne', () => {
-    const { p, fsm } = setup('fall');
-    p.onGround = false;
-    p.velocityY = 100;
-    p.jumpPressed = true;
-    fsm.update(16);
-    expect(fsm.current).toBe('fall');
-    expect(p.jumps).toBe(0);
+  it('a full jump reaches about the tuned height; a tapped jump is clearly lower (variable height)', () => {
+    const full = new SimPlayer();
+    full.run(60, { jump: true });
+    const tap = new SimPlayer();
+    tap.run(2, { jump: true });
+    tap.run(60);
+    expect(full.maxHeight).toBeGreaterThan(jumpHeight(t) * 0.9);
+    expect(full.maxHeight).toBeLessThan(jumpHeight(t) * 1.05);
+    expect(tap.maxHeight).toBeLessThan(full.maxHeight * 0.5);
   });
 
-  it('jump -> fall at the apex, fall -> idle on landing', () => {
-    const { p, fsm } = setup();
-    p.jumpPressed = true;
-    fsm.update(16);
-    p.jumpPressed = false;
-    p.onGround = false;
-    p.velocityY = 0;
-    fsm.update(16);
-    expect(fsm.current).toBe('fall');
-    p.onGround = true;
-    fsm.update(16);
-    expect(fsm.current).toBe('idle');
+  it('cannot jump again in mid-air', () => {
+    const p = new SimPlayer();
+    p.run(10, { jump: true });
+    p.run(2);
+    const vyBefore = p.vy;
+    p.step({ jump: true });
+    expect(p.state === 'jump' && p.vy < vyBefore - 100).toBe(false);
   });
 
-  it('walking off a ledge goes to fall', () => {
-    const { p, fsm } = setup('run');
-    p.moveX = 1;
-    p.onGround = false;
-    fsm.update(16);
-    expect(fsm.current).toBe('fall');
+  it('falls faster than it rises', () => {
+    const p = new SimPlayer();
+    let up = 0;
+    let down = 0;
+    p.step({ jump: true });
+    for (let i = 0; i < 120 && !(p.state === 'idle' && i > 2); i++) {
+      if (p.vy < 0) up++;
+      else if (!p.onGround) down++;
+      p.step({ jump: true });
+    }
+    expect(down).toBeLessThan(up);
+  });
+
+  it('coyote time: jump still works shortly after walking off a ledge', () => {
+    const p = new SimPlayer();
+    p.ledgeX = 5;
+    p.vx = t.runSpeed;
+    while (p.x <= p.ledgeX) p.step({ moveX: 1 });
+    p.run(framesFor(t.coyoteMs) - 2, { moveX: 1 });
+    expect(p.state).toBe('fall');
+    p.step({ moveX: 1, jump: true });
+    expect(p.state).toBe('jump');
+  });
+
+  it('coyote time expires', () => {
+    const p = new SimPlayer();
+    p.ledgeX = 5;
+    p.vx = t.runSpeed;
+    while (p.x <= p.ledgeX) p.step({ moveX: 1 });
+    p.run(framesFor(t.coyoteMs) + 2, { moveX: 1 });
+    p.step({ moveX: 1, jump: true });
+    expect(p.state).toBe('fall');
+  });
+
+  it('jump buffer: pressing jump just before landing jumps on landing', () => {
+    const p = new SimPlayer();
+    p.placeInAir(4);
+    p.fsm.transition('fall');
+    p.step({ jump: true }); // pressed while still airborne
+    p.run(framesFor(t.jumpBufferMs) - 2, { jump: true });
+    expect(p.state).toBe('jump');
+  });
+
+  it('a jump pressed too early is forgotten', () => {
+    const p = new SimPlayer();
+    p.placeInAir(60);
+    p.fsm.transition('fall');
+    p.step({ jump: true });
+    p.run(120, { jump: false });
+    expect(['idle', 'run']).toContain(p.state);
+  });
+
+  it('long falls cause a hard landing that locks movement, short ones do not', () => {
+    const high = new SimPlayer();
+    high.placeInAir(t.hardLandingMinFall + 20);
+    high.fsm.transition('fall');
+    high.run(120);
+    // finished by now; check via a fresh run that it passed through hardLand
+    const h = new SimPlayer();
+    h.placeInAir(t.hardLandingMinFall + 20);
+    h.fsm.transition('fall');
+    let sawHard = false;
+    for (let i = 0; i < 120; i++) {
+      h.step({ moveX: 1 });
+      if (h.state === 'hardLand') {
+        sawHard = true;
+        expect(h.vx).toBe(0);
+      }
+    }
+    expect(sawHard).toBe(true);
+    expect(high.state).toBe('idle');
+
+    const low = new SimPlayer();
+    low.placeInAir(t.hardLandingMinFall - 40);
+    low.fsm.transition('fall');
+    let sawHardLow = false;
+    for (let i = 0; i < 120; i++) {
+      low.step();
+      if (low.state === 'hardLand') sawHardLow = true;
+    }
+    expect(sawHardLow).toBe(false);
+  });
+
+  it('dodge: fast, invulnerable for part of it, then cooldown', () => {
+    const p = new SimPlayer();
+    p.run(2);
+    p.step({ dodge: true });
+    expect(p.state).toBe('dodge');
+    expect(p.vx).toBe(t.dodgeSpeed);
+    expect(p.timers.invulnerable).toBeGreaterThan(0);
+    p.run(framesFor(t.dodgeInvulnerableMs) + 1);
+    expect(p.timers.invulnerable).toBe(0);
+    expect(p.state).toBe('dodge');
+    p.run(framesFor(t.dodgeDurationMs - t.dodgeInvulnerableMs) + 1);
+    // Leaves the dodge carrying run speed, then decelerates (run -> idle).
+    expect(p.state).not.toBe('dodge');
+    expect(Math.abs(p.vx)).toBeLessThanOrEqual(t.runSpeed);
+    expect(p.timers.dodgeCooldown).toBeGreaterThan(0);
+    p.step({ dodge: true });
+    expect(p.state).not.toBe('dodge');
+    p.run(framesFor(t.dodgeCooldownMs) + 1);
+    p.step({ dodge: true });
+    expect(p.state).toBe('dodge');
+  });
+
+  it('dodge goes the way the player faces, and is ground-only', () => {
+    const p = new SimPlayer();
+    p.run(5, { moveX: -1 });
+    p.step({ moveX: -1, dodge: true });
+    expect(p.vx).toBe(-t.dodgeSpeed);
+
+    const air = new SimPlayer();
+    air.run(5, { jump: true });
+    air.step({ jump: true, dodge: true });
+    expect(air.state).not.toBe('dodge');
   });
 });

@@ -1,8 +1,27 @@
 {
-  "_note": "Placeholder tuning for Milestone 1. Not taken from the reference game; adjust after phone playtests.",
+  "_note": "Milestone 2 tuning. Units: px, px/s, px/s^2, ms. Values are design choices informed by docs/feel-spec.md (no exact values exist publicly for the reference game). Adjust freely.",
   "width": 14,
   "height": 30,
-  "runSpeed": 110,
-  "jumpVelocity": 330,
-  "maxFallSpeed": 420
+
+  "runSpeed": 120,
+  "groundAccel": 1200,
+  "groundDecel": 1600,
+  "airAccel": 800,
+  "airDecel": 400,
+
+  "jumpVelocity": 340,
+  "risingGravity": 900,
+  "fallingGravity": 1400,
+  "jumpCutMultiplier": 0.4,
+  "maxFallSpeed": 450,
+  "coyoteMs": 100,
+  "jumpBufferMs": 110,
+
+  "hardLandingMinFall": 160,
+  "hardLandingLockMs": 350,
+
+  "dodgeSpeed": 240,
+  "dodgeDurationMs": 380,
+  "dodgeInvulnerableMs": 260,
+  "dodgeCooldownMs": 300
 }

@@ -10,8 +10,11 @@ import { TouchControls } from '../../ui/TouchControls';
 import type { TouchLayout } from '../../ui/touchLayout';
 import controls from '../../data/controls.json';
 import testRoom from '../../data/testRoom.json';
+import physics from '../../data/physics.json';
 
-/** Milestone 1 test room: a floor, a few ledges, and the placeholder player. */
+const MAX_FRAME_MS = 50;
+
+/** Test room: a floor, a few ledges, and the placeholder player. */
 export class PlayScene extends Phaser.Scene {
   private player!: Player;
   private readonly actions = new ActionState();
@@ -34,12 +37,12 @@ export class PlayScene extends Phaser.Scene {
       solids.add(this.add.rectangle(r.x + r.w / 2, r.y + r.h / 2, r.w, r.h, COLORS.floor));
     }
 
-    this.player = new Player(this, testRoom.spawn.x, testRoom.spawn.y, this.actions);
+    this.player = new Player(this, testRoom.spawn.x, testRoom.spawn.y, this.actions, physics.gravityY);
     this.physics.add.collider(this.player.sprite, solids);
     this.cameras.main.startFollow(this.player.sprite, true);
     this.cameras.main.setFollowOffset(0, GAME_HEIGHT * 0.1);
 
-    this.keyboard = this.input.keyboard ? new KeyboardSource(this.input.keyboard) : null;
+    this.keyboard = this.input.keyboard ? new KeyboardSource(this.input.keyboard, () => this.game.loop.time) : null;
     this.gamepad = new GamepadSource(this.input.gamepad);
     this.touch = new TouchControls(this, controls as TouchLayout);
     this.debug = new DebugOverlay(this, controls.debugToggle);
@@ -56,9 +59,11 @@ export class PlayScene extends Phaser.Scene {
     if (this.keyboard) frames.push(this.keyboard.read());
     this.actions.update(mergeFrames(frames));
 
-    this.player.update(deltaMs);
+    // Clamp long frames (tab switches, hitches) so timers and states don't jump.
+    this.player.update(Math.min(deltaMs, MAX_FRAME_MS));
     this.debug.update({
-      state: this.player.state,
+      state: `${this.player.state}${this.player.invulnerable ? ' INV' : ''}`,
+      vel: `${this.player.vx.toFixed(0)},${this.player.vy.toFixed(0)}`,
       x: this.player.sprite.x,
       y: this.player.sprite.y,
       input: `${this.actions.moveX.toFixed(2)} ${this.actions.heldSummary()}`,

@@ -1,4 +1,5 @@
 {
+  "_note": "World gravity applies to everything; the player adds its own rising/falling gravity on top (src/data/player.json).",
   "gravityY": 900,
   "stepsPerSecond": 60
 }
