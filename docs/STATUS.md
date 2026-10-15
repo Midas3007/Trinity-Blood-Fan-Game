@@ -13,8 +13,10 @@ Last updated: 2026-10-15
   - All numbers in `src/data/enemies.json`.
 - Verified here: type-check, build, **66/66 unit tests** (pool reuse, enemy data validation, vision, ledge detection, every behaviour transition, cooldown, give-up, a 2-minute randomised "never stuck" run, and the combat system with fakes). Headless browser: no errors; the thrall noticed the player, chased, wound up (amber), hit the player (100 → 85 HP with knockback and invulnerability), died to three combos, and respawned after about 4 s.
 
+- **Automated playtest of the live build** (simulated touch on a phone-sized screen): see `docs/playtest-2026-10-15.md`. Everything measured matched the data except the hit freeze, which was not taking effect — **fixed** (physics now pauses the moment a hit lands). Added a read-only `?test` hook for these playtests.
+
 ## In progress
-- Waiting for the owner's phone test of Milestones 2–4.
+- Waiting for the owner's phone test of Milestones 2–4 (feel and comfort can't be judged here).
 
 ## Blockers
 - None.

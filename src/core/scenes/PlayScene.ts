@@ -107,6 +107,8 @@ export class PlayScene extends Phaser.Scene {
   private wireFeedback(): void {
     this.bus.on('combat:hit', ({ x, y, hit }) => {
       this.hitStop.trigger(hit.hitstopMs);
+      // Pause now: physics steps before the next scene update, so waiting would let one frame of knockback through.
+      if (this.hitStop.active) this.physics.world.pause();
       if (effects.screenShake && hit.shakeMs > 0) this.cameras.main.shake(hit.shakeMs, hit.shakeIntensity);
       if (effects.sparks) this.sparks.burst(x, y, effects.sparksPerHit, Math.sign(hit.knockbackX));
     });
