@@ -120,6 +120,7 @@ Cover, as evidence allows: movement (acceleration, jump, fall, ground detection,
 - Validate every asset's dimensions, format and transparency before integrating. Use colored placeholder rectangles and simple shapes until real art exists. Placeholders must be original.
 - Define the art direction (palette, resolution, proportions) in `docs/creative-direction.md` before generating large amounts of art. Pixel art conventions: pick one base resolution and one sprite scale, never mix pixel scales, never rotate or non-integer-scale pixel sprites.
 - Audio: original or properly licensed only. Record sources in the asset manifest. No ripped anime or game audio.
+- **Sprite pipeline:** follow `docs/sprite-pipeline.md` (AI source art → `tools/spritegen` pixel conversion → sheets + manifests). Never name the franchise or attach official art in generation prompts.
 
 ---
 

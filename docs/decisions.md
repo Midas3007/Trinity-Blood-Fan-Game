@@ -69,3 +69,15 @@
 | Stick/keys down past 60 % = crouch; crouch attack is a separate data attack (`crouch`) | Owner request; matches the reference's crouch and crouch attack | — |
 | Crawling only when a ceiling prevents standing | Players can never get stuck under a low gap after a slide; normal crouch stays planted | Always allow crawling |
 | Posture change resizes the real body (not scale), re-syncs it, and resets its previous position | Scaling/resizing let Arcade drag the body 15 px into the floor (found in the browser playtest) | — |
+
+## 2026-10-15 — Sprite pipeline adopted (tailored from the owner's generic spec)
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Keep approved 480×270 / Abel ≈40 px / 64×64 cells; scale the spec's other sizes ×0.75 | Creative direction already approved; integer scales to 1080p/4K | Spec's 640×360 / 60 px / 96×96 |
+| Gameplay timing stays authoritative in `attacks.json`/`enemies.json`; sprite manifests carry frames/events; a test enforces they agree | Combat data is already tested; avoids two sources of truth drifting | Move combat timing into manifests |
+| Python tool using only installed libs (Pillow, numpy, PyYAML, click; unittest) | No new dependencies (CLAUDE.md Part 2) | typer, scikit-image, pytest |
+| Higgsfield models: Nano Banana Pro (design/poses), Nano Banana 2.1 (seeded re-rolls), FLUX 3 (multi-ref), AutoSprite (experiment) | Owner's connector; spec's preferred model is available there | Gemini/ChatGPT directly |
+| Prompts never name the franchise or attach official art | Keeps designs original (CLAUDE.md Part 6) | — |
+| No dynamic lighting / normal maps | Phone performance; lighting painted via palette + additive glow sprites | Phaser Light2D |
+| Pending owner: Requiem 48 palette, 96×96 Crusnik cell, build tools now vs M6, credits, GitHub Actions | Changes to approved direction or cost | — |

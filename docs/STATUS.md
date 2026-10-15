@@ -22,6 +22,8 @@ Last updated: 2026-10-15
   - Test room: a low hanging beam near the start that you can only get past by sliding.
   - Verified: 72/72 unit tests; browser playtest with simulated touch (see `docs/playtest-2026-10-15.md`). Fixed a bug where crouching dropped the player through the floor.
 
+- **Sprite pipeline spec tailored to the project:** `docs/sprite-pipeline.md` (original kept in `docs/references/sprite-pipeline-spec-original.md`). `CLAUDE.md` Part 6 now points to it. Five owner decisions listed in its §10.
+
 ## In progress
 - Waiting for the owner's phone test of Milestones 2–4 (feel and comfort can't be judged here).
 
@@ -48,5 +50,6 @@ Open https://trinity-blood-fan-game.vercel.app (reopen the page/app to get the u
 9. Tell me in plain words: is the wind-up too long or too short? Is it too fast or too slow when chasing? Too much health?
 
 ## Next step
+- Owner: answer the 5 sprite-pipeline decisions (`docs/sprite-pipeline.md` §10).
 - Owner phone test → tune `src/data/enemies.json`, `attacks.json`, `player.json`.
 - Then Milestone 5: level slice — connected rooms from Tiled, room transitions that keep state, a hazard, checkpoints (altars that refill health and respawn enemies), one simple puzzle, and a room-graph test.
