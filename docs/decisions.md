@@ -147,3 +147,10 @@
 |---|---|---|
 | Death Hunter = the first Methuselah enemy (`drainable: true`), built on the melee-walker states with its own data | Covers the owner's Death Hunters and gives the blood drain a target without new behaviour code | Separate Methuselah noble first |
 | Vitest caches transformed test files by content: after adding sprite sheets, the `import.meta.glob` manifest test may need a touch of the test file locally | Found while adding the hunter; CI starts clean so it is unaffected | — |
+
+## 2026-10-15 — PWA update checks
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Call `registration.update()` on `visibilitychange` (visible) and every 60 s; autoUpdate then reloads | Owner's installed app kept serving an old build: browsers only look for a new service worker on navigation | Prompting the user to reload |
+| Show the build commit id on the title screen | Lets the owner confirm the phone runs the latest deploy | — |

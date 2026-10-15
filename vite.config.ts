@@ -1,7 +1,14 @@
 import { defineConfig } from 'vitest/config';
 import { VitePWA } from 'vite-plugin-pwa';
 
+// Node's process (no @types/node in this project; only env is read).
+declare const process: { env: Record<string, string | undefined> };
+
+// Short commit id shown on the title screen so the owner can see which deploy is running (Vercel sets the env var).
+const BUILD_ID = (process.env.VERCEL_GIT_COMMIT_SHA ?? 'dev').slice(0, 7);
+
 export default defineConfig({
+  define: { __BUILD_ID__: JSON.stringify(BUILD_ID) },
   build: {
     target: 'es2022',
     // Phaser alone is ~1.2 MB minified; keep it in its own cacheable chunk.

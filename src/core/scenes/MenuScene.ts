@@ -46,6 +46,10 @@ export class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5, 1);
 
+    this.add
+      .text(GAME_WIDTH - 4, 4, `build ${__BUILD_ID__}`, { fontFamily: 'monospace', fontSize: '8px', color: COLORS.text, ...stroke })
+      .setOrigin(1, 0);
+
     const start = (): void => {
       // Fullscreen needs a user gesture; ignore failures (e.g. iOS Safari does not support it).
       if (!this.scale.isFullscreen && this.sys.game.device.fullscreen.available) {

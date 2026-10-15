@@ -53,6 +53,8 @@ Last updated: 2026-10-15
 - **Death Hunter enemy** (reanimated Methuselah, first drainable enemy): masked, hooded, axe. Fast chaser (105 px/s), 70 HP, heavy telegraphed axe chop (amber wind-up, 25 damage), staggers at 40% health for the revolver finisher (and later the blood drain). Placed in the test room past the thrall (x 740). Same behaviour code as the thrall, all values in `enemies.json`; the puppet string is now per enemy (`puppetString`).
 - Verified: 99/99 tests (incl. chop art timing vs data), 24 sheets valid, build passes; headless browser: hunter chased and chopped with the right animations, no errors.
 
+- **Stale-app fix:** the installed app now checks for a new deploy whenever it comes back to the foreground and every minute (it used to only check when fully restarted). The title screen shows `build xxxxxxx` (the commit id) top-right so you can see which version is running.
+
 ## In progress
 - Nothing blocked.
 - Rest of the cast (next credit rounds, see `docs/sprite-pipeline.md`): Crusnik Abel, thrall, Methuselah, ghoul, fairy, Iron Choir, Marchesa, Dietrich, backgrounds.
