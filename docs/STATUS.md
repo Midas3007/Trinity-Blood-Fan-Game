@@ -13,6 +13,13 @@ Last updated: 2026-10-15
 | 6 | Art integration | in progress: Abel full set (incl. walk, climb, pray, drink), thrall, Death Hunter, title, HUD portrait, shaded tileset, altar + dove, cathedral front, painted house fronts/interiors/props, underground walls; left: NPCs, VFX, more enemies, cathedral interior |
 | 7 | Progression | in progress: holy-water flasks ✅, map ✅, altars/checkpoints ✅, pause ✅, save/load ✅, Crusnik form + leap gate + chain lash ✅, parry ✅, dialogue box ✅, **first boss: the Marchesa ✅**; left: boss rematch polish, more dialogue/cutscenes |
 
+| 8 | Mini bosses from the series (owner, 2026-10-15) | planned: 3 mini bosses (plan below), each with a cutscene tied to the plot and a permanent reward (strength, health, healing, blood); Abel's **first Crusnik transformation** happens in one of these fights; victory cards in **Latin** |
+| 9 | Creatures and villains in the maps | planned: **fairies** (pale winged, ultrasonic scream), bats, bone-rats, Iron Choir marionette soldiers, Inquisition hunters, puppeted Methuselah |
+| 10 | Cutscenes and story | planned: code-animated manga-panel cutscenes — opening, one per mini boss, the Marchesa, the final battle (Dietrich / Gyula Kádár), and a **post-credits teaser for the next arc**; original dialogue |
+| 11 | Audio | planned: **voices** for cutscene lines, **copyright-free gothic music** (per region, boss themes), SFX; audio unlock on first touch. Blocked: the sandbox network denies free-music sites (see Blockers) |
+| 12 | Region 2 + final battle | planned: the cathedral and the count's fortress, Dietrich's Grand Marionette, Gyula Kádár and the Star of Sorrow, the 80% Crusnik moment, ending |
+| 13 | Full recorded playthrough | planned (owner): a bot plays the finished game start to end and the run is recorded as a video |
+
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
 ## Done (latest)
@@ -58,7 +65,7 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 - the Crusnik form + leap gate, then the Marchesa boss.
 
 ## Blockers
-- None. Higgsfield: about 56 credits left.
+- **Music downloads blocked:** the sandbox's network policy denies opengameart.org, incompetech.com, freepd.com, archive.org, pixabay.com and freesound.org. To allow them: in the session's cloud environment menu (title bar) → Edit → Network access → add those domains under Allowed domains (keep "Allow package managers" ticked). Steps: https://code.claude.com/docs/en/cloud-environments#network-access. Until then the audio system is built and waits for the tracks. Higgsfield: about 44 credits left.
 
 ## Owner must test (on phone) — PARRY and the Marchesa
 1. Find PARRY (left of JUMP). Near a thrall, tap it just as the amber claw comes: steel flash, it reels with the red diamond → ATK for the revolver finisher.
