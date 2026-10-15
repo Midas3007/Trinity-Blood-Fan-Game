@@ -1,17 +1,69 @@
 {
   "_note": "Readable lore found in rooms (marker type 'lore'). Original text written for this fan game, following the Istvan arc's setting. Facts marked (verify) in docs/lore/owner-storyline.md apply here too.",
   "entries": {
-    "ax_orders": { "title": "Sealed dispatch", "text": "To Father Abel Nightroad, Department of Holy Affairs. Istvan has been free of its Methuselah lord for barely a season, yet its people vanish by night into the old water tunnels. Go below. Learn who is taking them, and why. Speak of this to no one, not even our friends in the resistance, until you know whose hand moves them. — C." },
-    "hall_plaque": { "title": "Corroded plaque", "text": "BY DECREE OF THE COUNT: these halls carry the city's water and the city's dead. Any human found below the third bell answers to the night. The plaque has been scratched with a cross, many times, by many hands." },
-    "worshipper_note": { "title": "Crumpled note", "text": "They played music in the square again. Mother went to listen and did not come home. A gentle man with a violin case said the church below would keep us safe from the soldiers. He smiled so kindly. I am going down to find her." },
-    "hunter_warning": { "title": "Scratched into the wall", "text": "NOT MEN. Grey cloaks, red glass eyes, axes. We cut one in half and it stood up again. They are the count's old dead, wound up like clocks. Run, and do not let it see you run." },
-    "resistance_chalk": { "title": "Resistance chalk mark", "text": "A rose inside a circle: the sign of Istvan's resistance. Beneath it, a list of safe houses, most of them crossed out. The last line reads: 'Sister E. — the cathedral bell tower. Trust her.'" },
-    "ossuary_epitaph": { "title": "Ossuary epitaph", "text": "Here lie those who fell when the moon's children came down upon the city. Nine hundred years since the great war, and still we bury our dead beneath the ones who killed them." },
-    "star_graffiti": { "title": "Fresh graffiti", "text": "WHEN THE STAR OF SORROW RISES, ISTVAN BURNS. Painted in red over an older prayer. The paint is still wet." },
-    "esther_prayer": { "title": "A prayer, folded small", "text": "Lord, forgive me the rifle hidden under the altar cloth. Forgive me for wanting them to suffer. Keep my brothers in the resistance alive one more night, and if You cannot, let it be me instead. — E." },
-    "music_score": { "title": "Sheet music", "text": "A violin score, beautifully copied. Thin red lines have been drawn from every note to the edge of the page, like strings. In the corner, a single initial: D." },
-    "marchesa_portrait": { "title": "Torn portrait", "text": "A noblewoman in mourning silk, painted with great care. Someone has cut the canvas at her wrists, her throat and her ankles, and threaded red cord through each cut." },
-    "crusnik_legend": { "title": "Forbidden page", "text": "An old page torn from a Vatican index of heresies: '...and there are said to be beings that hunger not for the blood of men, but for the blood of those who drink it. The ancients gave them a name we will not write here.'" },
-    "cathedral_sealed": { "title": "Iron door", "text": "The way up to the cathedral. The door is chained from the other side, and the chains are humming, as if something on the far side is pulling them tight." }
+    "ax_orders": {
+      "title": "Sealed dispatch",
+      "text": "To Father Abel Nightroad, Department of Holy Affairs. Istvan has been free of its Methuselah lord for barely a season, yet its people vanish by night into the old water tunnels. Go below. Learn who is taking them, and why. Speak of this to no one, not even our friends in the resistance, until you know whose hand moves them. — C."
+    },
+    "hall_plaque": {
+      "title": "Corroded plaque",
+      "text": "BY DECREE OF THE COUNT: these halls carry the city's water and the city's dead. Any human found below the third bell answers to the night. The plaque has been scratched with a cross, many times, by many hands."
+    },
+    "worshipper_note": {
+      "title": "Crumpled note",
+      "text": "They played music in the square again. Mother went to listen and did not come home. A gentle man with a violin case said the church below would keep us safe from the soldiers. He smiled so kindly. I am going down to find her."
+    },
+    "hunter_warning": {
+      "title": "Scratched into the wall",
+      "text": "NOT MEN. Grey cloaks, red glass eyes, axes. We cut one in half and it stood up again. They are the count's old dead, wound up like clocks. Run, and do not let it see you run."
+    },
+    "resistance_chalk": {
+      "title": "Resistance chalk mark",
+      "text": "A rose inside a circle: the sign of Istvan's resistance. Beneath it, a list of safe houses, most of them crossed out. The last line reads: 'Sister E. — the cathedral bell tower. Trust her.'"
+    },
+    "ossuary_epitaph": {
+      "title": "Ossuary epitaph",
+      "text": "Here lie those who fell when the moon's children came down upon the city. Nine hundred years since the great war, and still we bury our dead beneath the ones who killed them."
+    },
+    "star_graffiti": {
+      "title": "Fresh graffiti",
+      "text": "WHEN THE STAR OF SORROW RISES, ISTVAN BURNS. Painted in red over an older prayer. The paint is still wet."
+    },
+    "esther_prayer": {
+      "title": "A prayer, folded small",
+      "text": "Lord, forgive me the rifle hidden under the altar cloth. Forgive me for wanting them to suffer. Keep my brothers in the resistance alive one more night, and if You cannot, let it be me instead. — E."
+    },
+    "music_score": {
+      "title": "Sheet music",
+      "text": "A violin score, beautifully copied. Thin red lines have been drawn from every note to the edge of the page, like strings. In the corner, a single initial: D."
+    },
+    "marchesa_portrait": {
+      "title": "Torn portrait",
+      "text": "A noblewoman in mourning silk, painted with great care. Someone has cut the canvas at her wrists, her throat and her ankles, and threaded red cord through each cut."
+    },
+    "crusnik_legend": {
+      "title": "Forbidden page",
+      "text": "An old page torn from a Vatican index of heresies: '...and there are said to be beings that hunger not for the blood of men, but for the blood of those who drink it. The ancients gave them a name we will not write here.'"
+    },
+    "cathedral_sealed": {
+      "title": "Iron door",
+      "text": "The way up to the cathedral. The door is chained from the other side, and the chains are humming, as if something on the far side is pulling them tight."
+    },
+    "well_rope": {
+      "title": "A frayed rope",
+      "text": "Tied to the well's iron grate from below, cut clean through. Someone wanted the way down open, and then made sure no one could climb back up."
+    },
+    "drowned_ledger": {
+      "title": "Waterlogged ledger",
+      "text": "Names, dates, and beside each a sum in old silver: the price paid for every citizen sent below. The last pages are in a different hand, neat and musical, signed only with a looping D."
+    },
+    "ballroom_invitation": {
+      "title": "Black-edged invitation",
+      "text": "The Marchesa requests the honour of your presence at a dance beneath the city. Dress: mourning. Music will be provided. You will not be permitted to leave before the last waltz."
+    },
+    "cellar_crest": {
+      "title": "The count's crest",
+      "text": "A wolf crowned with a crescent moon, chiselled from the cellar door and thrown in the wine. Beyond, a passage climbs toward the castle on the hill."
+    }
   }
 }

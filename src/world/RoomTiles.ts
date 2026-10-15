@@ -41,6 +41,8 @@ export class RoomTiles {
       const img = scene.add.image(im.x, im.y, im.key).setOrigin(0, 1);
       if (im.layer === 'interior') {
         img.setDepth(DEPTH.back + 0.5);
+      } else if (im.layer === 'prop') {
+        img.setDepth(DEPTH.terrain - 1); // behind the walkable stone, in front of walls
       } else {
         // In front of the street, behind the player (who walks past it or on its roof); fades with its interior.
         img.setDepth(DEPTH_FACADE_IMAGE);

@@ -58,7 +58,7 @@ export interface RoomStart {
   entry?: string;
   checkpoint?: string;
   /** Crossing from a neighbouring room: world position (body centre) and velocity to keep. */
-  world?: { x: number; y: number; vx: number; vy: number; facing: 1 | -1 };
+  world?: { x: number; y: number; vx: number; vy: number; facing: 1 | -1; climbing?: boolean };
 }
 
 /** How far inside the new room to place the player after crossing an edge (px). */
@@ -121,7 +121,9 @@ export class PlayScene extends Phaser.Scene {
     if (w) {
       // Same world position as when we left the last room, nudged inside this one; feet = centre + half height.
       const x = Phaser.Math.Clamp(w.x - r.originX, EDGE_INSET, r.width - EDGE_INSET);
-      const y = Phaser.Math.Clamp(w.y - r.originY, EDGE_INSET, r.height - EDGE_INSET) + PLAYER_HALF_HEIGHT;
+      // Feet stay inside the room too, so climbing up through the floor edge lands on this room's ladder.
+      const centre = Phaser.Math.Clamp(w.y - r.originY, EDGE_INSET, r.height - EDGE_INSET);
+      const y = Math.min(centre + PLAYER_HALF_HEIGHT, r.height - 1);
       return { x, y, facing: w.facing, vx: w.vx, vy: w.vy };
     }
     const cp = this.start.checkpoint ? r.checkpoints.find((c) => c.id === this.start.checkpoint) : undefined;
@@ -130,7 +132,7 @@ export class PlayScene extends Phaser.Scene {
     if (named) return named;
     // No entry marker (rooms you normally enter through an edge): stand on the first ground in the middle.
     const x = r.width / 2;
-    const ground = r.solids.concat(r.oneways).filter((g) => x >= g.x && x <= g.x + g.w).sort((a, b) => a.y - b.y)[0];
+    const ground = r.solids.concat(r.oneways).filter((g) => g.y > 0 && x >= g.x && x <= g.x + g.w).sort((a, b) => a.y - b.y)[0];
     return { x, y: ground ? ground.y : r.height / 2, facing: 1 };
   }
 
@@ -189,6 +191,11 @@ export class PlayScene extends Phaser.Scene {
       landsOnTop(this.player.body, (o as Phaser.GameObjects.Rectangle).body as Phaser.Physics.Arcade.StaticBody, this.player.dropMs > 0 || this.player.state === 'climb'),
     );
     if (at.vx !== undefined) this.player.body.setVelocity(at.vx, at.vy ?? 0);
+    // Climbing up or down a ladder through the room edge: keep climbing in this room.
+    if (this.start.world?.climbing) {
+      this.senseLadders();
+      if (this.player.ladderHere) this.player.forceClimb();
+    }
     this.cameras.main.startFollow(this.player.sprite, true);
     this.cameras.main.setFollowOffset(0, GAME_HEIGHT * 0.1);
 
@@ -205,7 +212,9 @@ export class PlayScene extends Phaser.Scene {
     for (const type of new Set(spawns.map((sp) => sp.type))) {
       this.enemies.preload(type, spawns.filter((sp) => sp.type === type).length + ENEMY_POOL_SPARE);
     }
-    for (const sp of spawns) this.enemies.spawn(sp);
+    // Test mode only: ?test&peaceful spawns no enemies (mechanics playtests).
+    const peaceful = testHookEnabled() && new URLSearchParams(location.search).has('peaceful');
+    if (!peaceful) for (const sp of spawns) this.enemies.spawn(sp);
     this.combatSystem = new CombatSystem(this.bus, this.player);
 
     this.sparks = new SparkPool(this, effects.maxSparks, COLORS.spark, effects.sparkLifeMs, effects.sparkSpeed);
@@ -402,7 +411,7 @@ export class PlayScene extends Phaser.Scene {
     const wy = r.originY + p.y;
     const next = roomAtPixel(allRooms, wx, wy, TILE);
     if (!next || next.id === r.id) return false; // open sky with nothing above: just come back down
-    this.goTo({ room: next.id, world: { x: wx, y: wy, vx: p.vx, vy: p.vy, facing: p.facing } });
+    this.goTo({ room: next.id, world: { x: wx, y: wy, vx: p.vx, vy: p.vy, facing: p.facing, climbing: p.state === 'climb' } });
     return true;
   }
 

@@ -114,7 +114,7 @@ export interface RoomData {
   /** Street level (px): skylines stand on it. */
   horizon: number;
   /** Painted art (house fronts, interiors) at bottom-left x,y; loaded from assets/rooms/<key>.png. */
-  images: { key: string; x: number; y: number; w: number; h: number; layer: 'facade' | 'interior' }[];
+  images: { key: string; x: number; y: number; w: number; h: number; layer: 'facade' | 'interior' | 'prop' }[];
 }
 
 function props(o: { properties?: TiledProperty[] }): Record<string, string | number | boolean> {
@@ -210,7 +210,7 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
         room.labels.push({ x: o.x, y: o.y, text: String(p.text ?? o.name ?? '') });
         break;
       case 'image':
-        room.images.push({ key: String(p.key), x: o.x, y: o.y, w: Number(p.w), h: Number(p.h), layer: p.layer === 'interior' ? 'interior' : 'facade' });
+        room.images.push({ key: String(p.key), x: o.x, y: o.y, w: Number(p.w), h: Number(p.h), layer: p.layer === 'interior' ? 'interior' : p.layer === 'prop' ? 'prop' : 'facade' });
         break;
       case 'decor':
         room.decor.push({ item: String(p.item ?? 'crate'), x: o.x, y: o.y, h: Number(p.h ?? 0) });

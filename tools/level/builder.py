@@ -51,6 +51,38 @@ class Room:
     def platform(self, x0, x1, y, name="plank"):
         self.fill("terrain", x0, y, x1, y + 1, name)
 
+    def carve(self, x0, y0, x1, y1):
+        """Open up space (caves, tunnels, doorways) in solid rock."""
+        self.fill("terrain", x0, y0, x1, y1, None)
+
+    def _kit(self):
+        global KIT
+        if KIT is None:
+            from tools.level import kit as KIT
+        return KIT
+
+    def backwall(self, names, y0, y1, x0=0, x1=None):
+        """Painted back wall (repeating panels) behind rows y0..y1-1."""
+        x1 = self.W if x1 is None else x1
+        # tall walls repeat in bands so the painting keeps its scale
+        bands = max(1, round((y1 - y0) / 13))
+        edges = [y0 + round(i * (y1 - y0) / bands) for i in range(bands + 1)]
+        for i in range(bands):
+            key = f"{self.id}_w{len(self.images)}"
+            names_i = names[i % len(names):] + names[:i % len(names)]
+            self.images.append(self._kit().interior(key, names_i, x0 * T, edges[i + 1] * T, (x1 - x0) * T, (edges[i + 1] - edges[i]) * T))
+
+    def prop(self, name, x, y, h_px):
+        """Painted prop standing with its bottom centre at tile x, on top of row y+1 (hanging props: give the row
+        they hang from and a negative height to hang down)."""
+        key = f"{self.id}_p{len(self.images)}"
+        hang = h_px < 0
+        im = self._kit().prop(key, name, abs(h_px))
+        px = x * T + T // 2 - im["w"] // 2
+        py = (y + 1) * T if not hang else y * T + abs(h_px)
+        im.update({"x": px, "y": py})
+        self.images.append(im)
+
     def ladder(self, x, y0, y1):
         """Ladder in column x from row y0 down to row y1-1 (put it just under the floor it leads up to)."""
         self.fill("terrain", x, y0, x + 1, y1, "ladder")

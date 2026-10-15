@@ -4,3 +4,7 @@ Building kit r1 — 2026-10-15 (Higgsfield nano_banana_pro, 2k, 21:9, no referen
 - ba9982b4-411d-4fc3-8692-fc02bef38f3a interiors_r1: room_poor, room_tavern, room_stair
 Cut with `python3 -E -s -m tools.level.approve_kit <sheet> names` into art/source/approved/kit/ (high-res crops);
 baked per building by tools/level/kit.py into public/assets/rooms/ (palette-locked, light dither).
+
+Underground kit r1 — 2026-10-15 (same model/settings, our own descriptions). 2 credits each, 4 total.
+- 88313916 walls_under_r1: wall_crypt, wall_ossuary, wall_roman, wall_ballroom (back walls, cut into bands per room)
+- 808a0451 props_r1: chandelier, cage, statue_saint, coffin, bones, column

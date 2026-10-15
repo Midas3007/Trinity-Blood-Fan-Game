@@ -98,7 +98,11 @@ def clock_alley():
         r.platform(x0, x0 + 6, y, "balcony")
         r.mark("decor", x0 + 3, y - 7, item="lantern", h=16)
     r.mark("decor", 29, 2, item="chain", h=120)
-    r.mark("lore", 28, GY - 1, lore="hunter_warning")
+    # the old well: a grate in the street over a ladder down to the Hunter's Crypt (opened from below)
+    r.carve(22, GY, 25, r.H)
+    r.ladder(23, GY + 1, r.H); r.put("terrain", 23, GY, "plank")  # plank over the shaft, like a trapdoor
+    r.gate(22, GY, 25, GY + 1, "well_open")
+    r.mark("label", 23, GY - 4, text="an old well, grated shut")
     r.mark("enemy", 30, GY - 1, enemy="thrall")
     r.mark("enemy", 36, GY - 21, enemy="thrall")
     return r
@@ -214,21 +218,24 @@ def sewer_shaft():
     r.wall(0, 0, r.W, r.H)
     r.fill("terrain", 4, 0, 8, 3, None)                     # the grate opening above
     r.fill("terrain", 3, 3, 26, r.H - 2, None)              # the shaft
+    r.carve(0, 10, 3, 15)                                   # west, up high: the Hunter's Crypt
+    r.platform(3, 9, 15)
+    r.carve(26, 27, 30, 32)                                 # east, at the bottom: the Water Tunnels
     for i, y in enumerate(range(r.H - 6, 3, -4)):
         x0 = 6 if i % 2 == 0 else 14
         r.platform(x0, x0 + 8, y)
     r.platform(3, 9, 3)
-    r.fill("terrain", 12, r.H - 3, 20, r.H - 2, "spikes")
-    r.mark("lore", 22, r.H - 3, lore="ossuary_epitaph")
-    r.mark("label", 15, r.H - 7, text="(the undercity continues in the next build)")
+    r.fill("terrain", 6, r.H - 3, 11, r.H - 2, "spikes")
+    r.backwall(["wall_roman"], 3, r.H - 2, 3, 26)
     return r
 
 
 if __name__ == "__main__":
-    rooms = [station(), old_town(), clock_alley(), square(), cathedral_square(), hill_street(), bridge(), sewer_shaft()]
+    from tools.level import undercity
+    rooms = [station(), old_town(), clock_alley(), square(), cathedral_square(), hill_street(), bridge(), sewer_shaft()] + undercity.rooms()
     for r in rooms:
         r.horizon = street_row(r)
-        if r.sky and r.id != "danube_bridge":
+        if r.sky and r.id not in ("danube_bridge",):
             r.backstreet(1, r.W - 1, r.horizon)
     write(rooms, "src/data/rooms")
     raise SystemExit

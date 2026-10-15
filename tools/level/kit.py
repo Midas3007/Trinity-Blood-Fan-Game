@@ -68,3 +68,11 @@ def interior(key, src_names, x_px, bottom_px, w_px, h_px):
         x += sw_px
     _save(key, canvas)
     return {"key": key, "x": x_px, "y": bottom_px, "w": w_px, "h": h_px, "layer": "interior"}
+
+
+def prop(key, src_name, h_px):
+    """A painted prop scaled to a height, proportions kept."""
+    sw, sh = Image.open(SRC / f"{src_name}.png").size
+    w_px = max(1, round(h_px * sw / sh))
+    _save(key, _bake(src_name, w_px, h_px, cover=False))
+    return {"key": key, "x": 0, "y": 0, "w": w_px, "h": h_px, "layer": "prop"}

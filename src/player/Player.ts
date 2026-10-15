@@ -310,7 +310,15 @@ export class Player implements PlayerContext, PlayerCombatant {
     // Coming down from the top floor: step just below it so the ladder takes over.
     if (this.feetY <= this.ladderTopY() + 2) this.sprite.y += LADDER_STEP_DOWN;
     this.body.updateFromGameObject();
+    // Same as resize: without this Arcade drags the shape back by the snap and it catches on narrow shafts.
+    this.body.prev.copy(this.body.position);
+    this.body.prevFrame.copy(this.body.position);
     this.vy = 0;
+  }
+
+  /** Start climbing the ladder in reach (after crossing a room edge mid-climb). */
+  forceClimb(): void {
+    this.fsm.transition('climb');
   }
 
   finishClimbAtTop(): void {

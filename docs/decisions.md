@@ -194,3 +194,13 @@
 | Ladders: stick up climbs (instead of jumping) when on a ladder; JUMP lets go | Touch-friendly, matches the existing stick-up-to-jump control | Separate climb button |
 | Stairs: automatic one-tile step-up while walking | Arcade physics has no slopes | Slopes |
 | Time of day (night/dusk/day) as a GameState value the story changes | Owner request | Real-time cycle |
+
+## 2026-10-15 — The Undercity
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Undercity rooms carved out of solid rock (`rock()` + `carve`), doors only where rooms join | Underground reads as enclosed; no accidental open edges into neighbours | Open-sided rooms like the town |
+| Painted back walls cut into ~13-row bands, props scaled by height | Keeps the cathedral-level detail without stretching art | One stretched image per room |
+| Ladders through floors always have a plank (or ledge) on the floor row above the ladder | One rule for "ladder top" makes climbing out reliable | Special cases per room |
+| Climbing snaps to the ladder centre and resets Arcade's previous position | Otherwise the snap was undone next step and the body snagged in 1-tile shafts | Wider shafts everywhere |
+| Crossing a room edge keeps the feet inside the new room | Climbing up through a floor edge must land on the ladder below the new room's floor | Spawn offset per edge |
