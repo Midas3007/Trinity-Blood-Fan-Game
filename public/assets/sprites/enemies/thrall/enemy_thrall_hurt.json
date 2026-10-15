@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "hurt": {
+      "durations_ms": [
+        260
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 1,
+  "entity": "enemy_thrall",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "enemy_thrall_hurt.png",
+  "source_hashes": [
+    "sha256:1cb7662ee8b03d8e8a55dfbe03dbd738b80f0c66ad9f5fe95c410ce5e7f16804"
+  ]
+}

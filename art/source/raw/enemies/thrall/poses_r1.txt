@@ -1,0 +1,5 @@
+Thrall pose sheet r1 — 2026-10-15
+Tool: Higgsfield nano_banana_pro (job reports nano_banana_2), 2k, 21:9, 1 image, no image reference (new original design). Cost: 2 credits.
+Job: 7be2107f-1584-47a6-840e-edb67c155014 -> poses_r1_7be2107f.png
+Design (our words): hypnotised worshipper, gaunt pale grey skin, tattered faded off-white hooded penitent's robe, rope belt, rosary, bare feet, hanging head. Strings drawn in code.
+Approved (--expect 7 --ref-height 985): 0 idle, 1-2 walk, 3-4 claw (wind-up, strike), 5 hurt, 6 collapse (anchor: centre).

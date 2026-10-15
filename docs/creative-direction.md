@@ -58,6 +58,7 @@ Abilities that don't fit and are left out: anything that requires flight across 
 All original designs:
 - **String-bound thralls** (human): worshippers controlled by glowing strings; slow, grab attacks. Cutting the string above them stuns them. Mercy theme: they collapse, not die.
 - **Puppeted Methuselah:** fast and aggressive; blood-drainable.
+- **Death Hunters** (reanimated Methuselah, owner request 2026-10-15): hooded slate-grey cloaks, masked faces with round red lenses and a breathing hose, long broad axes; crouched, feral, very fast leaps and heavy chops. Blood-drainable. Owner's reference screenshots are read-only notes (not committed, never fed to AI).
 - **The Iron Choir:** marionette soldiers in Vatican-style plate armour with hymn-singing voice boxes; shields, halberds, ranged censers.
 - **Catacomb vermin:** bats, bone-rats (small filler enemies).
 - **Inquisition hunters** (human, region 2): you can't kill them — evade or knock out.

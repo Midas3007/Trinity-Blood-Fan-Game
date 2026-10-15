@@ -179,7 +179,7 @@ export class PlayScene extends Phaser.Scene {
         height: p.bodyHeight,
         view: p.view.label,
       },
-      enemies: this.enemies.active.map((e) => ({ type: e.cfg.type, state: e.state, x: e.x, y: e.y, hp: e.health.hp })),
+      enemies: this.enemies.active.map((e) => ({ type: e.cfg.type, state: e.state, view: e.viewLabel, x: e.x, y: e.y, hp: e.health.hp })),
       dummies: this.dummies.map((d) => ({ x: d.x, hp: d.health.hp, alive: d.alive })),
     };
   }

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { animDefs, sheetLoads, textureKey, type SpriteIndex } from '../src/systems/sprites/spriteIndex';
 import { visualFor } from '../src/player/PlayerView';
+import { enemyVisualFor } from '../src/enemies/EnemyView';
 import { playerStates, type PlayerStateKey } from '../src/player/playerStates';
 import player from '../src/data/player.json';
 import index from '../public/assets/sprites/index.json';
@@ -67,5 +68,22 @@ describe('player visuals', () => {
     const roll = animDefs(idx).find((a) => a.key === 'abel_dodge');
     const total = roll!.frames.reduce((t, f) => t + f.duration, 0);
     expect(total).toBe(player.dodgeDurationMs);
+  });
+});
+
+describe('enemy visuals', () => {
+  const anims = new Set(animDefs(idx).map((a) => a.key));
+
+  it('every thrall state shows an animation that exists in the sprite index', () => {
+    for (const s of ['idle', 'patrol', 'alert', 'pursue', 'attack', 'hurt', 'dead'] as const) {
+      const v = enemyVisualFor('thrall', s);
+      expect(v, s).not.toBeNull();
+      expect(anims.has(v!.anim), `${s} -> ${v!.anim}`).toBe(true);
+    }
+  });
+
+  it('chasing plays the walk faster than patrolling; unknown types use the placeholder', () => {
+    expect(enemyVisualFor('thrall', 'pursue')!.timeScale!).toBeGreaterThan(1);
+    expect(enemyVisualFor('nobody', 'idle')).toBeNull();
   });
 });

@@ -109,3 +109,14 @@
 | Low-pose sheet regenerated wide (21:9, 5 poses, spaced) after r1 could not be split | 2 credits cheaper than hand-cleaning overlapping figures | Manual masking |
 | Per-animation `anchor: centre` for lying poses (slide) | Foot-centre anchor is for upright poses | Hand offsets per frame |
 | Player sprite drawn on the scene's POST_UPDATE event | `scene.update` runs before Arcade copies the body position to the game object, so the art trailed by one step (~4 px at roll speed) | Reading `body.center` in update |
+
+## 2026-10-15 — Thrall art, Crusnik design, shared sprite view
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Thrall made in one 7-pose sheet (no separate turnaround) | One image keeps the design consistent and costs 2 credits instead of 4+ | Turnaround first, then poses |
+| Thrall chase reuses the walk at 1.9× speed (`timeScale` in `enemyAnimations.json`) | Chase speed is ~2× walk speed; no extra art | Separate run frames |
+| Wind-up warning stays a code tint (amber) over the art | Keeps the readable telegraph players already learned | Painted glow frames |
+| Crusnik form scaled from head-to-toe height (wings excluded) at 50 px | Owner asked for taller; wings would otherwise shrink the body | Same 40 px as priest |
+| `approve` reads `sprite_height` and `source_dir` from `pipeline.yaml` | It silently used 40 px and the wrong folder for non-Abel entities | CLI flags each time |
+| Death Hunters: owner screenshots are read-only notes; our written description goes in prompts | CLAUDE.md Part 6 | Attaching the screenshots |

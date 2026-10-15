@@ -1,0 +1,5 @@
+Crusnik-form turnaround r1 — 2026-10-15
+Tool: Higgsfield nano_banana_pro (job reports nano_banana_2), 2k, 21:9, 1 image, image reference: priest turnaround r3 d2348a6e (our own output). Cost: 2 credits.
+Job: aef30efd-6d9d-4191-8467-fe5298e8fe10 -> turnaround_r1_aef30efd.png
+Views: side (right), front, back. Approved (--expect 3 --ref-height 1182 = head-to-toe, wings excluded) at sprite_height 50 (owner: "make him taller").
+Owner also asked for "more Gothic looking with..." (message cut off) — redesign pending the rest of that note.

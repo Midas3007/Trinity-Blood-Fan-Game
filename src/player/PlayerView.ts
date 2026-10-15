@@ -1,13 +1,12 @@
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 import mapping from '../data/playerAnimations.json';
+import { SpriteView, type StateVisual } from '../systems/sprites/SpriteView';
 import type { PlayerStateKey } from './playerStates';
 
-export interface StateVisual {
-  anim: string;
-  frame?: number;
-}
+export type { StateVisual };
 
 const states = mapping.states as Record<PlayerStateKey, StateVisual | null>;
+const PLAYER_DEPTH = 10;
 
 /** The visual for a state, or null for "show the placeholder". `{attack}` resolves to the running attack id.
  * Pure; exported for tests. */
@@ -17,56 +16,29 @@ export function visualFor(state: PlayerStateKey, attackId: string | null = null)
   return attackId ? { ...v, anim: v.anim.replace('{attack}', attackId) } : null;
 }
 
-/**
- * Draws the player's sprite at the physics body's feet. The physics body (a plain rectangle) stays the
- * source of truth for collision; this only follows it. Falls back to the placeholder rectangle when a state
- * has no art yet, or when the sprite sheets failed to load.
- */
+/** The player's sprite; falls back to the placeholder rectangle (and its facing mark) when a state has no art. */
 export class PlayerView {
-  private readonly sprite: Phaser.GameObjects.Sprite | null;
-  private current = '';
+  private readonly view: SpriteView;
 
   constructor(
-    private readonly scene: Phaser.Scene,
+    scene: Phaser.Scene,
     private readonly placeholder: Phaser.GameObjects.Rectangle,
     private readonly facingMark: Phaser.GameObjects.Rectangle,
   ) {
-    const first = visualFor('idle');
-    const ready = first !== null && scene.anims.exists(first.anim);
-    this.sprite = ready ? scene.add.sprite(placeholder.x, placeholder.y, '').setOrigin(0.5, 1).setDepth(10) : null;
+    this.view = new SpriteView(scene, visualFor('idle')?.anim ?? null, PLAYER_DEPTH);
   }
 
   get hasArt(): boolean {
-    return this.sprite !== null;
+    return this.view.sprite !== null;
   }
 
-  /** Current animation/frame label, for the debug overlay. */
   get label(): string {
-    return this.sprite?.visible ? this.current : 'placeholder';
+    return this.view.label;
   }
 
   update(state: PlayerStateKey, attackId: string | null, feetX: number, feetY: number, facing: 1 | -1, alpha: number): void {
-    const v = this.sprite ? visualFor(state, attackId) : null;
-    const showArt = this.sprite !== null && v !== null && this.scene.anims.exists(v.anim);
-    this.placeholder.setVisible(!showArt);
-    this.facingMark.setVisible(!showArt);
-    if (!this.sprite) return;
-    this.sprite.setVisible(showArt);
-    if (!showArt || !v) return;
-
-    const label = v.frame === undefined ? v.anim : `${v.anim}#${v.frame}`;
-    if (label !== this.current) {
-      this.current = label;
-      if (v.frame === undefined) {
-        this.sprite.play(v.anim, true);
-      } else {
-        this.sprite.anims.stop();
-        const anim = this.scene.anims.get(v.anim);
-        const f = anim.frames[Math.min(v.frame, anim.frames.length - 1)];
-        if (f) this.sprite.setTexture(f.textureKey, f.textureFrame);
-      }
-    }
-    // Whole-pixel position keeps the pixel art crisp; mirroring (not rotation) for facing.
-    this.sprite.setPosition(Math.round(feetX), Math.round(feetY)).setFlipX(facing < 0).setAlpha(alpha);
+    const shown = this.view.show(visualFor(state, attackId), feetX, feetY, facing, alpha);
+    this.placeholder.setVisible(!shown);
+    this.facingMark.setVisible(!shown);
   }
 }

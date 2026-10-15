@@ -1,0 +1,14 @@
+{
+  "source": "poses_r1_7be2107f.png",
+  "source_hash": "sha256:36559bb8dddecec11d2329a73365d79e1304a7b234bea91f558746922c220e34",
+  "figures": [
+    0
+  ],
+  "standing_px": 985,
+  "factor": 0.243655,
+  "open_px": 0,
+  "expected": 7,
+  "outputs": [
+    "poses_r1_7be2107f_f0.png"
+  ]
+}

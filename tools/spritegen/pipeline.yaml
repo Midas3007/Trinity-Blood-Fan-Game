@@ -46,17 +46,29 @@ entities:
 
   abel_crusnik:
     cell: [96, 96]
-    sprite_height: 42
+    sprite_height: 50
     source_dir: art/source/approved/abel_crusnik/
     output_dir: public/assets/sprites/abel_crusnik/
-    animations: {}
+    gamma: 1.5
+    animations:
+      reference: { loop: false, durations_ms: 1000 }   # side, front, back (design lock; poses come with the Crusnik ability)
 
   enemy_thrall:
     cell: [64, 64]
     sprite_height: 30
     source_dir: art/source/approved/enemies/thrall/
     output_dir: public/assets/sprites/enemies/thrall/
-    animations: {}
+    animations:
+      idle:     { loop: true,  durations_ms: 600 }
+      walk:     { loop: true,  durations_ms: 320 }          # played faster while chasing (src/data/enemyAnimations.json)
+      # Claw: wind-up for startupMs, strike for activeMs, strike held for recoveryMs (thrall_claw in src/data/enemies.json).
+      claw:
+        attack: thrall_claw
+        sequence: [0, 1, 1]
+        durations_ms: [480, 120, 520]
+        events: [{ frame: 1, type: hitbox_on }, { frame: 2, type: hitbox_off }]
+      hurt:     { loop: false, durations_ms: 260 }
+      collapse: { loop: false, durations_ms: 600, anchor: centre }
 
   boss_marchesa:
     cell: [128, 128]

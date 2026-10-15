@@ -371,6 +371,180 @@
       "source_hashes": [
         "sha256:507d3c6ee504170e3394d38b17dc147770e529679cfb5c4fa70446362d1e79a8"
       ]
+    },
+    "abel_crusnik/abel_crusnik_reference.png": {
+      "animations": {
+        "reference": {
+          "durations_ms": [
+            1000,
+            1000,
+            1000
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1,
+            2
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 3,
+      "entity": "abel_crusnik",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
+      "sheet": "abel_crusnik_reference.png",
+      "source_hashes": [
+        "sha256:aaf866460e0d93d4be58b3e9077952e71b36140d38ea642904255dba8540338b",
+        "sha256:6bad783fb728d76a25ef1740a18e72700a104c841bd8351036c2e3848047545e",
+        "sha256:a6b2034b9514cdd4d24044dc22f55d9a4fafa7f7f543b5a70e3e5146d1e1980c"
+      ]
+    },
+    "enemies/thrall/enemy_thrall_claw.png": {
+      "animations": {
+        "claw": {
+          "attack": "thrall_claw",
+          "durations_ms": [
+            480,
+            120,
+            520
+          ],
+          "events": [
+            {
+              "frame": 1,
+              "type": "hitbox_on"
+            },
+            {
+              "frame": 2,
+              "type": "hitbox_off"
+            }
+          ],
+          "frames": [
+            0,
+            1,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 2,
+      "entity": "enemy_thrall",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_thrall_claw.png",
+      "source_hashes": [
+        "sha256:dd94696982e3947c4e868342163f165d3feebabc40b1d699c04eb05538dc698e",
+        "sha256:d420bd80e888be5ec0e6c684b9199d9ec9054d3f46ec0351f4cfe2181c81bae6"
+      ]
+    },
+    "enemies/thrall/enemy_thrall_collapse.png": {
+      "animations": {
+        "collapse": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "enemy_thrall",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_thrall_collapse.png",
+      "source_hashes": [
+        "sha256:6c82c71c935c150cffaf366a5fc273a08b1086a6570c826472563b47adf0e9ef"
+      ]
+    },
+    "enemies/thrall/enemy_thrall_hurt.png": {
+      "animations": {
+        "hurt": {
+          "durations_ms": [
+            260
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "enemy_thrall",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_thrall_hurt.png",
+      "source_hashes": [
+        "sha256:1cb7662ee8b03d8e8a55dfbe03dbd738b80f0c66ad9f5fe95c410ce5e7f16804"
+      ]
+    },
+    "enemies/thrall/enemy_thrall_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "enemy_thrall",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_thrall_idle.png",
+      "source_hashes": [
+        "sha256:4591f9a3ad871b2f8979cb763b4b9beddb7dad1ef2750a46be376750fbf61d40"
+      ]
+    },
+    "enemies/thrall/enemy_thrall_walk.png": {
+      "animations": {
+        "walk": {
+          "durations_ms": [
+            320,
+            320
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 2,
+      "entity": "enemy_thrall",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_thrall_walk.png",
+      "source_hashes": [
+        "sha256:e0e03a617cdd1ceef83a4688fc9edc6e94b40d834080fd3455e779ddc36dbe6b",
+        "sha256:51aca36b5a20b783c950ff30d2e8b5c75762128c7adbc23e3c68df950142e437"
+      ]
     }
   }
 }

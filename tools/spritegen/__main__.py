@@ -62,15 +62,22 @@ def preview(src, out, pal_path, heights, methods, outlines, figure, cell, zoom, 
 @click.option("--animation", required=True)
 @click.option("--figures", default=None, help="Comma-separated figure indexes to keep (default: all).")
 @click.option("--names", default=None, help="Comma-separated output names, one per kept figure.")
-@click.option("--sprite-height", default=40)
+@click.option("--sprite-height", default=None, type=int, help="Default: the entity's sprite_height in pipeline.yaml.")
 @click.option("--ref-height", default=None, type=int, help="Source px of a standing figure (default: tallest on the sheet).")
 @click.option("--open-px", default=0)
 @click.option("--expect", "expected", default=None, type=int, help="Number of figures on the sheet (for figures that nearly touch).")
 def approve_cmd(src, entity, animation, figures, names, sprite_height, ref_height, open_px, expected) -> None:
     """Key, split and shrink an approved raw generation into art/source/approved/<entity>/<animation>/."""
     from .approve import approve
+    from .build import load_config
 
-    out = Path("art/source/approved") / entity / animation
+    # Entity settings come from pipeline.yaml so approved crops match what `build` will read.
+    cfg = load_config(Path("tools/spritegen/pipeline.yaml"))
+    ecfg = cfg["entities"].get(entity)
+    if ecfg is None:
+        raise click.UsageError(f"unknown entity {entity!r}; add it to tools/spritegen/pipeline.yaml first")
+    sprite_height = sprite_height or int(ecfg.get("sprite_height", cfg.get("defaults", {}).get("sprite_height", 40)))
+    out = Path(ecfg["source_dir"]) / animation
     figs = [int(f) for f in figures.split(",")] if figures else None
     for p in approve(src, out, sprite_height, figs, ref_height, open_px, names.split(",") if names else None, expected):
         click.echo(f"wrote {p}")

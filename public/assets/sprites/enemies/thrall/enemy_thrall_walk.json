@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "walk": {
+      "durations_ms": [
+        320,
+        320
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 2,
+  "entity": "enemy_thrall",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "enemy_thrall_walk.png",
+  "source_hashes": [
+    "sha256:e0e03a617cdd1ceef83a4688fc9edc6e94b40d834080fd3455e779ddc36dbe6b",
+    "sha256:51aca36b5a20b783c950ff30d2e8b5c75762128c7adbc23e3c68df950142e437"
+  ]
+}

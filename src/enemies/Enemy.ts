@@ -10,10 +10,13 @@ import effects from '../data/effects.json';
 import type { EnemyConfig } from './enemyConfig';
 import { enemyStates, type EnemyContext, type EnemyStateKey, type EnemyTarget } from './enemyStates';
 import { groundAheadOf } from './sensing';
+import { enemyVisualFor } from './EnemyView';
+import { SpriteView } from '../systems/sprites/SpriteView';
 
 const STRING_LENGTH = 60;
 const ALERT_MARK_OFFSET = 10;
 const BAR_W = 18;
+const ENEMY_DEPTH = 9;
 
 /**
  * One pooled enemy. Created once (hidden), then `spawn`ed and `despawn`ed many times.
@@ -36,6 +39,7 @@ export class Enemy implements EnemyContext, Damageable {
   private readonly string: Phaser.GameObjects.Rectangle;
   private readonly mark: Phaser.GameObjects.Text;
   private readonly bar: Phaser.GameObjects.Rectangle;
+  private readonly view: SpriteView;
 
   constructor(
     scene: Phaser.Scene,
@@ -55,7 +59,16 @@ export class Enemy implements EnemyContext, Damageable {
       .text(0, 0, '!', { fontFamily: 'monospace', fontSize: '10px', color: COLORS.text })
       .setOrigin(0.5, 1);
     this.bar = scene.add.rectangle(0, 0, BAR_W, 2, COLORS.accent).setOrigin(0, 0.5);
+    this.view = new SpriteView(scene, enemyVisualFor(cfg.type, 'idle')?.anim ?? null, ENEMY_DEPTH);
     this.setActive(false);
+    // Draw after Arcade has copied this step's body position onto the game object (see Player).
+    scene.events.on(Phaser.Scenes.Events.POST_UPDATE, this.render, this);
+    scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => scene.events.off(Phaser.Scenes.Events.POST_UPDATE, this.render, this));
+  }
+
+  /** Current animation label (or 'placeholder'), for the test hook. */
+  get viewLabel(): string {
+    return this.view.label;
   }
 
   // --- EnemyContext ---
@@ -142,25 +155,30 @@ export class Enemy implements EnemyContext, Damageable {
     this.attackCooldown = Math.max(0, this.attackCooldown - dtMs);
     this.flashMs = Math.max(0, this.flashMs - dtMs);
     this.fsm.update(dtMs);
-    this.render(dtMs);
+    if (this.state === 'dead') this.dyingMs = Math.max(0, this.dyingMs - dtMs);
   }
 
-  private render(dtMs: number): void {
-    const state = this.state;
+  private render(): void {
+    if (!this.fsm) return;
+    const state = this.fsm.current;
     const telegraph = state === 'attack' && this.combat.phase === 'startup';
     const color = this.flashMs > 0 ? COLORS.flash : telegraph ? this.cfg.telegraphColor : this.cfg.color;
-    this.sprite.setFillStyle(color);
     const top = this.y - this.cfg.height / 2;
+    const feet = this.y + this.cfg.height / 2;
+    // Death: the string is cut and the body fades as it collapses.
+    const fade = state === 'dead' ? this.dyingMs / this.cfg.deathMs : 1;
+    const shown = this.view.show(enemyVisualFor(this.cfg.type, state), this.x, feet, this.facing, fade);
+    if (shown && this.view.sprite) {
+      if (this.flashMs > 0) this.view.sprite.setTintFill(COLORS.flash);
+      else if (telegraph) this.view.sprite.setTint(this.cfg.telegraphColor);
+      else this.view.sprite.clearTint();
+    }
+    this.sprite.setVisible(!shown).setFillStyle(color);
+    if (!shown && state === 'dead') this.sprite.setAlpha(fade).setScale(1, Math.max(0.2, fade));
     this.string.setPosition(this.x, top).setVisible(state !== 'dead');
     this.mark.setPosition(this.x, top - ALERT_MARK_OFFSET).setVisible(state === 'alert');
     this.bar.setPosition(this.x - BAR_W / 2, top - 4).setVisible(state !== 'dead' && this.health.fraction < 1);
     this.bar.width = BAR_W * this.health.fraction;
-    if (state === 'dead') {
-      // Collapse: the body sinks and fades as the string is cut.
-      this.dyingMs = Math.max(0, this.dyingMs - dtMs);
-      const t = this.dyingMs / this.cfg.deathMs;
-      this.sprite.setAlpha(t).setScale(1, Math.max(0.2, t));
-    }
   }
 
   private setActive(on: boolean): void {
@@ -169,5 +187,6 @@ export class Enemy implements EnemyContext, Damageable {
     this.string.setVisible(on);
     this.mark.setVisible(false);
     this.bar.setVisible(false);
+    if (!on) this.view.hide();
   }
 }

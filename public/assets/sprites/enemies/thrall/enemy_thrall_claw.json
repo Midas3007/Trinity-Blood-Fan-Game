@@ -1,0 +1,40 @@
+{
+  "animations": {
+    "claw": {
+      "attack": "thrall_claw",
+      "durations_ms": [
+        480,
+        120,
+        520
+      ],
+      "events": [
+        {
+          "frame": 1,
+          "type": "hitbox_on"
+        },
+        {
+          "frame": 2,
+          "type": "hitbox_off"
+        }
+      ],
+      "frames": [
+        0,
+        1,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 2,
+  "entity": "enemy_thrall",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "enemy_thrall_claw.png",
+  "source_hashes": [
+    "sha256:dd94696982e3947c4e868342163f165d3feebabc40b1d699c04eb05538dc698e",
+    "sha256:d420bd80e888be5ec0e6c684b9199d9ec9054d3f46ec0351f4cfe2181c81bae6"
+  ]
+}

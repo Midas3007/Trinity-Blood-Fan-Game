@@ -199,7 +199,7 @@ Key poses only; in-betweens come from hand-pixelling or interpolation (§7.7). F
 | — | Crusnik lightning, aura | VFX | Pale crackling lightning on activation and wing beats | **code-drawn** (procedural bolts), no credits | 0 |
 | 3 | `enemy_thrall` | 64 | String-bound worshipper (Region 1 common enemy) | turnaround + ~15 poses | ~6 |
 | 4 | `enemy_methuselah` | 64 | Pale, elegant vampire noble in dark aristocratic clothes, sharp features, fangs; fast duelist | turnaround + ~15 poses | ~6 |
-| 5 | `enemy_ghoul` | 64 | Night creature: a reanimated Methuselah, emaciated, torn finery, clawed hands, hunched crawl | turnaround + ~12 poses | ~6 |
+| 5 | `enemy_death_hunter` | 64 | **Updated from owner references 2026-10-15.** Reanimated vampire hunter-killer: heavy dark slate-grey hooded cloak wrapped high over the face; dark metal face mask with two round red goggle lenses and a ribbed breathing hose at the mouth; long-handled broad single-bit axe carried over the shoulder; wide, low, feral stance, cloak flaring when it lunges; inhumanly fast | turnaround + ~12 poses (stalk, crouch, leap, axe overhead chop, axe sweep, hurt, collapse) | ~6 |
 | 6 | `enemy_fairy` | 32–64 | Small pale child-like creature with thin translucent wings, hovering; attacks with an ultrasonic scream (expanding sound rings, **code-drawn**) | turnaround + ~8 poses (hover, dive, scream, hurt, fall) | ~4 |
 | 7 | `enemy_iron_choir` | 128 | Marionette soldier in plate armour (creative direction §6) | turnaround + ~12 poses | ~6 |
 | 8 | `boss_marchesa` | 128 | Methuselah noblewoman hung from red strings (boss 1) | turnaround + ~20 poses | ~8 |

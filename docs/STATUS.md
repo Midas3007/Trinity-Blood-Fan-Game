@@ -25,7 +25,7 @@ Last updated: 2026-10-15
 - **Sprite pipeline spec tailored to the project:** `docs/sprite-pipeline.md` (original kept in `docs/references/sprite-pipeline-spec-original.md`). `CLAUDE.md` Part 6 now points to it. Five owner decisions listed in its §10.
 
 - **Sprite pipeline built** (`tools/spritegen`, `npm run sprites:*`): palette Requiem 48 (`art/palette/`), preview contact sheets, approve → build → validate, 18 Python unit tests, Vitest check that sprite timing matches `attacks.json`, GitHub Actions CI (`.github/workflows/ci.yml`).
-- **Higgsfield:** 17.75 of 104 credits used (86.25 left, checked 2026-10-15). Round 3 combined round 1's tails and round 2's hair; darker coat and lankier build applied in the pipeline (gamma 1.5, squeeze 0.88) instead of more credits.
+- **Higgsfield:** 21.75 of 104 credits used (82.25 left). Round 3 combined round 1's tails and round 2's hair; darker coat and lankier build applied in the pipeline (gamma 1.5, squeeze 0.88) instead of more credits.
 - Previously: Abel design round 1 (2 variants) and round 2 (1 image, brief rewritten from the owner's reference notes). Round 2 matches the costume and reads well at 40 px; face reads older and proportions aren't lanky enough.
 
 - **Abel's priest form is fully animated:** idle, run, jump, fall, hard landing, the three combo hits (wind-up + strike, timed to `attacks.json`), roll (tucked ball → kneeling recovery, 380 ms like the dodge), slide and crouch. Hurt and air attack borrow a frozen frame. 4 pose sheets (one redone) cost 10 credits.
@@ -33,13 +33,27 @@ Last updated: 2026-10-15
   - Verified: 82/82 game tests, 23/23 pipeline tests, 12 sheets validate, build passes; headless browser shows the right animation for every state with no errors.
   - Known art gaps: idle frame 2 slightly narrower (small flicker), only 4 run frames, final kick reads weak, slide hair touches the underside of the test beam by ~1 px.
 
+- **Thrall has real sprites:** idle, shambling walk (faster when chasing), claw (arms-raised wind-up tinted amber, then the swipe; art timing tested against `thrall_claw`), hurt, collapse that fades out. Pale hooded penitent in a tattered robe; the red string is still drawn in code. Player and enemy now share one sprite view (`src/systems/sprites/SpriteView.ts`); enemies also draw after physics.
+- **Crusnik Abel design (turnaround):** wild silver hair, red eyes, big black wings, white sash, crimson spine scythe. Made taller per owner (50 px vs 40 px priest). Poses come with the Crusnik ability (Milestone 7).
+- **Death Hunters** added to the cast from owner references (hooded masked axe-wielders; see creative direction §6).
+- Fixed: `sprites:approve` now reads each entity's height and folder from `pipeline.yaml` (it used 40 px for everything).
+- Verified: 85/85 tests, 18 sheets validate, build passes; headless browser: thrall went patrol → alert → pursue → claw → hurt → collapse with the matching animation each time, no errors.
+
 ## In progress
+- Waiting on the rest of the owner's note: Crusnik "more Gothic looking with…" (message was cut off).
 - Rest of the cast (next credit rounds, see `docs/sprite-pipeline.md`): Crusnik Abel, thrall, Methuselah, ghoul, fairy, Iron Choir, Marchesa, Dietrich, backgrounds.
 
 ## Blockers
 - None.
 
-## Owner must test (on phone) — Abel's sprites
+## Owner must test (on phone) — thrall sprites
+1. Walk right past the dummies (slide under the beam). The thrall is a pale hooded figure that sways as it walks.
+2. Get noticed → "!" then it shambles toward you faster.
+3. Stand still → it raises both arms and glows amber, then swipes low. Dodge on the amber.
+4. Kill it → it crumples to the ground and fades; a new one appears after ~4 s.
+5. Tell me if the amber wind-up is still easy to read with the real art.
+
+## Owner must test (on phone) — Abel's sprites (done)
 1. Stand still → Abel breathes (2-frame idle). Run left and right → he faces the way he runs.
 2. Jump → rising pose, then falling pose; drop from the highest ledge → crouched landing.
 3. ATK three times → three different strikes.
@@ -66,5 +80,6 @@ Open https://trinity-blood-fan-game.vercel.app (reopen the page/app to get the u
 9. Tell me in plain words: is the wind-up too long or too short? Is it too fast or too slow when chasing? Too much health?
 
 ## Next step
-- Crusnik Abel sheet (96×96, wings; lightning drawn in code), then the thrall's real sprite.
-- Then Milestone 5: level slice — connected rooms from Tiled, room transitions that keep state, a hazard, checkpoints (altars that refill health and respawn enemies), one simple puzzle, and a room-graph test.
+- Crusnik Gothic redesign once the owner's note is complete (~2 credits).
+- Death Hunter pose sheet (~2 credits), then Methuselah and fairy.
+- Then Milestone 5: level slice — connected rooms from Tiled, room transitions that keep state, a hazard, checkpoints, one simple puzzle, and a room-graph test.
