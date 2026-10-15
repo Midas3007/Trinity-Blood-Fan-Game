@@ -11,7 +11,8 @@ entities:
   abel:
     cell: [64, 64]
     sprite_height: 40
-    gamma: 0.7            # lifts the near-black coat so folds survive (preview 2026-10-15)
+    gamma: 1.0            # round-2 design (charcoal coat, white piping) reads without a shadow lift
+    open_px: 0
     source_dir: art/source/approved/abel/
     output_dir: public/assets/sprites/abel/
     animations:

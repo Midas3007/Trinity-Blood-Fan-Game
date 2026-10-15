@@ -1,0 +1,7 @@
+Round 2 — Abel priest-form turnaround — 2026-10-15
+Tool: Higgsfield, nano_banana_pro requested (job reports nano_banana_2), 2k, 16:9, count 2 requested but 1 image returned. Cost: 2 credits.
+Job: d32cf590-58ed-4c5d-acd4-e3eef02b775a -> turnaround_r2_d32cf590.png
+Brief: rewritten from owner's reference notes (docs/creative-direction.md §5 update): charcoal coat, white piping, shoulder cape,
+stand-up collar, tan belts, holster, low silver ponytail. Text-only, no image references.
+Result: costume matches; reads well at 40 px with gamma 1.0. Face reads middle-aged; proportions average rather than very tall/thin.
+Background rendered off-magenta (median 221,73,214) -> alpha.key now keys against the detected border colour.

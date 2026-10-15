@@ -31,7 +31,8 @@ def load(path: str | Path) -> np.ndarray:
     h, w = img.shape[:2]
     if min(h, w) < MIN_SIDE:
         log.warning("%s: small source (%dx%d); detail may be lost", p.name, w, h)
-    corners = np.concatenate([img[:8, :8, :3].reshape(-1, 3), img[-8:, -8:, :3].reshape(-1, 3)])
-    if np.mean(np.linalg.norm(corners.astype(int) - MAGENTA, axis=1)) > 80:
-        log.warning("%s: corners are not magenta; background removal may fail", p.name)
+    corners = np.concatenate([img[:8, :8, :3].reshape(-1, 3), img[-8:, -8:, :3].reshape(-1, 3)]).astype(int)
+    r, g, b = np.median(corners, axis=0)
+    if not (r > 150 and b > 150 and g < 110):
+        log.warning("%s: background is not magenta-like (median %d,%d,%d); background removal may fail", p.name, r, g, b)
     return img
