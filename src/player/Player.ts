@@ -19,6 +19,9 @@ import { StrengthBuff } from '../combat/StrengthBuff';
 import { chooseFinisher, type AbelForm, type FinisherDef, type FinisherTarget } from '../combat/finisherData';
 
 const INVULNERABLE_ALPHA = 0.45;
+/** How long a deliberate drop ignores one-way platforms (ms), and the small downward push that starts it. */
+const DROP_THROUGH_MS = 220;
+const DROP_NUDGE = 60;
 /** Blink period while invulnerable after being hurt (ms). */
 const BLINK_MS = 80;
 
@@ -51,6 +54,10 @@ export class Player implements PlayerContext, PlayerCombatant {
   /** Called when a finisher's strike lands (feedback lives in the scene). */
   onFinisher: ((def: FinisherDef, target: FinisherTarget, direction: 1 | -1) => void) | null = null;
   private finishTarget: FinisherTarget | null = null;
+  /** ms left of falling through one-way platforms on purpose. */
+  dropMs = 0;
+  /** Set by the scene each frame: standing on a one-way platform. */
+  onOneway = false;
 
   constructor(
     scene: Phaser.Scene,
@@ -67,7 +74,7 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.facingMark = scene.add.rectangle(x, y, 4, 4, COLORS.accent);
     scene.physics.add.existing(this.sprite);
     this.body = this.sprite.body as Phaser.Physics.Arcade.Body;
-    this.body.setCollideWorldBounds(true);
+    // No world-bounds collision: walking off a room's open edge enters the neighbouring room.
     this.body.setMaxVelocityY(t.maxFallSpeed);
     this.airTopY = y;
     this.fsm = new StateMachine(playerStates, 'idle', this as PlayerContext);
@@ -246,6 +253,11 @@ export class Player implements PlayerContext, PlayerCombatant {
   }
 
   /** Crouched on the ground (prays at an altar). */
+  dropThrough(): void {
+    this.dropMs = DROP_THROUGH_MS;
+    this.body.setVelocityY(DROP_NUDGE);
+  }
+
   get kneeling(): boolean {
     return this.fsm.current === 'crouch';
   }
@@ -299,6 +311,7 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.body.setGravityY(gravityFor(this.vy, this.tuning) - this.worldGravity);
 
     this.strength.tick(dtMs);
+    this.dropMs = Math.max(0, this.dropMs - dtMs);
     this.blinkMs = Math.max(0, this.blinkMs - dtMs);
     const blinkOff = this.blinkMs > 0 && Math.floor(this.blinkMs / BLINK_MS) % 2 === 0;
     this.alpha = blinkOff ? 0.2 : this.invulnerable ? INVULNERABLE_ALPHA : 1;

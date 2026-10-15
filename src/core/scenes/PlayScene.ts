@@ -25,6 +25,12 @@ import effects from '../../data/effects.json';
 import physics from '../../data/physics.json';
 import { room as getRoom, START } from '../../world/rooms';
 import { RoomRuntime } from '../../world/RoomRuntime';
+import { RoomTiles } from '../../world/RoomTiles';
+import { landsOnTop } from '../../world/oneWay';
+import { roomAtPixel } from '../../world/roomGraph';
+import { rooms as allRooms } from '../../world/rooms';
+import { TILE } from '../../world/tiled';
+import { playerTuning } from '../../player/tuning';
 import { LorePanel } from '../../ui/LorePanel';
 import type { RoomData } from '../../world/tiled';
 import { gameState } from '../../systems/GameState';
@@ -35,7 +41,9 @@ const MAX_FRAME_MS = 50;
 const DUMMY_RESPAWN_MS = 1500;
 /** Enemies stay dead until the room is re-entered or the player prays. */
 const ENEMY_RESPAWN_MS = 0;
-const FADE_MS = 160;
+const FADE_MS = 120;
+/** Half the standing body height: spawn points are feet, edge crossings use the body centre. */
+const PLAYER_HALF_HEIGHT = playerTuning.height / 2;
 const ROOM_TITLE_MS = 1800;
 
 /** Where to put the player when a room starts. */
@@ -43,7 +51,12 @@ export interface RoomStart {
   room: string;
   entry?: string;
   checkpoint?: string;
+  /** Crossing from a neighbouring room: world position (body centre) and velocity to keep. */
+  world?: { x: number; y: number; vx: number; vy: number; facing: 1 | -1 };
 }
+
+/** How far inside the new room to place the player after crossing an edge (px). */
+const EDGE_INSET = 6;
 /** Extra pooled enemies per type beyond the room's spawn count. */
 const ENEMY_POOL_SPARE = 1;
 
@@ -70,6 +83,7 @@ export class PlayScene extends Phaser.Scene {
   private prayArmed = false;
   private safe = { x: 0, y: 0 };
   private lorePanel!: LorePanel;
+  private tiles!: RoomTiles;
   private shotFlash!: ShotFlash;
 
   constructor() {
@@ -87,11 +101,23 @@ export class PlayScene extends Phaser.Scene {
   }
 
   /** Feet position for the player at the start of this room. */
-  private spawnPoint(): { x: number; y: number; facing: 1 | -1 } {
+  private spawnPoint(): { x: number; y: number; facing: 1 | -1; vx?: number; vy?: number } {
     const r = this.roomData;
+    const w = this.start.world;
+    if (w) {
+      // Same world position as when we left the last room, nudged inside this one; feet = centre + half height.
+      const x = Phaser.Math.Clamp(w.x - r.originX, EDGE_INSET, r.width - EDGE_INSET);
+      const y = Phaser.Math.Clamp(w.y - r.originY, EDGE_INSET, r.height - EDGE_INSET) + PLAYER_HALF_HEIGHT;
+      return { x, y, facing: w.facing, vx: w.vx, vy: w.vy };
+    }
     const cp = this.start.checkpoint ? r.checkpoints.find((c) => c.id === this.start.checkpoint) : undefined;
     if (cp) return { x: cp.x, y: cp.y, facing: 1 };
-    return r.entries[this.start.entry ?? ''] ?? Object.values(r.entries)[0]!;
+    const named = r.entries[this.start.entry ?? ''] ?? Object.values(r.entries)[0];
+    if (named) return named;
+    // No entry marker (rooms you normally enter through an edge): stand on the first ground in the middle.
+    const x = r.width / 2;
+    const ground = r.solids.concat(r.oneways).filter((g) => x >= g.x && x <= g.x + g.w).sort((a, b) => a.y - b.y)[0];
+    return { x, y: ground ? ground.y : r.height / 2, facing: 1 };
   }
 
   create(): void {
@@ -102,10 +128,22 @@ export class PlayScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, width, height);
     this.cameras.main.setBounds(0, 0, width, height);
 
+    this.tiles = new RoomTiles(this, r);
+    const tiled = r.layers.terrain.length > 0;
     const solids = this.physics.add.staticGroup();
     const solidRects: Rect[] = [...r.solids];
-    for (const r of solidRects) {
-      solids.add(this.add.rectangle(r.x + r.w / 2, r.y + r.h / 2, r.w, r.h, COLORS.floor));
+    for (const s of solidRects) {
+      // Tile rooms draw their own art; the collision boxes stay invisible.
+      solids.add(this.add.rectangle(s.x + s.w / 2, s.y + s.h / 2, s.w, s.h, COLORS.floor).setVisible(!tiled));
+    }
+    const oneways = this.physics.add.staticGroup();
+    for (const o of r.oneways) {
+      const rect = this.add.rectangle(o.x + o.w / 2, o.y + o.h / 2, o.w, o.h, COLORS.stone).setVisible(!tiled);
+      oneways.add(rect);
+      const body = rect.body as Phaser.Physics.Arcade.StaticBody;
+      body.checkCollision.down = false;
+      body.checkCollision.left = false;
+      body.checkCollision.right = false;
     }
 
     for (const l of r.labels) {
@@ -122,6 +160,10 @@ export class PlayScene extends Phaser.Scene {
     if (gameState.hp !== null) this.player.setHealth(gameState.hp);
     this.safe = { x: at.x, y: at.y };
     this.physics.add.collider(this.player.sprite, solids);
+    this.physics.add.collider(this.player.sprite, oneways, undefined, (_p, o) =>
+      landsOnTop(this.player.body, (o as Phaser.GameObjects.Rectangle).body as Phaser.Physics.Arcade.StaticBody, this.player.dropMs > 0),
+    );
+    if (at.vx !== undefined) this.player.body.setVelocity(at.vx, at.vy ?? 0);
     this.cameras.main.startFollow(this.player.sprite, true);
     this.cameras.main.setFollowOffset(0, GAME_HEIGHT * 0.1);
 
@@ -133,7 +175,8 @@ export class PlayScene extends Phaser.Scene {
     });
 
     const spawns: EnemySpawn[] = r.enemies;
-    this.enemies = new EnemyManager(this, this.player, solidRects, solids, ENEMY_RESPAWN_MS);
+    // Enemies sense floors and ledges on solids and one-way platforms alike.
+    this.enemies = new EnemyManager(this, this.player, [...solidRects, ...r.oneways], solids, ENEMY_RESPAWN_MS, oneways);
     for (const type of new Set(spawns.map((sp) => sp.type))) {
       this.enemies.preload(type, spawns.filter((sp) => sp.type === type).length + ENEMY_POOL_SPARE);
     }
@@ -253,6 +296,9 @@ export class PlayScene extends Phaser.Scene {
   private updateRoom(): void {
     const p = this.player;
     if (!p.kneeling) this.prayArmed = true;
+    this.tiles.update(this.game.loop.delta, p.x, p.y);
+    p.onOneway = p.onGround && this.standingOnOneway();
+    if (this.crossEdge()) return;
     const lore = p.onGround ? this.runtime.loreAt(p.x) : null;
     this.lorePanel.show(lore);
     if (lore) gameState.setFlag(`lore:${lore}`);
@@ -281,6 +327,27 @@ export class PlayScene extends Phaser.Scene {
       this.cameras.main.flash(300, 217, 150, 58);
       this.goTo({ room: this.roomData.id, checkpoint: ev.checkpoint });
     }
+  }
+
+  /** Is the player standing on a one-way platform (not solid ground)? */
+  private standingOnOneway(): boolean {
+    const feet = this.player.feetY;
+    const x = this.player.x;
+    return this.roomData.oneways.some((o) => Math.abs(o.y - feet) <= 2 && x >= o.x && x <= o.x + o.w);
+  }
+
+  /** Walked, fell or jumped off this room's edge: continue in whichever room is there. */
+  private crossEdge(): boolean {
+    const p = this.player;
+    const r = this.roomData;
+    const out = p.x < 0 || p.x > r.width || p.y > r.height || (p.y < 0 && p.vy < 0);
+    if (!out) return false;
+    const wx = r.originX + p.x;
+    const wy = r.originY + p.y;
+    const next = roomAtPixel(allRooms, wx, wy, TILE);
+    if (!next || next.id === r.id) return false; // open sky with nothing above: just come back down
+    this.goTo({ room: next.id, world: { x: wx, y: wy, vx: p.vx, vy: p.vy, facing: p.facing } });
+    return true;
   }
 
   /** Fade out and start another room (or restart this one), carrying health over. */

@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { landsOnTop } from '../world/oneWay';
 import { Pool } from '../systems/Pool';
 import type { Rect } from '../combat/types';
 import { Enemy } from './Enemy';
@@ -32,6 +33,8 @@ export class EnemyManager {
     private readonly solids: readonly Rect[],
     private readonly solidGroup: Phaser.Physics.Arcade.StaticGroup,
     private readonly respawnMs: number,
+    /** Platforms enemies can stand on but walk under (one-way). */
+    private readonly onewayGroup: Phaser.Physics.Arcade.StaticGroup | null = null,
   ) {}
 
   /** Pre-creates `count` enemies of a type so nothing is allocated during play. */
@@ -40,6 +43,11 @@ export class EnemyManager {
     const pool = new Pool<Enemy>(count, () => {
       const e = new Enemy(this.scene, cfg, this.target, this.solids);
       this.scene.physics.add.collider(e.sprite, this.solidGroup);
+      if (this.onewayGroup) {
+        this.scene.physics.add.collider(e.sprite, this.onewayGroup, undefined, (_a, p) =>
+          landsOnTop(e.body, (p as Phaser.GameObjects.Rectangle).body as Phaser.Physics.Arcade.StaticBody),
+        );
+      }
       return e;
     });
     this.pools.set(type, pool);

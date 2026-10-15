@@ -1,4 +1,12 @@
 import type { Rect } from '../combat/types';
+import tileDefs from '../data/tiles.json';
+
+export const TILE = tileDefs.tileSize;
+/** Screen-sized cell of the world grid (tiles). */
+export const CELL_COLS = 30;
+export const CELL_ROWS = 17;
+const KIND = new Map(tileDefs.tiles.map((t) => [t.gid, t.kind]));
+export const tileKind = (gid: number): string => (gid === 0 ? 'none' : KIND.get(gid) ?? 'none');
 
 /**
  * Rooms are Tiled maps (.tmj, JSON). For now they use object layers only (art tiles come in Milestone 6):
@@ -35,6 +43,8 @@ export interface TiledLayer {
   name: string;
   type: string;
   objects?: TiledObject[];
+  /** Tile layers: gids, row-major. */
+  data?: number[];
 }
 
 export interface TiledMap {
@@ -70,7 +80,21 @@ export interface RoomData {
   title: string;
   width: number;
   height: number;
+  /** Position on the world grid (screen cells) and in world pixels. */
+  gridX: number;
+  gridY: number;
+  originX: number;
+  originY: number;
+  cols: number;
+  rows: number;
+  /** Tile layers (gids, row-major); empty arrays for object-only rooms. */
+  layers: { back: number[]; terrain: number[]; facade: number[] };
+  /** Building interior id per cell (-1 = outdoors), from the facade layer; and how many there are. */
+  interior: Int16Array;
+  interiorCount: number;
   solids: Rect[];
+  /** Platforms you can jump up through and stand on. */
+  oneways: Rect[];
   hazards: Hazard[];
   exits: Exit[];
   gates: Gate[];
@@ -100,13 +124,34 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
   };
   const layer = (name: string): TiledObject[] => map.layers.find((l) => l.name === name)?.objects ?? [];
   const mp = props(map);
+  const tiles = (name: string): number[] => map.layers.find((l) => l.name === name && l.type === 'tilelayer')?.data ?? [];
+  const terrain = tiles('terrain');
+  const facade = tiles('facade');
+  const cols = map.width;
+  const rows = map.height;
+  const gridX = Number(mp.gridX ?? 0);
+  const gridY = Number(mp.gridY ?? 0);
+  const { ids: interior, count: interiorCount } = components(facade, cols, rows);
   const room: RoomData = {
     id,
     title: String(mp.title ?? id),
-    width: map.width * map.tilewidth,
-    height: map.height * map.tileheight,
-    solids: layer('solids').map(rect),
-    hazards: layer('hazards').map((o) => ({ ...rect(o), damage: Number(props(o).damage ?? 20) })),
+    width: cols * map.tilewidth,
+    height: rows * map.tileheight,
+    gridX,
+    gridY,
+    originX: gridX * CELL_COLS * TILE,
+    originY: gridY * CELL_ROWS * TILE,
+    cols,
+    rows,
+    layers: { back: tiles('back'), terrain, facade },
+    interior,
+    interiorCount,
+    solids: [...layer('solids').map(rect), ...mergeCells(terrain, cols, rows, (g) => tileKind(g) === 'solid')],
+    oneways: mergeCells(terrain, cols, rows, (g) => tileKind(g) === 'oneway'),
+    hazards: [
+      ...layer('hazards').map((o) => ({ ...rect(o), damage: Number(props(o).damage ?? 20) })),
+      ...mergeCells(terrain, cols, rows, (g) => tileKind(g) === 'spike').map((r) => ({ ...r, y: r.y + TILE / 2, h: r.h - TILE / 2, damage: 20 })),
+    ],
     exits: layer('exits').map((o) => {
       const p = props(o);
       if (!p.to || !p.entry) fail(`exit ${o.id} needs 'to' and 'entry' properties`);
@@ -157,7 +202,59 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
         fail(`marker ${o.id} has unknown type "${kind(o)}"`);
     }
   }
-  if (Object.keys(room.entries).length === 0) fail('needs at least one entry marker');
+  if (map.tilewidth !== TILE) fail(`tile size must be ${TILE}`);
   if (room.solids.length === 0) fail('has no solids');
   return room;
+}
+
+/** Merges cells matching `want` into rectangles (row runs, then stacked runs of equal width). Pure; exported for tests. */
+export function mergeCells(data: number[], cols: number, rows: number, want: (gid: number) => boolean): Rect[] {
+  const open = new Map<string, Rect>(); // runs that can still grow downward, keyed "x0,x1"
+  const out: Rect[] = [];
+  for (let y = 0; y < rows; y++) {
+    const seen = new Set<string>();
+    let x = 0;
+    while (x < cols) {
+      if (!want(data[y * cols + x] ?? 0)) {
+        x++;
+        continue;
+      }
+      const x0 = x;
+      while (x < cols && want(data[y * cols + x] ?? 0)) x++;
+      const key = `${x0},${x}`;
+      const prev = open.get(key);
+      if (prev && prev.y + prev.h === y * TILE) prev.h += TILE;
+      else {
+        const r = { x: x0 * TILE, y: y * TILE, w: (x - x0) * TILE, h: TILE };
+        out.push(r);
+        open.set(key, r);
+      }
+      seen.add(key);
+    }
+    for (const k of [...open.keys()]) if (!seen.has(k)) open.delete(k);
+  }
+  return out;
+}
+
+/** Connected groups of non-empty cells (4-neighbour): one id per building interior. */
+function components(data: number[], cols: number, rows: number): { ids: Int16Array; count: number } {
+  const ids = new Int16Array(cols * rows).fill(-1);
+  let count = 0;
+  for (let i = 0; i < data.length; i++) {
+    if (!data[i] || ids[i] !== -1) continue;
+    const stack = [i];
+    ids[i] = count;
+    while (stack.length) {
+      const c = stack.pop()!;
+      const cx = c % cols;
+      for (const n of [c - cols, c + cols, cx > 0 ? c - 1 : -1, cx < cols - 1 ? c + 1 : -1]) {
+        if (n >= 0 && n < data.length && data[n] && ids[n] === -1) {
+          ids[n] = count;
+          stack.push(n);
+        }
+      }
+    }
+    count++;
+  }
+  return { ids, count };
 }

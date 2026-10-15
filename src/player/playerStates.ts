@@ -43,6 +43,10 @@ export interface PlayerContext {
   readonly crouchHeld: boolean;
   /** False when a ceiling is too low to stand up here. */
   readonly canStand: boolean;
+  /** Standing on a platform you can drop through. */
+  readonly onOneway: boolean;
+  /** Fall through the platform underfoot. */
+  dropThrough(): void;
   /** Pixels fallen since the highest point of the current airborne stretch. */
   readonly fallDistance: number;
   vx: number;
@@ -224,6 +228,12 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       const crawl = ctx.canStand ? 0 : ctx.moveX * ctx.tuning.crawlSpeed;
       ctx.vx = approach(ctx.vx, crawl, (ctx.tuning.groundDecel * dtMs) / 1000);
       if (!ctx.onGround) return 'fall';
+      if (ctx.timers.canJump && ctx.onOneway) {
+        // Stick down + jump on a plank floor: drop to the floor below.
+        ctx.timers.consumeJump();
+        ctx.dropThrough();
+        return 'fall';
+      }
       if (ctx.timers.canJump && ctx.canStand) return 'jump';
       if (ctx.dodgePressed && ctx.timers.dodgeCooldown === 0) return 'slide';
       if (ctx.attackPressed) return 'crouchAttack';

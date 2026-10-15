@@ -43,6 +43,11 @@ export class SimPlayer implements PlayerContext {
   jumpHeld = false;
   dodgePressed = false;
   ledgeX = Infinity;
+  onOneway = false;
+  drops = 0;
+  dropThrough(): void {
+    this.drops++;
+  }
   /** Enemies a finisher could be used on (fakes). */
   finisherTargets: FinisherTarget[] = [];
   readonly finishing = new FinisherRunner();

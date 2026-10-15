@@ -48,7 +48,8 @@ export class RoomRuntime {
     /** Live list of solid rectangles (posture checks); open gates are removed from it. */
     private readonly solidRects: Rect[],
   ) {
-    for (const h of room.hazards) this.drawSpikes(h);
+    // Tile rooms draw spikes as tiles; object-only rooms get simple drawn spikes.
+    if (!room.layers.terrain.length) for (const h of room.hazards) this.drawSpikes(h);
     for (const c of room.checkpoints) {
       scene.add.rectangle(c.x, c.y - ALTAR_H / 2, ALTAR_W, ALTAR_H, COLORS.stone);
       scene.add.rectangle(c.x, c.y - ALTAR_H - 6, 2, 10, COLORS.spark); // candle

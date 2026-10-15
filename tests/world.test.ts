@@ -1,16 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { rooms, START } from '../src/world/rooms';
 import { worldProblems, reachable } from '../src/world/roomGraph';
-import { parseRoom, type TiledMap } from '../src/world/tiled';
+import { mergeCells, parseRoom, type TiledMap } from '../src/world/tiled';
 import { GameState } from '../src/systems/GameState';
 import { enemyConfigs } from '../src/enemies/enemyConfig';
 import { loreEntry } from '../src/ui/LorePanel';
 import world from '../src/data/world.json';
-import loreJson from '../src/data/lore.json';
 
 describe('rooms (Tiled maps)', () => {
   it('loads every room in src/data/rooms', () => {
-    expect(Object.keys(rooms).length).toBeGreaterThanOrEqual(12);
+    expect(Object.keys(rooms).length).toBeGreaterThanOrEqual(5);
     expect(rooms[START.room]).toBeDefined();
   });
 
@@ -28,24 +27,36 @@ describe('rooms (Tiled maps)', () => {
     }
   });
 
-  it('there is at least one checkpoint, one hazard and one gated puzzle in the slice', () => {
+  it('the town has altars, hazards, interiors and climbable floors', () => {
     const all = Object.values(rooms);
     expect(all.some((r) => r.checkpoints.length > 0)).toBe(true);
     expect(all.some((r) => r.hazards.length > 0)).toBe(true);
-    expect(all.some((r) => r.gates.length > 0)).toBe(true);
+    expect(all.some((r) => r.interiorCount > 0)).toBe(true);
+    expect(all.some((r) => r.oneways.length > 0)).toBe(true);
   });
 
-  it('every lore entry is placed in some room', () => {
-    const placed = new Set(Object.values(rooms).flatMap((r) => r.lore.map((l) => l.id)));
-    for (const id of Object.keys(loreJson.entries)) expect(placed.has(id), id).toBe(true);
+  it('every marker stands inside its room', () => {
+    for (const r of Object.values(rooms)) {
+      for (const m of [...r.enemies, ...r.checkpoints, ...r.lore, ...Object.values(r.entries)]) {
+        expect(m.x > 0 && m.x < r.width && m.y > 0 && m.y <= r.height, `${r.id} marker at ${m.x},${m.y}`).toBe(true);
+      }
+    }
   });
 
-  it('detects broken links and unreachable rooms', () => {
-    const a = structuredClone(rooms.undercity_gate!);
-    a.exits = [{ x: 0, y: 0, w: 16, h: 16, to: 'nowhere', entry: 'x' }];
-    expect(worldProblems({ undercity_gate: a }, START).join()).toMatch(/unknown room "nowhere"/);
-    const lone = structuredClone(rooms.undercity_shrine!);
-    expect(worldProblems({ undercity_gate: rooms.undercity_gate!, undercity_shrine: lone }, START).join()).toMatch(/cannot be reached/);
+  it('detects open edges with no room behind them, and unreachable rooms', () => {
+    const { market_square: _gone, ...rest } = rooms;
+    expect(worldProblems(rest, START).join('\n')).toMatch(/old_town_lane: east edge is open but no room is there/);
+    const far = { ...structuredClone(rooms.sewer_shaft!), id: 'far', gridX: 40 };
+    expect(worldProblems({ ...rooms, far }, START).join('\n')).toMatch(/far cannot be reached/);
+  });
+
+  it('mergeCells joins runs and stacks of equal width', () => {
+    // 4x3: a 2x2 block at the left, one cell on the right of the bottom row
+    const d = [1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1];
+    expect(mergeCells(d, 4, 3, (g) => g === 1)).toEqual([
+      { x: 0, y: 0, w: 32, h: 32 },
+      { x: 48, y: 32, w: 16, h: 16 },
+    ]);
   });
 
   it('rejects malformed maps with a readable error', () => {

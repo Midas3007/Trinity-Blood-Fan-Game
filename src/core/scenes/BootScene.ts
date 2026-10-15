@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import { TITLE_ART_KEY } from '../constants';
+import { TILESET_KEY } from '../../world/RoomTiles';
+import tileDefs from '../../data/tiles.json';
 import { SCENES } from '../constants';
 import { animDefs, sheetLoads, SPRITES_BASE, type SpriteIndex } from '../../systems/sprites/spriteIndex';
 
@@ -14,6 +16,7 @@ export class BootScene extends Phaser.Scene {
 
   preload(): void {
     this.load.json(INDEX_KEY, `${SPRITES_BASE}index.json`);
+    this.load.image(TILESET_KEY, tileDefs.image);
     // Title key art (palette-locked painting, tools/spritegen keyart). Missing file = plain text title.
     this.load.image(TITLE_ART_KEY, 'assets/ui/title.png');
     this.load.once(`filecomplete-json-${INDEX_KEY}`, (_key: string, _type: string, data: SpriteIndex) => {
