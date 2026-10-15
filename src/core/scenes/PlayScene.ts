@@ -26,6 +26,7 @@ import physics from '../../data/physics.json';
 import { room as getRoom, START } from '../../world/rooms';
 import { RoomRuntime } from '../../world/RoomRuntime';
 import { RoomTiles } from '../../world/RoomTiles';
+import { Backdrop, timeLook, type TimeOfDay } from '../../world/Backdrop';
 import { landsOnTop } from '../../world/oneWay';
 import { roomAtPixel } from '../../world/roomGraph';
 import { rooms as allRooms } from '../../world/rooms';
@@ -57,6 +58,8 @@ export interface RoomStart {
 
 /** How far inside the new room to place the player after crossing an edge (px). */
 const EDGE_INSET = 6;
+/** How close (px, horizontally) the player must be to a ladder's centre to grab it. */
+const LADDER_REACH_X = 8;
 /** Extra pooled enemies per type beyond the room's spawn count. */
 const ENEMY_POOL_SPARE = 1;
 
@@ -84,6 +87,7 @@ export class PlayScene extends Phaser.Scene {
   private safe = { x: 0, y: 0 };
   private lorePanel!: LorePanel;
   private tiles!: RoomTiles;
+  private backdrop!: Backdrop;
   private shotFlash!: ShotFlash;
 
   constructor() {
@@ -128,6 +132,10 @@ export class PlayScene extends Phaser.Scene {
     this.physics.world.setBounds(0, 0, width, height);
     this.cameras.main.setBounds(0, 0, width, height);
 
+    // Test mode only: ?test&time=day|dusk|night.
+    const forcedTime = testHookEnabled() ? new URLSearchParams(location.search).get('time') : null;
+    if (forcedTime === 'day' || forcedTime === 'dusk' || forcedTime === 'night') gameState.time = forcedTime as TimeOfDay;
+    this.backdrop = new Backdrop(this, gameState.time, r.width, r.outdoor, r.horizon);
     this.tiles = new RoomTiles(this, r);
     const tiled = r.layers.terrain.length > 0;
     const solids = this.physics.add.staticGroup();
@@ -152,7 +160,7 @@ export class PlayScene extends Phaser.Scene {
         .setOrigin(0.5, 1);
     }
 
-    this.runtime = new RoomRuntime(this, r, gameState, solids, solidRects);
+    this.runtime = new RoomRuntime(this, r, gameState, solids, solidRects, timeLook(gameState.time).lampGlow);
     const at = this.spawnPoint();
     this.player = new Player(this, at.x, at.y - 20, this.actions, physics.gravityY, solidRects);
     this.player.placeAt(at.x, at.y);
@@ -160,8 +168,9 @@ export class PlayScene extends Phaser.Scene {
     if (gameState.hp !== null) this.player.setHealth(gameState.hp);
     this.safe = { x: at.x, y: at.y };
     this.physics.add.collider(this.player.sprite, solids);
+    this.player.stepSolids = solidRects;
     this.physics.add.collider(this.player.sprite, oneways, undefined, (_p, o) =>
-      landsOnTop(this.player.body, (o as Phaser.GameObjects.Rectangle).body as Phaser.Physics.Arcade.StaticBody, this.player.dropMs > 0),
+      landsOnTop(this.player.body, (o as Phaser.GameObjects.Rectangle).body as Phaser.Physics.Arcade.StaticBody, this.player.dropMs > 0 || this.player.state === 'climb'),
     );
     if (at.vx !== undefined) this.player.body.setVelocity(at.vx, at.vy ?? 0);
     this.cameras.main.startFollow(this.player.sprite, true);
@@ -266,6 +275,8 @@ export class PlayScene extends Phaser.Scene {
     if (this.keyboard) frames.push(this.keyboard.read());
     this.actions.update(mergeFrames(frames));
 
+    this.backdrop.update(dt);
+    this.senseLadders();
     this.player.update(dt);
     if (this.leaving) return;
     this.updateRoom();
@@ -327,6 +338,23 @@ export class PlayScene extends Phaser.Scene {
       this.cameras.main.flash(300, 217, 150, 58);
       this.goTo({ room: this.roomData.id, checkpoint: ev.checkpoint });
     }
+  }
+
+  /** Ladders around the player: one overlapping the body (climbable until the feet reach its top), or one just below. */
+  private senseLadders(): void {
+    const p = this.player;
+    const reachX = LADDER_REACH_X;
+    let here: number | null = null;
+    let below: number | null = null;
+    for (const l of this.roomData.ladders) {
+      const cx = l.x + l.w / 2;
+      if (Math.abs(p.x - cx) > reachX) continue;
+      // Climbable until the feet reach the floor the ladder leads up to (one tile above its top).
+      if (p.y >= l.y - TILE - PLAYER_HALF_HEIGHT && p.y <= l.y + l.h) here = cx;
+      if (p.feetY >= l.y - TILE - 2 && p.feetY <= l.y + 2) below = cx;
+    }
+    p.ladderX = here;
+    p.ladderBelowX = here === null ? below : null;
   }
 
   /** Is the player standing on a one-way platform (not solid ground)? */

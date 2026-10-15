@@ -1,26 +1,41 @@
-"""Region 1, area 1: Istvan Old Town by night. Usage: python3 -I -m tools.level.istvan  (writes src/data/rooms/)
-Town rooms are 2 screens tall: rooftops above, street at row GY. Rooms connect where their edges are open."""
+"""Region 1, area 1: Istvan Old Town by night. Usage: python3 -E -s -m tools.level.istvan  (writes src/data/rooms/)
+Town rooms are 2 screens tall: rooftops above, street at row GY. Rooms connect wherever their edges are open."""
 from tools.level.builder import Room, write
 
-GY = 31  # street surface row in 34-row town rooms
+GY = 31   # street surface row in 34-row town rooms
+FH = 6    # storey height (tiles)
+
+
+def street_row(r):
+    """Lowest cobble row of the room (its street), for the houses behind it."""
+    rows = [y for y in range(r.H) for x in range(0, r.W, 7) if r.L["terrain"][y][x] == "cobble"]
+    return max(rows) if rows else GY
+
+
+def feet(base, floor):
+    """Marker row for something standing on `floor` (0 = ground) of a building whose ground is row `base`."""
+    return base - floor * FH - 1
 
 
 def station():
     r = Room("istvan_station", "Istvan Station", 0, 0, 3, 2, seed=11)
     r.ground(GY)
-    r.edges(left=True, right=False, ground=0)        # world's west end: closed all the way up
-    r.wall(0, 0, 90, 1, "stone")                       # station hall ceiling over the start? no: only left edge closed
-    r.fill("terrain", 1, 0, 90, 1, None)
-    hall_top = r.building(8, 30, GY, floors=2, fh=7, doors=("left", "right"), chimneys=0, lit=0.8)
-    r.building(42, 8, GY, floors=4, fh=6, doors=("left",), chimneys=0, lit=0.3)     # clock tower
-    r.building(64, 14, GY, floors=2, fh=6, doors=("right",), balconies=(1,), lit=0.5)
-    r.alley_back(52, 62, GY - 8, GY)
-    r.mark("entry", 4, GY - 1, "start", facing=1)
-    r.mark("lore", 12, GY - 1, lore="ax_orders")
+    r.wall(0, 0, 1, r.H)                                       # the world's west end
+    r.wall(r.W - 1, GY, r.W, r.H)
+    r.building(6, 32, GY, floors=2, fh=7, doors=("left", "right"), chimneys=0, lit=0.9, climb="ladder")   # station hall
+    r.building(42, 8, GY, floors=4, doors=("left",), chimneys=0, lit=0.3, climb="ladder")                 # clock tower
+    r.platform(52, 66, GY - 7, "balcony")                                                                # platform canopy
+    for x in (53, 59, 65):
+        r.mark("decor", x, GY - 8, item="chain", h=40)
+    r.building(70, 14, GY, floors=3, doors=("right",), balconies=(1, 2), lit=0.5)
+    r.street_props(50, 88, GY)
+    r.mark("entry", 10, GY - 1, "start", facing=1)
+    r.mark("lore", 14, GY - 1, lore="ax_orders")
     r.mark("dummy", 24, GY - 1, maxHealth=60, contactDamage=0)
     r.mark("dummy", 30, GY - 1, maxHealth=60, contactDamage=0)
-    r.mark("label", 22, GY - 9, text="Welcome to Istvan. Climb inside the houses; jump between roofs.")
-    r.mark("enemy", 70, GY - 1, enemy="thrall")
+    r.mark("label", 22, GY - 10, text="Climb ladders with the stick. Stick down + JUMP drops through wooden floors.")
+    r.mark("enemy", 78, GY - 1, enemy="thrall")
+    r.mark("enemy", 76, feet(GY, 2), enemy="thrall")
     return r
 
 
@@ -28,80 +43,163 @@ def old_town():
     r = Room("old_town_lane", "Old Town Lane", 3, 0, 4, 2, seed=12)
     r.ground(GY)
     r.edges(left=True, right=True, ground=GY)
-    r.building(4, 14, GY, floors=3, doors=("left", "right"), balconies=(2,), lit=0.4)
-    r.alley_back(18, 24, GY - 10, GY)
-    r.building(24, 18, GY, floors=4, doors=("left",), balconies=(1, 3), chimneys=2, lit=0.5)
-    r.building(48, 12, GY, floors=2, doors=("right",), lit=0.6)
-    r.alley_back(60, 66, GY - 6, GY)
-    r.building(66, 16, GY, floors=3, doors=("left", "right"), upper_doors=((2, "left"),), lit=0.3)
-    r.building(88, 22, GY, floors=4, doors=("left",), balconies=(2,), chimneys=2, lit=0.5)
-    r.mark("lore", 20, GY - 1, lore="worshipper_note")
-    r.mark("lore", 62, GY - 1, lore="star_graffiti")
+    r.building(3, 14, GY, floors=3, doors=("left", "right"), balconies=(2,), lit=0.4)
+    r.alley_back(17, 22, GY - 12, GY)
+    r.mark("decor", 19, GY - 12, item="lantern", h=20)
+    r.building(22, 16, GY, floors=4, doors=("left",), balconies=(1, 3), chimneys=2, lit=0.5, climb="ladder")
+    r.building(41, 12, GY, floors=2, doors=("right",), lit=0.6)
+    # raised terrace reached by stone stairs, with a house on it
+    r.stairs(55, GY, 4)
+    r.wall(59, GY - 4, 77, GY)
+    r.fill("terrain", 59, GY - 4, 77, GY - 3, "cobble")
+    r.building(61, 14, GY - 4, floors=3, doors=("left", "right"), lit=0.4, climb="ladder")
+    r.stairs(80, GY, 4, dir=-1)
+    r.building(84, 22, GY, floors=4, doors=("left",), balconies=(2,), chimneys=2, lit=0.5)
+    r.alley_back(106, 120, GY - 8, GY)
+    r.mark("decor", 112, GY - 10, item="lantern", h=28)
+    r.mark("decor", 34, feet(GY, 4) - 2, item="banner")
+    r.street_props(0, 56, GY)
+    r.street_props(84, 120, GY, lamp_offset=24)
+    r.mark("lore", 110, GY - 1, lore="star_graffiti")
+    r.mark("lore", 66, feet(GY - 4, 1), lore="worshipper_note")
     r.mark("enemy", 36, GY - 1, enemy="thrall")
-    r.mark("enemy", 56, GY - 1, enemy="thrall")
-    r.mark("enemy", 96, GY - 1 - 12, enemy="thrall")           # on the 2nd floor of the last house
-    r.mark("enemy", 74, GY - 1 - 18, enemy="deathHunter")      # on a roof
+    r.mark("enemy", 68, feet(GY - 4, 0), enemy="thrall")
+    r.mark("enemy", 94, feet(GY, 1), enemy="thrall")
+    r.mark("enemy", 28, feet(GY, 4), enemy="deathHunter")     # on the tall house's roof
+    return r
+
+
+def clock_alley():
+    r = Room("clock_alley", "Bellmakers' Alley", 7, 0, 2, 2, seed=16)
+    r.ground(GY)
+    r.edges(left=True, right=True, ground=GY)
+    r.building(2, 16, GY, floors=4, doors=("right",), balconies=(), chimneys=1, lit=0.3, climb="ladder")
+    r.building(40, 18, GY, floors=4, doors=("left",), chimneys=1, lit=0.6)
+    r.alley_back(18, 40, 4, GY)
+    # zig-zag balconies up the alley walls
+    for i, y in enumerate((GY - 5, GY - 10, GY - 15, GY - 20)):
+        x0 = 19 if i % 2 == 0 else 33
+        r.platform(x0, x0 + 6, y, "balcony")
+        r.mark("decor", x0 + 3, y - 7, item="lantern", h=16)
+    r.mark("decor", 29, 2, item="chain", h=120)
+    r.mark("lore", 28, GY - 1, lore="hunter_warning")
+    r.mark("enemy", 30, GY - 1, enemy="thrall")
+    r.mark("enemy", 36, GY - 21, enemy="thrall")
     return r
 
 
 def square():
-    r = Room("market_square", "Market Square", 7, 0, 4, 2, seed=13)
+    r = Room("market_square", "Market Square", 9, 0, 4, 2, seed=13)
     r.ground(GY)
     r.edges(left=True, right=True, ground=GY)
-    r.building(2, 22, GY, floors=3, doors=("right",), balconies=(1, 2), chimneys=2, lit=0.4)     # gallery houses
-    r.building(28, 16, GY, floors=2, doors=("left", "right"), lit=0.9)                          # the tavern
-    # toppled statue of the old count and the fountain shrine
-    r.wall(52, GY - 2, 58, GY, "stone")
+    r.building(2, 22, GY, floors=3, doors=("right",), balconies=(1, 2), chimneys=2, lit=0.4)        # gallery houses
+    r.building(28, 16, GY, floors=2, doors=("left", "right"), lit=0.9, climb="ladder")               # the tavern
+    r.wall(52, GY - 2, 58, GY, "stone")                     # toppled statue of the old count
     r.wall(54, GY - 4, 56, GY - 2, "stone")
-    r.wall(76, GY - 1, 86, GY, "stone")
-    # sewer grate: a hole in the square's paving down into the shaft below
-    r.fill("terrain", 64, GY, 68, r.H, None)
+    r.wall(76, GY - 1, 86, GY, "stone")                     # fountain rim
+    r.fill("terrain", 64, GY, 68, r.H, None)                # sewer grate, wide open
     r.building(96, 20, GY, floors=4, doors=("left",), balconies=(2,), chimneys=1, lit=0.3)
+    for x in (6, 12, 18):
+        r.mark("decor", x, feet(GY, 3) - 3, item="banner")
+    r.street_props(46, 96, GY, every=10)
     r.mark("checkpoint", 81, GY - 2, "fountain_altar")
-    r.mark("lore", 55, GY - 3, lore="hall_plaque")
-    r.mark("lore", 46, GY - 1, lore="resistance_chalk")
-    r.mark("checkpoint", 36, GY - 1, "tavern_altar")
-    r.mark("lore", 40, GY - 1 - 6, lore="music_score")
-    r.mark("label", 66, GY - 4, text="a sewer grate, wide open...")
+    r.mark("lore", 55, GY - 5, lore="hall_plaque")
+    r.mark("lore", 47, GY - 1, lore="resistance_chalk")
+    r.mark("checkpoint", 34, GY - 1, "tavern_altar")
+    r.mark("lore", 40, feet(GY, 1), lore="music_score")
+    r.mark("label", 66, GY - 5, text="a sewer grate, wide open...")
     r.mark("enemy", 90, GY - 1, enemy="thrall")
-    r.mark("enemy", 104, GY - 1 - 12, enemy="thrall")
-    r.mark("enemy", 12, GY - 1 - 18 - 1, enemy="deathHunter")
+    r.mark("enemy", 104, feet(GY, 2), enemy="thrall")
+    r.mark("enemy", 12, feet(GY, 3), enemy="deathHunter")
     return r
 
 
 def cathedral_square():
-    r = Room("cathedral_square", "Cathedral Square", 11, 0, 3, 2, seed=14)
+    r = Room("cathedral_square", "Cathedral Square", 13, 0, 4, 2, seed=14)
     r.ground(GY)
-    r.edges(left=False, right=True, ground=0)
-    # broad steps up to the great doors
-    for i, x in enumerate(range(30, 54, 6)):
-        r.wall(x, GY - 2 * (i + 1), 66, GY - 2 * i, "stone")
-    r.building(62, 26, GY - 8, floors=4, fh=6, doors=(), chimneys=0, lit=0.2)
-    r.wall(72, 0, 76, GY - 8 - 24, "chimney")                    # the bell tower rising out of frame
-    r.fill("facade", 66, GY - 11, 70, GY - 8, "door")             # the great doors (locked)
-    r.mark("lore", 64, GY - 9, lore="cathedral_sealed")
+    r.edges(left=True, right=True, ground=GY)
+    T = GY - 6                                               # the terrace the cathedral stands on
+    r.stairs(34, GY, 6)
+    r.wall(40, T, 98, GY)
+    r.fill("terrain", 40, T, 98, T + 1, "cobble")
+    r.cathedral(46, 46, T, 16, towers=((46, 8, 24), (84, 8, 24)), rose_at=69)
+    r.fill("facade", 67, T - 4, 71, T, "door")               # the great doors (locked)
+    r.stairs(104, GY, 6, dir=-1)
+    r.street_props(0, 34, GY)
+    r.street_props(104, 120, GY, lamp_offset=6)
+    for x in (44, 94):
+        r.mark("decor", x, T - 1, item="lamp")
+    r.mark("lore", 69, T - 1, lore="cathedral_sealed")
     r.mark("lore", 14, GY - 1, lore="esther_prayer")
     r.mark("enemy", 22, GY - 1, enemy="thrall")
+    r.mark("enemy", 84, T - 1, enemy="deathHunter")
+    return r
+
+
+def hill_street():
+    r = Room("hill_street", "Castle Hill Street", 17, 0, 3, 2, seed=17)
+    r.ground(GY)
+    r.wall(0, GY, 1, r.H)
+    r.stairs(18, GY, 3)
+    r.wall(21, GY - 3, r.W, GY)
+    r.fill("terrain", 21, GY - 3, r.W, GY - 2, "cobble")
+    r.building(24, 16, GY - 3, floors=3, doors=("left", "right"), balconies=(1,), lit=0.5, climb="ladder")
+    r.stairs(44, GY - 3, 3)
+    r.wall(47, GY - 6, r.W, GY - 3)
+    r.fill("terrain", 47, GY - 6, r.W, GY - 5, "cobble")
+    r.building(52, 14, GY - 6, floors=3, doors=("left",), lit=0.4)
+    r.wall(r.W - 1, GY - 6, r.W, r.H)
+    r.street_props(0, 18, GY)
+    r.street_props(70, 90, GY - 6, every=10)
+    r.mark("enemy", 34, GY - 4, enemy="thrall")
+    r.mark("enemy", 78, GY - 7, enemy="deathHunter")
+    return r
+
+
+def bridge():
+    r = Room("danube_bridge", "The Danube Bridge", 20, 0, 4, 2, seed=18)
+    D = GY - 6                                               # deck surface row
+    r.fill("terrain", 0, r.H - 3, r.W, r.H - 1, "water")     # the river (hazard)
+    r.wall(0, r.H - 1, r.W, r.H)                             # riverbed
+    r.wall(0, D, 1, r.H)
+    for x0, x1 in ((0, 36), (40, 72), (76, 112)):
+        r.wall(x0, D, x1, D + 2)
+        r.fill("terrain", x0, D, x1, D + 1, "cobble")
+    for px in (14, 30, 54, 90):                              # piers down into the river
+        r.wall(px, D + 2, px + 4, r.H - 3)
+    for px in (18, 58, 86):                                  # scaffolding to climb back from the piers
+        r.platform(px, px + 4, D + 5)
+    r.wall(112, 0, r.W, r.H)                                 # the barred gatehouse at the far end
+    r.fill("facade", 112, D - 6, 116, D, "door")
+    r.street_props(2, 110, D, every=14)
+    r.mark("label", 104, D - 8, text="The way to the count's castle is barred.")
+    r.mark("enemy", 60, D - 1, enemy="deathHunter")
+    r.mark("enemy", 24, D - 1, enemy="thrall")
+    r.mark("enemy", 96, D - 1, enemy="thrall")
     return r
 
 
 def sewer_shaft():
-    r = Room("sewer_shaft", "Sewer Shaft", 9, 2, 1, 2, seed=15)
-    r.wall(0, 0, 4, r.H)
-    r.wall(8, 0, r.W, r.H)
-    r.fill("terrain", 8, 2, 26, r.H - 2, None)       # open shaft body
-    r.wall(0, r.H - 2, r.W, r.H)
-    r.wall(26, 0, r.W, r.H)
-    # zig-zag planks back up to the grate
-    for i, y in enumerate(range(r.H - 6, 1, -4)):
-        x0 = 10 if i % 2 == 0 else 16
+    r = Room("sewer_shaft", "Sewer Shaft", 11, 2, 1, 2, seed=15, sky=False)
+    r.wall(0, 0, r.W, r.H)
+    r.fill("terrain", 4, 0, 8, 3, None)                     # the grate opening above
+    r.fill("terrain", 3, 3, 26, r.H - 2, None)              # the shaft
+    for i, y in enumerate(range(r.H - 6, 3, -4)):
+        x0 = 6 if i % 2 == 0 else 14
         r.platform(x0, x0 + 8, y)
-    r.platform(4, 10, 2)
+    r.platform(3, 9, 3)
     r.fill("terrain", 12, r.H - 3, 20, r.H - 2, "spikes")
-    r.mark("lore", 22, r.H - 3, lore="hunter_warning")
-    r.mark("label", 16, r.H - 6, text="(the undercity continues in the next build)")
+    r.mark("lore", 22, r.H - 3, lore="ossuary_epitaph")
+    r.mark("label", 15, r.H - 7, text="(the undercity continues in the next build)")
     return r
 
 
 if __name__ == "__main__":
-    write([station(), old_town(), square(), cathedral_square(), sewer_shaft()], "src/data/rooms")
+    rooms = [station(), old_town(), clock_alley(), square(), cathedral_square(), hill_street(), bridge(), sewer_shaft()]
+    for r in rooms:
+        r.horizon = street_row(r)
+        if r.sky and r.id != "danube_bridge":
+            r.backstreet(1, r.W - 1, r.horizon)
+    write(rooms, "src/data/rooms")
+    raise SystemExit
+    write([station(), old_town(), clock_alley(), square(), cathedral_square(), hill_street(), bridge(), sewer_shaft()], "src/data/rooms")

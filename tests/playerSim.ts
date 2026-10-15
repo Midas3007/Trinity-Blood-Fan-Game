@@ -18,6 +18,8 @@ export interface SimInput {
   attack?: boolean;
   /** Stick held down (crouch). */
   down?: boolean;
+  /** Stick vertical, -1 up .. 1 down (overrides `down` when set). */
+  moveY?: number;
 }
 
 /**
@@ -44,6 +46,13 @@ export class SimPlayer implements PlayerContext {
   dodgePressed = false;
   ledgeX = Infinity;
   onOneway = false;
+  moveY = 0;
+  ladderHere = false;
+  ladderBelow = false;
+  climbing = false;
+  setClimbing(on: boolean): void {
+    this.climbing = on;
+  }
   drops = 0;
   dropThrough(): void {
     this.drops++;
@@ -109,6 +118,7 @@ export class SimPlayer implements PlayerContext {
     this.dodgePressed = input.dodge ?? false;
     this.attackPressed = input.attack ?? false;
     this.crouchHeld = input.down ?? false;
+    this.moveY = input.moveY ?? (this.crouchHeld ? 1 : 0);
 
     if (!this.onGround) this.airTopY = Math.min(this.airTopY, this.y);
     this.fallDistance = this.y - this.airTopY;
@@ -117,7 +127,7 @@ export class SimPlayer implements PlayerContext {
     if (this.onGround) this.airTopY = this.y;
 
     // Physics step.
-    const g = gravityFor(this.vy, this.tuning);
+    const g = this.climbing ? 0 : gravityFor(this.vy, this.tuning);
     this.vy = Math.min(this.vy + (g * DT) / 1000, this.tuning.maxFallSpeed);
     this.x += (this.vx * DT) / 1000;
     this.y += (this.vy * DT) / 1000;

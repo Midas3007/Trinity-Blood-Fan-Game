@@ -182,3 +182,15 @@
 | Lore stones show text while you stand at them | No extra button on mobile | Read button |
 | Vitest `fsModuleCache: false` | The module cache missed new files in `import.meta.glob` (rooms, sprite manifests) | Touching test files |
 | Region 1 = 13 rooms (owner: "a reasonably sized game") | Room generator makes rooms cheap; Region 2 (cathedral, Gyula's fortress) next | 4-room slice |
+
+## 2026-10-15 — World rebuilt as a grid of big rooms
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Rooms placed on a world grid of screens; open edges connect to whatever room is there | Blasphemous-style continuous world; the map screen falls out of it; no exit objects to keep in sync | Named exits per door |
+| Tile layers back / terrain / facade; facade fades per building interior | Buildings you can enter, as the owner asked, without separate interior rooms | Separate interior rooms |
+| Town assembled from parts (`tools/level/builder.py`) | Consistent architecture, fast to iterate; output stays Tiled-compatible | Hand-drawing every tile |
+| Tiles and sky/skyline/airships/lamps drawn in code; painted Higgsfield layers optional later | Free, palette-exact, matches the pixel style; AI is weak at tilesets | AI tilesets |
+| Ladders: stick up climbs (instead of jumping) when on a ladder; JUMP lets go | Touch-friendly, matches the existing stick-up-to-jump control | Separate climb button |
+| Stairs: automatic one-tile step-up while walking | Arcade physics has no slopes | Slopes |
+| Time of day (night/dusk/day) as a GameState value the story changes | Owner request | Real-time cycle |

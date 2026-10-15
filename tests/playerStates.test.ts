@@ -288,3 +288,31 @@ describe('crouch, slide and roll', () => {
     expect(t.rollHeight).toBeLessThan(t.height);
   });
 });
+
+describe('ladders', () => {
+  it('stick up at a ladder climbs instead of jumping; JUMP lets go; leaving the ladder ends the climb', () => {
+    const p = new SimPlayer();
+    p.run(5);
+    p.ladderHere = true;
+    p.step({ moveY: -1, jump: true }); // stick up counts as jump too
+    expect(p.state).toBe('climb');
+    p.run(30, { moveY: -1, jump: true });
+    expect(p.state).toBe('climb');
+    expect(p.vy).toBeLessThan(0);
+    expect(p.y).toBeLessThan(0);
+    p.run(5, { moveY: 0 });
+    expect(p.vy).toBe(0); // hangs still
+    p.step({ moveY: 0, jump: true }); // the JUMP button
+    expect(p.state).toBe('jump');
+    expect(p.climbing).toBe(false);
+  });
+
+  it('stick down above a ladder climbs down onto it', () => {
+    const p = new SimPlayer();
+    p.run(5);
+    p.ladderBelow = true;
+    p.step({ moveY: 1 });
+    expect(p.state).toBe('climb');
+  });
+});
+

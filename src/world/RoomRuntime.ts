@@ -7,6 +7,8 @@ import { Lever } from './Lever';
 import type { Exit, RoomData } from './tiled';
 
 const SPIKE_W = 8;
+const DEPTH_DECOR = 2;
+const DEPTH_GLOW = 31;
 const ALTAR_W = 20;
 const ALTAR_H = 10;
 const ALTAR_REACH = 14;
@@ -47,6 +49,8 @@ export class RoomRuntime {
     solids: Phaser.Physics.Arcade.StaticGroup,
     /** Live list of solid rectangles (posture checks); open gates are removed from it. */
     private readonly solidRects: Rect[],
+    /** 0..1 how strongly lamps glow (time of day). */
+    private readonly lampGlow = 0.5,
   ) {
     // Tile rooms draw spikes as tiles; object-only rooms get simple drawn spikes.
     if (!room.layers.terrain.length) for (const h of room.hazards) this.drawSpikes(h);
@@ -58,6 +62,7 @@ export class RoomRuntime {
       scene.add.rectangle(l.x, l.y - STONE_H / 2, STONE_W, STONE_H, COLORS.stone);
       scene.add.rectangle(l.x, l.y - STONE_H + 4, 4, 2, COLORS.spark); // glowing inscription
     }
+    for (const d of room.decor) this.drawDecor(d.item, d.x, d.y, d.h);
     for (const g of room.gates) {
       if (state.hasFlag(g.opens)) continue;
       const r = scene.add.rectangle(g.x + g.w / 2, g.y + g.h / 2, g.w, g.h, COLORS.stone);
@@ -67,6 +72,48 @@ export class RoomRuntime {
     }
     for (const l of room.levers) {
       this.levers.push(new Lever(scene, l.x, l.y, state.hasFlag(l.flag), () => this.open(l.flag)));
+    }
+  }
+
+  /** Simple pixel props; lights glow above the time-of-day overlay. */
+  private drawDecor(item: string, x: number, y: number, h: number): void {
+    const s = this.scene;
+    const glow = (gx: number, gy: number, r: number): void => {
+      if (this.lampGlow <= 0) return;
+      // Soft falloff: a few faint rings instead of one solid disc.
+      for (const [k, a] of [[1, 0.06], [0.7, 0.08], [0.45, 0.12], [0.22, 0.25]] as const) {
+        s.add.circle(gx, gy, r * k, 0xd9963a, this.lampGlow * a).setBlendMode(Phaser.BlendModes.ADD).setDepth(DEPTH_GLOW);
+      }
+    };
+    switch (item) {
+      case 'lamp': // gas street lamp
+        s.add.rectangle(x, y - 14, 2, 28, 0x1c1826).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y - 30, 6, 6, 0x251f30).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y - 30, 4, 4, this.lampGlow > 0 ? 0xe8c86a : 0x5c5464).setDepth(DEPTH_DECOR);
+        glow(x, y - 30, 26);
+        break;
+      case 'lantern': { // hanging from a chain of length h
+        const len = h || 24;
+        s.add.rectangle(x, y - len / 2, 1, len, 0x3b3444).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y + 3, 6, 8, 0x251f30).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y + 3, 4, 5, this.lampGlow > 0 ? 0xd9963a : 0x5c5464).setDepth(DEPTH_DECOR);
+        glow(x, y + 3, 20);
+        break;
+      }
+      case 'chain':
+        s.add.rectangle(x, y - (h || 48) / 2, 2, h || 48, 0x2e2836).setDepth(DEPTH_DECOR);
+        break;
+      case 'banner':
+        s.add.rectangle(x, y + 12, 10, 24, 0x6a1524).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y + 2, 4, 4, 0xc4a04a).setDepth(DEPTH_DECOR);
+        break;
+      case 'barrel':
+        s.add.rectangle(x, y - 6, 10, 12, 0x5a3618).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y - 9, 10, 1, 0x3b3444).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y - 3, 10, 1, 0x3b3444).setDepth(DEPTH_DECOR);
+        break;
+      default: // crate
+        s.add.rectangle(x, y - 6, 12, 12, 0x7a4a1e).setStrokeStyle(1, 0x3d2512).setDepth(DEPTH_DECOR);
     }
   }
 

@@ -95,6 +95,8 @@ export interface RoomData {
   solids: Rect[];
   /** Platforms you can jump up through and stand on. */
   oneways: Rect[];
+  /** Ladder columns. */
+  ladders: Rect[];
   hazards: Hazard[];
   exits: Exit[];
   gates: Gate[];
@@ -105,6 +107,12 @@ export interface RoomData {
   levers: { flag: string; x: number; y: number }[];
   labels: { x: number; y: number; text: string }[];
   lore: { id: string; x: number; y: number }[];
+  /** Props drawn in code: lamp, lantern, crate, barrel, banner, chain. */
+  decor: { item: string; x: number; y: number; h: number }[];
+  /** Open sky behind the room (false underground). */
+  outdoor: boolean;
+  /** Street level (px): skylines stand on it. */
+  horizon: number;
 }
 
 function props(o: { properties?: TiledProperty[] }): Record<string, string | number | boolean> {
@@ -148,6 +156,7 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
     interiorCount,
     solids: [...layer('solids').map(rect), ...mergeCells(terrain, cols, rows, (g) => tileKind(g) === 'solid')],
     oneways: mergeCells(terrain, cols, rows, (g) => tileKind(g) === 'oneway'),
+    ladders: mergeCells(terrain, cols, rows, (g) => tileKind(g) === 'ladder'),
     hazards: [
       ...layer('hazards').map((o) => ({ ...rect(o), damage: Number(props(o).damage ?? 20) })),
       ...mergeCells(terrain, cols, rows, (g) => tileKind(g) === 'spike').map((r) => ({ ...r, y: r.y + TILE / 2, h: r.h - TILE / 2, damage: 20 })),
@@ -169,6 +178,9 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
     levers: [],
     labels: [],
     lore: [],
+    decor: [],
+    outdoor: String(mp.sky ?? 'open') !== 'none',
+    horizon: Number(mp.horizon ?? rows * map.tileheight),
   };
   for (const o of layer('markers')) {
     const p = props(o);
@@ -193,6 +205,9 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
         break;
       case 'label':
         room.labels.push({ x: o.x, y: o.y, text: String(p.text ?? o.name ?? '') });
+        break;
+      case 'decor':
+        room.decor.push({ item: String(p.item ?? 'crate'), x: o.x, y: o.y, h: Number(p.h ?? 0) });
         break;
       case 'lore':
         if (!p.lore) fail(`lore marker ${o.id} needs a 'lore' property`);

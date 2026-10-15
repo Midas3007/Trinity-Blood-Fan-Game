@@ -58,6 +58,11 @@ export class Player implements PlayerContext, PlayerCombatant {
   dropMs = 0;
   /** Set by the scene each frame: standing on a one-way platform. */
   onOneway = false;
+  /** Set by the scene each frame: ladder overlapping the body / starting under the feet (its centre x). */
+  ladderX: number | null = null;
+  ladderBelowX: number | null = null;
+  /** Solid rectangles for stepping up stairs (set by the scene). */
+  stepSolids: readonly Rect[] = [];
 
   constructor(
     scene: Phaser.Scene,
@@ -253,6 +258,47 @@ export class Player implements PlayerContext, PlayerCombatant {
   }
 
   /** Crouched on the ground (prays at an altar). */
+  get moveY(): number {
+    return this.input.moveY;
+  }
+
+  get ladderHere(): boolean {
+    return this.ladderX !== null;
+  }
+
+  get ladderBelow(): boolean {
+    return this.ladderBelowX !== null;
+  }
+
+  setClimbing(on: boolean): void {
+    this.body.setAllowGravity(!on);
+    if (!on) return;
+    const x = this.ladderX ?? this.ladderBelowX;
+    if (x !== null) this.sprite.x = x;
+    if (this.ladderX === null && this.ladderBelowX !== null) {
+      // Climbing down from the top: step into the ladder below the platform.
+      this.sprite.y += this.tuning.stepUpMax;
+      this.dropMs = DROP_THROUGH_MS;
+    }
+    this.body.updateFromGameObject();
+    this.vy = 0;
+  }
+
+  /** Walking into a low ledge (a stair step): lift onto it if there is room. */
+  private stepUp(): void {
+    if (!this.onGround || this.moveX === 0) return;
+    const dir = this.moveX > 0 ? 1 : -1;
+    const blocked = dir > 0 ? this.body.blocked.right : this.body.blocked.left;
+    if (!blocked) return;
+    const w = this.tuning.width;
+    const lift = this.tuning.stepUpMax;
+    const ahead = centredRect(this.x + dir * 2, this.y - lift - 1, w - 2, this.height - 2);
+    if (this.stepSolids.some((s) => overlaps(ahead, s))) return;
+    this.sprite.y -= lift;
+    this.sprite.x += dir * 2;
+    this.body.updateFromGameObject();
+  }
+
   dropThrough(): void {
     this.dropMs = DROP_THROUGH_MS;
     this.body.setVelocityY(DROP_NUDGE);
@@ -311,6 +357,7 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.body.setGravityY(gravityFor(this.vy, this.tuning) - this.worldGravity);
 
     this.strength.tick(dtMs);
+    if (this.fsm.current === 'run' || this.fsm.current === 'idle') this.stepUp();
     this.dropMs = Math.max(0, this.dropMs - dtMs);
     this.blinkMs = Math.max(0, this.blinkMs - dtMs);
     const blinkOff = this.blinkMs > 0 && Math.floor(this.blinkMs / BLINK_MS) % 2 === 0;

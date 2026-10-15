@@ -53,60 +53,156 @@
   },
   {
    "gid": 9,
-   "name": "wallpaper",
-   "kind": "none",
-   "layer": "back"
+   "name": "ladder",
+   "kind": "ladder",
+   "layer": "terrain"
   },
   {
    "gid": 10,
-   "name": "back_window",
-   "kind": "none",
-   "layer": "back"
+   "name": "step",
+   "kind": "solid",
+   "layer": "terrain"
   },
   {
    "gid": 11,
-   "name": "beam",
-   "kind": "none",
-   "layer": "back"
+   "name": "water",
+   "kind": "spike",
+   "layer": "terrain"
   },
   {
    "gid": 12,
-   "name": "alley_wall",
+   "name": "back_house",
    "kind": "none",
    "layer": "back"
   },
   {
    "gid": 13,
-   "name": "plaster",
+   "name": "back_house_window",
    "kind": "none",
-   "layer": "facade"
+   "layer": "back"
   },
   {
    "gid": 14,
-   "name": "window_lit",
+   "name": "back_house_dark",
    "kind": "none",
-   "layer": "facade"
+   "layer": "back"
   },
   {
    "gid": 15,
-   "name": "window_dark",
+   "name": "back_roof_r",
    "kind": "none",
-   "layer": "facade"
+   "layer": "back"
   },
   {
    "gid": 16,
-   "name": "door",
+   "name": "back_roof_l",
    "kind": "none",
-   "layer": "facade"
+   "layer": "back"
   },
   {
    "gid": 17,
-   "name": "cornice",
+   "name": "plaster_ochre",
    "kind": "none",
    "layer": "facade"
   },
   {
    "gid": 18,
+   "name": "plaster_rose",
+   "kind": "none",
+   "layer": "facade"
+  },
+  {
+   "gid": 19,
+   "name": "plaster_blue",
+   "kind": "none",
+   "layer": "facade"
+  },
+  {
+   "gid": 20,
+   "name": "gothic_stone",
+   "kind": "solid",
+   "layer": "terrain"
+  },
+  {
+   "gid": 21,
+   "name": "gothic_face",
+   "kind": "none",
+   "layer": "facade"
+  },
+  {
+   "gid": 22,
+   "name": "lancet_top",
+   "kind": "none",
+   "layer": "facade"
+  },
+  {
+   "gid": 23,
+   "name": "lancet_mid",
+   "kind": "none",
+   "layer": "facade"
+  },
+  {
+   "gid": 24,
+   "name": "rose",
+   "kind": "none",
+   "layer": "facade"
+  },
+  {
+   "gid": 25,
+   "name": "wallpaper",
+   "kind": "none",
+   "layer": "back"
+  },
+  {
+   "gid": 26,
+   "name": "back_window",
+   "kind": "none",
+   "layer": "back"
+  },
+  {
+   "gid": 27,
+   "name": "beam",
+   "kind": "none",
+   "layer": "back"
+  },
+  {
+   "gid": 28,
+   "name": "alley_wall",
+   "kind": "none",
+   "layer": "back"
+  },
+  {
+   "gid": 29,
+   "name": "plaster",
+   "kind": "none",
+   "layer": "facade"
+  },
+  {
+   "gid": 30,
+   "name": "window_lit",
+   "kind": "none",
+   "layer": "facade"
+  },
+  {
+   "gid": 31,
+   "name": "window_dark",
+   "kind": "none",
+   "layer": "facade"
+  },
+  {
+   "gid": 32,
+   "name": "door",
+   "kind": "none",
+   "layer": "facade"
+  },
+  {
+   "gid": 33,
+   "name": "cornice",
+   "kind": "none",
+   "layer": "facade"
+  },
+  {
+   "gid": 34,
    "name": "plaster_dark",
    "kind": "none",
    "layer": "facade"

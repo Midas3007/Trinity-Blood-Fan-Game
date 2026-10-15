@@ -11,11 +11,12 @@ GID = {t["name"]: t["gid"] for t in TILES}
 
 
 class Room:
-    def __init__(self, rid, title, gx, gy, sw, sh, seed=1):
-        self.id, self.title, self.gx, self.gy = rid, title, gx, gy
+    def __init__(self, rid, title, gx, gy, sw, sh, seed=1, sky=True):
+        self.id, self.title, self.gx, self.gy, self.sky = rid, title, gx, gy, sky
         self.W, self.H = sw * SW, sh * SH
         self.L = {name: [[None] * self.W for _ in range(self.H)] for name in ("terrain", "back", "facade")}
         self.markers = []
+        self.horizon = self.H  # street row (tiles); skylines stand on it
         self.rng = random.Random(seed)
 
     # --- painting helpers ---
@@ -46,20 +47,33 @@ class Room:
     def platform(self, x0, x1, y, name="plank"):
         self.fill("terrain", x0, y, x1, y + 1, name)
 
+    def ladder(self, x, y0, y1):
+        """Ladder in column x from row y0 down to row y1-1 (put it just under the floor it leads up to)."""
+        self.fill("terrain", x, y0, x + 1, y1, "ladder")
+
+    def stairs(self, x, y, n, dir=1, depth=None):
+        """Stone stair rising n steps of one tile from ground row y, going right (dir=1) or left."""
+        for i in range(n):
+            cx = x + i * dir
+            self.fill("terrain", cx, y - i - 1, cx + 1, y if depth is None else y - i - 1 + depth, "step")
+
     def building(self, x, w, gy, floors, fh=6, doors=("left",), balconies=(), roof_overhang=1, chimneys=1, lit=0.5,
-                 upper_doors=()):
+                 upper_doors=(), climb="landing", hatch=True, plaster=None):
         """A house: brick side walls, plank floors with a half-landing (jump 64 px), flat roof, facade over the inside.
         doors: 'left'/'right' ground-floor openings; balconies: floor numbers (1 = first floor) with an outside balcony
         and an opening on the right wall; upper_doors: (floor, side) openings without balcony."""
         top = gy - floors * fh  # roof row
         x1 = x + w - 1
+        plaster = plaster or self.rng.choice(["plaster", "plaster", "plaster_ochre", "plaster_rose", "plaster_blue"])
+        # the whole front and back wall first (no gaps at floor lines), then details
+        self.fill("back", x + 1, top + 1, x1, gy, "wallpaper")
+        self.fill("facade", x + 1, top + 1, x1, gy, plaster)
         # interior back wall and facade
         for f in range(floors):
             fy0, fy1 = gy - (f + 1) * fh + 1, gy - f * fh
             self.fill("back", x + 1, fy0, x1, fy1, "wallpaper")
             for wx in range(x + 3, x1 - 1, 5):
                 self.put("back", wx, fy0 + 1, "back_window")
-            self.fill("facade", x + 1, fy0, x1, fy1, "plaster")
             for wx in range(x + 2, x1 - 1, 4):
                 self.put("facade", wx, fy0 + 1, "window_lit" if self.rng.random() < lit else "window_dark")
                 self.put("facade", wx, fy0 + 2, "plaster_dark")
@@ -67,16 +81,24 @@ class Room:
                 fy = gy - f * fh
                 self.platform(x + 1, x1, fy)
                 self.fill("back", x + 1, fy + 1, x1, fy + 2, "beam")
-            # half landing to reach the floor above (alternating sides)
-            if f < floors - 1:
-                ly = gy - f * fh - 3
-                lx = x + 2 if f % 2 == 0 else x1 - 6
-                self.platform(lx, lx + 4, ly)
+            # way up to the floor above: a half landing or a ladder (alternating sides)
+            if f < floors - 1 or hatch:
+                side_left = f % 2 == 0
+                if climb == "ladder" or f == floors - 1:
+                    lx = x + 2 if side_left else x1 - 2
+                    self.ladder(lx, gy - (f + 1) * fh + 1, gy - f * fh)
+                else:
+                    ly = gy - f * fh - 3
+                    lx = x + 2 if side_left else x1 - 6
+                    self.platform(lx, lx + 4, ly)
         self.fill("facade", x + 1, top + 1, x1, top + 2, "cornice")
         # walls and roof
         self.wall(x, top, x + 1, gy, "brick")
         self.wall(x1, top, x1 + 1, gy, "brick")
         self.wall(x - roof_overhang, top, x1 + 1 + roof_overhang, top + 1, "roof")
+        if hatch:  # trapdoor in the roof above the top-floor ladder
+            hx = x + 2 if (floors - 1) % 2 == 0 else x1 - 2
+            self.put("terrain", hx, top, "plank")
         for c in range(chimneys):
             cx = x + 2 + c * max(3, (w - 4) // max(1, chimneys))
             self.wall(cx, top - 2, cx + 2, top, "chimney")
@@ -95,6 +117,39 @@ class Room:
             self.platform(x1 + 1, x1 + 5, fy, "balcony")
         return top
 
+    def street_props(self, x0, x1, gy, every=12, lamp_offset=4):
+        """Gas lamps along a street, with the odd crate or barrel."""
+        for x in range(x0 + lamp_offset, x1, every):
+            self.mark("decor", x, gy - 1, item="lamp")
+            if self.rng.random() < 0.4:
+                self.mark("decor", x + 3, gy - 1, item=self.rng.choice(["crate", "barrel"]))
+
+    def backstreet(self, x0, x1, gy, hmin=6, hmax=13):
+        """A continuous row of houses behind the street (background only), with gabled tops and dim windows.
+        Fills only cells still empty in the back layer, so buildings in front keep their own interiors."""
+        x = x0
+        while x < x1:
+            w = self.rng.randint(5, 9)
+            h = self.rng.randint(hmin, hmax)
+            top = gy - h
+            for cx in range(x, min(x + w, x1)):
+                for y in range(top, gy):
+                    if self.L["back"][y][cx] is None:
+                        win = (cx - x) % 3 == 1 and (gy - y) % 3 == 2 and y < gy - 1
+                        name = "back_house"
+                        if win:
+                            name = "back_house_window" if self.rng.random() < 0.35 else "back_house_dark"
+                        self.put("back", cx, y, name)
+            # gable
+            for i in range((w + 1) // 2):
+                for cx, nm in ((x + i, "back_roof_r"), (x + w - 1 - i, "back_roof_l")):
+                    if x0 <= cx < x1 and self.L["back"][top - 1 - i][cx] is None:
+                        self.put("back", cx, top - 1 - i, nm)
+                for cx in range(x + i + 1, x + w - 1 - i):
+                    if x0 <= cx < x1 and self.L["back"][top - 1 - i][cx] is None:
+                        self.put("back", cx, top - 1 - i, "back_house")
+            x += w
+
     def alley_back(self, x0, x1, y0, y1):
         self.fill("back", x0, y0, x1, y1, "alley_wall")
 
@@ -104,6 +159,31 @@ class Room:
         self.markers.append((kind, x * T + T // 2, (y + 1) * T, name, props))
 
     # --- output ---
+    def cathedral(self, x, w, gy, h, towers=(), rose_at=None):
+        """A gothic church front: pale ashlar walls, buttresses, lancet windows, a rose window and towers.
+        Not enterable (a backdrop you climb on); towers are solid with ledges."""
+        top = gy - h
+        self.fill("facade", x, top, x + w, gy, "gothic_face")
+        self.wall(x, top, x + w, top + 1, "gothic_stone")                     # roof walk
+        for bx in range(x, x + w, 6):                                           # buttresses (climbable ledges)
+            self.wall(bx, top + 1, bx + 1, gy, "gothic_stone")
+            for ly in range(gy - 5, top + 1, -5):
+                self.platform(bx - 1, bx + 2, ly, "balcony")
+        for wx in range(x + 3, x + w - 2, 6):
+            self.put("facade", wx, top + 3, "lancet_top")
+            for y in range(top + 4, top + 8):
+                self.put("facade", wx, y, "lancet_mid")
+        if rose_at is not None:
+            self.put("facade", rose_at, top + 4, "rose")
+        for tx, tw, th in towers:
+            self.wall(tx, gy - th, tx + tw, gy - h, "gothic_stone")
+            self.fill("terrain", tx + 1, gy - th + 2, tx + tw - 1, gy - h, None)
+            self.fill("facade", tx + 1, gy - th + 2, tx + tw - 1, gy - h, "gothic_face")
+            for y in range(gy - th + 4, gy - h, 4):
+                self.put("facade", tx + tw // 2, y, "lancet_mid")
+            self.platform(tx, tx + tw, gy - th, "balcony")
+        return top
+
     def tmj(self):
         def data(layer):
             return [GID[c] if c else 0 for row in self.L[layer] for c in row]
@@ -126,7 +206,9 @@ class Room:
                               "tileheight": T, "tilecount": len(TILES), "columns": len(TILES), "imagewidth": T * len(TILES), "imageheight": T}],
                 "layers": layers,
                 "properties": [{"name": "title", "type": "string", "value": self.title},
-                               {"name": "gridX", "type": "int", "value": self.gx}, {"name": "gridY", "type": "int", "value": self.gy}]}
+                               {"name": "gridX", "type": "int", "value": self.gx}, {"name": "gridY", "type": "int", "value": self.gy},
+                               {"name": "sky", "type": "string", "value": "open" if self.sky else "none"},
+                               {"name": "horizon", "type": "int", "value": self.horizon * T}]}
 
 
 def write(rooms, out):

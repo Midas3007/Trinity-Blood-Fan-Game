@@ -31,6 +31,6 @@
     "dodge": {"anim":"abel_dodge"},
     "crouch": {"anim":"abel_crouch"},
     "slide": {"anim":"abel_slide"},
-    "crouchAttack": {"anim":"abel_crouch","frame":0}, "finisher": {"anim":"abel_{attack}"}
+    "crouchAttack": {"anim":"abel_crouch","frame":0}, "finisher": {"anim":"abel_{attack}"}, "climb": {"anim":"abel_jump","frame":0}
   }
 }

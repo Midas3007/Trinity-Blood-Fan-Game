@@ -1,0 +1,6 @@
+{
+  "_note": "Sky and light per time of day. Colours are Requiem 48 hex. overlay: colour multiplied over the world (null = none). The current time lives in GameState (default night; the story changes it).",
+  "night": { "skyTop": "0x0b0a10", "skyBottom": "0x32263e", "far": "0x1c1826", "mid": "0x14111c", "stars": true, "moon": true, "overlay": "0x8a8392", "lampGlow": 0.55 },
+  "dusk":  { "skyTop": "0x32263e", "skyBottom": "0xad2a3a", "far": "0x41324f", "mid": "0x241b2e", "stars": false, "moon": false, "overlay": "0xdcb39a", "lampGlow": 0.3 },
+  "day":   { "skyTop": "0x4f7c9e", "skyBottom": "0xbfe0ef", "far": "0x8a8392", "mid": "0x5c5464", "stars": false, "moon": false, "overlay": null, "lampGlow": 0 }
+}

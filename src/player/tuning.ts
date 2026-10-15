@@ -30,6 +30,10 @@ export interface PlayerTuning {
   crouchStickThreshold: number;
   /** Movement allowed while crouched only when there is no room to stand up. */
   crawlSpeed: number;
+  /** Ladder climbing speed (px/s). */
+  climbSpeed: number;
+  /** Highest ledge walked up automatically, e.g. a stair step (px). */
+  stepUpMax: number;
   slideSpeed: number;
   slideEndSpeed: number;
   slideDurationMs: number;

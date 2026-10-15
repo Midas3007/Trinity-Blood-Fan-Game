@@ -18,7 +18,8 @@ export type PlayerStateKey =
   | 'crouch'
   | 'slide'
   | 'crouchAttack'
-  | 'finisher';
+  | 'finisher'
+  | 'climb';
 
 /** Body posture for each state; the Player resizes its body to match. */
 export type Posture = 'stand' | 'roll' | 'low';
@@ -43,6 +44,14 @@ export interface PlayerContext {
   readonly crouchHeld: boolean;
   /** False when a ceiling is too low to stand up here. */
   readonly canStand: boolean;
+  /** Stick vertical (-1 up .. 1 down). */
+  readonly moveY: number;
+  /** A ladder overlaps the body (stick up grabs it). */
+  readonly ladderHere: boolean;
+  /** A ladder starts just under the feet (stick down climbs onto it). */
+  readonly ladderBelow: boolean;
+  /** Turn ladder mode on (snap to the ladder, no gravity) or off. */
+  setClimbing(on: boolean): void;
   /** Standing on a platform you can drop through. */
   readonly onOneway: boolean;
   /** Fall through the platform underfoot. */
@@ -80,9 +89,17 @@ function canDodge(ctx: PlayerContext): boolean {
   return ctx.dodgePressed && ctx.onGround && ctx.timers.dodgeCooldown === 0;
 }
 
-/** Shared ground logic, in priority order: jump, fall, attack, dodge, run/idle. */
+/** Stick pushed up/down far enough to grab a ladder. */
+const climbUp = (ctx: PlayerContext): boolean => ctx.ladderHere && ctx.moveY <= -ctx.tuning.crouchStickThreshold;
+const climbDown = (ctx: PlayerContext): boolean => ctx.ladderBelow && ctx.moveY >= ctx.tuning.crouchStickThreshold;
+
+/** Shared ground logic, in priority order: ladder, jump, fall, attack, dodge, run/idle. */
 function groundUpdate(ctx: PlayerContext, dtMs: number): PlayerStateKey {
   faceInput(ctx);
+  if (climbUp(ctx) || climbDown(ctx)) {
+    ctx.timers.consumeJump(); // stick up also means jump; on a ladder it means climb
+    return 'climb';
+  }
   ctx.vx = horizontalVelocity(ctx.vx, ctx.moveX, dtMs, false, ctx.tuning);
   if (ctx.timers.canJump && ctx.canStand) return 'jump';
   if (!ctx.onGround) return 'fall';
@@ -130,6 +147,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
   fall: {
     update(ctx, dtMs) {
       airControl(ctx, dtMs);
+      if (climbUp(ctx)) return 'climb'; // grab a ladder in mid-air
       if (ctx.timers.canJump) return 'jump'; // coyote jump after walking off a ledge
       if (ctx.onGround) return landingState(ctx);
       if (ctx.attackPressed) return 'airAttack';
@@ -228,6 +246,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       const crawl = ctx.canStand ? 0 : ctx.moveX * ctx.tuning.crawlSpeed;
       ctx.vx = approach(ctx.vx, crawl, (ctx.tuning.groundDecel * dtMs) / 1000);
       if (!ctx.onGround) return 'fall';
+      if (climbDown(ctx)) return 'climb';
       if (ctx.timers.canJump && ctx.onOneway) {
         // Stick down + jump on a plank floor: drop to the floor below.
         ctx.timers.consumeJump();
@@ -277,6 +296,28 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     },
     exit(ctx) {
       ctx.endFinisher();
+    },
+  },
+
+  climb: {
+    enter(ctx) {
+      ctx.setClimbing(true);
+      ctx.vx = 0;
+    },
+    update(ctx) {
+      ctx.vx = 0;
+      ctx.vy = Math.abs(ctx.moveY) < 0.3 ? 0 : Math.sign(ctx.moveY) * ctx.tuning.climbSpeed;
+      // JUMP lets go of the ladder; stick-up (which also counts as jump) just keeps climbing.
+      if (ctx.timers.jumpBuffer > 0) {
+        if (ctx.moveY > -0.3) return 'jump';
+        ctx.timers.consumeJump();
+      }
+      if (!ctx.ladderHere && !ctx.ladderBelow) return ctx.onGround ? 'idle' : 'fall';
+      if (ctx.onGround && ctx.moveY > 0.3 && !ctx.ladderBelow) return 'idle';
+      return undefined;
+    },
+    exit(ctx) {
+      ctx.setClimbing(false);
     },
   },
 

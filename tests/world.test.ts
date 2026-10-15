@@ -44,7 +44,7 @@ describe('rooms (Tiled maps)', () => {
   });
 
   it('detects open edges with no room behind them, and unreachable rooms', () => {
-    const { market_square: _gone, ...rest } = rooms;
+    const { clock_alley: _gone, ...rest } = rooms;
     expect(worldProblems(rest, START).join('\n')).toMatch(/old_town_lane: east edge is open but no room is there/);
     const far = { ...structuredClone(rooms.sewer_shaft!), id: 'far', gridX: 40 };
     expect(worldProblems({ ...rooms, far }, START).join('\n')).toMatch(/far cannot be reached/);
