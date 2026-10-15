@@ -235,3 +235,22 @@ class PlacePackValidateTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class KeyArtTests(unittest.TestCase):
+    def test_keyart_is_game_sized_and_palette_only(self):
+        import tempfile
+        from PIL import Image
+        from tools.spritegen import keyart
+        pal = Palette(np.array([[11, 10, 16], [212, 40, 62], [239, 234, 242]], np.uint8), "t.hex")
+        with tempfile.TemporaryDirectory() as d:
+            src = Path(d) / "src.png"
+            grad = np.zeros((400, 1000, 3), np.uint8)
+            grad[..., 0] = np.linspace(0, 255, 1000, dtype=np.uint8)[None, :]
+            Image.fromarray(grad).save(src)
+            out = keyart.convert(src, Path(d) / "out.png", pal, (48, 27))
+            img = np.asarray(Image.open(out).convert("RGB"))
+            self.assertEqual(img.shape, (27, 48, 3))
+            colours = {tuple(c) for c in img.reshape(-1, 3)}
+            self.assertTrue(colours <= {tuple(c) for c in pal.colours.tolist()})
+

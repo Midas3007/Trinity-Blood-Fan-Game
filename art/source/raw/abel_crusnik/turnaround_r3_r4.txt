@@ -1,0 +1,5 @@
+Crusnik turnaround r3/r4 — weapon correction (owner: one scythe in one hand, spiked chain attached to it in the other) — 2026-10-15
+r3 (ccf9997f, 2 credits, ref r2): REJECTED — model copied r2's two scythes.
+r4 (45823f11-5066-408c-a1c2-5b62c64a70d0, 2 credits, ref r2): phrased as an edit of r2 ("keep everything, change only the weapons"). APPROVED: one scythe + spiked centipede chain looping to the other hand.
+Approved (--expect 3 --ref-height 1122) at sprite_height 54.
+Lesson: to fix one detail of an existing design, write an edit instruction against that image, not a fresh brief.

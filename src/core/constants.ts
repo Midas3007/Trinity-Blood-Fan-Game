@@ -26,3 +26,6 @@ export const COLORS = {
 
 /** Max simultaneous touches Phaser tracks (stick + several buttons). */
 export const MAX_TOUCH_POINTERS = 5;
+
+/** Texture key of the title-screen painting. */
+export const TITLE_ART_KEY = 'titleArt';

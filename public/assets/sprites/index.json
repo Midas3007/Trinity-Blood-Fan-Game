@@ -435,9 +435,9 @@
       "pivot_y": 96,
       "sheet": "abel_crusnik_reference.png",
       "source_hashes": [
-        "sha256:55adc758339fe5fa825e18ed01f2da7af19106cf784b538c7e4dd19651303e12",
-        "sha256:79f4b8b71a5e9d8df583fa4691e3d6e0f80674139389a51cebbd289f824570a3",
-        "sha256:9ce6470171860de884ccdd82e17fd74e615ae276e6e5afe6198e64f5e29c66d8"
+        "sha256:5712aeaf65cc5004dc0b19d0bf2cdae88adb99c1751e723a58c76ee7588d8e9f",
+        "sha256:009616972d317d8adf850d5f9d355e1833b59daaed0ae0650d29e7159a41d131",
+        "sha256:318b5bb5bad417b84e299331020aa4f730fb5af0088bb0093fd81e66301e3e67"
       ]
     },
     "enemies/thrall/enemy_thrall_claw.png": {

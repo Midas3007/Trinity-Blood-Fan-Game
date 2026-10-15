@@ -25,7 +25,7 @@ Last updated: 2026-10-15
 - **Sprite pipeline spec tailored to the project:** `docs/sprite-pipeline.md` (original kept in `docs/references/sprite-pipeline-spec-original.md`). `CLAUDE.md` Part 6 now points to it. Five owner decisions listed in its §10.
 
 - **Sprite pipeline built** (`tools/spritegen`, `npm run sprites:*`): palette Requiem 48 (`art/palette/`), preview contact sheets, approve → build → validate, 18 Python unit tests, Vitest check that sprite timing matches `attacks.json`, GitHub Actions CI (`.github/workflows/ci.yml`).
-- **Higgsfield:** 25.75 of 104 credits used (78.25 left). Round 3 combined round 1's tails and round 2's hair; darker coat and lankier build applied in the pipeline (gamma 1.5, squeeze 0.88) instead of more credits.
+- **Higgsfield:** 31.75 of 104 credits used (72.25 left). Round 3 combined round 1's tails and round 2's hair; darker coat and lankier build applied in the pipeline (gamma 1.5, squeeze 0.88) instead of more credits.
 - Previously: Abel design round 1 (2 variants) and round 2 (1 image, brief rewritten from the owner's reference notes). Round 2 matches the costume and reads well at 40 px; face reads older and proportions aren't lanky enough.
 
 - **Abel's priest form is fully animated:** idle, run, jump, fall, hard landing, the three combo hits (wind-up + strike, timed to `attacks.json`), roll (tucked ball → kneeling recovery, 380 ms like the dodge), slide and crouch. Hurt and air attack borrow a frozen frame. 4 pose sheets (one redone) cost 10 credits.
@@ -45,12 +45,21 @@ Last updated: 2026-10-15
 - **Crusnik Abel redesigned** per owner: taller and gaunter (54 px vs 40 px priest), more Gothic, very pale grey-ivory skin (darker than his white hair), ragged wings.
 - Verified: 98/98 tests (finisher choice, strike timing, hold/release, strength buff, stagger recovery, player finisher state, art timing vs data), 19 sheets validate, build passes; headless browser: two hits staggered a thrall (18 HP), ATK played the revolver finisher (invulnerable), the shot killed it, back to idle, no errors.
 
+- **Title screen:** painted key art (priest Abel, revolver raised, giant gothic cross, red background) converted to our palette at 480×270 (`npm run`-free: `python3 -m tools.spritegen keyart`). Title "TRINITY BLOOD — Requiem for Rome" and the fan notice drawn in code on top.
+- **Crusnik weapon corrected** (owner): one scythe in one hand, a long spiked chain from it to the other hand. Planned Crusnik ranged attack: **scythe-chain lash** (creative direction §4).
+- **Cutscenes: decided** — animated in code with the game's sprites (owner choice), no AI stills.
+- Verified: 98/98 tests, 24/24 pipeline tests, 19 sheets valid, build passes; title screen screenshot checked, no errors.
+
 ## In progress
 - Nothing blocked.
 - Rest of the cast (next credit rounds, see `docs/sprite-pipeline.md`): Crusnik Abel, thrall, Methuselah, ghoul, fairy, Iron Choir, Marchesa, Dietrich, backgrounds.
 
 ## Blockers
 - None.
+
+## Owner must test (on phone) — title screen
+1. Open the game: painted red title with Abel and the cross; title text readable on the left; fan notice at the bottom.
+2. Tap → game starts as before.
 
 ## Owner must test (on phone) — revolver finisher
 1. Hit a thrall twice (ATK, ATK) and stop. It reels and a red diamond blinks above it.

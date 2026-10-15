@@ -35,7 +35,7 @@ Rome, during the anime, at night. Three connected areas:
 |---|---|---|
 | Silhouette | Very tall, thin, slightly stooped; long coat tails flaring when running; round glasses; long hair tied back | Same height, upright, hair loosened and lifted, coat torn into wing-like tatters; black wings when flying |
 | Clothing | Long black priest's coat / cassock, white collar, small cross | Same coat, darker, red-lit edges |
-| Weapon | Old revolver *(verify model from the anime)*; bare-handed strikes/coat sweeps as the basic melee | **Scythe** (dark-red, double-edged in the anime *(verify)*) |
+| Weapon | Old revolver *(verify model from the anime)*; bare-handed strikes/coat sweeps as the basic melee | **One** crimson scythe in one hand; a long spiked segmented **chain** runs from the scythe to the other hand (owner correction 2026-10-15). Close range: scythe swings. Range: the chain lashes the blade out. |
 | Palette | Charcoal coat with white/silver piping, pale skin, **silver** hair, cold blue eyes | Black/charcoal, **crimson** eyes, scythe and tendrils, black wings, white sash, pale-blue energy |
 | Proportions | ~9 heads tall (lanky); readable at small size by long legs and coat |
 | Distinguishing | Glasses glint; coat tails; cross | Red eyes; wings; scythe arc |
@@ -47,6 +47,7 @@ Rome, during the anime, at night. Three connected areas:
 | Revolver | Ranged shot, 6-round cylinder, reload in safe moments | ABIL (tap) | Start |
 | Melee (priest) | 3-hit combo, short reach | ATK | Start |
 | Crusnik 02 activation — 40% | Timed transformation: scythe combos, bigger hitboxes, faster; drains the **Crusnik meter** | ABIL (hold) | Region 1 boss |
+| Scythe-chain lash (owner request 2026-10-15) | Crusnik ranged attack: throws the scythe out on its spiked chain and yanks it back; hits everything along the line; pulls small enemies in | ATK while holding the stick forward (Crusnik) | With Crusnik 40% |
 | Revolver execution (owner request 2026-10-15) | Priest-form finisher: enemies stagger at half health; ATK in front of a staggered enemy draws and fires point-blank, killing it. Invulnerable while it plays | ATK on a staggered enemy | Start (built) |
 | Blood drain (Crusnik feeds on Methuselah; owner request 2026-10-15) | Crusnik-form finisher on staggered **Methuselah only** (human thralls are spared): heals and grants **strength** (×1.5 damage for 12 s); later also refills the Crusnik meter | ATK on a staggered Methuselah | With Crusnik 40% (logic built; playable when the form and a Methuselah enemy exist) |
 | Black wings | Double jump, then a short glide (hold JUMP) | JUMP in air | Region 1 boss reward (ability gate) |

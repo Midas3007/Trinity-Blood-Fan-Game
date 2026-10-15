@@ -94,6 +94,21 @@ def build(cfg_path: Path, entity: str | None) -> None:
         click.echo(line)
 
 
+@cli.command("keyart")
+@click.option("--input", "src", required=True, type=click.Path(exists=True, path_type=Path))
+@click.option("--out", required=True, type=click.Path(path_type=Path))
+@click.option("--size", default="480x270", help="Output size WxH (the game's internal resolution).")
+@click.option("--focus-x", default=0.5, help="Horizontal crop centre, 0..1, when the source is wider.")
+@click.option("--dither", default=12.0, help="Ordered-dither strength (0 = none).")
+@click.option("--palette", "pal_path", type=click.Path(exists=True, path_type=Path), default=DEFAULT_PALETTE)
+def keyart_cmd(src: Path, out: Path, size: str, focus_x: float, dither: float, pal_path: Path) -> None:
+    """Painted key art (title, cutscene stills) -> palette-locked image at game resolution."""
+    from .keyart import convert
+
+    w, h = (int(v) for v in size.lower().split("x"))
+    click.echo(f"wrote {convert(src, out, Palette.from_hex(pal_path), (w, h), focus_x, dither)}")
+
+
 @cli.command()
 @click.argument("root", type=click.Path(path_type=Path), default=Path("public/assets/sprites"))
 @click.option("--palette", "pal_path", type=click.Path(exists=True, path_type=Path), default=DEFAULT_PALETTE)

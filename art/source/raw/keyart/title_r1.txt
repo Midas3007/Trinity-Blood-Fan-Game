@@ -1,0 +1,5 @@
+Title key art r1 — 2026-10-15
+Tool: Higgsfield nano_banana_pro (job reports nano_banana_2), 2k, 16:9, 1 image, image reference: our priest turnaround d2348a6e. Cost: 2 credits.
+Job: c5cfe77c-35de-4fa5-8634-9cf39e4a6070 -> title_r1_c5cfe77c.png
+Brief (our words; owner's official references used as read-only mood notes, not attached): priest with raised revolver, giant ornate gothic iron cross, white sashes, rough blood-red painted background, empty left third for the title.
+Shipped: public/assets/ui/title.png via `spritegen keyart` (480x270, Requiem 48, dither 12).

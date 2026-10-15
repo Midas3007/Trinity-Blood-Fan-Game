@@ -131,3 +131,12 @@
 | Player is invulnerable during a finisher; the target is held in its stagger until the strike | No cheap hits during a committed animation; the target can't recover mid-shot | Interruptible finisher |
 | Shot feedback: muzzle flash + 1 px tracer (`ShotFlash`), larger hit-stop/shake than combo hits | Readable at phone size, cheap to draw | Particles/smoke sprites |
 | Crusnik form at 54 px | Owner asked twice for taller | 50 px |
+
+## 2026-10-15 — Title card, cutscenes, Crusnik weapon
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Title/key art: Higgsfield painting → `spritegen keyart` (crop, box downscale to 480×270, Requiem 48 with light dither); text drawn in code | Painted look the owner wanted, but palette-consistent and tiny (94 KB); text stays editable and sharp | Shipping the raw 2K painting |
+| Cutscenes animated in code with game sprites (owner choice) | Consistent with gameplay art, no credits, easy to edit | AI stills |
+| Crusnik weapon: one scythe + spiked chain to the other hand; adds a ranged chain-lash attack | Owner correction | Two scythes |
+| Fixing a detail of an existing design = an edit prompt against that image | A fresh brief with the old image as reference copied the old weapon (r3 wasted 2 credits) | Re-rolling |
