@@ -11,7 +11,7 @@ Last updated: 2026-10-15
 | 4 | First enemy | done (thrall + Death Hunter) |
 | 5 | Level slice | done: Istvan Old Town + Undercity, edge transitions, spikes/water, altars, lever-gate puzzles, room-graph test — **phone test pending** |
 | 6 | Art integration | in progress: Abel full set (incl. walk, climb, pray, drink), thrall, Death Hunter, title, HUD portrait, shaded tileset, altar + dove, cathedral front, painted house fronts/interiors/props, underground walls; left: NPCs, VFX, more enemies, cathedral interior |
-| 7 | Progression | in progress: holy-water flasks ✅, map ✅, altars/checkpoints ✅, pause ✅; left: save/load, Crusnik form + leap ability gate, chain lash, dialogue, Marchesa boss |
+| 7 | Progression | in progress: holy-water flasks ✅, map ✅, altars/checkpoints ✅, pause ✅, save/load ✅; left: Crusnik form + leap ability gate, chain lash, dialogue, Marchesa boss |
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
@@ -25,11 +25,19 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
   - The crypt spike pit was a pixel too wide to jump; it is now 3 tiles.
 - Verified here: type-check, build, 111/111 tests, all 11 underground/edge rooms load with no errors and spawn on solid ground; bot runs: crypt spikes → lever → well → alley; ossuary ladders → lever → gate flag.
 
+## Done (latest, cont.)
+- **Save/load:** autosaves on every room change, prayer and Return to title. Title shows **Continue** (resumes at your last altar, fully healed, levers and map kept) and **New game** (tap twice to erase). Corrupt or cut-off saves fall back to the previous one. Verified: 125/125 tests (round-trip, v1 migration, corrupt/future saves, full storage), browser: continue → right room, flags and altar; new game → station, save erased.
+
 ## In progress
-- Milestone 7: save/load next, then the Crusnik form + leap gate, then the Marchesa boss.
+- Character sprite texture pass (owner request), then the Crusnik form + leap gate, then the Marchesa boss.
 
 ## Blockers
 - None. Higgsfield: about 56 credits left.
+
+## Owner must test (on phone) — saving
+1. Play, walk through a few rooms, pull a lever. Close the app completely and reopen: title shows Continue / New game.
+2. Continue → you are at the last altar you prayed at (or the station), the lever is still pulled, the map remembers rooms.
+3. New game → tap once (it asks again), tap again → fresh start.
 
 ## Owner must test (on phone) — the Undercity
 1. Market Square → drop into the sewer grate → Sewer Shaft. West door → Hunter's Crypt; east door at the bottom → Water Tunnels.
@@ -45,4 +53,4 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 4. Pray at an altar: kneel, light beam, dove over his head, health and flasks refilled.
 
 ## Next step
-- Milestone 7: versioned save/load (localStorage), then Crusnik 40% form + leap ability that opens a blocked path, then the Marchesa boss in her ballroom.
+- Sprite texture pass, then Crusnik 40% form + leap ability that opens a blocked path, then the Marchesa boss in her ballroom.

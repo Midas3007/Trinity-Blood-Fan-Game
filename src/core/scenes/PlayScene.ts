@@ -38,6 +38,7 @@ import { PauseMenu } from '../../ui/PauseMenu';
 import { CornerButtons } from '../../ui/CornerButtons';
 import type { RoomData } from '../../world/tiled';
 import { gameState } from '../../systems/GameState';
+import { saveStore } from '../../systems/save/SaveStore';
 
 /** Long frames (tab switches, hitches) are clamped so timers and states don't jump. */
 const MAX_FRAME_MS = 50;
@@ -241,7 +242,10 @@ export class PlayScene extends Phaser.Scene {
     this.pauseMenu = new PauseMenu(
       this,
       () => this.setPaused(null),
-      () => this.scene.start(SCENES.menu),
+      () => {
+        saveStore.save(gameState.toSave(Date.now()));
+        this.scene.start(SCENES.menu);
+      },
     );
     new CornerButtons(this, () => this.setPaused(this.map.open ? null : 'map'), () => this.setPaused(this.pauseMenu.open ? null : 'pause'));
     this.input.keyboard?.on('keydown-M', () => this.setPaused(this.map.open ? null : 'map'));
@@ -466,6 +470,8 @@ export class PlayScene extends Phaser.Scene {
     gameState.hp = next.checkpoint === undefined && !this.player.health.dead ? this.player.health.hp : null;
     // Flasks carry over between rooms; praying and dying refill them.
     gameState.flasks = next.checkpoint === undefined && !this.player.health.dead ? this.player.flasks : null;
+    // Autosave on every room change and prayer (a loaded game resumes at the last altar).
+    saveStore.save(gameState.toSave(Date.now()));
     this.physics.world.pause();
     this.cameras.main.fadeOut(FADE_MS);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.restart(next));
@@ -477,7 +483,7 @@ export class PlayScene extends Phaser.Scene {
       time: this.game.loop.time,
       fps: this.game.loop.actualFps,
       room: this.roomData.id,
-      flags: gameState.toJSON().flags,
+      flags: gameState.toSave(0).flags,
       checkpoint: gameState.checkpoint,
       player: {
         state: p.state,

@@ -2,7 +2,8 @@ import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import times from '../data/timeOfDay.json';
 
-export type TimeOfDay = 'night' | 'dusk' | 'day';
+import type { TimeOfDay } from '../systems/GameState';
+export type { TimeOfDay };
 interface TimeLook {
   skyTop: string;
   skyBottom: string;

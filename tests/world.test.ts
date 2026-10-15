@@ -1,3 +1,4 @@
+import { decodeSave, encodeSave } from '../src/systems/save/saveFormat';
 import { describe, expect, it } from 'vitest';
 import { rooms, START } from '../src/world/rooms';
 import { worldProblems, reachable } from '../src/world/roomGraph';
@@ -68,16 +69,28 @@ describe('rooms (Tiled maps)', () => {
 });
 
 describe('GameState', () => {
-  it('keeps flags, checkpoint and health across a JSON round-trip', () => {
+  it('keeps flags, checkpoint, visited rooms and time through a save', () => {
     const s = new GameState();
     s.setFlag('crypt_gate');
     s.checkpoint = { room: 'undercity_hall', id: 'hall_altar' };
     s.hp = 55;
+    s.time = 'dusk';
     s.visit('undercity_hall');
-    const back = GameState.fromJSON(JSON.parse(JSON.stringify(s.toJSON())));
+    const back = new GameState();
+    back.load(decodeSave(encodeSave(s.toSave(123))));
     expect(back.hasFlag('crypt_gate')).toBe(true);
     expect(back.checkpoint).toEqual(s.checkpoint);
-    expect(back.hp).toBe(55);
+    expect(back.hp).toBeNull(); // a loaded game starts fully healed
+    expect(back.time).toBe('dusk');
     expect(back.hasVisited('undercity_hall')).toBe(true);
+  });
+
+  it('load(null) is a fresh game', () => {
+    const s = new GameState();
+    s.setFlag('x');
+    s.checkpoint = { room: 'a', id: 'b' };
+    s.load(null);
+    expect(s.hasFlag('x')).toBe(false);
+    expect(s.checkpoint).toBeNull();
   });
 });

@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import { COLORS, FAN_NOTICE, GAME_HEIGHT, GAME_WIDTH, SCENES, TITLE_ART_KEY } from '../constants';
+import { gameState } from '../../systems/GameState';
+import { saveStore } from '../../systems/save/SaveStore';
 
 /** Title block sits in the painting's empty left third. */
 const TITLE_X_WITH_ART = GAME_WIDTH * 0.26;
@@ -30,11 +32,6 @@ export class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    const prompt = this.add
-      .text(cx, GAME_HEIGHT * 0.6, 'Tap to begin', { fontFamily: 'monospace', fontSize: '10px', color: COLORS.text, ...stroke })
-      .setOrigin(0.5);
-    this.tweens.add({ targets: prompt, alpha: 0.3, duration: 900, yoyo: true, repeat: -1 });
-
     this.add
       .text(GAME_WIDTH / 2, GAME_HEIGHT - 14, FAN_NOTICE, {
         fontFamily: 'sans-serif',
@@ -46,7 +43,8 @@ export class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5, 1);
 
-    const start = (): void => {
+    const save = saveStore.load();
+    const begin = (fresh: boolean): void => {
       // Fullscreen needs a user gesture; ignore failures (e.g. iOS Safari does not support it).
       if (!this.scale.isFullscreen && this.sys.game.device.fullscreen.available) {
         try {
@@ -55,9 +53,35 @@ export class MenuScene extends Phaser.Scene {
           /* not allowed on this browser */
         }
       }
-      this.scene.start(SCENES.play);
+      if (fresh) saveStore.clear();
+      gameState.load(fresh ? null : save);
+      const cp = gameState.checkpoint;
+      // No checkpoint: PlayScene starts at the beginning of the game (or the ?test room).
+      this.scene.start(SCENES.play, cp ? { room: cp.room, checkpoint: cp.id } : undefined);
     };
-    this.input.once(Phaser.Input.Events.POINTER_UP, start);
-    this.input.keyboard?.once('keydown', start);
+
+    const itemStyle = { fontFamily: 'serif', fontSize: '12px', color: COLORS.text, ...stroke };
+    if (!save) {
+      const prompt = this.add.text(cx, GAME_HEIGHT * 0.6, 'Tap to begin', { ...itemStyle, fontFamily: 'monospace', fontSize: '10px' }).setOrigin(0.5);
+      this.tweens.add({ targets: prompt, alpha: 0.3, duration: 900, yoyo: true, repeat: -1 });
+      this.input.once(Phaser.Input.Events.POINTER_UP, () => begin(true));
+      this.input.keyboard?.once('keydown', () => begin(true));
+      return;
+    }
+    // A save exists: Continue, or New game (tap twice, so a stray tap never wipes progress).
+    const cont = this.add.text(cx, GAME_HEIGHT * 0.58, 'Continue', { ...itemStyle, fontSize: '14px' }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    this.tweens.add({ targets: cont, alpha: 0.5, duration: 900, yoyo: true, repeat: -1 });
+    const fresh = this.add.text(cx, GAME_HEIGHT * 0.58 + 24, 'New game', { ...itemStyle, color: COLORS.textDim }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    let armed = false;
+    cont.once(Phaser.Input.Events.POINTER_UP, () => begin(false));
+    fresh.on(Phaser.Input.Events.POINTER_UP, () => {
+      if (armed) return begin(true);
+      armed = true;
+      fresh.setText('Tap again: erase save').setColor(COLORS.text);
+    });
+    this.input.keyboard?.on('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') begin(false);
+      if (e.key.toLowerCase() === 'n') begin(true);
+    });
   }
 }

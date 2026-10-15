@@ -204,3 +204,11 @@
 | Ladders through floors always have a plank (or ledge) on the floor row above the ladder | One rule for "ladder top" makes climbing out reliable | Special cases per room |
 | Climbing snaps to the ladder centre and resets Arcade's previous position | Otherwise the snap was undone next step and the body snagged in 1-tile shafts | Wider shafts everywhere |
 | Crossing a room edge keeps the feet inside the new room | Climbing up through a floor edge must land on the ladder below the new room's floor | Spawn offset per edge |
+
+## 2026-10-15 — Save/load
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| One localStorage slot, versioned (v2) with migration from v1, plus a backup of the previous good save | Phones kill tabs; a cut-off write must not lose progress | IndexedDB (overkill for a few hundred bytes) |
+| Autosave on every room change, prayer and "Return to title"; a loaded game resumes at the last altar at full health | Blasphemous resumes at the last prie-dieu; saving levers/map on every room means a killed tab loses almost nothing | Save only at altars |
+| "New game" over an existing save needs two taps | A stray tap must never wipe progress | Confirm dialog |

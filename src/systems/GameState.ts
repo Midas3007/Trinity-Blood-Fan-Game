@@ -1,16 +1,12 @@
+import { SAVE_VERSION, type SaveData } from './save/saveFormat';
+
 /** Where the player prays and respawns. */
 export interface CheckpointRef {
   room: string;
   id: string;
 }
 
-export interface GameStateData {
-  version: 1;
-  hp: number;
-  checkpoint: CheckpointRef | null;
-  flags: string[];
-  visited: string[];
-}
+export type TimeOfDay = 'night' | 'dusk' | 'day';
 
 /**
  * Progress that survives room changes (and, in Milestone 7, save/load). Pure; no Phaser.
@@ -19,7 +15,7 @@ export interface GameStateData {
 export class GameState {
   hp: number | null = null;
   /** Time of day in the world (the story changes it). */
-  time: 'night' | 'dusk' | 'day' = 'night';
+  time: TimeOfDay = 'night';
   /** Holy water flasks left (null = full; refilled when praying at an altar). */
   flasks: number | null = null;
   checkpoint: CheckpointRef | null = null;
@@ -42,17 +38,21 @@ export class GameState {
     return this.visited.has(room);
   }
 
-  toJSON(): GameStateData {
-    return { version: 1, hp: this.hp ?? -1, checkpoint: this.checkpoint, flags: [...this.flags], visited: [...this.visited] };
+  /** What a save keeps: progress, not health (a loaded game starts at the last altar, fully healed). */
+  toSave(now: number): SaveData {
+    return { version: SAVE_VERSION, checkpoint: this.checkpoint, flags: [...this.flags], visited: [...this.visited], time: this.time, savedAt: now };
   }
 
-  static fromJSON(d: GameStateData): GameState {
-    const s = new GameState();
-    s.hp = d.hp >= 0 ? d.hp : null;
-    s.checkpoint = d.checkpoint;
-    d.flags.forEach((f) => s.setFlag(f));
-    d.visited.forEach((v) => s.visit(v));
-    return s;
+  /** Replace everything with a loaded save, or a fresh game (null). */
+  load(d: SaveData | null): void {
+    this.hp = null;
+    this.flasks = null;
+    this.flags.clear();
+    this.visited.clear();
+    this.checkpoint = d?.checkpoint ?? null;
+    this.time = d?.time ?? 'night';
+    d?.flags.forEach((f) => this.setFlag(f));
+    d?.visited.forEach((v) => this.visit(v));
   }
 }
 
