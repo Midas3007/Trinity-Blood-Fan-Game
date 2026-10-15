@@ -91,3 +91,12 @@
 | Owner's official reference images are read-only notes: never attached to AI tools, never committed | CLAUDE.md Part 6; avoids copying official art | Using them as image references |
 | Abel's coat is charcoal with white piping (from the references) | Matches the character and fixes 40 px readability (near-black coat vanished in preview) | Pure black + heavy shadow lift |
 | Committed sprite inputs are small approved crops; raw 2K generations are gitignored with job-id sidecars | "Never commit large binaries" (CLAUDE.md Part 2) | Git LFS |
+
+## 2026-10-15 — Real sprites in the game (early art integration)
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Owner: "take charge, don't ask for permission, just report" | Owner instruction | — |
+| Pipeline writes `public/assets/sprites/index.json`; `BootScene` loads it, then each sheet, and builds Phaser animations from the manifests | No imports from `public/`; adding sheets needs no code change | Hard-coded loader list |
+| `PlayerView` draws the sprite at the physics body's feet (origin bottom-centre, whole pixels, mirrored for facing); the Arcade rectangle stays the collision body | Art never changes collision; placeholder fallback if sheets fail to load | Sprite as physics body |
+| `src/data/playerAnimations.json` maps states to animations; states without art borrow a frozen frame, low postures show the placeholder | Playable now, filled in as pose sets arrive | Wait for every pose |

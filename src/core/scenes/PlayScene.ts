@@ -153,7 +153,7 @@ export class PlayScene extends Phaser.Scene {
     }
     this.debug.drawHitboxes(boxes);
     this.debug.update({
-      state: `${this.player.state}${this.player.invulnerable ? ' INV' : ''}`,
+      state: `${this.player.state}${this.player.invulnerable ? ' INV' : ''} [${this.player.view.label}]`,
       vel: `${this.player.vx.toFixed(0)},${this.player.vy.toFixed(0)}`,
       x: this.player.x,
       y: this.player.y,
@@ -177,6 +177,7 @@ export class PlayScene extends Phaser.Scene {
         invulnerable: p.invulnerable,
         facing: p.facing,
         height: p.bodyHeight,
+        view: p.view.label,
       },
       enemies: this.enemies.active.map((e) => ({ type: e.cfg.type, state: e.state, x: e.x, y: e.y, hp: e.health.hp })),
       dummies: this.dummies.map((d) => ({ x: d.x, hp: d.health.hp, alive: d.alive })),

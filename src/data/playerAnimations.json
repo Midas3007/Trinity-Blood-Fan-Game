@@ -1,0 +1,18 @@
+{
+  "_note": "Which sprite animation each player state shows. 'frame' freezes one frame (for states without their own art yet). null = show the placeholder rectangle (used where the body is shorter than the art: crouch, slide, roll). Update as new pose sets are built.",
+  "entity": "abel",
+  "states": {
+    "idle": { "anim": "abel_idle" },
+    "run": { "anim": "abel_run" },
+    "jump": { "anim": "abel_run", "frame": 3 },
+    "fall": { "anim": "abel_run", "frame": 1 },
+    "hardLand": { "anim": "abel_run", "frame": 1 },
+    "attack": { "anim": "abel_idle", "frame": 0 },
+    "airAttack": { "anim": "abel_run", "frame": 3 },
+    "hurt": { "anim": "abel_idle", "frame": 0 },
+    "dodge": null,
+    "crouch": null,
+    "slide": null,
+    "crouchAttack": null
+  }
+}

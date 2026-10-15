@@ -7,6 +7,8 @@ import numpy as np
 import yaml
 from PIL import Image
 
+import json
+
 from . import approve, cleanup, crop, downscale, ingest, manifest, outline, overrides, pack, quantize, tone
 from .palette import Palette
 
@@ -29,6 +31,22 @@ def frame_from_crop(crop_img: np.ndarray, pal: Palette, opts: dict, cell: tuple[
     padded = np.zeros((small.shape[0] + 2, small.shape[1] + 2, 4), dtype=np.uint8)
     padded[1:-1, 1:-1] = small
     return crop.place(padded, cell, lift=int(opts.get("lift", 0)))
+
+
+SPRITES_ROOT = Path("public/assets/sprites")
+
+
+def write_index(root: Path = SPRITES_ROOT) -> Path:
+    """One file the game loads at startup: every shipped manifest, keyed by sheet path relative to `root`."""
+    entries = {}
+    for m in sorted(root.rglob("*.json")):
+        if m.name == "index.json":
+            continue
+        data = json.loads(m.read_text())
+        entries[str(m.with_suffix(".png").relative_to(root))] = data
+    out = root / "index.json"
+    out.write_text(json.dumps({"sheets": entries}, indent=2, sort_keys=True) + "\n")
+    return out
 
 
 def build_all(cfg_path: Path, only: str | None = None) -> list[str]:
@@ -68,4 +86,6 @@ def build_all(cfg_path: Path, only: str | None = None) -> list[str]:
             m = manifest.build(f"{name}.png", entity, anim, cell, cols, len(frames), acfg or {}, Path(opts["palette"]).name, hashes)
             manifest.write(out_dir / f"{name}.json", m)
             log.append(f"built {out_dir / name}.png ({len(frames)} frames{', overrides: ' + ', '.join(applied) if applied else ''})")
+    if SPRITES_ROOT.exists():
+        log.append(f"wrote {write_index()}")
     return log

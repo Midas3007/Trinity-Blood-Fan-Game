@@ -50,7 +50,7 @@ def validate_sheet(png: Path, pal: Palette) -> tuple[list[str], Counter]:
 
 def validate_dir(root: Path, pal: Palette) -> tuple[list[str], dict[str, Counter]]:
     problems, hists = [], {}
-    for png in sorted(root.rglob("*.png")):
+    for png in sorted(root.rglob("*.png")):  # index.json is not a sheet manifest and has no PNG
         p, hist = validate_sheet(png, pal)
         problems += p
         hists[str(png.relative_to(root))] = hist

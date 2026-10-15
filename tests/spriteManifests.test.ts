@@ -22,7 +22,10 @@ interface Manifest {
 }
 
 // Every manifest shipped under public/assets/sprites (none until the first sheets are built).
-const found = import.meta.glob<Manifest>('/public/assets/sprites/**/*.json', { eager: true, import: 'default' });
+const found = import.meta.glob<Manifest>(['/public/assets/sprites/**/*.json', '!**/index.json'], {
+  eager: true,
+  import: 'default',
+});
 
 const timeBefore = (a: Anim, frame: number): number => a.durations_ms.slice(0, frame).reduce((s, d) => s + d, 0);
 

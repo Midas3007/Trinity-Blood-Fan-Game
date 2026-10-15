@@ -13,6 +13,7 @@ import { PlayerTimers } from './PlayerTimers';
 import { gravityFor } from './movement';
 import { playerStates, postureFor, type PlayerContext, type PlayerStateKey, type Posture } from './playerStates';
 import { playerTuning, type PlayerTuning } from './tuning';
+import { PlayerView } from './PlayerView';
 
 const INVULNERABLE_ALPHA = 0.45;
 /** Blink period while invulnerable after being hurt (ms). */
@@ -36,6 +37,7 @@ export class Player implements PlayerContext, PlayerCombatant {
   private blinkMs = 0;
   private readonly fsm: StateMachine<PlayerStateKey, PlayerContext>;
   private readonly facingMark: Phaser.GameObjects.Rectangle;
+  readonly view: PlayerView;
 
   constructor(
     scene: Phaser.Scene,
@@ -56,6 +58,7 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.body.setMaxVelocityY(t.maxFallSpeed);
     this.airTopY = y;
     this.fsm = new StateMachine(playerStates, 'idle', this as PlayerContext);
+    this.view = new PlayerView(scene, this.sprite, this.facingMark);
   }
 
   get state(): PlayerStateKey {
@@ -215,7 +218,9 @@ export class Player implements PlayerContext, PlayerCombatant {
 
     this.blinkMs = Math.max(0, this.blinkMs - dtMs);
     const blinkOff = this.blinkMs > 0 && Math.floor(this.blinkMs / BLINK_MS) % 2 === 0;
-    this.sprite.setAlpha(blinkOff ? 0.2 : this.invulnerable ? INVULNERABLE_ALPHA : 1);
+    const alpha = blinkOff ? 0.2 : this.invulnerable ? INVULNERABLE_ALPHA : 1;
+    this.sprite.setAlpha(alpha);
     this.facingMark.setPosition(this.sprite.x + this.facing * (this.tuning.width / 2 - 2), this.sprite.y - this.height / 2 + 7);
+    this.view.update(this.fsm.current, this.sprite.x, this.feetY, this.facing, alpha);
   }
 }

@@ -28,6 +28,8 @@ Last updated: 2026-10-15
 - **Higgsfield:** 8 of 104 credits used (96 left). Round 3 combined round 1's tails and round 2's hair; darker coat and lankier build applied in the pipeline (gamma 1.5, squeeze 0.88) instead of more credits.
 - Previously: Abel design round 1 (2 variants) and round 2 (1 image, brief rewritten from the owner's reference notes). Round 2 matches the costume and reads well at 40 px; face reads older and proportions aren't lanky enough.
 
+- **Abel's real sprites are in the game:** idle and run animate; he faces left/right; jump/fall/attack/hurt borrow a frozen frame until their poses exist; crouch, slide and roll still show the placeholder rectangle (their bodies are shorter). Verified in the browser; 78/78 tests.
+
 ## In progress
 - Waiting for the owner's phone test of Milestones 2–4 (feel and comfort can't be judged here).
 
