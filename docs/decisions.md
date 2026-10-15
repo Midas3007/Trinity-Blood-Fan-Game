@@ -162,3 +162,11 @@
 | lowHeight 15→22, rollHeight 20→26, test beam gap 18→24 | Bodies now match the art (crouch 24, roll ball 18–25), so art never draws into ceilings | Shrinking the art |
 | Crusnik 40% = 80% art with wings erased in code (polygon on dark-grey pixels + keep largest island) | Owner: 40% has no wings; saves credits | New generation |
 | Cutscenes: code-animated manga panels; plot from an arc in both manga and anime; original dialogue | Owner choice; CLAUDE.md forbids verbatim dialogue | AI stills; verbatim excerpts |
+
+## 2026-10-15 — Main plot and dialogue
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Main plot adapts the Istvan arc (owner approved) | Exists in both manga and anime: enough source material; owner wants it to look like the source | Original "Requiem for Rome" |
+| Dialogue: original lines in character, following the source's beats; no verbatim script | Copying the script risks copyright problems even for a non-commercial fan game; CLAUDE.md Part 6 | Verbatim dialogue (owner offered, deferred to our judgement) |
+| Build id moved from the title screen to the debug overlay | Owner request | — |

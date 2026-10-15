@@ -4,7 +4,19 @@
 
 ---
 
-## Premise (1–3 sentences)
+## Main plot — UPDATED 2026-10-15 (owner approved): adapt the Istvan arc
+
+The owner chose to follow a storyline that exists in **both the manga and the anime**, so the game looks and plays like the source. This replaces "Requiem for Rome" as the main plot; its designs (thralls, Death Hunters, the Marchesa, Dietrich as puppeteer) are reused where they fit. Details below are from memory and marked **(verify)** until checked against the source.
+
+- **Setting:** the city of **Istvan**, a human city long ruled by a Methuselah count and only recently freed; tense, shadowed streets, cathedral, underground passages. Gothic Central-European architecture. *(verify)*
+- **Esther Blanchett**: a young nun of the cathedral who secretly fights with the city's human resistance. Abel arrives on a Vatican mission and is drawn into her struggle. *(verify)*
+- **Dietrich von Lohengrin**: appears as a friendly member of the resistance; actually a Rosenkreuz agent pulling everyone's strings. Matches our puppeteer design. *(verify)*
+- **Gyula Kádár**: the Methuselah lord behind the threat, driven by grief over his lost human-hating past / his dead wife, who means to use the ancient weapon called the **"Star of Sorrow"** to destroy the city. Final boss. *(verify)*
+- **Climax:** Abel reveals the Crusnik (40%) to stop Gyula; Esther sees what he is and must decide what she believes. Ending: Esther leaves Istvan for Rome with Abel. *(verify)*
+- **Game mapping (draft):** Region 1 = Istvan undercity and catacombs (thralls, Death Hunters; boss: the Marchesa as Gyula's servant), Region 2 = the cathedral and the count's fortress (Dietrich's traps; boss: Gyula Kádár; scripted Crusnik moment). Title subtitle may change from "Requiem for Rome" when the script is written.
+- **Dialogue:** original lines written in each character's voice, following the source's events and emotional beats; no copied script (copyright, CLAUDE.md Part 6).
+
+## Premise (1–3 sentences) — original side story, now superseded by the section above
 
 **"Requiem for Rome"** — an original side story set in Rome during the anime's run. A Rosenkreuz Orden operative, Dietrich von Lohengrin ("the Puppeteer"), turns the catacombs beneath the Vatican and a ruined quarter of the old city into a trap, filling them with puppeted thralls. His goal is to force Abel to reveal the Crusnik in front of witnesses and turn the Vatican against its own agent, breaking AX and pushing Rome toward war with the Empire.
 
