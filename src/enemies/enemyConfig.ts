@@ -28,6 +28,8 @@ export interface EnemyConfig {
   staggerBelowFraction: number;
   staggerMs: number;
   drainable: boolean;
+  /** Draw the red puppet string above the head (string-bound thralls). */
+  puppetString: boolean;
   knockbackTaken: number;
   interruptibleDuringActive: boolean;
   deathMs: number;

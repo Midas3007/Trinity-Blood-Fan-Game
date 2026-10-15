@@ -1,0 +1,6 @@
+Death Hunter pose sheet r1 — 2026-10-15
+Tool: Higgsfield nano_banana_pro (job reports nano_banana_2), 2k, 21:9, 1 image, no image reference. Cost: 2 credits.
+Job: ec9af160-1b5d-459a-9730-3a393e4bd8ba -> poses_r1_ec9af160.png
+Design (our words, from owner's screenshot notes; screenshots not attached): ragged slate-grey hooded cloak, gunmetal mask with round red lenses and breathing hose, long-handled broad axe, low feral stance.
+Approved (--expect 7 --ref-height 973): 0 idle, 1-2 run, 3-4 chop (wind-up, strike), 5 hurt, 6 collapse (anchor: centre).
+Notes: chop strike is soft (axe not fully down); hurt pose drawn mid-air.

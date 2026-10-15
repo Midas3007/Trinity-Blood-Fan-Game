@@ -25,7 +25,7 @@ interface Manifest {
   animations: Record<string, Anim>;
 }
 
-// Every manifest shipped under public/assets/sprites (none until the first sheets are built).
+// Every manifest shipped under public/assets/sprites (player and enemies).
 const found = import.meta.glob<Manifest>(['/public/assets/sprites/**/*.json', '!**/index.json'], {
   eager: true,
   import: 'default',

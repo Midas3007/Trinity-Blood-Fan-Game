@@ -230,7 +230,7 @@ export class Enemy implements EnemyContext, Damageable, FinisherTarget {
     }
     this.sprite.setVisible(!shown).setFillStyle(color);
     if (!shown && state === 'dead') this.sprite.setAlpha(fade).setScale(1, Math.max(0.2, fade));
-    this.string.setPosition(this.x, top).setVisible(state !== 'dead');
+    this.string.setPosition(this.x, top).setVisible(this.cfg.puppetString && state !== 'dead');
     this.mark.setPosition(this.x, top - ALERT_MARK_OFFSET).setVisible(state === 'alert');
     const blinkOn = Math.floor(this.staggerBlinkMs / STAGGER_BLINK_MS) % 2 === 0;
     this.staggerMark.setPosition(this.x, top - ALERT_MARK_OFFSET).setVisible(state === 'staggered' && blinkOn);
@@ -241,7 +241,7 @@ export class Enemy implements EnemyContext, Damageable, FinisherTarget {
   private setActive(on: boolean): void {
     this.sprite.setVisible(on);
     this.body.enable = on;
-    this.string.setVisible(on);
+    this.string.setVisible(on && this.cfg.puppetString);
     this.mark.setVisible(false);
     this.bar.setVisible(false);
     this.staggerMark.setVisible(false);

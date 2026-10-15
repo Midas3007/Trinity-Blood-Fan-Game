@@ -1,0 +1,16 @@
+{
+  "source": "poses_r1_ec9af160.png",
+  "source_hash": "sha256:a8006d04d3274be8c9bf04561ed0f9cdfc331f71685ac5b66ce12d95a85afa3f",
+  "figures": [
+    1,
+    2
+  ],
+  "standing_px": 973,
+  "factor": 0.279548,
+  "open_px": 0,
+  "expected": 7,
+  "outputs": [
+    "poses_r1_ec9af160_f1.png",
+    "poses_r1_ec9af160_f2.png"
+  ]
+}

@@ -140,3 +140,10 @@
 | Cutscenes animated in code with game sprites (owner choice) | Consistent with gameplay art, no credits, easy to edit | AI stills |
 | Crusnik weapon: one scythe + spiked chain to the other hand; adds a ranged chain-lash attack | Owner correction | Two scythes |
 | Fixing a detail of an existing design = an edit prompt against that image | A fresh brief with the old image as reference copied the old weapon (r3 wasted 2 credits) | Re-rolling |
+
+## 2026-10-15 — Death Hunter
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Death Hunter = the first Methuselah enemy (`drainable: true`), built on the melee-walker states with its own data | Covers the owner's Death Hunters and gives the blood drain a target without new behaviour code | Separate Methuselah noble first |
+| Vitest caches transformed test files by content: after adding sprite sheets, the `import.meta.glob` manifest test may need a touch of the test file locally | Found while adding the hunter; CI starts clean so it is unaffected | — |

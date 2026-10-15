@@ -1,13 +1,57 @@
 {
   "_note": "Which sprite animation each enemy state shows, per enemy type. 'frame' freezes one frame; 'timeScale' plays faster (>1) or slower. A missing type or state shows the placeholder rectangle.",
   "thrall": {
-    "idle": { "anim": "enemy_thrall_idle" },
-    "patrol": { "anim": "enemy_thrall_walk" },
-    "alert": { "anim": "enemy_thrall_idle" },
-    "pursue": { "anim": "enemy_thrall_walk", "timeScale": 1.9 },
-    "attack": { "anim": "enemy_thrall_claw" },
-    "hurt": { "anim": "enemy_thrall_hurt" },
-    "staggered": { "anim": "enemy_thrall_hurt" },
-    "dead": { "anim": "enemy_thrall_collapse" }
+    "idle": {
+      "anim": "enemy_thrall_idle"
+    },
+    "patrol": {
+      "anim": "enemy_thrall_walk"
+    },
+    "alert": {
+      "anim": "enemy_thrall_idle"
+    },
+    "pursue": {
+      "anim": "enemy_thrall_walk",
+      "timeScale": 1.9
+    },
+    "attack": {
+      "anim": "enemy_thrall_claw"
+    },
+    "hurt": {
+      "anim": "enemy_thrall_hurt"
+    },
+    "staggered": {
+      "anim": "enemy_thrall_hurt"
+    },
+    "dead": {
+      "anim": "enemy_thrall_collapse"
+    }
+  },
+  "deathHunter": {
+    "idle": {
+      "anim": "enemy_death_hunter_idle"
+    },
+    "patrol": {
+      "anim": "enemy_death_hunter_run",
+      "timeScale": 0.6
+    },
+    "alert": {
+      "anim": "enemy_death_hunter_idle"
+    },
+    "pursue": {
+      "anim": "enemy_death_hunter_run"
+    },
+    "attack": {
+      "anim": "enemy_death_hunter_chop"
+    },
+    "hurt": {
+      "anim": "enemy_death_hunter_hurt"
+    },
+    "staggered": {
+      "anim": "enemy_death_hunter_hurt"
+    },
+    "dead": {
+      "anim": "enemy_death_hunter_collapse"
+    }
   }
 }

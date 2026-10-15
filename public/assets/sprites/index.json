@@ -440,6 +440,149 @@
         "sha256:318b5bb5bad417b84e299331020aa4f730fb5af0088bb0093fd81e66301e3e67"
       ]
     },
+    "enemies/death_hunter/enemy_death_hunter_chop.png": {
+      "animations": {
+        "chop": {
+          "attack": "hunter_chop",
+          "durations_ms": [
+            420,
+            110,
+            480
+          ],
+          "events": [
+            {
+              "frame": 1,
+              "type": "hitbox_on"
+            },
+            {
+              "frame": 2,
+              "type": "hitbox_off"
+            }
+          ],
+          "frames": [
+            0,
+            1,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 2,
+      "entity": "enemy_death_hunter",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_death_hunter_chop.png",
+      "source_hashes": [
+        "sha256:8e071465321fec208c0b31659abf55919bbfc5a59633d672ffe97580e05750a3",
+        "sha256:1861d6f679a22ed2e92cd0d4731a3572e0d3920919ed4945d9c4b8bc5426a088"
+      ]
+    },
+    "enemies/death_hunter/enemy_death_hunter_collapse.png": {
+      "animations": {
+        "collapse": {
+          "durations_ms": [
+            700
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "enemy_death_hunter",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_death_hunter_collapse.png",
+      "source_hashes": [
+        "sha256:f4b64887bbaeb7e0947d122753ecbc29bb99c7883e61750fe5fddc53d60b031e"
+      ]
+    },
+    "enemies/death_hunter/enemy_death_hunter_hurt.png": {
+      "animations": {
+        "hurt": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "enemy_death_hunter",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_death_hunter_hurt.png",
+      "source_hashes": [
+        "sha256:f5a1fb2a3e14b2e6e79a29f29d163e0594d79b4a696ae84283a63800679dd42b"
+      ]
+    },
+    "enemies/death_hunter/enemy_death_hunter_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "enemy_death_hunter",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_death_hunter_idle.png",
+      "source_hashes": [
+        "sha256:f2b5fdf063f5743ac6deb3d3956195230add1d8ed32479b26373bf823cb30192"
+      ]
+    },
+    "enemies/death_hunter/enemy_death_hunter_run.png": {
+      "animations": {
+        "run": {
+          "durations_ms": [
+            140,
+            140
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 2,
+      "entity": "enemy_death_hunter",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_death_hunter_run.png",
+      "source_hashes": [
+        "sha256:4a01d25f56aec9d3f28e6829cb67e9ea621a29c617ec8957859beea1a13896e5",
+        "sha256:57c58dac6829962cdaaeb6c62d755696198dfa063e6a2f5d586f3c4b9533ecc0"
+      ]
+    },
     "enemies/thrall/enemy_thrall_claw.png": {
       "animations": {
         "claw": {

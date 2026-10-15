@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "collapse": {
+      "durations_ms": [
+        700
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 1,
+  "entity": "enemy_death_hunter",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "enemy_death_hunter_collapse.png",
+  "source_hashes": [
+    "sha256:f4b64887bbaeb7e0947d122753ecbc29bb99c7883e61750fe5fddc53d60b031e"
+  ]
+}

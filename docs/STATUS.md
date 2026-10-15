@@ -25,7 +25,7 @@ Last updated: 2026-10-15
 - **Sprite pipeline spec tailored to the project:** `docs/sprite-pipeline.md` (original kept in `docs/references/sprite-pipeline-spec-original.md`). `CLAUDE.md` Part 6 now points to it. Five owner decisions listed in its §10.
 
 - **Sprite pipeline built** (`tools/spritegen`, `npm run sprites:*`): palette Requiem 48 (`art/palette/`), preview contact sheets, approve → build → validate, 18 Python unit tests, Vitest check that sprite timing matches `attacks.json`, GitHub Actions CI (`.github/workflows/ci.yml`).
-- **Higgsfield:** 31.75 of 104 credits used (72.25 left). Round 3 combined round 1's tails and round 2's hair; darker coat and lankier build applied in the pipeline (gamma 1.5, squeeze 0.88) instead of more credits.
+- **Higgsfield:** 33.75 of 104 credits used (70.25 left). Round 3 combined round 1's tails and round 2's hair; darker coat and lankier build applied in the pipeline (gamma 1.5, squeeze 0.88) instead of more credits.
 - Previously: Abel design round 1 (2 variants) and round 2 (1 image, brief rewritten from the owner's reference notes). Round 2 matches the costume and reads well at 40 px; face reads older and proportions aren't lanky enough.
 
 - **Abel's priest form is fully animated:** idle, run, jump, fall, hard landing, the three combo hits (wind-up + strike, timed to `attacks.json`), roll (tucked ball → kneeling recovery, 380 ms like the dodge), slide and crouch. Hurt and air attack borrow a frozen frame. 4 pose sheets (one redone) cost 10 credits.
@@ -50,12 +50,21 @@ Last updated: 2026-10-15
 - **Cutscenes: decided** — animated in code with the game's sprites (owner choice), no AI stills.
 - Verified: 98/98 tests, 24/24 pipeline tests, 19 sheets valid, build passes; title screen screenshot checked, no errors.
 
+- **Death Hunter enemy** (reanimated Methuselah, first drainable enemy): masked, hooded, axe. Fast chaser (105 px/s), 70 HP, heavy telegraphed axe chop (amber wind-up, 25 damage), staggers at 40% health for the revolver finisher (and later the blood drain). Placed in the test room past the thrall (x 740). Same behaviour code as the thrall, all values in `enemies.json`; the puppet string is now per enemy (`puppetString`).
+- Verified: 99/99 tests (incl. chop art timing vs data), 24 sheets valid, build passes; headless browser: hunter chased and chopped with the right animations, no errors.
+
 ## In progress
 - Nothing blocked.
 - Rest of the cast (next credit rounds, see `docs/sprite-pipeline.md`): Crusnik Abel, thrall, Methuselah, ghoul, fairy, Iron Choir, Marchesa, Dietrich, backgrounds.
 
 ## Blockers
 - None.
+
+## Owner must test (on phone) — Death Hunter
+1. Past the thrall (keep walking right) a masked hooded figure with an axe waits. It notices you from further away and runs at you fast.
+2. It raises the axe overhead (amber) then chops hard (25 damage). Roll through or back off on the amber.
+3. Hit it until it reels (diamond) → ATK for the revolver finisher.
+4. Tell me: too fast? too much damage? enough warning?
 
 ## Owner must test (on phone) — title screen
 1. Open the game: painted red title with Abel and the cross; title text readable on the left; fan notice at the bottom.

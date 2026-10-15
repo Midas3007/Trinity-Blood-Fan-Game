@@ -31,13 +31,77 @@
       "deathMs": 600,
       "attacks": {
         "thrall_claw": {
-          "startupMs": 480, "activeMs": 120, "recoveryMs": 520,
-          "damage": 15, "knockbackX": 150, "knockbackY": 120,
-          "hitstopMs": 80, "shakeMs": 100, "shakeIntensity": 0.004,
-          "stepSpeed": 70, "cancelIntoDodge": false,
-          "hitbox": { "x": 16, "y": 0, "w": 22, "h": 20 }
+          "startupMs": 480,
+          "activeMs": 120,
+          "recoveryMs": 520,
+          "damage": 15,
+          "knockbackX": 150,
+          "knockbackY": 120,
+          "hitstopMs": 80,
+          "shakeMs": 100,
+          "shakeIntensity": 0.004,
+          "stepSpeed": 70,
+          "cancelIntoDodge": false,
+          "hitbox": {
+            "x": 16,
+            "y": 0,
+            "w": 22,
+            "h": 20
+          }
         }
-      }
+      },
+      "puppetString": true
+    },
+    "deathHunter": {
+      "label": "Death Hunter (reanimated Methuselah)",
+      "width": 16,
+      "height": 34,
+      "color": "0x4a4658",
+      "telegraphColor": "0xd9963a",
+      "maxHealth": 70,
+      "walkSpeed": 40,
+      "chaseSpeed": 105,
+      "brakeDecel": 700,
+      "patrolDistance": 64,
+      "idleMs": 700,
+      "detectRange": 150,
+      "detectRear": 40,
+      "detectHeight": 40,
+      "loseRange": 240,
+      "reactionMs": 220,
+      "attackRange": 34,
+      "attackCooldownMs": 900,
+      "giveUpMs": 3000,
+      "attack": "hunter_chop",
+      "hurtStunMs": 200,
+      "staggerBelowFraction": 0.4,
+      "staggerMs": 1800,
+      "drainable": true,
+      "knockbackTaken": 0.5,
+      "interruptibleDuringActive": false,
+      "deathMs": 700,
+      "attacks": {
+        "hunter_chop": {
+          "startupMs": 420,
+          "activeMs": 110,
+          "recoveryMs": 480,
+          "damage": 25,
+          "knockbackX": 200,
+          "knockbackY": 160,
+          "hitstopMs": 100,
+          "shakeMs": 140,
+          "shakeIntensity": 0.006,
+          "stepSpeed": 120,
+          "cancelIntoDodge": false,
+          "hitbox": {
+            "x": 20,
+            "y": 2,
+            "w": 30,
+            "h": 28
+          }
+        }
+      },
+      "puppetString": false
     }
   }
 }

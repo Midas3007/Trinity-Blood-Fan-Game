@@ -80,6 +80,11 @@
       "type": "thrall",
       "x": 685,
       "y": 74
+    },
+    {
+      "type": "deathHunter",
+      "x": 740,
+      "y": 238
     }
   ],
   "enemyRespawnMs": 4000,

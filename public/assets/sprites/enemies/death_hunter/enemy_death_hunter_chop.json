@@ -1,0 +1,40 @@
+{
+  "animations": {
+    "chop": {
+      "attack": "hunter_chop",
+      "durations_ms": [
+        420,
+        110,
+        480
+      ],
+      "events": [
+        {
+          "frame": 1,
+          "type": "hitbox_on"
+        },
+        {
+          "frame": 2,
+          "type": "hitbox_off"
+        }
+      ],
+      "frames": [
+        0,
+        1,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 2,
+  "entity": "enemy_death_hunter",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "enemy_death_hunter_chop.png",
+  "source_hashes": [
+    "sha256:8e071465321fec208c0b31659abf55919bbfc5a59633d672ffe97580e05750a3",
+    "sha256:1861d6f679a22ed2e92cd0d4731a3572e0d3920919ed4945d9c4b8bc5426a088"
+  ]
+}

@@ -74,9 +74,10 @@ describe('player visuals', () => {
 describe('enemy visuals', () => {
   const anims = new Set(animDefs(idx).map((a) => a.key));
 
-  it('every thrall state shows an animation that exists in the sprite index', () => {
-    for (const s of ['idle', 'patrol', 'alert', 'pursue', 'attack', 'hurt', 'dead'] as const) {
-      const v = enemyVisualFor('thrall', s);
+  it('every state of every enemy type shows an animation that exists in the sprite index', () => {
+    for (const type of ['thrall', 'deathHunter'])
+    for (const s of ['idle', 'patrol', 'alert', 'pursue', 'attack', 'hurt', 'staggered', 'dead'] as const) {
+      const v = enemyVisualFor(type, s);
       expect(v, s).not.toBeNull();
       expect(anims.has(v!.anim), `${s} -> ${v!.anim}`).toBe(true);
     }
