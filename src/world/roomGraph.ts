@@ -71,6 +71,13 @@ export function worldProblems(rooms: Record<string, RoomData>, start: { room: st
     }
     out.push(...bad);
   }
+  for (const r of list) {
+    for (const e of r.exits) {
+      const to = rooms[e.to];
+      if (!to) out.push(`${r.id}: door to unknown room ${e.to}`);
+      else if (!to.entries[e.entry]) out.push(`${r.id}: door to ${e.to} names missing entry ${e.entry}`);
+    }
+  }
   const seen = reachable(rooms, start.room);
   for (const id of Object.keys(rooms)) if (!seen.has(id)) out.push(`${id} cannot be reached from ${start.room}`);
   return out;
@@ -86,6 +93,7 @@ export function reachable(rooms: Record<string, RoomData>, from: string): Set<st
     if (seen.has(id) || !r) continue;
     seen.add(id);
     for (const c of crossings(rooms, r)) if (c.to && c.matched) queue.push(c.to.id);
+    for (const e of r.exits) queue.push(e.to); // doors (sealed ones count: their flag is reachable in play)
   }
   return seen;
 }

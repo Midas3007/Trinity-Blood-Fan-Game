@@ -140,7 +140,14 @@ export class Enemy implements EnemyContext, Damageable, FinisherTarget {
   }
 
   /** True once the death collapse has finished and the enemy can go back to the pool. */
+  /** Crossbow bolts in flight (x, y = centre; vx signed). */
+  readonly bolts: { x: number; y: number; vx: number; ms: number }[] = [];
+  private boltFired = false;
+  /** ms left of the shield-block pose after a guarded hit. */
+  blockMs = 0;
+
   get finished(): boolean {
+    if (this.cfg.knockout) return false; // knocked-out humans stay down
     return this.state === 'dead' && this.dyingMs <= 0;
   }
 
@@ -150,7 +157,17 @@ export class Enemy implements EnemyContext, Damageable, FinisherTarget {
 
   receiveHit(hit: HitInfo): boolean {
     if (!this.fsm || !this.alive) return false;
-    this.health.damage(hit.damage);
+    // Shield: blows from the front are mostly turned aside (strike it from behind, or parry its swing).
+    const fromFront = hit.knockbackX !== 0 && Math.sign(hit.knockbackX) === -this.facing;
+    const guarded = this.cfg.frontGuard !== undefined && fromFront && this.state !== 'attack' && !this.staggered;
+    if (guarded) {
+      this.health.damage(Math.max(1, Math.round(hit.damage * this.cfg.frontGuard!)));
+      this.blockMs = 300;
+      this.flashMs = effects.hitFlashMs;
+      if (!this.health.dead) return true;
+    } else {
+      this.health.damage(hit.damage);
+    }
     this.flashMs = effects.hitFlashMs;
     if (this.health.dead) {
       this.held = false;
@@ -218,9 +235,44 @@ export class Enemy implements EnemyContext, Damageable, FinisherTarget {
     if (!this.fsm) return;
     this.attackCooldown = Math.max(0, this.attackCooldown - dtMs);
     this.flashMs = Math.max(0, this.flashMs - dtMs);
+    this.blockMs = Math.max(0, this.blockMs - dtMs);
     this.fsm.update(dtMs);
+    this.updateBolts(dtMs);
     if (this.state === 'dead') this.dyingMs = Math.max(0, this.dyingMs - dtMs);
     this.staggerBlinkMs = this.staggered ? this.staggerBlinkMs + dtMs : 0;
+  }
+
+  private updateBolts(dtMs: number): void {
+    const b = this.cfg.bolt;
+    if (!b) return;
+    if (this.state === 'attack' && this.combat.phase === 'startup') this.boltFired = false;
+    if (this.state === 'attack' && this.combat.phase === 'active' && !this.boltFired) {
+      this.boltFired = true;
+      this.bolts.push({ x: this.x + this.facing * 12, y: this.y - 6, vx: this.facing * b.speed, ms: 0 });
+    }
+    for (const bolt of this.bolts) {
+      bolt.ms += dtMs;
+      bolt.x += bolt.vx * (dtMs / 1000);
+    }
+    for (let i = this.bolts.length - 1; i >= 0; i--) {
+      const bolt = this.bolts[i]!;
+      const inWall = this.solids.some((s) => bolt.x >= s.x && bolt.x <= s.x + s.w && bolt.y >= s.y && bolt.y <= s.y + s.h);
+      if (bolt.ms >= b.lifeMs || inWall) this.bolts.splice(i, 1);
+    }
+  }
+
+  /** A bolt overlapping the box (removed when it hits). */
+  boltHit(box: Rect): { x: number; damage: number } | null {
+    const b = this.cfg.bolt;
+    if (!b) return null;
+    for (let i = 0; i < this.bolts.length; i++) {
+      const bolt = this.bolts[i]!;
+      if (bolt.x >= box.x && bolt.x <= box.x + box.w && bolt.y >= box.y && bolt.y <= box.y + box.h) {
+        this.bolts.splice(i, 1);
+        return { x: bolt.x, damage: b.damage };
+      }
+    }
+    return null;
   }
 
   private render(): void {
@@ -231,8 +283,9 @@ export class Enemy implements EnemyContext, Damageable, FinisherTarget {
     const top = this.y - this.cfg.height / 2;
     const feet = this.y + this.cfg.height / 2;
     // Death: the string is cut and the body fades as it collapses.
-    const fade = state === 'dead' ? this.dyingMs / this.cfg.deathMs : 1;
-    const shown = this.view.show(enemyVisualFor(this.cfg.type, state), this.x, feet, this.facing, fade);
+    const fade = state === 'dead' && !this.cfg.knockout ? this.dyingMs / this.cfg.deathMs : 1;
+    const look = this.blockMs > 0 && state !== 'dead' ? 'block' : state;
+    const shown = this.view.show(enemyVisualFor(this.cfg.type, look) ?? enemyVisualFor(this.cfg.type, state), this.x, feet, this.facing, fade);
     if (shown && this.view.sprite) {
       if (this.flashMs > 0) this.view.sprite.setTintFill(COLORS.flash);
       else if (telegraph) this.view.sprite.setTint(this.cfg.telegraphColor);

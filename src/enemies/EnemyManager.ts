@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { landsOnTop } from '../world/oneWay';
 import { Pool } from '../systems/Pool';
 import type { Rect } from '../combat/types';
+import type { ContactHazard } from '../combat/CombatSystem';
 import { Enemy } from './Enemy';
 import { enemyConfig } from './enemyConfig';
 import type { EnemyTarget } from './enemyStates';
@@ -63,6 +64,29 @@ export class EnemyManager {
   }
 
   /** Living enemies (for combat). */
+  /** Crossbow bolts hitting Abel this frame, as unparryable contact hazards. */
+  boltHazards(playerBox: Rect): ContactHazard[] {
+    const out: ContactHazard[] = [];
+    for (const e of this.alive) {
+      const hit = e.boltHit(playerBox);
+      if (hit) {
+        const box = playerBox;
+        out.push({
+          alive: true,
+          contactDamage: hit.damage,
+          hurtbox: () => box,
+          contactHit: (tx: number) => ({ damage: hit.damage, knockbackX: (tx >= hit.x ? 1 : -1) * 120, knockbackY: 60, hitstopMs: 50, shakeMs: 80, shakeIntensity: 0.004, parryable: false }),
+        });
+      }
+    }
+    return out;
+  }
+
+  /** Every bolt in flight (for drawing). */
+  get bolts(): { x: number; y: number; vx: number }[] {
+    return this.alive.flatMap((e) => e.bolts);
+  }
+
   get alive(): Enemy[] {
     const out: Enemy[] = [];
     for (const pool of this.pools.values()) for (const e of pool.active()) if (e.alive) out.push(e);

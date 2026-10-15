@@ -1,0 +1,212 @@
+{
+  "_note": "Dietrich von Lohengrin (Rosenkreuz, verify) \u2014 Region 2 boss, the cathedral nave. Phase 1: his Grand Marionette of bells and organ pipes (slams with shockwaves, sweeps, silver threads falling like columns). At half health the puppet collapses (cutscene) and Dietrich fights in person: thread volleys, snares, fairies, blinking cuts. He escapes at 0 (he survives, as in the series).",
+  "id": "dietrich",
+  "name": "Dietrich von Lohengrin, the Puppeteer",
+  "maxHealth": 520,
+  "width": 56,
+  "height": 100,
+  "introMs": 1400,
+  "phaseMs": 1200,
+  "approachRange": 90,
+  "walkMaxMs": 2400,
+  "staggerMs": 1200,
+  "staggerDamageMultiplier": 2,
+  "recoverMs": 600,
+  "yields": true,
+  "deathMs": 1800,
+  "shockwave": {
+    "speed": 220,
+    "width": 16,
+    "height": 14,
+    "damage": 14,
+    "lifeMs": 2400
+  },
+  "phases": [
+    {
+      "at": 1,
+      "sprite": "marionette",
+      "pattern": [
+        "slam",
+        "sweep",
+        "threads_fall",
+        "slam",
+        "sweep"
+      ],
+      "idleMs": 650,
+      "walkSpeed": 45,
+      "visuals": {
+        "intro": "idle",
+        "idle": "idle",
+        "walk": "idle",
+        "telegraph": "raise",
+        "recover": "idle",
+        "staggered": "idle",
+        "phase": "collapse",
+        "defeated": "collapse",
+        "beam": "raise",
+        "attack:m_slam": "slam",
+        "attack:m_sweep": "sweep"
+      }
+    },
+    {
+      "at": 0.5,
+      "sprite": "npc_dietrich",
+      "width": 14,
+      "height": 40,
+      "pattern": [
+        "volley",
+        "snare",
+        "blink",
+        "puppets",
+        "volley",
+        "blink"
+      ],
+      "idleMs": 420,
+      "walkSpeed": 80,
+      "visuals": {
+        "intro": "stand",
+        "idle": "stand",
+        "walk": "stand",
+        "cast": "threads",
+        "beam": "conduct",
+        "summon": "conduct",
+        "vanish": "bow",
+        "recover": "stand",
+        "staggered": "laugh",
+        "phase": "bow",
+        "defeated": "bow",
+        "attack:d_slice": "threads",
+        "telegraph": "threads"
+      }
+    }
+  ],
+  "moves": {
+    "slam": {
+      "type": "slam",
+      "attack": "m_slam",
+      "shockwaves": true
+    },
+    "sweep": {
+      "type": "combo",
+      "attacks": [
+        "m_sweep"
+      ],
+      "lunges": [
+        30
+      ]
+    },
+    "threads_fall": {
+      "type": "beam",
+      "windupMs": 600,
+      "markMs": 700,
+      "strikeMs": 260,
+      "width": 14,
+      "damage": 14,
+      "count": 3,
+      "spacing": 60,
+      "recoverMs": 900
+    },
+    "volley": {
+      "type": "cast",
+      "windupMs": 480,
+      "recoverMs": 520,
+      "count": 3,
+      "spreadDeg": 30,
+      "aimed": true,
+      "projectile": {
+        "speed": 230,
+        "damage": 12,
+        "size": 8,
+        "lifeMs": 3000,
+        "color": "#e8e8ff"
+      }
+    },
+    "snare": {
+      "type": "beam",
+      "windupMs": 420,
+      "markMs": 600,
+      "strikeMs": 240,
+      "width": 12,
+      "damage": 14,
+      "count": 4,
+      "spacing": 48,
+      "recoverMs": 700
+    },
+    "blink": {
+      "type": "teleport",
+      "attack": "d_slice",
+      "vanishMs": 420
+    },
+    "puppets": {
+      "type": "summon",
+      "creature": "fairy",
+      "count": 2,
+      "windupMs": 700
+    }
+  },
+  "attacks": {
+    "m_slam": {
+      "startupMs": 700,
+      "activeMs": 140,
+      "recoveryMs": 800,
+      "damage": 24,
+      "knockbackX": 220,
+      "knockbackY": 160,
+      "hitstopMs": 110,
+      "shakeMs": 200,
+      "shakeIntensity": 0.012,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 30,
+        "y": 20,
+        "w": 70,
+        "h": 40
+      },
+      "parryable": false
+    },
+    "m_sweep": {
+      "startupMs": 620,
+      "activeMs": 180,
+      "recoveryMs": 700,
+      "damage": 20,
+      "knockbackX": 240,
+      "knockbackY": 80,
+      "hitstopMs": 100,
+      "shakeMs": 140,
+      "shakeIntensity": 0.008,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 46,
+        "y": 10,
+        "w": 92,
+        "h": 30
+      }
+    },
+    "d_slice": {
+      "startupMs": 320,
+      "activeMs": 110,
+      "recoveryMs": 420,
+      "damage": 14,
+      "knockbackX": 170,
+      "knockbackY": 60,
+      "hitstopMs": 80,
+      "shakeMs": 110,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 24,
+        "y": -4,
+        "w": 40,
+        "h": 22
+      }
+    }
+  },
+  "visuals": {
+    "idle": "idle"
+  },
+  "phaseScene": "dietrich_unmasked",
+  "relic": "vox"
+}

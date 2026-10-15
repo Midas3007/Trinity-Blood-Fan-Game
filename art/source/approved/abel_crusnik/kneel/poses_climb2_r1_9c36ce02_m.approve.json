@@ -1,0 +1,14 @@
+{
+  "source": "poses_climb2_r1_9c36ce02_m.png",
+  "source_hash": "sha256:9ebb17fc2b54d567b8e004efafdffed23e8c409a6ea244ba49a06308c2049df5",
+  "figures": [
+    5
+  ],
+  "standing_px": 891,
+  "factor": 0.484848,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "poses_climb2_r1_9c36ce02_m_f5.png"
+  ]
+}

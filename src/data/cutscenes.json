@@ -797,6 +797,609 @@
      ]
     }
    ]
+  },
+  "dietrich_intro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/cathedral_nave_w0",
+     "caption": "The chancel.",
+     "actors": [
+      {
+       "anim": "boss_marionette_idle",
+       "x": 0.65,
+       "y": 0.96,
+       "scale": 1.4,
+       "flip": true,
+       "enter": "up"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.2,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "A voice from the rafters",
+       "text": "Bravo, Father. Bravo. You found every one of my little rehearsals."
+      },
+      {
+       "speaker": "Abel",
+       "text": "Come down and say that to my face."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "color:0x0b0a10",
+     "actors": [
+      {
+       "anim": "npc_dietrich_violin",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Dietrich",
+       "text": "Dietrich von Lohengrin, at your service. Istvan's resistance trusts me completely. They brought me their sons."
+      },
+      {
+       "speaker": "Dietrich",
+       "text": "Tonight the whole city dances for the Count. And you, Crusnik, will play the first movement."
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "rooms/cathedral_nave_w0",
+     "tint": "0xa04040",
+     "fx": "speedlines",
+     "actors": [
+      {
+       "anim": "boss_marionette_raise",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 1.4,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Dietrich",
+       "text": "Allow me to introduce my masterpiece. It was a cathedral, once."
+      }
+     ]
+    }
+   ]
+  },
+  "dietrich_unmasked": {
+   "panels": [
+    {
+     "layout": "top",
+     "bg": "rooms/cathedral_nave_w0",
+     "fx": "shake",
+     "actors": [
+      {
+       "anim": "boss_marionette_collapse",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 1.4,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Dietrich",
+       "text": "My bells! You've no ear for music at all, Father."
+      }
+     ]
+    },
+    {
+     "layout": "bottom",
+     "bg": "color:0x0b0a10",
+     "actors": [
+      {
+       "anim": "npc_dietrich_threads",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": false,
+       "enter": "up"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Dietrich",
+       "text": "Very well. If the puppet bores you, let the puppeteer cut a few strings himself."
+      }
+     ]
+    }
+   ]
+  },
+  "dietrich_outro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/cathedral_nave_w0",
+     "actors": [
+      {
+       "anim": "npc_dietrich_bow",
+       "x": 0.65,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Dietrich",
+       "text": "Enough. The overture is over, and the Count is waiting for his star."
+      },
+      {
+       "speaker": "Abel",
+       "text": "Gyula. Where is he?"
+      },
+      {
+       "speaker": "Dietrich",
+       "text": "In his castle, Father, beyond the bridge. I've taken the threads off the gate, as a courtesy. Do give him my regards."
+      }
+     ]
+    },
+    {
+     "layout": "wide",
+     "bg": "color:0x0b0a10",
+     "fx": "flash",
+     "caption": "A bow. A smile. Then only silver threads, drifting down.",
+     "actors": [
+      {
+       "anim": "npc_dietrich_laugh",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade",
+       "alpha": 0.6
+      }
+     ]
+    }
+   ]
+  },
+  "gyula_intro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/star_chamber_w0",
+     "caption": "The Star of Sorrow.",
+     "actors": [
+      {
+       "anim": "boss_gyula_idle",
+       "x": 0.7,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "none"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.25,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Gyula",
+       "text": "A priest of Rome in my house. They sent a priest. How fitting."
+      },
+      {
+       "speaker": "Abel",
+       "text": "Lord Gyula. Turn it off. Whatever this machine is, the people of Istvan have done nothing to you."
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "rooms/great_hall_w0",
+     "tint": "0x806070",
+     "actors": [
+      {
+       "anim": "boss_gyula_defeated",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Gyula",
+       "text": "They burned her. My wife. A human, who loved them. They called her a vampire's whore and they burned her in the square."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "rooms/star_chamber_w0",
+     "tint": "0x6080c0",
+     "fx": "speedlines",
+     "actors": [
+      {
+       "anim": "boss_gyula_star",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Gyula",
+       "text": "The star remembers. Tonight it will remember for me."
+      }
+     ]
+    }
+   ]
+  },
+  "gyula_wings": {
+   "panels": [
+    {
+     "layout": "tl",
+     "bg": "rooms/star_chamber_w0",
+     "tint": "0x405080",
+     "actors": [
+      {
+       "anim": "abel_crusnik40_kneel",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Gyula",
+       "text": "Even the Crusnik kneels to the light. Lie still. It will be quick."
+      }
+     ]
+    },
+    {
+     "layout": "tr",
+     "bg": "color:0x0b0a10",
+     "actors": [
+      {
+       "anim": "npc_esther_aim",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2.4,
+       "flip": false,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Esther",
+       "text": "Father! Get up! You said you'd bring us home!"
+      }
+     ]
+    },
+    {
+     "layout": "bottom",
+     "bg": "color:0x1a0408",
+     "fx": "redflash",
+     "actors": [
+      {
+       "anim": "abel_crusnik80_hover",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "...Eighty percent."
+      },
+      {
+       "speaker": "Abel",
+       "text": "Forgive me, Esther. Don't look."
+      }
+     ]
+    },
+    {
+     "layout": "full",
+     "bg": "rooms/star_chamber_w0",
+     "tint": "0xa03040",
+     "fx": "shake",
+     "caption": "OCTOGINTA",
+     "actors": [
+      {
+       "anim": "abel_crusnik80_fly",
+       "x": 0.35,
+       "y": 0.96,
+       "scale": 2.4,
+       "flip": false,
+       "enter": "up"
+      },
+      {
+       "anim": "boss_gyula_hurt",
+       "x": 0.75,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Gyula",
+       "text": "Black wings... What are you?"
+      }
+     ]
+    }
+   ]
+  },
+  "gyula_outro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/star_chamber_w0",
+     "tint": "0x605080",
+     "actors": [
+      {
+       "anim": "boss_gyula_defeated",
+       "x": 0.6,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      },
+      {
+       "anim": "abel_crusnik40_idle",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Gyula",
+       "text": "The star... is quiet. You stopped it."
+      },
+      {
+       "speaker": "Abel",
+       "text": "It's over, Gyula."
+      },
+      {
+       "speaker": "Gyula",
+       "text": "She would have stopped it too. She would have told me... that they were only afraid."
+      }
+     ]
+    },
+    {
+     "layout": "wide",
+     "bg": "color:0x0b0a10",
+     "caption": "The machine goes dark. Far below, Istvan sleeps through its last night of fear.",
+     "actors": [
+      {
+       "anim": "abel_pray",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "Go to her, then. Requiescat in pace."
+      }
+     ]
+    }
+   ]
+  },
+  "ending": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "cathedral_front",
+     "tint": "0xffd0b0",
+     "caption": "Dawn over Istvan.",
+     "actors": [
+      {
+       "anim": "abel_walk",
+       "x": 0.35,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "left"
+      },
+      {
+       "anim": "npc_esther_stand",
+       "x": 0.62,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Esther",
+       "text": "Last night, in the castle... I saw an angel. With black wings, and a scythe. It saved me."
+      },
+      {
+       "speaker": "Abel",
+       "text": "An angel? Goodness. You must have hit your head harder than I thought."
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "cathedral_front",
+     "tint": "0xffd0b0",
+     "actors": [
+      {
+       "anim": "npc_esther_shock",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Esther",
+       "text": "...Maybe. I don't know whether I should be afraid of it."
+      },
+      {
+       "speaker": "Abel",
+       "text": "Then don't be. Not of that one."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "cathedral_front",
+     "tint": "0xffc0a0",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "Rome has a train at noon. They tell me the cafeteria serves real tea."
+      },
+      {
+       "speaker": "Esther",
+       "text": "...I'm coming with you, Father. Someone has to keep you from starving."
+      }
+     ]
+    },
+    {
+     "layout": "wide",
+     "bg": "color:0x0b0a10",
+     "caption": "TRINITY BLOOD — fan game · Istvan · FINIS"
+    }
+   ]
+  },
+  "teaser": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "color:0x140a10",
+     "caption": "Rome. Weeks later.",
+     "actors": [
+      {
+       "anim": "npc_caterina_letter",
+       "x": 0.35,
+       "y": 0.96,
+       "scale": 2.4,
+       "flip": false,
+       "enter": "none"
+      },
+      {
+       "anim": "npc_envoy_offer",
+       "x": 0.72,
+       "y": 0.96,
+       "scale": 2.4,
+       "flip": false,
+       "enter": "right"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Envoy",
+       "text": "A letter from Byzantium, Eminence. From the Empress herself."
+      },
+      {
+       "speaker": "Cardinal",
+       "text": "The New Human Empire writes to the Vatican? What does it want?"
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "color:0x0b0a10",
+     "actors": [
+      {
+       "anim": "npc_envoy_bow",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Envoy",
+       "text": "Only one of your priests. The one they call... the Atoner."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "color:0x0b0a10",
+     "actors": [
+      {
+       "anim": "npc_caterina_look",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Cardinal",
+       "text": "...Send for Father Nightroad."
+      }
+     ]
+    },
+    {
+     "layout": "wide",
+     "bg": "color:0x050408",
+     "caption": "NEXT: THE EMPIRE ARC — to be continued"
+    }
+   ]
   }
  }
 }

@@ -3,12 +3,14 @@ import { DuelistBrain, type DuelistConfig, type DuelEvent } from '../src/enemies
 import paula from '../src/data/bosses/paula.json';
 import kampfer from '../src/data/bosses/kampfer.json';
 import petros from '../src/data/bosses/petros.json';
+import dietrich from '../src/data/bosses/dietrich.json';
+import gyula from '../src/data/bosses/gyula.json';
 import { relics } from '../src/systems/progression';
 
 const DT = 1000 / 60;
 const L = 0;
 const R = 480;
-const all = { paula, kampfer, petros } as unknown as Record<string, DuelistConfig>;
+const all = { paula, kampfer, petros, dietrich, gyula } as unknown as Record<string, DuelistConfig>;
 
 function fight(cfg: DuelistConfig, ms: number, hurtAfter = Infinity) {
   const b = new DuelistBrain(cfg, 380, L, R);
@@ -82,6 +84,22 @@ describe('mini bosses (data-driven duelists)', () => {
     const r = fight(all.petros!, 40_000);
     expect(r.states.has('dash')).toBe(true);
     expect(r.waves).toBeGreaterThan(0);
+  });
+
+  it('Gyula: the Star of Sorrow marks the floor, then strikes once; Dietrich changes body at phase 2', () => {
+    const g = new DuelistBrain(all.gyula!, 380, L, R);
+    let struck = null;
+    for (let t = 0; t < 30000 && !struck; t += DT) {
+      g.update(DT, 200);
+      struck = g.beamHit({ x: 192, w: 16 });
+    }
+    expect(struck).not.toBeNull();
+    const d = new DuelistBrain(all.dietrich!, 380, L, R);
+    expect(d.width).toBeGreaterThan(40);
+    for (let t = 0; t < 3000; t += DT) d.update(DT, 100);
+    d.takeDamage(Math.ceil(d.health.max * 0.55));
+    expect(d.phase.sprite).toBe('npc_dietrich');
+    expect(d.width).toBeLessThan(20);
   });
 
   it('a parry staggers a blade but not a spell or a dive', () => {

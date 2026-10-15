@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "down": {
+      "durations_ms": [
+        600
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 96,
+  "columns": 1,
+  "entity": "enemy_inquisitor",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 64,
+  "sheet": "enemy_inquisitor_down.png",
+  "source_hashes": [
+    "sha256:3269f506598f589e901aca4b898bbe529e210a4190d5e7de1a2c885ff37642d1"
+  ]
+}

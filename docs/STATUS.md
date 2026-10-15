@@ -14,10 +14,10 @@ Last updated: 2026-10-15
 | 7 | Progression | in progress: holy-water flasks ✅, map ✅, altars/checkpoints ✅, pause ✅, save/load ✅, Crusnik form + leap gate + chain lash ✅, parry ✅, dialogue box ✅, **first boss: the Marchesa ✅**; left: boss rematch polish, more dialogue/cutscenes |
 
 | 8 | Mini bosses from the series (owner, 2026-10-15) | **done:** Sister Paula (Water Tunnels → +1 flask), Isaak Kämpfer the Magus (Forgotten Reliquary → **Abel's first Crusnik transformation**), Brother Petros (Count's Cellars → +25 health); the Marchesa now gives +15% damage; **Latin victory cards** |
-| 9 | Creatures and villains in the maps | in progress: **fairies** ✅ (hover, scream rings), **bats** ✅ (swoop), **bone-rats** ✅ placed through the sewers, crypts, ossuary, tunnels, stair and cellars (+ bats in the sewer shaft and cathedral square); left: Iron Choir soldiers, Inquisition hunters, puppeted Methuselah |
-| 10 | Cutscenes and story | in progress: manga-panel cutscene system ✅; opening ✅, intro + outro for every fight ✅, first transformation ✅; left: Region 2, final battle, ending, **teaser for the next arc** |
+| 9 | Creatures and villains in the maps | **done:** fairies (code-drawn flapping wings), bats, bone-rats, **Iron Choir** (shield: hit from behind or parry), **Inquisition hunters** (crossbow bolts; knocked out, not killed); Death Hunters are the puppeted Methuselah |
+| 10 | Cutscenes and story | **done:** 18 scenes — opening, every fight's intro/outro, first transformation, Dietrich unmasked, the 80% wings, ending, credits, **teaser for the next arc** (the Empire) |
 | 11 | Audio | planned: **voices** for cutscene lines, **copyright-free gothic music** (per region, boss themes), SFX; audio unlock on first touch. Blocked: the sandbox network denies free-music sites (see Blockers) |
-| 12 | Region 2 + final battle | planned: the cathedral and the count's fortress, Dietrich's Grand Marionette, Gyula Kádár and the Star of Sorrow, the 80% Crusnik moment, ending |
+| 12 | Region 2 + final battle | **done:** Cathedral Nave + Bell Tower (portal opens after Petros), Castle Gate, Great Hall, Star of Sorrow chamber (bridge gate opens after Dietrich); bosses Dietrich (Grand Marionette → Dietrich) and Gyula (final, 80% wings phase) |
 | 14 | Start-menu progress bar | **done:** Continue shows a percentage and a gold bar (fights 70%, map 20%, lore 10%) |
 | 13 | Full recorded playthrough | planned (owner): a bot plays the finished game start to end and the run is recorded as a video |
 
@@ -82,11 +82,31 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 - Verified: 166/166 tests (each mini boss fights 2 minutes without getting stuck, uses its moves, changes phase and goes down; parry rules; every cutscene's sprites, backgrounds and lines exist; every boss's scenes are written; progress maths), 92 sprite sheets valid, build passes. Bot runs: all three mini bosses from intro scene → fight → (Kämpfer's transformation scene) → outro → relic flag, no errors.
 - **Moved:** the Crusnik is no longer unlocked by reading the Forgotten Reliquary page; that page is now foreshadowing and the form wakes in the Kämpfer fight beside it.
 
+## Done (latest) — Region 2, the final battle, the ending
+- **Art gaps fixed:** the Crusnik climbs without a drawn ladder (new climb frames) and has his own guard, hurt, crouch and kneel poses; fairies have translucent wings drawn in code that flap.
+- **New enemies:** the **Iron Choir** (marionette soldiers with shields: blows from the front are turned aside — hit them from behind, or parry their halberd and finish them) and **Inquisition hunters** (keep their distance and fire crossbow bolts; beaten, they're knocked out, not killed).
+- **Region 2** (5 new rooms, 22 in all):
+  - **Cathedral Square's portal** opens once Brother Petros is beaten (stand at it, press up). **The Cathedral Nave**: galleries, ladders, the rose window, the organ, an altar; Iron Choir, hunters, fairies. **The Bell Tower** behind the organ: a climb to an altar and the bell-ringer's log.
+  - **Boss: Dietrich von Lohengrin.** Phase 1 his **Grand Marionette** of bells and organ pipes (slams with shockwaves — red, jump them; sweeps — amber, parry; falling silver threads marked on the floor). At half health the puppet collapses and **Dietrich** fights himself: thread volleys, snares, fairies, blinking cuts. He escapes. *SIC TRANSIT GLORIA MUNDI* (+damage, +health) and the bridge gate opens.
+  - **The Castle Gate → The Great Hall → The Star of Sorrow**, east across the Danube Bridge.
+  - **Final boss: Gyula Kádár.** Rapier combos, a dash, and the Star of Sorrow — columns of light marked on the floor, then striking (move!). At half health the **80% Crusnik** scene: wings; you finish the fight with a far higher leap and harder blows. *CONSUMMATUM EST*.
+- **The ending** (dawn, Esther and the "angel with black wings"), **credits**, and the **teaser for the next arc** (an envoy of the Empire asks Rome for "the Atoner"), then back to the title. Title subtitle is now *The Star of Sorrow*.
+- 12 more credits of art (climb fix, Iron Choir, hunter, Grand Marionette, Gyula, Caterina + envoy, cathedral/fortress walls and props); about 14 left for voices.
+- Verified: 171/171 tests (Dietrich and Gyula fight 2 minutes without getting stuck, the Star beam marks then strikes once, Dietrich changes body at phase 2, all 22 rooms connect — doors included), 123 sprite sheets valid, build passes. Bot runs: Dietrich (both phases + scenes) → relic; Gyula (wings scene) → ending → credits → teaser → title, no errors.
+
 ## In progress
 - the Crusnik form + leap gate, then the Marchesa boss.
 
 ## Blockers
 - **Music downloads blocked:** archive.org search now works, but its files are served from `*.archive.org` storage hosts (e.g. dn711007.ca.archive.org, ia800300.us.archive.org), which are still denied. Add `*.archive.org` (or `.archive.org`) to Allowed domains. Tracks are already chosen (see docs/audio-plan.md). Other sites (opengameart.org, incompetech.com, freepd.com, pixabay.com, freesound.org) are still denied. To allow them: in the session's cloud environment menu (title bar) → Edit → Network access → add those domains under Allowed domains (keep "Allow package managers" ticked). Steps: https://code.claude.com/docs/en/cloud-environments#network-access. Until then the audio system is built and waits for the tracks. Higgsfield: about 44 credits left.
+
+## Owner must test (on phone) — Region 2 and the ending
+1. After beating Petros: Cathedral Square, stand at the portal, push the stick up → the nave.
+2. Iron Choir: hitting its shield does little — get behind it or parry its halberd. Hunters shoot bolts from the galleries; they end up knocked out on the floor.
+3. The chancel: Dietrich's Grand Marionette, then Dietrich himself. Win → the bridge gate is open.
+4. East over the bridge: Castle Gate, Great Hall (altar by the far door), the Star of Sorrow: Gyula. Watch the floor marks for the light columns. At half health — wings.
+5. Win → ending, credits (tap to speed up), teaser, title.
+6. Tell me: too hard/easy? does the ending land? anything confusing about where to go?
 
 ## Owner must test (on phone) — mini bosses and cutscenes
 1. New game: the opening scene plays (tap to advance, SKIP top-right).

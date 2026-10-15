@@ -68,6 +68,34 @@
     "bone_wall": {
       "title": "Wall of bones",
       "text": "Skulls and long bones stacked to the height of three men, packed with lime. At the top a doorway breathes cold air and, impossibly, the scent of roses. There is no ladder and no rope. Whoever goes up there does not climb like a man."
+    },
+    "nave_requiem": {
+      "title": "Requiem schedule",
+      "text": "Nightly requiem for the souls of Istvan, by order of the cathedral chapter. Below, in a newer hand: 'The choir sings by itself now. Nobody has seen the choirmaster for a month.'"
+    },
+    "choir_score": {
+      "title": "A page of choral score",
+      "text": "The notes are written in red ink and the words are not Latin. Every line ends on the same chord. In the margin: 'Rehearsal. Do not wake the city yet.'"
+    },
+    "bell_ringer": {
+      "title": "The bell-ringer's log",
+      "text": "Rang vespers. Rang compline. Rang nothing at midnight, yet the bells rang. A young gentleman in green asked to see the tower; he said he admired the acoustics."
+    },
+    "castle_gate": {
+      "title": "Inscription over the gate",
+      "text": "KADAR. Carved over an older name that has been chiselled away. The stone around it is scorched, as if by a light from the sky."
+    },
+    "castle_gate_barred": {
+      "title": "The barred gatehouse",
+      "text": "A portcullis of black iron. Threads finer than hair are woven through its bars; they hum when the wind blows. Whoever strung them must be cut down first."
+    },
+    "gyula_portrait": {
+      "title": "A portrait in the great hall",
+      "text": "A Methuselah lord and a human woman, both smiling. The canvas has been slashed across her face and carefully mended, many times."
+    },
+    "star_of_sorrow": {
+      "title": "Brass plate on the machine",
+      "text": "An instrument older than the war, built to bring down the light of a star. Someone has recently cleaned every gear by hand, and written beneath the controls: 'For her. For all of them.'"
     }
   }
 }

@@ -36,13 +36,17 @@ class Flyer implements Damageable, ContactHazard {
   id = nextEntityId();
   private readonly view: SpriteView;
   private readonly placeholder: Phaser.GameObjects.Rectangle;
+  /** Fairies: translucent insect wings drawn in code (the painted membranes were lost against the key colour). */
+  private readonly wings: Phaser.GameObjects.Graphics | null;
   private flashMs = 0;
+  private t = Math.random() * 1000;
 
   constructor(
     scene: Phaser.Scene,
     readonly brain: FlyerBrain,
   ) {
     this.view = new SpriteView(scene, visualFor(brain)?.anim ?? null, DEPTH);
+    this.wings = brain.cfg.type === 'fairy' ? scene.add.graphics().setDepth(DEPTH - 0.05).setBlendMode(Phaser.BlendModes.ADD) : null;
     this.placeholder = scene.add.rectangle(0, 0, brain.cfg.width, brain.cfg.height, 0xc9c2d6).setDepth(DEPTH).setVisible(false);
   }
 
@@ -83,11 +87,37 @@ class Flyer implements Damageable, ContactHazard {
       if (this.flashMs > 0) s.setTintFill(COLORS.flash);
       else if (b.state === 'windup') s.setTint(TELEGRAPH);
     }
+    this.drawWings(dtMs, fade);
+  }
+
+  private drawWings(dtMs: number, fade: number): void {
+    const g = this.wings;
+    if (!g) return;
+    g.clear();
+    const b = this.brain;
+    if (!b.alive && fade <= 0) return;
+    this.t += dtMs;
+    // A fast flutter (slower when screaming), two pairs fanning out from the shoulders, behind her.
+    const beat = Math.sin(this.t / (b.state === 'attack' ? 70 : 38));
+    const back = -b.facing;
+    const sx = b.x + back * 2;
+    const sy = b.y - b.cfg.height * 0.18;
+    for (const [len, lift, w] of [[15, -0.9, 5], [11, -0.25, 4]] as const) {
+      const ang = lift + beat * 0.45;
+      const tipX = sx + back * Math.cos(ang) * len;
+      const tipY = sy + Math.sin(ang) * len;
+      const mx = (sx + tipX) / 2;
+      const my = (sy + tipY) / 2;
+      g.fillStyle(0xc9b6e6, 0.42 * fade);
+      g.fillEllipse(mx, my, Math.max(3, Math.abs(tipX - sx)) + 2, w + Math.abs(tipY - sy) * 0.6);
+      g.lineStyle(1, 0xf3ecff, 0.55 * fade).lineBetween(sx, sy, tipX, tipY);
+    }
   }
 
   destroy(): void {
     this.view.sprite?.destroy();
     this.placeholder.destroy();
+    this.wings?.destroy();
   }
 }
 

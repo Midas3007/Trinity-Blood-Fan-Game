@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "slash": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 128,
+  "columns": 1,
+  "entity": "boss_gyula",
+  "palette": "requiem48.hex",
+  "pivot_x": 64,
+  "pivot_y": 96,
+  "sheet": "boss_gyula_slash.png",
+  "source_hashes": [
+    "sha256:45e9e378bdad4cac53560e7875187d8970d0ef3d64534e8bfc8c6051d46e3b5d"
+  ]
+}

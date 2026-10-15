@@ -1,0 +1,14 @@
+{
+  "source": "marionette_7c4e0f0c_m.png",
+  "source_hash": "sha256:765fd12a579efcd2dea5ed405a6ca649bc69a11a27f2172b03f9c692b2bf6595",
+  "figures": [
+    0
+  ],
+  "standing_px": 852,
+  "factor": 1.051643,
+  "open_px": 0,
+  "expected": 5,
+  "outputs": [
+    "marionette_7c4e0f0c_m_f0.png"
+  ]
+}

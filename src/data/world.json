@@ -5,6 +5,11 @@
     "entry": "start"
   },
   "storyFlags": [
-    "marchesa_defeated"
+    "dietrich_defeated",
+    "gyula_defeated",
+    "kampfer_defeated",
+    "marchesa_defeated",
+    "paula_defeated",
+    "petros_defeated"
   ]
 }

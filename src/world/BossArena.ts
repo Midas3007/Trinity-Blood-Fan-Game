@@ -13,13 +13,15 @@ import { testHookEnabled } from '../systems/testHook';
 import paula from '../data/bosses/paula.json';
 import kampfer from '../data/bosses/kampfer.json';
 import petros from '../data/bosses/petros.json';
+import dietrich from '../data/bosses/dietrich.json';
+import gyula from '../data/bosses/gyula.json';
 
 const TILE = 16;
 const WALL_W = 16;
 /** Abel must be this far inside the arena (and on the ground) before the walls rise. */
 const START_MARGIN = 40;
 const WALL_COLOR = 0x5a0f1e;
-const DUELISTS = { paula, kampfer, petros } as unknown as Record<string, DuelistConfig>;
+const DUELISTS = { paula, kampfer, petros, dietrich, gyula } as unknown as Record<string, DuelistConfig>;
 
 export interface ArenaHooks {
   /** Play a cutscene; gameplay waits until `done`. */

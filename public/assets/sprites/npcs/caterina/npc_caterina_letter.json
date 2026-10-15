@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "letter": {
+      "durations_ms": [
+        600
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 72,
+  "cell_width": 96,
+  "columns": 1,
+  "entity": "npc_caterina",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 72,
+  "sheet": "npc_caterina_letter.png",
+  "source_hashes": [
+    "sha256:9add9c72e372bea7808255a7c23792a9900909e37f906236c03ac43a7072c8f8"
+  ]
+}

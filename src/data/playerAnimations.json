@@ -1,5 +1,5 @@
 {
- "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's or finisher's id (priest1/priest2/priest3, revolver), so each plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built. Extra visual keys (not player states): walk (slow run), pray (at an altar), climbStill (on a ladder, not moving). crusnikStates: the same keys for the Crusnik 40% form (crouch and hurt borrow the landing pose). parry: the attack wind-up frame stands in until a guard pose is drawn.",
+ "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's or finisher's id (priest1/priest2/priest3, revolver), so each plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built. Extra visual keys (not player states): walk (slow run), pray (at an altar), climbStill (on a ladder, not moving). crusnikStates: the same keys for the Crusnik 40% form. Priest parry: the attack wind-up frame stands in for a guard pose. wingedStates: the 80% form's wings (final battle only) override these air states.",
  "entity": "abel",
  "states": {
   "idle": {
@@ -97,7 +97,7 @@
    "anim": "abel_crusnik40_scythe"
   },
   "crouchAttack": {
-   "anim": "abel_crusnik40_scythe"
+   "anim": "abel_crusnik40_crouch"
   },
   "lash": {
    "anim": "abel_crusnik40_lash"
@@ -106,8 +106,7 @@
    "anim": "abel_crusnik40_transform"
   },
   "hurt": {
-   "anim": "abel_crusnik40_land",
-   "frame": 0
+   "anim": "abel_crusnik40_hurt"
   },
   "dodge": {
    "anim": "abel_crusnik40_slide"
@@ -116,8 +115,7 @@
    "anim": "abel_crusnik40_slide"
   },
   "crouch": {
-   "anim": "abel_crusnik40_land",
-   "frame": 0
+   "anim": "abel_crusnik40_crouch"
   },
   "finisher": {
    "anim": "abel_crusnik40_scythe",
@@ -131,15 +129,30 @@
    "frame": 0
   },
   "heal": {
-   "anim": "abel_crusnik40_idle"
+   "anim": "abel_crusnik40_kneel"
   },
   "pray": {
-   "anim": "abel_crusnik40_land",
-   "frame": 0
+   "anim": "abel_crusnik40_kneel"
   },
   "parry": {
-   "anim": "abel_crusnik40_scythe",
-   "frame": 0
+   "anim": "abel_crusnik40_guard"
+  }
+ },
+ "wingedStates": {
+  "jump": {
+   "anim": "abel_crusnik80_fly"
+  },
+  "fall": {
+   "anim": "abel_crusnik80_hover"
+  },
+  "airAttack": {
+   "anim": "abel_crusnik80_dive"
+  },
+  "lash": {
+   "anim": "abel_crusnik80_dive"
+  },
+  "hurt": {
+   "anim": "abel_crusnik80_hover"
   }
  }
 }

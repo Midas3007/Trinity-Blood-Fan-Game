@@ -65,6 +65,10 @@ export interface Entry {
 export interface Exit extends Rect {
   to: string;
   entry: string;
+  /** A doorway: stand in it and press up (otherwise walking in is enough). */
+  door?: boolean;
+  /** Sealed until this flag is set. */
+  requires?: string;
 }
 
 export interface Hazard extends Rect {
@@ -168,7 +172,13 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
     exits: layer('exits').map((o) => {
       const p = props(o);
       if (!p.to || !p.entry) fail(`exit ${o.id} needs 'to' and 'entry' properties`);
-      return { ...rect(o), to: String(p.to), entry: String(p.entry) };
+      return {
+        ...rect(o),
+        to: String(p.to),
+        entry: String(p.entry),
+        ...(p.door ? { door: true } : {}),
+        ...(p.requires ? { requires: String(p.requires) } : {}),
+      };
     }),
     gates: layer('gates').map((o) => {
       const p = props(o);

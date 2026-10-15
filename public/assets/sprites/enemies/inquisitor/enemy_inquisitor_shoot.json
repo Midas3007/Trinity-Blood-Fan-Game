@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "shoot": {
+      "durations_ms": [
+        520,
+        120
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 96,
+  "columns": 2,
+  "entity": "enemy_inquisitor",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 64,
+  "sheet": "enemy_inquisitor_shoot.png",
+  "source_hashes": [
+    "sha256:bda30a9e3f51aeaa70661321335c3b2c875b683d32ac8589b18a079b4689dacf",
+    "sha256:519800ff20cbfbe5f22484c8ce971727c6f89e9183f90c5b098d0044843bc138"
+  ]
+}

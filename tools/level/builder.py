@@ -19,6 +19,7 @@ class Room:
         self.L = {name: [[None] * self.W for _ in range(self.H)] for name in ("terrain", "back", "facade", "shade")}
         self.markers = []
         self.gates = []  # (x0, y0, x1, y1, flag) in tiles
+        self.exits = []  # (x0, y0, x1, y1, to, entry, requires) in tiles: doors (stand there, press up)
         self.images = []  # painted art placed in the room: dicts written as 'image' markers
         self.horizon = self.H  # street row (tiles); skylines stand on it
         self.rng = random.Random(seed)
@@ -223,6 +224,11 @@ class Room:
         """A portcullis (solid until a lever sets `flag`). Tiles x0..x1-1, y0..y1-1."""
         self.gates.append((x0, y0, x1, y1, flag))
 
+    def door(self, x0, y0, x1, y1, to, entry, requires=""):
+        """A doorway into another room (not on the street grid, e.g. inside the cathedral): stand in it and press up.
+        `requires` = a flag that must be set first (the door is sealed until then)."""
+        self.exits.append((x0, y0, x1, y1, to, entry, requires))
+
     # --- markers ---
     def mark(self, kind, x, y, name="", **props):
         """x, y in tiles: (x, y) is the tile the thing stands ON TOP of minus one, i.e. feet at the top of row y+1."""
@@ -294,6 +300,17 @@ class Room:
                           "rotation": 0, "visible": True, "properties": [{"name": "opens", "type": "string", "value": flag}]})
         layers.append({"id": 6, "name": "gates", "type": "objectgroup", "draworder": "topdown", "opacity": 1, "visible": True,
                        "x": 0, "y": 0, "objects": gobjs})
+        eobjs = []
+        for x0, y0, x1, y1, to, entry, requires in self.exits:
+            oid += 1
+            props = [{"name": "to", "type": "string", "value": to}, {"name": "entry", "type": "string", "value": entry},
+                     {"name": "door", "type": "bool", "value": True}]
+            if requires:
+                props.append({"name": "requires", "type": "string", "value": requires})
+            eobjs.append({"id": oid, "name": "", "type": "", "x": x0 * T, "y": y0 * T, "width": (x1 - x0) * T, "height": (y1 - y0) * T,
+                          "rotation": 0, "visible": True, "properties": props})
+        layers.append({"id": 7, "name": "exits", "type": "objectgroup", "draworder": "topdown", "opacity": 1, "visible": True,
+                       "x": 0, "y": 0, "objects": eobjs})
         for im in self.images:
             oid += 1
             objs.append({"id": oid, "name": im["key"], "type": "image", "x": im["x"], "y": im["y"], "point": True, "width": 0, "height": 0,

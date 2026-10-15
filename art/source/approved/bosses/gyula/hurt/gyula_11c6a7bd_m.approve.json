@@ -1,0 +1,14 @@
+{
+  "source": "gyula_11c6a7bd_m.png",
+  "source_hash": "sha256:3e9a045a49508afd4c5fa62c2980bc92e68daee38457cf89dda5af7fcde10705",
+  "figures": [
+    4
+  ],
+  "standing_px": 932,
+  "factor": 0.463519,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "gyula_11c6a7bd_m_f4.png"
+  ]
+}

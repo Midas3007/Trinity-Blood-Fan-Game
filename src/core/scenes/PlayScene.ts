@@ -111,6 +111,8 @@ export class PlayScene extends Phaser.Scene {
   private pauseMenu!: PauseMenu;
   private shotFlash!: ShotFlash;
   private banner!: Banner;
+  private boltFx!: Phaser.GameObjects.Graphics;
+  private doorHint!: Phaser.GameObjects.Text;
   private chain!: ChainLashView;
 
   constructor() {
@@ -282,6 +284,12 @@ export class PlayScene extends Phaser.Scene {
     this.player.resumeCrusnik();
     this.banner = new Banner(this);
     this.chain = new ChainLashView(this);
+    this.boltFx = this.add.graphics().setDepth(11);
+    this.doorHint = this.add
+      .text(0, 0, '', { fontFamily: 'serif', fontSize: '10px', color: '#eadfc4', stroke: '#0b0a10', strokeThickness: 3 })
+      .setOrigin(0.5, 1)
+      .setDepth(12)
+      .setVisible(false);
     this.player.onFormChange = (form) => {
       if (form === 'crusnik') {
         this.cameras.main.flash(220, 212, 40, 62);
@@ -412,10 +420,15 @@ export class PlayScene extends Phaser.Scene {
     this.combatSystem.step(
       [...this.dummies, ...living, ...this.runtime.levers, ...(arena?.targets ?? []), ...this.flyers.targets],
       [...living, ...(arena?.attackers ?? [])],
-      [...this.dummies, ...(arena?.hazards(p0.hurtbox()) ?? []), ...this.flyers.hazards(p0.hurtbox(), p0.x, p0.y)],
+      [...this.dummies, ...(arena?.hazards(p0.hurtbox()) ?? []), ...this.flyers.hazards(p0.hurtbox(), p0.x, p0.y), ...this.enemies.boltHazards(p0.hurtbox())],
     );
     this.sparks.update(dt);
     this.shotFlash.update(dt);
+    this.boltFx.clear();
+    for (const b of this.enemies.bolts) {
+      this.boltFx.lineStyle(2, 0x8a6a3a, 1).lineBetween(b.x - Math.sign(b.vx) * 8, b.y, b.x, b.y);
+      this.boltFx.fillStyle(0xddd7e6, 1).fillRect(b.x - 1, b.y - 1, 2, 2);
+    }
     const p = this.player;
     this.hud.setCrusnik(p.crusnik.fraction, p.crusnik.unlocked, p.crusnik.ready);
     this.chain.update(p.state === 'lash' ? activeHitbox(p.combat, p.x, p.y, p.facing) : null, p.x + p.facing * 8, p.y - 4, p.facing);
@@ -450,13 +463,22 @@ export class PlayScene extends Phaser.Scene {
       const unlock = loreEntry(lore)?.unlocks;
       if (unlock && !gameState.hasFlag(unlock)) this.unlock(unlock);
     }
+    this.doorHint.setVisible(false);
     const ev = this.runtime.update(p);
     if (!ev) {
       if (p.onGround && this.runtime.safeAt(p.x)) this.safe = { x: p.x, y: p.feetY };
       return;
     }
     if (ev.type === 'exit') {
-      this.goTo({ room: ev.exit.to, entry: ev.exit.entry });
+      const ex = ev.exit;
+      if (ex.requires && !gameState.hasFlag(ex.requires)) {
+        this.doorHint.setText('sealed').setPosition(ex.x + ex.w / 2, ex.y - 4).setVisible(true);
+      } else if (ex.door && this.actions.moveY > -0.5) {
+        this.doorHint.setText('▲').setPosition(ex.x + ex.w / 2, ex.y - 4).setVisible(true);
+      } else {
+        this.goTo({ room: ex.to, entry: ex.entry });
+      }
+      return;
     } else if (ev.type === 'hazard') {
       // Spikes hurt, then put you back on the last solid ground.
       if (!p.invulnerable) {
@@ -547,6 +569,16 @@ export class PlayScene extends Phaser.Scene {
     this.hud.setFlasks(this.player.flasks);
     this.hud.setHealth(this.player.health.fraction);
     this.banner.show(r.card, r.gift);
+    if (flag === 'gyula_defeated') {
+      // The end: the ending scene, the credits, then the teaser for the next arc.
+      saveStore.save(gameState.toSave(Date.now()));
+      this.time.delayedCall(3200, () =>
+        this.playCutscene('ending', () => {
+          this.scene.start(SCENES.credits);
+        }),
+      );
+      return;
+    }
     saveStore.save(gameState.toSave(Date.now()));
   }
 
@@ -572,6 +604,15 @@ export class PlayScene extends Phaser.Scene {
 
   /** A boss's mid-fight cutscene ended. Kampfer's is Abel's first transformation: the Crusnik wakes, now. */
   private phaseSceneDone(id: string): void {
+    if (id === 'gyula_wings') {
+      // The final battle: eighty percent. Wings, and the blood no longer runs out.
+      gameState.setFlag(crusnikConfig.unlockFlag);
+      this.player.crusnik.unlocked = true;
+      this.player.forceTransform();
+      this.player.winged = true;
+      this.banner.show('OCTOGINTA', 'Eighty percent. Wings — leap and glide.', 2400);
+      return;
+    }
     if (id !== 'kampfer_awakening') return;
     gameState.setFlag(crusnikConfig.unlockFlag);
     const cm = this.player.crusnik;

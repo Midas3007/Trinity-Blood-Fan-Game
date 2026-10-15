@@ -1,0 +1,14 @@
+{
+  "source": "choir_de37d1a0_m.png",
+  "source_hash": "sha256:f5877266a538311cfb5a7e1a866878c8b0fad0a5fc1adad06956e5350e1225de",
+  "figures": [
+    5
+  ],
+  "standing_px": 966,
+  "factor": 0.347826,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "choir_de37d1a0_m_f5.png"
+  ]
+}

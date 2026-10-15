@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "sweep": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 176,
+  "cell_width": 224,
+  "columns": 1,
+  "entity": "boss_marionette",
+  "palette": "requiem48.hex",
+  "pivot_x": 112,
+  "pivot_y": 176,
+  "sheet": "boss_marionette_sweep.png",
+  "source_hashes": [
+    "sha256:11f93d9b3a3a2d3835330d519580f24cd8780ee989252e0943f62cacadb8d821"
+  ]
+}

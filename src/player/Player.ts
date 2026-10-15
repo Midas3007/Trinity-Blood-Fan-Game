@@ -20,6 +20,9 @@ import { chooseFinisher, type AbelForm, type FinisherDef, type FinisherTarget } 
 import { CrusnikMeter, crusnikConfig, crusnikTuning } from './CrusnikMeter';
 
 const CRUSNIK_TUNING = crusnikTuning(playerTuning);
+/** 80%: wings. Only in the final battle (scripted): a far higher leap, the blood never runs out, harder blows. */
+const WINGED_TUNING: PlayerTuning = { ...CRUSNIK_TUNING, jumpVelocity: 540, fallingGravity: playerTuning.fallingGravity * 0.6 };
+const WINGED_DAMAGE = 1.3;
 
 const INVULNERABLE_ALPHA = 0.45;
 /** How long a deliberate drop ignores one-way platforms (ms), and the small downward push that starts it. */
@@ -100,6 +103,7 @@ export class Player implements PlayerContext, PlayerCombatant {
   }
 
   get tuning(): PlayerTuning {
+    if (this.winged) return WINGED_TUNING;
     return this.form === 'crusnik' ? CRUSNIK_TUNING : playerTuning;
   }
 
@@ -155,6 +159,9 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.form = form;
     this.onFormChange?.(form);
   }
+
+  /** 80% (wings): set by the final battle's scene. */
+  winged = false;
 
   /** Scripted: become the Crusnik at once (the meter must be unlocked; it starts draining). */
   forceTransform(): void {
@@ -286,7 +293,7 @@ export class Player implements PlayerContext, PlayerCombatant {
   }
 
   get damageMultiplier(): number {
-    return this.strength.damageMultiplier * this.relicDamage * (this.form === 'crusnik' ? crusnikConfig.damageMultiplier : 1);
+    return this.strength.damageMultiplier * this.relicDamage * (this.form === 'crusnik' ? crusnikConfig.damageMultiplier : 1) * (this.winged ? WINGED_DAMAGE : 1);
   }
 
   /** The nearest valid finisher in front of the player, or null. */
@@ -502,7 +509,7 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.body.setGravityY(gravityFor(this.vy, this.tuning) - this.worldGravity);
 
     this.strength.tick(dtMs);
-    if (this.crusnik.tick(dtMs)) this.setForm('priest');
+    if (!this.winged && this.crusnik.tick(dtMs)) this.setForm('priest');
     if (this.fsm.current === 'run' || this.fsm.current === 'idle') this.stepUp();
     this.dropMs = Math.max(0, this.dropMs - dtMs);
     this.blinkMs = Math.max(0, this.blinkMs - dtMs);
@@ -525,6 +532,6 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   private syncView(): void {
     this.facingMark.setPosition(this.sprite.x + this.facing * (this.tuning.width / 2 - 2), this.sprite.y - this.height / 2 + 7);
-    this.view.update(this.visualKey(), this.combat.current?.id ?? this.finishing.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha, this.form);
+    this.view.update(this.visualKey(), this.combat.current?.id ?? this.finishing.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha, this.form, this.winged);
   }
 }

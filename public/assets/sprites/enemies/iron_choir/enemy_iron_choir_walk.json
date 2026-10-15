@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "walk": {
+      "durations_ms": [
+        260,
+        260
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 72,
+  "cell_width": 96,
+  "columns": 2,
+  "entity": "enemy_iron_choir",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 72,
+  "sheet": "enemy_iron_choir_walk.png",
+  "source_hashes": [
+    "sha256:ca77a93fd2672e706a0700d5d1aa2fcd20a4aed71447de09e1b1927b22a7b35e",
+    "sha256:fced6c4761ea946f0897b4e939fa30d236fd925ecba71fcc574718b6f5dcae7d"
+  ]
+}

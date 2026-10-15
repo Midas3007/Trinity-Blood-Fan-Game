@@ -51,7 +51,7 @@ export class Duelist implements ArenaFighter {
     private readonly floorY: number,
   ) {
     this.brain = new DuelistBrain(cfg, x, arenaLeft, arenaRight);
-    this.view = new SpriteView(scene, `boss_${cfg.id}_idle`, DEPTH);
+    this.view = new SpriteView(scene, `boss_${cfg.phases[0]?.sprite ?? cfg.id}_idle`, DEPTH);
     this.placeholder = scene.add.rectangle(0, 0, cfg.width, cfg.height, 0x5a1424).setDepth(DEPTH).setVisible(false);
     this.fx = scene.add.graphics().setDepth(DEPTH + 0.1);
     this.aura = scene.add.ellipse(0, 0, cfg.width * 3, cfg.height * 1.5, 0x6a2a4a, 0.28).setDepth(DEPTH - 0.1).setBlendMode(Phaser.BlendModes.ADD);
@@ -103,7 +103,7 @@ export class Duelist implements ArenaFighter {
     return this.brain.x;
   }
   get y(): number {
-    return this.floorY - this.brain.lift - this.brain.cfg.height / 2;
+    return this.floorY - this.brain.lift - this.brain.height / 2;
   }
   get facing(): 1 | -1 {
     return this.brain.facing;
@@ -117,7 +117,7 @@ export class Duelist implements ArenaFighter {
     return this.brain.alive;
   }
   hurtbox(): Rect {
-    return centredRect(this.x, this.y, this.brain.cfg.width, this.brain.cfg.height);
+    return centredRect(this.x, this.y, this.brain.width, this.brain.height);
   }
   receiveHit(hit: HitInfo): boolean {
     if (this.brain.takeDamage(hit.damage) <= 0) return false;
@@ -131,6 +131,8 @@ export class Duelist implements ArenaFighter {
     if (p) out.push(new Blast(playerBox, p.cfg.damage, p.x));
     const w = this.brain.cfg.shockwave;
     for (const v of this.brain.waves) out.push(new Blast({ x: v.x - w.width / 2, y: this.floorY - w.height, w: w.width, h: w.height }, w.damage, v.x));
+    const beam = this.brain.beamHit(playerBox);
+    if (beam) out.push(new Blast(playerBox, beam.damage, beam.x));
     return out;
   }
 
@@ -143,13 +145,17 @@ export class Duelist implements ArenaFighter {
       if (e.type === 'summon') this.summons.push({ creature: e.creature, count: e.count });
     }
     const feetY = this.floorY - b.lift;
+    this.placeholder.setSize(b.width, b.height);
     const key = b.state === 'attack' ? `attack:${b.attackId}` : b.state;
-    const pose = b.cfg.visuals[key] ?? b.cfg.visuals[b.state] ?? 'idle';
-    const v: StateVisual | null = b.visible ? { anim: `boss_${b.cfg.id}_${pose}` } : null;
+    const vis = b.phase.visuals ?? b.cfg.visuals;
+    const pose = vis[key] ?? vis[b.state] ?? 'idle';
+    const set = b.phase.sprite ?? b.cfg.id;
+    const prefix = set.startsWith('npc_') ? set : `boss_${set}`;
+    const v: StateVisual | null = b.visible ? { anim: `${prefix}_${pose}` } : null;
     const fade = b.state === 'defeated' ? Math.max(0.5, 1 - b.stateMs / b.cfg.deathMs) : 1;
     const shown = v !== null && this.view.show(v, b.x, feetY, b.facing, fade);
     this.placeholder.setVisible(b.visible && !shown).setPosition(b.x, this.y);
-    this.aura.setVisible(b.visible && b.alive).setPosition(b.x, feetY - b.cfg.height / 2);
+    this.aura.setVisible(b.visible && b.alive).setPosition(b.x, feetY - b.height / 2).setSize(b.width * 3, b.height * 1.5);
     const s = this.view.sprite;
     if (s && shown) {
       s.clearTint();
@@ -170,6 +176,17 @@ export class Duelist implements ArenaFighter {
       g.fillStyle(c, 0.35).fillCircle(p.x, y, p.cfg.size);
       g.fillStyle(c, 1).fillCircle(p.x, y, p.cfg.size / 2);
       g.fillStyle(0xffffff, 0.8).fillCircle(p.x, y, p.cfg.size / 5);
+    }
+    // Star beams: a thin pale mark on the floor, then a blinding column.
+    for (const bm of this.brain.beams) {
+      if (bm.ms < bm.markMs) {
+        const a = 0.35 + 0.35 * Math.sin(bm.ms / 60);
+        g.fillStyle(0xbfe0ef, a).fillRect(bm.x - bm.width / 2, this.floorY - 3, bm.width, 3);
+        g.lineStyle(1, 0xbfe0ef, a * 0.6).lineBetween(bm.x, this.floorY, bm.x, this.floorY - 400);
+      } else {
+        g.fillStyle(0xbfe0ef, 0.35).fillRect(bm.x - bm.width, this.floorY - 600, bm.width * 2, 600);
+        g.fillStyle(0xffffff, 0.9).fillRect(bm.x - bm.width / 2, this.floorY - 600, bm.width, 600);
+      }
     }
     const w = this.brain.cfg.shockwave;
     for (const v of this.brain.waves) {

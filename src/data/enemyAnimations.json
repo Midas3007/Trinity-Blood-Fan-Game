@@ -85,5 +85,62 @@
       "anim": "enemy_bonerat_walk",
       "frame": 0
     }
+  },
+  "ironChoir": {
+    "idle": {
+      "anim": "enemy_iron_choir_idle"
+    },
+    "patrol": {
+      "anim": "enemy_iron_choir_walk"
+    },
+    "alert": {
+      "anim": "enemy_iron_choir_idle"
+    },
+    "pursue": {
+      "anim": "enemy_iron_choir_walk",
+      "timeScale": 1.4
+    },
+    "attack": {
+      "anim": "enemy_iron_choir_chop"
+    },
+    "hurt": {
+      "anim": "enemy_iron_choir_block"
+    },
+    "staggered": {
+      "anim": "enemy_iron_choir_block"
+    },
+    "dead": {
+      "anim": "enemy_iron_choir_collapse"
+    },
+    "block": {
+      "anim": "enemy_iron_choir_block"
+    }
+  },
+  "inquisitor": {
+    "idle": {
+      "anim": "enemy_inquisitor_idle"
+    },
+    "patrol": {
+      "anim": "enemy_inquisitor_walk"
+    },
+    "alert": {
+      "anim": "enemy_inquisitor_idle"
+    },
+    "pursue": {
+      "anim": "enemy_inquisitor_walk",
+      "timeScale": 1.3
+    },
+    "attack": {
+      "anim": "enemy_inquisitor_shoot"
+    },
+    "hurt": {
+      "anim": "enemy_inquisitor_hurt"
+    },
+    "staggered": {
+      "anim": "enemy_inquisitor_hurt"
+    },
+    "dead": {
+      "anim": "enemy_inquisitor_down"
+    }
   }
 }

@@ -101,6 +101,10 @@ entities:
       transform: { loop: false, durations_ms: [300, 350] }   # hunched awakening, then arms spread (= transformMs)
       walk:      { loop: true,  durations_ms: 220 }
       climb:     { loop: true,  durations_ms: 180 }
+      guard:     { loop: false, durations_ms: 300 }   # sheet 9c36ce02 (climb redrawn without a ladder, plus these)
+      hurt:      { loop: false, durations_ms: 300 }
+      crouch:    { loop: false, durations_ms: 300 }
+      kneel:     { loop: false, durations_ms: 600 }
       slide:     { loop: true,  durations_ms: 200, anchor: centre }
       scythe:
         attack: scythe
@@ -233,6 +237,82 @@ entities:
       conduct: { loop: false, durations_ms: 600 }
       laugh:   { loop: false, durations_ms: 600 }
       bow:     { loop: false, durations_ms: 600 }
+
+  enemy_iron_choir:
+    cell: [96, 72]
+    sprite_height: 42
+    source_dir: art/source/approved/enemies/iron_choir/
+    output_dir: public/assets/sprites/enemies/iron_choir/
+    keep_largest: true
+    animations:
+      idle:     { loop: true,  durations_ms: 600 }
+      walk:     { loop: true,  durations_ms: [260, 260] }
+      chop:     { loop: false, durations_ms: [560, 140] }
+      block:    { loop: false, durations_ms: 300 }
+      collapse: { loop: false, durations_ms: 600 }
+
+  enemy_inquisitor:
+    cell: [96, 64]
+    sprite_height: 36
+    source_dir: art/source/approved/enemies/inquisitor/
+    output_dir: public/assets/sprites/enemies/inquisitor/
+    keep_largest: true
+    animations:
+      idle: { loop: true,  durations_ms: 600 }
+      walk: { loop: true,  durations_ms: [260, 260] }
+      shoot: { loop: false, durations_ms: [520, 120] }
+      hurt: { loop: false, durations_ms: 300 }
+      down: { loop: false, durations_ms: 600 }
+
+  # Region 2 (sheets 7c4e0f0c marionette, 11c6a7bd Gyula, 09faf2b7 Caterina + envoy).
+  boss_marionette:
+    cell: [224, 176]
+    sprite_height: 112
+    source_dir: art/source/approved/bosses/marionette/
+    output_dir: public/assets/sprites/bosses/marionette/
+    keep_largest: true
+    animations:
+      idle:     { loop: true,  durations_ms: 700 }
+      raise:    { loop: false, durations_ms: 300 }
+      slam:     { loop: false, durations_ms: 300 }
+      sweep:    { loop: false, durations_ms: 300 }
+      collapse: { loop: false, durations_ms: 600 }
+
+  boss_gyula:
+    cell: [128, 96]
+    sprite_height: 54
+    source_dir: art/source/approved/bosses/gyula/
+    output_dir: public/assets/sprites/bosses/gyula/
+    keep_largest: true
+    animations:
+      idle:     { loop: true,  durations_ms: 700 }
+      thrust:   { loop: false, durations_ms: 300 }
+      slash:    { loop: false, durations_ms: 300 }
+      star:     { loop: false, durations_ms: 400 }
+      hurt:     { loop: false, durations_ms: 300 }
+      defeated: { loop: false, durations_ms: 600 }
+
+  npc_caterina:
+    cell: [96, 72]
+    sprite_height: 44
+    source_dir: art/source/approved/npcs/caterina/
+    output_dir: public/assets/sprites/npcs/caterina/
+    keep_largest: true
+    animations:
+      stand:  { loop: false, durations_ms: 600 }
+      letter: { loop: false, durations_ms: 600 }
+      look:   { loop: false, durations_ms: 600 }
+
+  npc_envoy:
+    cell: [96, 72]
+    sprite_height: 42
+    source_dir: art/source/approved/npcs/envoy/
+    output_dir: public/assets/sprites/npcs/envoy/
+    keep_largest: true
+    animations:
+      stand: { loop: false, durations_ms: 600 }
+      offer: { loop: false, durations_ms: 600 }
+      bow:   { loop: false, durations_ms: 600 }
 
   boss_marchesa:
     cell: [128, 128]

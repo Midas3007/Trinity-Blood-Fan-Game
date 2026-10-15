@@ -253,3 +253,14 @@
 | Rewards as relics (flags): +1 flask, +25 health, +15% damage; Latin victory cards from `relics.json` | Blasphemous-style permanent upgrades from bosses; saved with the other flags | Stat points |
 | Cutscenes: own Phaser scene over the paused game, data in `src/data/cutscenes.json` (pure loader `src/core/cutscenes.ts`), sprites from the sprite index, painted room art as backgrounds | Owner chose code-animated manga panels; zero credits per scene | Pre-rendered video |
 | Title progress: 70% story fights (incl. planned Region 2 fights), 20% rooms visited, 10% lore found | Never shows 100% before the end; rewards exploring | Rooms only |
+
+## 2026-10-15 — Region 2 and the end of the act
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Doors (exit objects, stand + press up, optional `requires` flag) for rooms off the street grid; the room graph follows doors | The cathedral interior can't sit on the grid behind its own front | Interior as a fading facade (too big for one building) |
+| Region 2 order: Petros → cathedral portal → Dietrich → bridge gate → fortress → Gyula | Each step opens the next; matches the Istvan arc beats | Open world |
+| Dietrich = one duelist with two bodies (phase sprites/sizes: the Grand Marionette, then himself) | Re-uses the duel engine; phase change plays a cutscene | Two separate bosses |
+| Star of Sorrow = a 'beam' move: floor mark, then a column strike; barrages in phase 2 | Readable telegraph, forces movement, fits the weapon | Projectiles |
+| 80% Crusnik only in the final phase (scripted): wings visuals in the air, higher leap, no drain, ×1.3 damage | A climax without designing flight levels | Playable flight everywhere |
+| Iron Choir: frontal shield (`frontGuard` 0.2); hunters: crossbow `bolt` + `knockout` (humans are never killed) | Variety that rewards parry/positioning; the mercy theme | More melee clones |

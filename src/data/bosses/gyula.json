@@ -1,0 +1,200 @@
+{
+  "_note": "Gyula Kadar (verify) \u2014 final boss, the Star of Sorrow chamber. A grieving Methuselah lord: rapier combos with lunges, a dash, and the Star of Sorrow (marked columns of light from the sky). At half health the 80% Crusnik scene plays (Abel's wings); phase 2 is faster with wider barrages.",
+  "id": "gyula",
+  "name": "Gyula Kadar, Lord of Istvan",
+  "maxHealth": 640,
+  "width": 16,
+  "height": 46,
+  "introMs": 1400,
+  "phaseMs": 1400,
+  "approachRange": 64,
+  "walkMaxMs": 2000,
+  "staggerMs": 1100,
+  "staggerDamageMultiplier": 2,
+  "recoverMs": 480,
+  "yields": false,
+  "deathMs": 2200,
+  "shockwave": {
+    "speed": 220,
+    "width": 14,
+    "height": 12,
+    "damage": 14,
+    "lifeMs": 2400
+  },
+  "phases": [
+    {
+      "at": 1,
+      "pattern": [
+        "combo",
+        "star",
+        "dash",
+        "combo",
+        "star"
+      ],
+      "idleMs": 520,
+      "walkSpeed": 90
+    },
+    {
+      "at": 0.5,
+      "pattern": [
+        "star3",
+        "combo3",
+        "dash",
+        "stars",
+        "combo3",
+        "blink"
+      ],
+      "idleMs": 340,
+      "walkSpeed": 120
+    }
+  ],
+  "moves": {
+    "combo": {
+      "type": "combo",
+      "attacks": [
+        "g_thrust",
+        "g_slash"
+      ],
+      "lunges": [
+        90,
+        0
+      ]
+    },
+    "combo3": {
+      "type": "combo",
+      "attacks": [
+        "g_thrust",
+        "g_slash",
+        "g_thrust"
+      ],
+      "lunges": [
+        100,
+        0,
+        120
+      ]
+    },
+    "dash": {
+      "type": "dash",
+      "attack": "g_dash",
+      "distance": 9999,
+      "speed": 420,
+      "fromEdge": true,
+      "telegraphMs": 520
+    },
+    "star": {
+      "type": "beam",
+      "windupMs": 700,
+      "markMs": 700,
+      "strikeMs": 300,
+      "width": 18,
+      "damage": 20,
+      "count": 1,
+      "spacing": 0,
+      "recoverMs": 700
+    },
+    "star3": {
+      "type": "beam",
+      "windupMs": 600,
+      "markMs": 650,
+      "strikeMs": 300,
+      "width": 18,
+      "damage": 20,
+      "count": 3,
+      "spacing": 70,
+      "recoverMs": 600
+    },
+    "stars": {
+      "type": "beam",
+      "windupMs": 800,
+      "markMs": 700,
+      "strikeMs": 300,
+      "width": 16,
+      "damage": 18,
+      "count": 5,
+      "spacing": 56,
+      "recoverMs": 800
+    },
+    "blink": {
+      "type": "teleport",
+      "attack": "g_slash",
+      "vanishMs": 380
+    }
+  },
+  "attacks": {
+    "g_thrust": {
+      "startupMs": 330,
+      "activeMs": 110,
+      "recoveryMs": 220,
+      "damage": 18,
+      "knockbackX": 190,
+      "knockbackY": 60,
+      "hitstopMs": 80,
+      "shakeMs": 110,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 30,
+        "y": -6,
+        "w": 46,
+        "h": 16
+      }
+    },
+    "g_slash": {
+      "startupMs": 260,
+      "activeMs": 120,
+      "recoveryMs": 460,
+      "damage": 16,
+      "knockbackX": 170,
+      "knockbackY": 80,
+      "hitstopMs": 80,
+      "shakeMs": 110,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 26,
+        "y": -4,
+        "w": 42,
+        "h": 30
+      }
+    },
+    "g_dash": {
+      "startupMs": 0,
+      "activeMs": 5000,
+      "recoveryMs": 0,
+      "damage": 20,
+      "knockbackX": 220,
+      "knockbackY": 100,
+      "hitstopMs": 80,
+      "shakeMs": 110,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 10,
+        "y": 0,
+        "w": 30,
+        "h": 40
+      },
+      "parryable": false
+    }
+  },
+  "visuals": {
+    "intro": "idle",
+    "idle": "idle",
+    "walk": "idle",
+    "telegraph": "thrust",
+    "dash": "thrust",
+    "beam": "star",
+    "vanish": "hurt",
+    "recover": "idle",
+    "staggered": "hurt",
+    "phase": "star",
+    "defeated": "defeated",
+    "attack:g_thrust": "thrust",
+    "attack:g_slash": "slash"
+  },
+  "phaseScene": "gyula_wings",
+  "relic": "finis"
+}

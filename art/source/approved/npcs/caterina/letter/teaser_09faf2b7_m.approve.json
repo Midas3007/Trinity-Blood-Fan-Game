@@ -1,0 +1,14 @@
+{
+  "source": "teaser_09faf2b7_m.png",
+  "source_hash": "sha256:39ac60546cebea1fdc39141698c88af66c6604dcc439b4f1bf9bd27ea3149dd8",
+  "figures": [
+    1
+  ],
+  "standing_px": 1100,
+  "factor": 0.32,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "teaser_09faf2b7_m_f1.png"
+  ]
+}

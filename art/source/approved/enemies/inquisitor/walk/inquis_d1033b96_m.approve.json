@@ -1,0 +1,16 @@
+{
+  "source": "inquis_d1033b96_m.png",
+  "source_hash": "sha256:86e5ca7ab6072ae41b3a06fb8f7c496d4611e34c5111e4626c46ee81006eb3a1",
+  "figures": [
+    0,
+    1
+  ],
+  "standing_px": 795,
+  "factor": 0.362264,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "inquis_d1033b96_m_f0.png",
+    "inquis_d1033b96_m_f1.png"
+  ]
+}

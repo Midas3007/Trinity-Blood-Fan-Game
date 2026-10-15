@@ -23,7 +23,7 @@ export class MenuScene extends Phaser.Scene {
       .text(cx, GAME_HEIGHT * 0.3, 'TRINITY BLOOD', { fontFamily: 'serif', fontSize: hasArt ? '24px' : '28px', color: COLORS.text, ...stroke })
       .setOrigin(0.5);
     this.add
-      .text(cx, GAME_HEIGHT * 0.3 + 26, 'Requiem for Rome', { fontFamily: 'serif', fontSize: '14px', color: COLORS.text, ...stroke })
+      .text(cx, GAME_HEIGHT * 0.3 + 26, 'The Star of Sorrow', { fontFamily: 'serif', fontSize: '14px', color: COLORS.text, ...stroke })
       .setOrigin(0.5);
     this.add
       .text(cx, GAME_HEIGHT * 0.3 + 44, 'a fan-made Metroidvania', {

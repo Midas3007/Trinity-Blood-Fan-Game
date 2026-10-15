@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "crouch": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 96,
+  "columns": 1,
+  "entity": "abel_crusnik40",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 96,
+  "sheet": "abel_crusnik40_crouch.png",
+  "source_hashes": [
+    "sha256:f229ca59608f340289eef542b9120aa7a9bca9e77dc7feb75ebb52ce56e0a2fb"
+  ]
+}

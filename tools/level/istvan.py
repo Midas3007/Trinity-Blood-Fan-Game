@@ -158,7 +158,10 @@ def cathedral_square():
     r.street_props(104, 120, GY, lamp_offset=6)
     for x in (44, 94):
         r.mark("decor", x, T - 1, item="lamp")
-    r.mark("lore", 69, T - 1, lore="cathedral_sealed")
+    r.mark("lore", 66, T - 1, lore="cathedral_sealed")
+    # The portal: sealed until the Inquisition is gone (Brother Petros); then into the nave (Region 2).
+    r.door(67, T - 5, 72, T, "cathedral_nave", "portal", requires="petros_defeated")
+    r.mark("entry", 69, T - 1, name="nave_door")
     r.mark("lore", 14, GY - 1, lore="esther_prayer")
     r.mark("enemy", 22, GY - 1, enemy="thrall")
     r.mark("enemy", 84, T - 1, enemy="deathHunter")
@@ -204,10 +207,11 @@ def bridge():
         r.wall(px, D + 2, px + 4, r.H - 3)
     for px in (18, 58, 86):                                  # scaffolding to climb back from the piers
         r.platform(px, px + 4, D + 5)
-    r.wall(112, 0, r.W, r.H)                                 # the barred gatehouse at the far end
-    r.fill("facade", 112, D - 6, 116, D, "door")
+    r.wall(112, 0, r.W, r.H)                                 # the gatehouse at the far end
+    r.carve(112, D - 5, r.W, D)                              # its passage, closed by a portcullis until Dietrich falls
+    r.gate(112, D - 5, 114, D, "dietrich_defeated")
     r.street_props(2, 110, D, every=14)
-    r.mark("label", 104, D - 8, text="The way to the count's castle is barred.")
+    r.mark("lore", 106, D - 1, lore="castle_gate_barred")
     r.mark("enemy", 60, D - 1, enemy="deathHunter")
     r.mark("enemy", 24, D - 1, enemy="thrall")
     r.mark("enemy", 96, D - 1, enemy="thrall")
@@ -236,7 +240,8 @@ def sewer_shaft():
 
 if __name__ == "__main__":
     from tools.level import undercity
-    rooms = [station(), old_town(), clock_alley(), square(), cathedral_square(), hill_street(), bridge(), sewer_shaft()] + undercity.rooms()
+    from tools.level import region2
+    rooms = [station(), old_town(), clock_alley(), square(), cathedral_square(), hill_street(), bridge(), sewer_shaft()] + undercity.rooms() + region2.rooms()
     for r in rooms:
         r.horizon = street_row(r)
         if r.sky and r.id not in ("danube_bridge",):

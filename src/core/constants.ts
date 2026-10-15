@@ -7,6 +7,7 @@ export const SCENES = {
   menu: 'Menu',
   play: 'Play',
   cutscene: 'Cutscene',
+  credits: 'Credits',
 } as const;
 
 export const FAN_NOTICE =

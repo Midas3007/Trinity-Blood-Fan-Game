@@ -22,7 +22,8 @@ export type DuelMove =
   | { type: 'teleport'; attack: string; vanishMs: number }
   | { type: 'cast'; windupMs: number; recoverMs: number; projectile: ProjectileCfg; count: number; spreadDeg: number; aimed?: boolean }
   | { type: 'summon'; creature: string; count: number; windupMs: number }
-  | { type: 'slam'; attack: string; shockwaves: boolean };
+  | { type: 'slam'; attack: string; shockwaves: boolean }
+  | { type: 'beam'; windupMs: number; markMs: number; strikeMs: number; width: number; damage: number; count: number; spacing: number; recoverMs: number };
 
 export interface ProjectileCfg {
   speed: number;
@@ -35,6 +36,11 @@ export interface ProjectileCfg {
 export interface DuelPhase {
   /** Starts when health falls to this fraction (the first phase uses 1). */
   at: number;
+  /** Sprite set for this phase (boss_<sprite>_<pose>) and its body size, if it changes (a puppet, then its master). */
+  sprite?: string;
+  width?: number;
+  height?: number;
+  visuals?: Record<string, string>;
   pattern: string[];
   idleMs: number;
   walkSpeed: number;
@@ -82,6 +88,7 @@ export type DuelState =
   | 'vanish'
   | 'cast'
   | 'summon'
+  | 'beam'
   | 'recover'
   | 'staggered'
   | 'phase'
@@ -104,6 +111,17 @@ export interface Projectile {
   hit: boolean;
 }
 
+/** A column of light: marked on the floor first, then it strikes. */
+export interface Beam {
+  x: number;
+  ms: number;
+  markMs: number;
+  strikeMs: number;
+  width: number;
+  damage: number;
+  hit: boolean;
+}
+
 export interface Wave {
   x: number;
   dir: 1 | -1;
@@ -122,6 +140,7 @@ export class DuelistBrain {
   phaseIndex = 0;
   readonly projectiles: Projectile[] = [];
   readonly waves: Wave[] = [];
+  readonly beams: Beam[] = [];
   /** The id of the move being performed (for visuals). */
   moveId = '';
   /** The attack in progress, or the last one (for visuals). */
@@ -157,6 +176,14 @@ export class DuelistBrain {
     return this.cfg.phases[this.phaseIndex]!;
   }
 
+  /** Body size for the current phase. */
+  get width(): number {
+    return this.phase.width ?? this.cfg.width;
+  }
+  get height(): number {
+    return this.phase.height ?? this.cfg.height;
+  }
+
   get invulnerable(): boolean {
     return this.state === 'intro' || this.state === 'phase' || this.state === 'vanish' || this.state === 'defeated';
   }
@@ -167,7 +194,7 @@ export class DuelistBrain {
 
   /** Something is about to hit: wind-ups glow amber (the dash from the edge glows red). */
   get telegraphing(): boolean {
-    if (this.state === 'telegraph' || this.state === 'cast' || this.state === 'summon') return true;
+    if (this.state === 'telegraph' || this.state === 'cast' || this.state === 'summon' || this.state === 'beam') return true;
     return this.state === 'attack' && this.combat.phase === 'startup';
   }
 
@@ -212,6 +239,7 @@ export class DuelistBrain {
     this.combat.tick(dtMs);
     this.updateProjectiles(dtMs);
     this.updateWaves(dtMs);
+    this.updateBeams(dtMs);
     const c = this.cfg;
     const s = dtMs / 1000;
     const toward: 1 | -1 = playerX >= this.x ? 1 : -1;
@@ -324,6 +352,20 @@ export class DuelistBrain {
           this.to('recover');
         }
         break;
+      case 'beam':
+        if (move?.type === 'beam') {
+          this.facing = toward;
+          if (this.stateMs >= move.windupMs && !this.casted) {
+            this.casted = true;
+            // Columns at Abel's feet and either side of it, so standing still is never safe.
+            for (let i = 0; i < move.count; i++) {
+              const off = (i - (move.count - 1) / 2) * move.spacing;
+              this.beams.push({ x: this.clampX(playerX + off), ms: 0, markMs: move.markMs + i * 120, strikeMs: move.strikeMs, width: move.width, damage: move.damage, hit: false });
+            }
+          }
+          if (this.stateMs >= move.windupMs + move.recoverMs) this.to('idle');
+        }
+        break;
       case 'recover':
         if (this.stateMs >= c.recoverMs) this.to('idle');
         break;
@@ -387,6 +429,10 @@ export class DuelistBrain {
       case 'summon':
         this.to('summon');
         break;
+      case 'beam':
+        this.casted = false;
+        this.to('beam');
+        break;
     }
   }
 
@@ -429,6 +475,26 @@ export class DuelistBrain {
     }
   }
 
+  /** A beam striking a box this frame (each beam hits once). */
+  beamHit(box: { x: number; w: number }): Beam | null {
+    for (const b of this.beams) {
+      if (b.hit || b.ms < b.markMs || b.ms > b.markMs + b.strikeMs) continue;
+      if (b.x + b.width / 2 > box.x && b.x - b.width / 2 < box.x + box.w) {
+        b.hit = true;
+        return b;
+      }
+    }
+    return null;
+  }
+
+  private updateBeams(dtMs: number): void {
+    for (const b of this.beams) b.ms += dtMs;
+    for (let i = this.beams.length - 1; i >= 0; i--) {
+      const b = this.beams[i]!;
+      if (b.ms > b.markMs + b.strikeMs) this.beams.splice(i, 1);
+    }
+  }
+
   private spawnWaves(): void {
     this.waves.push({ x: this.x, dir: -1, ms: 0 }, { x: this.x, dir: 1, ms: 0 });
   }
@@ -463,7 +529,7 @@ export class DuelistBrain {
   }
 
   private clampX(x: number): number {
-    const half = this.cfg.width / 2;
+    const half = this.width / 2;
     return Math.max(this.arenaLeft + half, Math.min(this.arenaRight - half, x));
   }
 
