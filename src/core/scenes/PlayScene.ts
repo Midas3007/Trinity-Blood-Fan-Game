@@ -9,6 +9,7 @@ import { EventBus } from '../../systems/EventBus';
 import type { GameEvents } from '../../systems/gameEvents';
 import { HitStop } from '../../combat/HitStop';
 import { SparkPool } from '../../combat/SparkPool';
+import { ShotFlash } from '../../combat/ShotFlash';
 import { CombatSystem } from '../../combat/CombatSystem';
 import { activeHitbox } from '../../combat/resolve';
 import type { Rect } from '../../combat/types';
@@ -45,6 +46,7 @@ export class PlayScene extends Phaser.Scene {
   private debug!: DebugOverlay;
   private hud!: Hud;
   private sparks!: SparkPool;
+  private shotFlash!: ShotFlash;
 
   constructor() {
     super(SCENES.play);
@@ -87,6 +89,17 @@ export class PlayScene extends Phaser.Scene {
     this.combatSystem = new CombatSystem(this.bus, this.player);
 
     this.sparks = new SparkPool(this, effects.maxSparks, COLORS.spark, effects.sparkLifeMs, effects.sparkSpeed);
+    this.shotFlash = new ShotFlash(this, COLORS.flash, effects.shotFlashMs);
+    this.player.finisherTargets = () => this.enemies.active;
+    this.player.onFinisher = (def, target, direction) => {
+      const fromX = this.player.x + direction * effects.gunForward;
+      const fromY = this.player.y + effects.gunDown;
+      this.bus.emit('combat:finisher', {
+        finisher: def.id, x: target.x, y: target.y, fromX, fromY, direction,
+        hitstopMs: def.hitstopMs, shakeMs: def.shakeMs, shakeIntensity: def.shakeIntensity,
+      });
+      this.bus.emit('enemy:died', { id: target.id, x: target.x, y: target.y });
+    };
     this.hud = new Hud(this);
     this.keyboard = this.input.keyboard
       ? new KeyboardSource(this.input.keyboard, () => this.game.loop.time)
@@ -118,6 +131,14 @@ export class PlayScene extends Phaser.Scene {
       if (effects.screenShake && hit.shakeMs > 0) this.cameras.main.shake(hit.shakeMs, hit.shakeIntensity);
       if (effects.sparks) this.sparks.burst(x, y, effects.sparksPerHit, Math.sign(hit.knockbackX));
     });
+    this.bus.on('combat:finisher', (f) => {
+      this.hitStop.trigger(f.hitstopMs);
+      if (this.hitStop.active) this.physics.world.pause();
+      if (effects.screenShake && f.shakeMs > 0) this.cameras.main.shake(f.shakeMs, f.shakeIntensity);
+      if (f.finisher === 'revolver') this.shotFlash.fire(f.fromX, f.fromY, f.x, f.y);
+      if (effects.sparks) this.sparks.burst(f.x, f.y, effects.shotSparks, f.direction);
+      this.hud.setHealth(this.player.health.fraction);
+    });
     this.bus.on('player:hurt', ({ hp, max }) => this.hud.setHealth(hp / max));
     this.bus.on('player:died', () => {
       this.player.respawn(testRoom.spawn.x, testRoom.spawn.y);
@@ -145,6 +166,7 @@ export class PlayScene extends Phaser.Scene {
     const living = this.enemies.alive;
     this.combatSystem.step([...this.dummies, ...living], living, this.dummies);
     this.sparks.update(dt);
+    this.shotFlash.update(dt);
 
     const boxes: Rect[] = [];
     for (const a of [this.player, ...living]) {
@@ -178,6 +200,7 @@ export class PlayScene extends Phaser.Scene {
         facing: p.facing,
         height: p.bodyHeight,
         view: p.view.label,
+        strength: p.damageMultiplier,
       },
       enemies: this.enemies.active.map((e) => ({ type: e.cfg.type, state: e.state, view: e.viewLabel, x: e.x, y: e.y, hp: e.health.hp })),
       dummies: this.dummies.map((d) => ({ x: d.x, hp: d.health.hp, alive: d.alive })),

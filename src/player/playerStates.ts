@@ -17,7 +17,8 @@ export type PlayerStateKey =
   | 'hurt'
   | 'crouch'
   | 'slide'
-  | 'crouchAttack';
+  | 'crouchAttack'
+  | 'finisher';
 
 /** Body posture for each state; the Player resizes its body to match. */
 export type Posture = 'stand' | 'roll' | 'low';
@@ -49,6 +50,13 @@ export interface PlayerContext {
   facing: 1 | -1;
   /** Set once per jump when the jump has been cut short by releasing the button. */
   jumpCut: boolean;
+  /** A staggered enemy is in front of the player and in finisher range. */
+  readonly finisherReady: boolean;
+  /** Starts the finisher on the target found by finisherReady (faces it, holds it). */
+  beginFinisher(): void;
+  /** Advances the finisher (the strike lands part-way); returns true when it has finished. */
+  tickFinisher(dtMs: number): boolean;
+  endFinisher(): void;
 }
 
 function faceInput(ctx: PlayerContext): void {
@@ -75,7 +83,7 @@ function groundUpdate(ctx: PlayerContext, dtMs: number): PlayerStateKey {
   if (ctx.timers.canJump && ctx.canStand) return 'jump';
   if (!ctx.onGround) return 'fall';
   if (ctx.crouchHeld || !ctx.canStand) return 'crouch';
-  if (ctx.attackPressed) return 'attack';
+  if (ctx.attackPressed) return ctx.finisherReady ? 'finisher' : 'attack';
   if (canDodge(ctx)) return 'dodge';
   return ctx.moveX !== 0 || ctx.vx !== 0 ? 'run' : 'idle';
 }
@@ -242,6 +250,23 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     exit(ctx) {
       ctx.timers.dodgeCooldown = ctx.tuning.dodgeCooldownMs;
       ctx.vx = Math.sign(ctx.vx) * Math.min(Math.abs(ctx.vx), ctx.tuning.runSpeed);
+    },
+  },
+
+  finisher: {
+    // Locked in place and invulnerable (see Player.invulnerable) until the finisher ends.
+    enter(ctx) {
+      ctx.vx = 0;
+      ctx.beginFinisher();
+    },
+    update(ctx, dtMs) {
+      ctx.vx = 0;
+      if (!ctx.onGround) return 'fall';
+      if (ctx.tickFinisher(dtMs)) return ctx.moveX !== 0 ? 'run' : 'idle';
+      return undefined;
+    },
+    exit(ctx) {
+      ctx.endFinisher();
     },
   },
 

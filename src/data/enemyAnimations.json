@@ -7,6 +7,7 @@
     "pursue": { "anim": "enemy_thrall_walk", "timeScale": 1.9 },
     "attack": { "anim": "enemy_thrall_claw" },
     "hurt": { "anim": "enemy_thrall_hurt" },
+    "staggered": { "anim": "enemy_thrall_hurt" },
     "dead": { "anim": "enemy_thrall_collapse" }
   }
 }

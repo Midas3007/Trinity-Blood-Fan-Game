@@ -16,6 +16,7 @@ export class SimEnemy implements EnemyContext {
   attackCooldown = 0;
   patrolDir: 1 | -1 = 1;
   wallAhead = false;
+  held = false;
   target = { x: 1000, y: 0, alive: true };
 
   constructor(

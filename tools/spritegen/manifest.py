@@ -19,7 +19,7 @@ def build(sheet_name: str, entity: str, animation: str, cell: tuple[int, int], c
         raise ValueError(f"{entity}/{animation}: {len(durations)} durations for {len(sequence)} sequence steps")
     anim = {"frames": sequence, "durations_ms": durations, "loop": bool(anim_cfg.get("loop", False)),
             "events": anim_cfg.get("events", [])}
-    for key in ("attack", "hitboxes", "hurtbox"):
+    for key in ("attack", "finisher", "hitboxes", "hurtbox"):
         if key in anim_cfg:
             anim[key] = anim_cfg[key]
     return {

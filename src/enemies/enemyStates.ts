@@ -4,7 +4,7 @@ import type { AttackRunner } from '../combat/AttackRunner';
 import type { EnemyConfig } from './enemyConfig';
 import { canSee } from './sensing';
 
-export type EnemyStateKey = 'idle' | 'patrol' | 'alert' | 'pursue' | 'attack' | 'hurt' | 'dead';
+export type EnemyStateKey = 'idle' | 'patrol' | 'alert' | 'pursue' | 'attack' | 'hurt' | 'staggered' | 'dead';
 
 export interface EnemyTarget {
   readonly x: number;
@@ -28,6 +28,8 @@ export interface EnemyContext {
   attackCooldown: number;
   /** Direction of the next patrol leg. */
   patrolDir: 1 | -1;
+  /** True while a finisher holds this enemy in its stagger. */
+  readonly held: boolean;
 }
 
 function seesTarget(ctx: EnemyContext): boolean {
@@ -47,7 +49,7 @@ const PATROL_ARRIVE_PX = 3;
 
 /**
  * Melee walker behaviour, driven entirely by EnemyConfig data:
- * idle -> patrol -> (sees player) alert -> pursue -> attack -> pursue ...; hurt and dead can interrupt.
+ * idle -> patrol -> (sees player) alert -> pursue -> attack -> pursue ...; hurt, staggered and dead can interrupt.
  * Every state has an exit by time or condition, so nothing can get stuck.
  */
 export const enemyStates: Record<EnemyStateKey, State<EnemyStateKey, EnemyContext>> = {
@@ -143,6 +145,18 @@ export const enemyStates: Record<EnemyStateKey, State<EnemyStateKey, EnemyContex
     update(ctx, dtMs, stateMs) {
       brake(ctx, dtMs);
       if (stateMs >= ctx.cfg.hurtStunMs) return ctx.target.alive ? 'pursue' : 'idle';
+      return undefined;
+    },
+  },
+
+  staggered: {
+    // Reeling and open to a finisher. Knockback is set by the hit; recovers after staggerMs unless a finisher holds it.
+    enter(ctx) {
+      ctx.combat.stop();
+    },
+    update(ctx, dtMs, stateMs) {
+      brake(ctx, dtMs);
+      if (!ctx.held && stateMs >= ctx.cfg.staggerMs) return ctx.target.alive ? 'pursue' : 'idle';
       return undefined;
     },
   },

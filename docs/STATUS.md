@@ -25,7 +25,7 @@ Last updated: 2026-10-15
 - **Sprite pipeline spec tailored to the project:** `docs/sprite-pipeline.md` (original kept in `docs/references/sprite-pipeline-spec-original.md`). `CLAUDE.md` Part 6 now points to it. Five owner decisions listed in its §10.
 
 - **Sprite pipeline built** (`tools/spritegen`, `npm run sprites:*`): palette Requiem 48 (`art/palette/`), preview contact sheets, approve → build → validate, 18 Python unit tests, Vitest check that sprite timing matches `attacks.json`, GitHub Actions CI (`.github/workflows/ci.yml`).
-- **Higgsfield:** 21.75 of 104 credits used (82.25 left). Round 3 combined round 1's tails and round 2's hair; darker coat and lankier build applied in the pipeline (gamma 1.5, squeeze 0.88) instead of more credits.
+- **Higgsfield:** 25.75 of 104 credits used (78.25 left). Round 3 combined round 1's tails and round 2's hair; darker coat and lankier build applied in the pipeline (gamma 1.5, squeeze 0.88) instead of more credits.
 - Previously: Abel design round 1 (2 variants) and round 2 (1 image, brief rewritten from the owner's reference notes). Round 2 matches the costume and reads well at 40 px; face reads older and proportions aren't lanky enough.
 
 - **Abel's priest form is fully animated:** idle, run, jump, fall, hard landing, the three combo hits (wind-up + strike, timed to `attacks.json`), roll (tucked ball → kneeling recovery, 380 ms like the dodge), slide and crouch. Hurt and air attack borrow a frozen frame. 4 pose sheets (one redone) cost 10 credits.
@@ -39,14 +39,27 @@ Last updated: 2026-10-15
 - Fixed: `sprites:approve` now reads each entity's height and folder from `pipeline.yaml` (it used 40 px for everything).
 - Verified: 85/85 tests, 18 sheets validate, build passes; headless browser: thrall went patrol → alert → pursue → claw → hurt → collapse with the matching animation each time, no errors.
 
+- **Finishers (owner request):** enemies **stagger** once their health drops to half (thralls: after the first two combo hits). A blinking red diamond appears over them. Tap **ATK** in front of a staggered enemy → Abel draws his revolver and **executes it point-blank** (muzzle flash, tracer, big freeze and shake). He can't be hurt during it. Finishing the combo instead still kills normally. A stagger wears off after 2.2 s and only happens once per enemy.
+  - **Blood drain** (Crusnik form, Methuselah only): heals 20 and gives ×1.5 damage for 12 s. Logic and tests are done; it becomes playable when the Crusnik form and a Methuselah enemy exist.
+  - All numbers in `src/data/finishers.json` and `enemies.json` (`staggerBelowFraction`, `staggerMs`, `drainable`).
+- **Crusnik Abel redesigned** per owner: taller and gaunter (54 px vs 40 px priest), more Gothic, very pale grey-ivory skin (darker than his white hair), ragged wings.
+- Verified: 98/98 tests (finisher choice, strike timing, hold/release, strength buff, stagger recovery, player finisher state, art timing vs data), 19 sheets validate, build passes; headless browser: two hits staggered a thrall (18 HP), ATK played the revolver finisher (invulnerable), the shot killed it, back to idle, no errors.
+
 ## In progress
-- Waiting on the rest of the owner's note: Crusnik "more Gothic looking with…" (message was cut off).
+- Nothing blocked.
 - Rest of the cast (next credit rounds, see `docs/sprite-pipeline.md`): Crusnik Abel, thrall, Methuselah, ghoul, fairy, Iron Choir, Marchesa, Dietrich, backgrounds.
 
 ## Blockers
 - None.
 
-## Owner must test (on phone) — thrall sprites
+## Owner must test (on phone) — revolver finisher
+1. Hit a thrall twice (ATK, ATK) and stop. It reels and a red diamond blinks above it.
+2. Step up to it, facing it, and tap ATK → Abel draws, aims down and fires; flash, freeze, it collapses.
+3. Try hitting it three times instead → the third hit kills it normally.
+4. Wait about 2 s without finishing → it recovers and fights again (and won't stagger a second time).
+5. Tell me: is the finisher too slow (0.9 s), is the range comfortable, should stagger happen sooner/later?
+
+## Owner must test (on phone) — thrall sprites (done)
 1. Walk right past the dummies (slide under the beam). The thrall is a pale hooded figure that sways as it walks.
 2. Get noticed → "!" then it shambles toward you faster.
 3. Stand still → it raises both arms and glows amber, then swipes low. Dodge on the amber.
@@ -80,6 +93,5 @@ Open https://trinity-blood-fan-game.vercel.app (reopen the page/app to get the u
 9. Tell me in plain words: is the wind-up too long or too short? Is it too fast or too slow when chasing? Too much health?
 
 ## Next step
-- Crusnik Gothic redesign once the owner's note is complete (~2 credits).
-- Death Hunter pose sheet (~2 credits), then Methuselah and fairy.
+- Death Hunter pose sheet (~2 credits) and a first Methuselah enemy (drainable) — makes the blood drain matter.
 - Then Milestone 5: level slice — connected rooms from Tiled, room transitions that keep state, a hazard, checkpoints, one simple puzzle, and a room-graph test.

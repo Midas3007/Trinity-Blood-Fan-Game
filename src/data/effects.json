@@ -6,5 +6,10 @@
   "sparksPerHit": 6,
   "sparkLifeMs": 220,
   "sparkSpeed": 140,
-  "hitFlashMs": 70
+  "hitFlashMs": 70,
+  "shotFlashMs": 80,
+  "shotSparks": 12,
+  "_gun": "Revolver muzzle position relative to the player's body centre while aiming (forward px, down px), from the aim pose art.",
+  "gunForward": 14,
+  "gunDown": 2
 }

@@ -14,6 +14,9 @@ import { gravityFor } from './movement';
 import { playerStates, postureFor, type PlayerContext, type PlayerStateKey, type Posture } from './playerStates';
 import { playerTuning, type PlayerTuning } from './tuning';
 import { PlayerView } from './PlayerView';
+import { FinisherRunner } from '../combat/FinisherRunner';
+import { StrengthBuff } from '../combat/StrengthBuff';
+import { chooseFinisher, type AbelForm, type FinisherDef, type FinisherTarget } from '../combat/finisherData';
 
 const INVULNERABLE_ALPHA = 0.45;
 /** Blink period while invulnerable after being hurt (ms). */
@@ -39,6 +42,15 @@ export class Player implements PlayerContext, PlayerCombatant {
   private readonly fsm: StateMachine<PlayerStateKey, PlayerContext>;
   private readonly facingMark: Phaser.GameObjects.Rectangle;
   readonly view: PlayerView;
+  /** Which Abel this is; the Crusnik form arrives with its ability (Milestone 7). */
+  form: AbelForm = 'priest';
+  readonly finishing = new FinisherRunner();
+  readonly strength = new StrengthBuff();
+  /** Enemies a finisher could be used on; set by the scene. */
+  finisherTargets: () => readonly FinisherTarget[] = () => [];
+  /** Called when a finisher's strike lands (feedback lives in the scene). */
+  onFinisher: ((def: FinisherDef, target: FinisherTarget, direction: 1 | -1) => void) | null = null;
+  private finishTarget: FinisherTarget | null = null;
 
   constructor(
     scene: Phaser.Scene,
@@ -162,7 +174,50 @@ export class Player implements PlayerContext, PlayerCombatant {
   }
 
   get invulnerable(): boolean {
-    return this.timers.invulnerable > 0;
+    return this.timers.invulnerable > 0 || this.fsm.current === 'finisher';
+  }
+
+  get damageMultiplier(): number {
+    return this.strength.damageMultiplier;
+  }
+
+  /** The nearest valid finisher in front of the player, or null. */
+  private findFinisher(): { def: FinisherDef; target: FinisherTarget } | null {
+    let best: { def: FinisherDef; target: FinisherTarget } | null = null;
+    for (const t of this.finisherTargets()) {
+      const def = chooseFinisher(this.form, this.x, this.y, this.facing, t);
+      if (def && (!best || Math.abs(t.x - this.x) < Math.abs(best.target.x - this.x))) best = { def, target: t };
+    }
+    return best;
+  }
+
+  get finisherReady(): boolean {
+    return this.findFinisher() !== null;
+  }
+
+  beginFinisher(): void {
+    const f = this.findFinisher();
+    if (!f) return;
+    if (f.target.x !== this.x) this.facing = f.target.x > this.x ? 1 : -1;
+    this.finishTarget = f.target;
+    this.finishing.begin(f.def, f.target);
+  }
+
+  tickFinisher(dtMs: number): boolean {
+    const def = this.finishing.current;
+    const target = this.finishTarget;
+    if (!def || !target) return true;
+    if (this.finishing.tick(dtMs, this.facing)) {
+      this.health.heal(def.heal);
+      if (def.buff) this.strength.apply(def.buff.damageMultiplier, def.buff.durationMs);
+      this.onFinisher?.(def, target, this.facing);
+    }
+    return this.finishing.done;
+  }
+
+  endFinisher(): void {
+    this.finishing.stop();
+    this.finishTarget = null;
   }
 
   hurtbox(): Rect {
@@ -196,6 +251,7 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.sprite.setPosition(x, y);
     this.body.reset(x, y);
     this.health.reset();
+    this.strength.clear();
     this.timers.invulnerable = this.tuning.hurtInvulnerableMs;
     this.blinkMs = this.tuning.hurtInvulnerableMs;
     this.airTopY = y;
@@ -221,6 +277,7 @@ export class Player implements PlayerContext, PlayerCombatant {
     // World gravity is already applied; add the difference for the current phase of the jump.
     this.body.setGravityY(gravityFor(this.vy, this.tuning) - this.worldGravity);
 
+    this.strength.tick(dtMs);
     this.blinkMs = Math.max(0, this.blinkMs - dtMs);
     const blinkOff = this.blinkMs > 0 && Math.floor(this.blinkMs / BLINK_MS) % 2 === 0;
     this.alpha = blinkOff ? 0.2 : this.invulnerable ? INVULNERABLE_ALPHA : 1;
@@ -229,6 +286,6 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   private syncView(): void {
     this.facingMark.setPosition(this.sprite.x + this.facing * (this.tuning.width / 2 - 2), this.sprite.y - this.height / 2 + 7);
-    this.view.update(this.fsm.current, this.combat.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha);
+    this.view.update(this.fsm.current, this.combat.current?.id ?? this.finishing.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha);
   }
 }

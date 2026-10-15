@@ -5,6 +5,8 @@ import { playerStates, type PlayerContext, type PlayerStateKey } from '../src/pl
 import { playerTuning, type PlayerTuning } from '../src/player/tuning';
 import { AttackRunner } from '../src/combat/AttackRunner';
 import { attackTable } from '../src/combat/attackData';
+import { FinisherRunner } from '../src/combat/FinisherRunner';
+import { chooseFinisher, type FinisherTarget } from '../src/combat/finisherData';
 
 export const DT = 1000 / 60;
 
@@ -41,6 +43,33 @@ export class SimPlayer implements PlayerContext {
   jumpHeld = false;
   dodgePressed = false;
   ledgeX = Infinity;
+  /** Enemies a finisher could be used on (fakes). */
+  finisherTargets: FinisherTarget[] = [];
+  readonly finishing = new FinisherRunner();
+  strikes = 0;
+  private findFinisher() {
+    for (const t of this.finisherTargets) {
+      const def = chooseFinisher('priest', this.x, this.y, this.facing, t);
+      if (def) return { def, target: t };
+    }
+    return null;
+  }
+  get finisherReady(): boolean {
+    return this.findFinisher() !== null;
+  }
+  beginFinisher(): void {
+    const f = this.findFinisher();
+    if (!f) return;
+    if (f.target.x !== this.x) this.facing = f.target.x > this.x ? 1 : -1;
+    this.finishing.begin(f.def, f.target);
+  }
+  tickFinisher(dtMs: number): boolean {
+    if (this.finishing.tick(dtMs, this.facing)) this.strikes++;
+    return this.finishing.done;
+  }
+  endFinisher(): void {
+    this.finishing.stop();
+  }
   /** Floor height under x: 0 before the ledge, far below after it. */
   private floorAt(x: number): number {
     return x <= this.ledgeX ? 0 : 10_000;

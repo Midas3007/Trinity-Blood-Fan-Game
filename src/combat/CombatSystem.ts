@@ -25,6 +25,8 @@ export interface ContactHazard {
 export interface PlayerCombatant extends Attacker, Damageable {
   readonly health: Health;
   readonly invulnerable: boolean;
+  /** Outgoing damage multiplier (blood-drain strength); 1 when absent. */
+  readonly damageMultiplier?: number;
 }
 
 /**
@@ -40,7 +42,7 @@ export class CombatSystem {
   step(playerTargets: readonly Damageable[], enemyAttackers: readonly Attacker[], hazards: readonly ContactHazard[]): void {
     const p = this.player;
 
-    for (const r of resolveAttack(p.combat, p.x, p.y, p.facing, playerTargets)) {
+    for (const r of resolveAttack(p.combat, p.x, p.y, p.facing, playerTargets, p.damageMultiplier ?? 1)) {
       this.bus.emit('combat:hit', { x: r.x, y: r.y, hit: r.hit, targetId: r.target.id, byPlayer: true });
       if (!r.target.alive) this.bus.emit('enemy:died', { id: r.target.id, x: r.target.x, y: r.y });
     }

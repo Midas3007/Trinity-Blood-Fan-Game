@@ -1,0 +1,4 @@
+Pose sheet 5 — Abel revolver finisher (draw, aim, recoil) — 2026-10-15
+Tool: Higgsfield nano_banana_pro (job reports nano_banana_2), 2k, 21:9, 1 image, image references: d2348a6e, 004f2d9e. Cost: 2 credits.
+Job: 6f261b17-b5b4-4a42-a879-381e153b7a9b -> poses_revolver_r1_6f261b17.png
+Approved (--expect 4 --ref-height 1270): figures 1-3 -> abel/revolver (draw, aim, recoil). Background came out pink-magenta; border-colour key handled it.

@@ -313,6 +313,43 @@
         "sha256:fcb3d7fbc0bdfa0256527ebfe63bc15992f54f30beb911b25b295982c014affd"
       ]
     },
+    "abel/abel_revolver.png": {
+      "animations": {
+        "revolver": {
+          "durations_ms": [
+            250,
+            270,
+            380
+          ],
+          "events": [
+            {
+              "frame": 2,
+              "type": "strike"
+            }
+          ],
+          "finisher": "revolver",
+          "frames": [
+            0,
+            1,
+            2
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 3,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_revolver.png",
+      "source_hashes": [
+        "sha256:2205b1acd60b0cc90f17a4a3c3b68837ff6d10d078f343a1ce39d1438ea31b94",
+        "sha256:a5b875b0fdd6fd7d99094845bf1c93d97b7d94b1d5eeabe6f5d823a5e61ce4bc",
+        "sha256:2b98f6a67d2c7eb308f2a55f2f0a3d5ff4347fde05e74aa7052fe8a627536361"
+      ]
+    },
     "abel/abel_run.png": {
       "animations": {
         "run": {
@@ -398,9 +435,9 @@
       "pivot_y": 96,
       "sheet": "abel_crusnik_reference.png",
       "source_hashes": [
-        "sha256:aaf866460e0d93d4be58b3e9077952e71b36140d38ea642904255dba8540338b",
-        "sha256:6bad783fb728d76a25ef1740a18e72700a104c841bd8351036c2e3848047545e",
-        "sha256:a6b2034b9514cdd4d24044dc22f55d9a4fafa7f7f543b5a70e3e5146d1e1980c"
+        "sha256:55adc758339fe5fa825e18ed01f2da7af19106cf784b538c7e4dd19651303e12",
+        "sha256:79f4b8b71a5e9d8df583fa4691e3d6e0f80674139389a51cebbd289f824570a3",
+        "sha256:9ce6470171860de884ccdd82e17fd74e615ae276e6e5afe6198e64f5e29c66d8"
       ]
     },
     "enemies/thrall/enemy_thrall_claw.png": {

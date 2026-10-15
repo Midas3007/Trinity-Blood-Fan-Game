@@ -5,6 +5,7 @@ import { centredRect } from '../combat/geometry';
 import { Health } from '../combat/Health';
 import { nextEntityId } from '../combat/ids';
 import type { Damageable, HitInfo, Rect } from '../combat/types';
+import type { FinisherTarget } from '../combat/finisherData';
 import { StateMachine } from '../player/StateMachine';
 import effects from '../data/effects.json';
 import type { EnemyConfig } from './enemyConfig';
@@ -16,13 +17,18 @@ import { SpriteView } from '../systems/sprites/SpriteView';
 const STRING_LENGTH = 60;
 const ALERT_MARK_OFFSET = 10;
 const BAR_W = 18;
+/** Sideways speed (before knockbackTaken) when a finisher kills. */
+const FINISH_KNOCKBACK = 120;
 const ENEMY_DEPTH = 9;
+/** Blink period of the 'finish me' marker over a staggered enemy (ms). */
+const STAGGER_BLINK_MS = 160;
+const STAGGER_MARK_SIZE = 5;
 
 /**
  * One pooled enemy. Created once (hidden), then `spawn`ed and `despawn`ed many times.
  * Behaviour lives in enemyStates; this class only connects it to Phaser.
  */
-export class Enemy implements EnemyContext, Damageable {
+export class Enemy implements EnemyContext, Damageable, FinisherTarget {
   readonly sprite: Phaser.GameObjects.Rectangle;
   readonly body: Phaser.Physics.Arcade.Body;
   readonly combat: AttackRunner;
@@ -32,6 +38,10 @@ export class Enemy implements EnemyContext, Damageable {
   facing: 1 | -1 = -1;
   attackCooldown = 0;
   patrolDir: 1 | -1 = 1;
+  held = false;
+  /** Each life can stagger once, so a finisher opportunity can't be farmed. */
+  private staggerUsed = false;
+  private staggerBlinkMs = 0;
   /** ms left of the death collapse; the manager releases the enemy when it reaches 0. */
   private dyingMs = 0;
   private flashMs = 0;
@@ -40,6 +50,7 @@ export class Enemy implements EnemyContext, Damageable {
   private readonly mark: Phaser.GameObjects.Text;
   private readonly bar: Phaser.GameObjects.Rectangle;
   private readonly view: SpriteView;
+  private readonly staggerMark: Phaser.GameObjects.Rectangle;
 
   constructor(
     scene: Phaser.Scene,
@@ -60,6 +71,11 @@ export class Enemy implements EnemyContext, Damageable {
       .setOrigin(0.5, 1);
     this.bar = scene.add.rectangle(0, 0, BAR_W, 2, COLORS.accent).setOrigin(0, 0.5);
     this.view = new SpriteView(scene, enemyVisualFor(cfg.type, 'idle')?.anim ?? null, ENEMY_DEPTH);
+    // Diamond over a staggered enemy: "finish it".
+    this.staggerMark = scene.add
+      .rectangle(0, 0, STAGGER_MARK_SIZE, STAGGER_MARK_SIZE, COLORS.accent)
+      .setAngle(45)
+      .setDepth(ENEMY_DEPTH + 1);
     this.setActive(false);
     // Draw after Arcade has copied this step's body position onto the game object (see Player).
     scene.events.on(Phaser.Scenes.Events.POST_UPDATE, this.render, this);
@@ -96,6 +112,29 @@ export class Enemy implements EnemyContext, Damageable {
     return this.fsm !== null && !this.health.dead;
   }
 
+  get staggered(): boolean {
+    return this.fsm?.current === 'staggered';
+  }
+
+  get drainable(): boolean {
+    return this.cfg.drainable;
+  }
+
+  hold(on: boolean): void {
+    this.held = on;
+  }
+
+  /** The finisher's blow: dies on the spot, thrown slightly away from the player. */
+  finish(direction: 1 | -1): void {
+    if (!this.fsm || !this.alive) return;
+    this.held = false;
+    this.health.damage(this.health.hp);
+    this.flashMs = effects.hitFlashMs;
+    this.dyingMs = this.cfg.deathMs;
+    this.body.setVelocity(direction * this.cfg.knockbackTaken * FINISH_KNOCKBACK, 0);
+    this.fsm.transition('dead');
+  }
+
   get state(): EnemyStateKey | 'inactive' {
     return this.fsm?.current ?? 'inactive';
   }
@@ -114,9 +153,22 @@ export class Enemy implements EnemyContext, Damageable {
     this.health.damage(hit.damage);
     this.flashMs = effects.hitFlashMs;
     if (this.health.dead) {
+      this.held = false;
       this.dyingMs = this.cfg.deathMs;
       this.body.setVelocity(hit.knockbackX * this.cfg.knockbackTaken, 0);
       this.fsm.transition('dead');
+      return true;
+    }
+    const knockX = hit.knockbackX * this.cfg.knockbackTaken;
+    if (this.staggered) {
+      this.body.setVelocity(knockX, 0); // stays reeling; the stagger timer keeps running
+      return true;
+    }
+    if (!this.staggerUsed && this.health.fraction <= this.cfg.staggerBelowFraction) {
+      this.staggerUsed = true;
+      this.body.setVelocity(knockX, 0);
+      if (hit.knockbackX !== 0) this.facing = hit.knockbackX > 0 ? -1 : 1;
+      this.fsm.transition('staggered');
       return true;
     }
     // Super armour: some enemies keep swinging when hit during the active part of their attack.
@@ -133,6 +185,8 @@ export class Enemy implements EnemyContext, Damageable {
     this.homeX = x;
     this.health.reset();
     this.attackCooldown = 0;
+    this.held = false;
+    this.staggerUsed = false;
     this.dyingMs = 0;
     this.flashMs = 0;
     this.patrolDir = Math.random() < 0.5 ? 1 : -1;
@@ -156,6 +210,7 @@ export class Enemy implements EnemyContext, Damageable {
     this.flashMs = Math.max(0, this.flashMs - dtMs);
     this.fsm.update(dtMs);
     if (this.state === 'dead') this.dyingMs = Math.max(0, this.dyingMs - dtMs);
+    this.staggerBlinkMs = this.staggered ? this.staggerBlinkMs + dtMs : 0;
   }
 
   private render(): void {
@@ -177,6 +232,8 @@ export class Enemy implements EnemyContext, Damageable {
     if (!shown && state === 'dead') this.sprite.setAlpha(fade).setScale(1, Math.max(0.2, fade));
     this.string.setPosition(this.x, top).setVisible(state !== 'dead');
     this.mark.setPosition(this.x, top - ALERT_MARK_OFFSET).setVisible(state === 'alert');
+    const blinkOn = Math.floor(this.staggerBlinkMs / STAGGER_BLINK_MS) % 2 === 0;
+    this.staggerMark.setPosition(this.x, top - ALERT_MARK_OFFSET).setVisible(state === 'staggered' && blinkOn);
     this.bar.setPosition(this.x - BAR_W / 2, top - 4).setVisible(state !== 'dead' && this.health.fraction < 1);
     this.bar.width = BAR_W * this.health.fraction;
   }
@@ -187,6 +244,7 @@ export class Enemy implements EnemyContext, Damageable {
     this.string.setVisible(on);
     this.mark.setVisible(false);
     this.bar.setVisible(false);
+    this.staggerMark.setVisible(false);
     if (!on) this.view.hide();
   }
 }

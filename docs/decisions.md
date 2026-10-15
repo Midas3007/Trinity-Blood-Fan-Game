@@ -120,3 +120,14 @@
 | Crusnik form scaled from head-to-toe height (wings excluded) at 50 px | Owner asked for taller; wings would otherwise shrink the body | Same 40 px as priest |
 | `approve` reads `sprite_height` and `source_dir` from `pipeline.yaml` | It silently used 40 px and the wrong folder for non-Abel entities | CLI flags each time |
 | Death Hunters: owner screenshots are read-only notes; our written description goes in prompts | CLAUDE.md Part 6 | Attaching the screenshots |
+
+## 2026-10-15 — Finishers (revolver execution, blood drain) and Crusnik redesign
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Enemies stagger once per life at `staggerBelowFraction` of health (thrall 0.5 = after hits 1–2) for `staggerMs`; ATK in range plays a finisher | Owner asked for a gun finisher; a stagger window makes it a choice, not an automatic kill. Finishing the combo still kills normally | Finisher only on kill; finisher button |
+| Finishers are data (`finishers.json`) chosen by form and target: priest → revolver on anything; Crusnik → blood drain on `drainable` (Methuselah) only | Matches the anime (Crusnik feeds on vampires) and the mercy theme for human thralls | Drain everything |
+| Blood drain = heal + timed damage multiplier (`StrengthBuff`), applied through `resolveAttack` | "Drinks blood to gain more strength"; multiplier keeps attacks data-driven | Permanent upgrades |
+| Player is invulnerable during a finisher; the target is held in its stagger until the strike | No cheap hits during a committed animation; the target can't recover mid-shot | Interruptible finisher |
+| Shot feedback: muzzle flash + 1 px tracer (`ShotFlash`), larger hit-stop/shake than combo hits | Readable at phone size, cheap to draw | Particles/smoke sprites |
+| Crusnik form at 54 px | Owner asked twice for taller | 50 px |

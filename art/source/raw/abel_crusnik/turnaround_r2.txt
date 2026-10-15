@@ -1,0 +1,7 @@
+Crusnik-form turnaround r2 (owner redesign) — 2026-10-15
+Tool: Higgsfield nano_banana_pro (job reports nano_banana_2), 2k, 21:9, 1 image. Cost: 2 credits.
+Image references (our own outputs only): Crusnik r1 aef30efd, priest turnaround r3 d2348a6e.
+Job: 07c83787-3721-4cb1-9e91-96c26bea0bca -> turnaround_r2_07c83787.png
+Owner asked: taller, more Gothic, very pale skin but not white like his hair.
+Brief: ten heads tall and gaunt; cold grey-ivory skin darker than the silver-white hair; floor-length coat with high collar, gothic arch filigree, iron cross, clawed gauntlets, tattered sash, larger ragged wings, waist-length hair.
+Approved (--expect 3 --ref-height 1122 = head-to-toe, wings excluded) at sprite_height 54 (priest is 40).

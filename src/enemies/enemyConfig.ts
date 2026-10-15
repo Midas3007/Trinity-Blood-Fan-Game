@@ -25,6 +25,9 @@ export interface EnemyConfig {
   giveUpMs: number;
   attack: string;
   hurtStunMs: number;
+  staggerBelowFraction: number;
+  staggerMs: number;
+  drainable: boolean;
   knockbackTaken: number;
   interruptibleDuringActive: boolean;
   deathMs: number;
@@ -45,6 +48,9 @@ export function buildEnemyConfig(type: string, r: RawEnemy): EnemyConfig {
     throw new Error(`enemy "${type}": detectRange must be larger than attackRange`);
   }
   if (r.loseRange < r.detectRange) throw new Error(`enemy "${type}": loseRange must be >= detectRange`);
+  if (r.staggerBelowFraction < 0 || r.staggerBelowFraction >= 1) {
+    throw new Error(`enemy "${type}": staggerBelowFraction must be in [0, 1)`);
+  }
   return {
     ...r,
     type,

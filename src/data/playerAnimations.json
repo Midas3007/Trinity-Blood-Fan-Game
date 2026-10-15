@@ -1,5 +1,5 @@
 {
-  "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's id (priest1/priest2/priest3), so each combo hit plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built.",
+  "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's or finisher's id (priest1/priest2/priest3, revolver), so each plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built.",
   "entity": "abel",
   "states": {
     "idle": {
@@ -31,6 +31,6 @@
     "dodge": {"anim":"abel_dodge"},
     "crouch": {"anim":"abel_crouch"},
     "slide": {"anim":"abel_slide"},
-    "crouchAttack": {"anim":"abel_crouch","frame":0}
+    "crouchAttack": {"anim":"abel_crouch","frame":0}, "finisher": {"anim":"abel_{attack}"}
   }
 }

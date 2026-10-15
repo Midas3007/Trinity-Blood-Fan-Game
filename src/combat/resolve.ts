@@ -25,6 +25,7 @@ export function resolveAttack(
   attackerY: number,
   facing: 1 | -1,
   targets: readonly Damageable[],
+  damageMultiplier = 1,
 ): ResolvedHit[] {
   const box = activeHitbox(runner, attackerX, attackerY, facing);
   const def = runner.current;
@@ -34,7 +35,8 @@ export function resolveAttack(
     if (!target.alive) continue;
     const hurt = target.hurtbox();
     if (!overlaps(box, hurt) || !runner.registerHit(target.id)) continue;
-    const hit = hitFromAttack(def, hitDirection(attackerX, target.x, facing));
+    const base = hitFromAttack(def, hitDirection(attackerX, target.x, facing));
+    const hit = damageMultiplier === 1 ? base : { ...base, damage: Math.round(base.damage * damageMultiplier) };
     if (!target.receiveHit(hit)) continue;
     const x = (Math.max(box.x, hurt.x) + Math.min(box.x + box.w, hurt.x + hurt.w)) / 2;
     const y = (Math.max(box.y, hurt.y) + Math.min(box.y + box.h, hurt.y + hurt.h)) / 2;

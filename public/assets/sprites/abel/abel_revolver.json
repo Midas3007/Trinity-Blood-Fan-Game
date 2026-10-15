@@ -1,0 +1,37 @@
+{
+  "animations": {
+    "revolver": {
+      "durations_ms": [
+        250,
+        270,
+        380
+      ],
+      "events": [
+        {
+          "frame": 2,
+          "type": "strike"
+        }
+      ],
+      "finisher": "revolver",
+      "frames": [
+        0,
+        1,
+        2
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 3,
+  "entity": "abel",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "abel_revolver.png",
+  "source_hashes": [
+    "sha256:2205b1acd60b0cc90f17a4a3c3b68837ff6d10d078f343a1ce39d1438ea31b94",
+    "sha256:a5b875b0fdd6fd7d99094845bf1c93d97b7d94b1d5eeabe6f5d823a5e61ce4bc",
+    "sha256:2b98f6a67d2c7eb308f2a55f2f0a3d5ff4347fde05e74aa7052fe8a627536361"
+  ]
+}

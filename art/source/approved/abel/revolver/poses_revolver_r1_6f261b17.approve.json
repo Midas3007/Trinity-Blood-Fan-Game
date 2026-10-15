@@ -1,0 +1,18 @@
+{
+  "source": "poses_revolver_r1_6f261b17.png",
+  "source_hash": "sha256:f7ca867a3e30532667ac8841514c01a4cb0f3824fec9f2a64061ded2eb18a8c3",
+  "figures": [
+    1,
+    2,
+    3
+  ],
+  "standing_px": 1270,
+  "factor": 0.251969,
+  "open_px": 0,
+  "expected": 4,
+  "outputs": [
+    "poses_revolver_r1_6f261b17_f1.png",
+    "poses_revolver_r1_6f261b17_f2.png",
+    "poses_revolver_r1_6f261b17_f3.png"
+  ]
+}

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { attackTable } from '../src/combat/attackData';
+import { finisherTable } from '../src/combat/finisherData';
 import playerTuning from '../src/data/player.json';
 import enemies from '../src/data/enemies.json';
 import { enemyConfig } from '../src/enemies/enemyConfig';
@@ -9,6 +10,7 @@ const FRAME_MS = 1000 / 60;
 
 interface Anim {
   attack?: string;
+  finisher?: string;
   frames: number[];
   durations_ms: number[];
   events?: { frame: number; type: string }[];
@@ -64,6 +66,20 @@ describe('sprite manifests agree with combat data', () => {
           expect(hb.y).toBe(Math.round(cy - def.hitbox.h / 2));
           expect([hb.w, hb.h]).toEqual([def.hitbox.w, def.hitbox.h]);
         }
+      });
+    }
+  }
+
+  for (const [file, m] of Object.entries(found)) {
+    for (const [name, anim] of Object.entries(m.animations)) {
+      if (!anim.finisher) continue;
+      it(`${file} ${name} matches finisher "${anim.finisher}"`, () => {
+        const def = finisherTable[anim.finisher!];
+        expect(def, `unknown finisher ${anim.finisher}`).toBeDefined();
+        const strike = anim.events?.find((e) => e.type === 'strike');
+        expect(strike, 'finisher animations need a strike event').toBeDefined();
+        expect(Math.abs(timeBefore(anim, strike!.frame) - def!.strikeAtMs)).toBeLessThanOrEqual(FRAME_MS);
+        expect(Math.abs(timeBefore(anim, anim.durations_ms.length) - def!.durationMs)).toBeLessThanOrEqual(FRAME_MS);
       });
     }
   }

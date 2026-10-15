@@ -26,6 +26,7 @@ Rome, during the anime, at night. Three connected areas:
 > **Updated 2026-10-15 from owner-supplied references** (read only; never attached to AI tools or committed). Written in our own words for prompts and pixel art:
 > - **Priest form:** long **charcoal-grey** priest's coat (not pure black) with **white/silver piping** on every edge; a **short shoulder cape** over it; **high stand-up collar**; tan leather belt straps at the waist; a white stripe down the front opening of the long skirt; round glasses; long low silver ponytail reaching mid-back; black boots. The light piping is what keeps the sprite readable against dark backgrounds.
 > - **Crusnik form:** long silver hair loose and wild; glowing red eyes; **large black feathered wings**; long white sash; dark coat with silver trim and a red cross at the hem; a **huge crimson segmented organic scythe** (spine/centipede-like, lined with small hooked spikes) and red spiked tendrils coiling around the arms; crackling pale lightning when activating.
+> - **Crusnik redesign (owner, 2026-10-15):** taller and gaunter (about ten heads; 54 px sprite vs 40 px priest), more Gothic (high collar, gothic-arch filigree, iron cross, clawed gauntlets, tattered sash, ragged fallen-angel wings, waist-length hair), very pale cold grey-ivory skin that is clearly darker than his white hair.
 > - **Dietrich von Lohengrin:** auburn shoulder-length hair; black double-breasted military coat with white piping; red armband on the left arm; cross pendant; white gloves; cold smile; controls **red puppet strings** with his fingers.
 
 **Two forms, one silhouette family.**
@@ -46,7 +47,8 @@ Rome, during the anime, at night. Three connected areas:
 | Revolver | Ranged shot, 6-round cylinder, reload in safe moments | ABIL (tap) | Start |
 | Melee (priest) | 3-hit combo, short reach | ATK | Start |
 | Crusnik 02 activation — 40% | Timed transformation: scythe combos, bigger hitboxes, faster; drains the **Crusnik meter** | ABIL (hold) | Region 1 boss |
-| Blood drain (Crusnik feeds on vampires) | Finisher on staggered Methuselah/thralls; refills Crusnik meter | ATK on a staggered enemy | With Crusnik 40% |
+| Revolver execution (owner request 2026-10-15) | Priest-form finisher: enemies stagger at half health; ATK in front of a staggered enemy draws and fires point-blank, killing it. Invulnerable while it plays | ATK on a staggered enemy | Start (built) |
+| Blood drain (Crusnik feeds on Methuselah; owner request 2026-10-15) | Crusnik-form finisher on staggered **Methuselah only** (human thralls are spared): heals and grants **strength** (×1.5 damage for 12 s); later also refills the Crusnik meter | ATK on a staggered Methuselah | With Crusnik 40% (logic built; playable when the form and a Methuselah enemy exist) |
 | Black wings | Double jump, then a short glide (hold JUMP) | JUMP in air | Region 1 boss reward (ability gate) |
 | Crusnik speed | **Phase-step**: dodge that passes through enemies and iron grilles | DODGE | Region 2 (ability gate) |
 | Crusnik 02 — 80% | Boss-only super mode, scripted in Dietrich's final phase | — | Story |

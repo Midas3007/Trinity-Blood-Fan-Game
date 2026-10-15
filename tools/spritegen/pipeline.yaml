@@ -39,6 +39,11 @@ entities:
         sequence: [0, 1, 1]
         durations_ms: [170, 100, 380]
         events: [{ frame: 1, type: hitbox_on }, { frame: 2, type: hitbox_off }]
+      # Revolver finisher: draw, aim, recoil. The shot lands as the recoil frame starts (strikeAtMs in src/data/finishers.json).
+      revolver:
+        finisher: revolver
+        durations_ms: [250, 270, 380]
+        events: [{ frame: 2, type: strike }]
       # Low postures (one sheet, poses_low_r2). Roll: tucked ball, then kneeling recovery (sum = dodge duration).
       dodge:     { loop: false, durations_ms: [220, 160] }
       slide:     { loop: true,  durations_ms: 200, anchor: centre }   # lying pose: centre on the body, not the forward feet
@@ -46,7 +51,7 @@ entities:
 
   abel_crusnik:
     cell: [96, 96]
-    sprite_height: 50
+    sprite_height: 54
     source_dir: art/source/approved/abel_crusnik/
     output_dir: public/assets/sprites/abel_crusnik/
     gamma: 1.5
