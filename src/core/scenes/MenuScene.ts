@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { COLORS, FAN_NOTICE, GAME_HEIGHT, GAME_WIDTH, SCENES, TITLE_ART_KEY } from '../constants';
 import { gameState } from '../../systems/GameState';
 import { saveStore } from '../../systems/save/SaveStore';
+import { GothicButton } from '../../ui/GothicButton';
 
 /** Title block sits in the painting's empty left third. */
 const TITLE_X_WITH_ART = GAME_WIDTH * 0.26;
@@ -69,16 +70,13 @@ export class MenuScene extends Phaser.Scene {
       return;
     }
     // A save exists: Continue, or New game (tap twice, so a stray tap never wipes progress).
-    const cont = this.add.text(cx, GAME_HEIGHT * 0.58, 'Continue', { ...itemStyle, fontSize: '14px' }).setOrigin(0.5).setInteractive({ useHandCursor: true });
-    this.tweens.add({ targets: cont, alpha: 0.5, duration: 900, yoyo: true, repeat: -1 });
-    const fresh = this.add.text(cx, GAME_HEIGHT * 0.58 + 24, 'New game', { ...itemStyle, color: COLORS.textDim }).setOrigin(0.5).setInteractive({ useHandCursor: true });
+    new GothicButton(this, cx, GAME_HEIGHT * 0.6, 'Continue', () => begin(false), 120, 22);
     let armed = false;
-    cont.once(Phaser.Input.Events.POINTER_UP, () => begin(false));
-    fresh.on(Phaser.Input.Events.POINTER_UP, () => {
+    const fresh: GothicButton = new GothicButton(this, cx, GAME_HEIGHT * 0.6 + 30, 'New game', () => {
       if (armed) return begin(true);
       armed = true;
-      fresh.setText('Tap again: erase save').setColor(COLORS.text);
-    });
+      fresh.setText('Tap again to erase');
+    }, 120, 22);
     this.input.keyboard?.on('keydown', (e: KeyboardEvent) => {
       if (e.key === 'Enter' || e.key === ' ') begin(false);
       if (e.key.toLowerCase() === 'n') begin(true);

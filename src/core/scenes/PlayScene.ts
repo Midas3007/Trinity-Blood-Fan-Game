@@ -442,6 +442,7 @@ export class PlayScene extends Phaser.Scene {
     if (pr.ms < PRAYER_MS) return;
     // Rested: full health and flasks, this altar is the respawn point, enemies return.
     gameState.checkpoint = { room: this.roomData.id, id: pr.checkpoint };
+    gameState.useAltar(this.roomData.id, pr.checkpoint);
     gameState.hp = null;
     gameState.flasks = null;
     this.cameras.main.flash(250, 246, 227, 163);
@@ -452,7 +453,7 @@ export class PlayScene extends Phaser.Scene {
   private setPaused(what: 'map' | 'pause' | null): void {
     this.map.hide();
     this.pauseMenu.hide();
-    if (what === 'map') this.map.show(allRooms, (id) => gameState.hasVisited(id), this.roomData, this.player.x, this.player.y);
+    if (what === 'map') this.map.show(allRooms, (id) => gameState.hasVisited(id), (room, id) => gameState.altarUsed(room, id), this.roomData, this.player.x, this.player.y);
     if (what === 'pause') this.pauseMenu.show();
     if (what) {
       this.physics.world.pause();
@@ -484,6 +485,7 @@ export class PlayScene extends Phaser.Scene {
       fps: this.game.loop.actualFps,
       room: this.roomData.id,
       flags: gameState.toSave(0).flags,
+      paused: this.pauseMenu.open ? "pause" : this.map.open ? "map" : null,
       checkpoint: gameState.checkpoint,
       player: {
         state: p.state,

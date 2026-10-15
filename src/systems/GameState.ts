@@ -34,6 +34,15 @@ export class GameState {
     this.visited.add(room);
   }
 
+  /** Altars you have prayed at show on the map (kept as flags, so saves need no new field). */
+  useAltar(room: string, id: string): void {
+    this.setFlag(`altar:${room}:${id}`);
+  }
+
+  altarUsed(room: string, id: string): boolean {
+    return this.hasFlag(`altar:${room}:${id}`);
+  }
+
   hasVisited(room: string): boolean {
     return this.visited.has(room);
   }

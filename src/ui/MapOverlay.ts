@@ -7,7 +7,7 @@ const PAD = 24;
 
 /**
  * Full-screen map of the rooms visited so far, drawn from the world grid: rooms as framed blocks,
- * altars as gold marks, the player as a blinking crimson dot.
+ * altars you have prayed at as small gold crosses (unused altars stay hidden, as in Blasphemous' map), the player as a blinking crimson dot.
  */
 export class MapOverlay {
   private readonly container: Phaser.GameObjects.Container;
@@ -22,7 +22,14 @@ export class MapOverlay {
     return this.container.visible;
   }
 
-  show(rooms: Record<string, RoomData>, visited: (id: string) => boolean, current: RoomData, px: number, py: number): void {
+  show(
+    rooms: Record<string, RoomData>,
+    visited: (id: string) => boolean,
+    altarUsed: (room: string, id: string) => boolean,
+    current: RoomData,
+    px: number,
+    py: number,
+  ): void {
     this.container.removeAll(true);
     const s = this.scene;
     const bg = s.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0b0a10, 0.92).setOrigin(0);
@@ -55,7 +62,12 @@ export class MapOverlay {
         this.container.add(s.add.rectangle(x + s0.x * sx, y + s0.y * sy, rw, rh, here ? 0x8a8392 : 0x5c5464).setOrigin(0));
       }
       for (const c of r.checkpoints) {
-        this.container.add(s.add.rectangle(x + (c.x / r.width) * w, y + (c.y / r.height) * h - 2, 3, 3, 0xe8c86a).setAngle(45));
+        if (!altarUsed(r.id, c.id)) continue;
+        const ax = Math.round(x + (c.x / r.width) * w);
+        const ay = Math.round(y + (c.y / r.height) * h) - 5;
+        this.container.add(s.add.rectangle(ax, ay, 4, 9, 0x0b0a10).setOrigin(0.5)); // dark backing so it reads on any room
+        this.container.add(s.add.rectangle(ax, ay, 2, 7, 0xe8c86a).setOrigin(0.5));
+        this.container.add(s.add.rectangle(ax, ay - 1, 6, 2, 0xe8c86a).setOrigin(0.5));
       }
       if (here) {
         this.dot = s.add.rectangle(x + (px / r.width) * w, y + (py / r.height) * h, 3, 3, 0xd4283e);
