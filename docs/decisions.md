@@ -212,3 +212,9 @@
 | One localStorage slot, versioned (v2) with migration from v1, plus a backup of the previous good save | Phones kill tabs; a cut-off write must not lose progress | IndexedDB (overkill for a few hundred bytes) |
 | Autosave on every room change, prayer and "Return to title"; a loaded game resumes at the last altar at full health | Blasphemous resumes at the last prie-dieu; saving levers/map on every room means a killed tab loses almost nothing | Save only at altars |
 | "New game" over an existing save needs two taps | A stray tap must never wipe progress | Confirm dialog |
+
+## 2026-10-15 — Sprite texture stage
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Texture stage in the sprite pipeline (grade dark cloth toward violet + local contrast, dither 10, rim light/core shadow), on for every entity; Abel gamma 1.5 → 1.3 | Owner: sprites looked flat next to the painted rooms; free, re-runs on every sheet | Regenerate art (credits), hand-paint every frame |

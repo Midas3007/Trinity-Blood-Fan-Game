@@ -6,12 +6,16 @@ defaults:
   dither: false
   min_feature: 2
   gamma: 1.0
+  # Texture stage (tools/spritegen/texture.py): violet cloth shadows + local contrast, light dither, rim light.
+  grade: 0.7
+  dither_strength: 10
+  shade: true
 
 entities:
   abel:
     cell: [64, 64]
     sprite_height: 40
-    gamma: 1.5            # darkens the charcoal coat to near-black while white piping stays bright (owner pick, round 3)
+    gamma: 1.3            # dark charcoal coat, white piping bright; was 1.5 before the texture stage kept folds visible
     squeeze: 0.88         # narrows the painted source before pixelation for a lankier build (owner pick)
     open_px: 0
     source_dir: art/source/approved/abel/

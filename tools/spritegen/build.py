@@ -9,7 +9,7 @@ from PIL import Image
 
 import json
 
-from . import erase, approve, cleanup, crop, downscale, ingest, manifest, outline, overrides, pack, quantize, tone
+from . import erase, approve, cleanup, crop, downscale, ingest, manifest, outline, overrides, pack, quantize, texture, tone
 from .palette import Palette
 
 OVERRIDES = Path("art/overrides")
@@ -25,9 +25,13 @@ def load_config(path: Path) -> dict:
 def frame_from_crop(crop_img: np.ndarray, pal: Palette, opts: dict, cell: tuple[int, int]) -> tuple[np.ndarray, dict]:
     small = downscale.scale(crop_img, 1 / approve.WORK_SCALE, opts["method"], squeeze=float(opts.get("squeeze", 1.0)))
     small = tone.gamma(small, float(opts.get("gamma", 1.0)))
-    small = quantize.quantize(small, pal, dither=bool(opts.get("dither", False)))
+    small = texture.grade(small, float(opts.get("grade", 0.0)))
+    dither = float(opts.get("dither_strength", 24.0 if opts.get("dither") else 0.0))
+    small = quantize.quantize(small, pal, dither=dither > 0, dither_strength=dither)
     small = cleanup.cleanup(small, int(opts.get("min_feature", 2)))
     small = outline.outline(small, pal, opts.get("outline", "selective"))
+    if opts.get("shade"):
+        small = texture.shade(small, pal)
     padded = np.zeros((small.shape[0] + 2, small.shape[1] + 2, 4), dtype=np.uint8)
     padded[1:-1, 1:-1] = small
     return crop.place(padded, cell, lift=int(opts.get("lift", 0)), anchor=str(opts.get("anchor", "feet")))

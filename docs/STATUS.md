@@ -28,11 +28,17 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 ## Done (latest, cont.)
 - **Save/load:** autosaves on every room change, prayer and Return to title. Title shows **Continue** (resumes at your last altar, fully healed, levers and map kept) and **New game** (tap twice to erase). Corrupt or cut-off saves fall back to the previous one. Verified: 125/125 tests (round-trip, v1 migration, corrupt/future saves, full storage), browser: continue → right room, flags and altar; new game → station, save erased.
 
+- **Sprite texture pass (owner request):** every sprite sheet now goes through a texture stage (`tools/spritegen/texture.py`): violet cloth shadows with local contrast so coat folds and seams show, a light dither like the room art, and a rim light from the upper left for volume. No credits used. Verified: 28/28 pipeline tests, 29 sheets valid, build passes. Limit: at 40 px tall there is only so much room for detail; a bigger jump needs taller sprites (see Next step).
+
 ## In progress
-- Character sprite texture pass (owner request), then the Crusnik form + leap gate, then the Marchesa boss.
+- the Crusnik form + leap gate, then the Marchesa boss.
 
 ## Blockers
 - None. Higgsfield: about 56 credits left.
+
+## Owner must test (on phone) — sprite texture
+1. Look at Abel standing and running in a lit street and in the crypt: the coat should show folds, a lighter edge on one side and a darker one on the other, not one flat grey.
+2. Same for the thrall and the Death Hunter. Tell me: better, too noisy, or still too plain?
 
 ## Owner must test (on phone) — saving
 1. Play, walk through a few rooms, pull a lever. Close the app completely and reopen: title shows Continue / New game.
@@ -53,4 +59,5 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 4. Pray at an altar: kneel, light beam, dove over his head, health and flasks refilled.
 
 ## Next step
-- Sprite texture pass, then Crusnik 40% form + leap ability that opens a blocked path, then the Marchesa boss in her ballroom.
+- Optional (owner's call): redraw characters taller (about 56 px, Blasphemous scale) for real detail; costs Higgsfield credits and changes his size against doors.
+- Crusnik 40% form + leap ability that opens a blocked path, then the Marchesa boss in her ballroom.
