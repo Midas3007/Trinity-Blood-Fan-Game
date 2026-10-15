@@ -18,6 +18,7 @@ import { DebugOverlay } from '../../ui/DebugOverlay';
 import { Hud } from '../../ui/Hud';
 import { TouchControls } from '../../ui/TouchControls';
 import type { TouchLayout } from '../../ui/touchLayout';
+import { installTestHook, testHookEnabled } from '../../systems/testHook';
 import controls from '../../data/controls.json';
 import effects from '../../data/effects.json';
 import physics from '../../data/physics.json';
@@ -89,6 +90,10 @@ export class PlayScene extends Phaser.Scene {
     this.debug = new DebugOverlay(this, controls.debugToggle);
 
     this.wireFeedback();
+    if (testHookEnabled()) {
+      const uninstall = installTestHook(() => this.snapshot());
+      this.events.once(Phaser.Scenes.Events.SHUTDOWN, uninstall);
+    }
 
     // Drop held touches when the page is hidden so nothing stays "pressed" after returning.
     this.game.events.on(Phaser.Core.Events.HIDDEN, this.touch.releaseAll, this.touch);
@@ -147,5 +152,25 @@ export class PlayScene extends Phaser.Scene {
       input: `${this.actions.moveX.toFixed(2)} ${this.actions.heldSummary()}`,
       hp: `${this.player.health.hp}/${this.player.health.max}`,
     });
+  }
+
+  private snapshot() {
+    const p = this.player;
+    return {
+      time: this.game.loop.time,
+      fps: this.game.loop.actualFps,
+      player: {
+        state: p.state,
+        x: p.x,
+        y: p.y,
+        vx: p.vx,
+        vy: p.vy,
+        hp: p.health.hp,
+        invulnerable: p.invulnerable,
+        facing: p.facing,
+      },
+      enemies: this.enemies.active.map((e) => ({ type: e.cfg.type, state: e.state, x: e.x, y: e.y, hp: e.health.hp })),
+      dummies: this.dummies.map((d) => ({ x: d.x, hp: d.health.hp, alive: d.alive })),
+    };
   }
 }
