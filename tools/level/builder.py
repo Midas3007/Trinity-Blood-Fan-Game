@@ -4,6 +4,8 @@ Rooms sit on a world grid of screens (30x17 tiles); leaving through an open edge
 import json, random
 from pathlib import Path
 
+KIT = None  # loaded on first use: painted facades / interiors (tools/level/kit.py)
+
 SW, SH, T = 30, 17, 16
 ROOT = Path(__file__).resolve().parents[2]
 TILES = json.loads((ROOT / "src/data/tiles.json").read_text())["tiles"]
@@ -17,6 +19,7 @@ class Room:
         self.L = {name: [[None] * self.W for _ in range(self.H)] for name in ("terrain", "back", "facade", "shade")}
         self.markers = []
         self.gates = []  # (x0, y0, x1, y1, flag) in tiles
+        self.images = []  # painted art placed in the room: dicts written as 'image' markers
         self.horizon = self.H  # street row (tiles); skylines stand on it
         self.rng = random.Random(seed)
 
@@ -58,8 +61,8 @@ class Room:
             cx = x + i * dir
             self.fill("terrain", cx, y - i - 1, cx + 1, y if depth is None else y - i - 1 + depth, "step")
 
-    def building(self, x, w, gy, floors, fh=6, doors=("left",), balconies=(), roof_overhang=1, chimneys=1, lit=0.5,
-                 upper_doors=(), climb="landing", hatch=True, plaster=None):
+    def building(self, x, w, gy, floors, fh=6, doors=("left", "right"), balconies=(), roof_overhang=1, chimneys=1, lit=0.5,
+                 upper_doors=(), climb="landing", hatch=True, plaster=None, facade=None, interiors=None):
         """A house: brick side walls, plank floors with a half-landing (jump 64 px), flat roof, facade over the inside.
         doors: 'left'/'right' ground-floor openings; balconies: floor numbers (1 = first floor) with an outside balcony
         and an opening on the right wall; upper_doors: (floor, side) openings without balcony."""
@@ -93,6 +96,20 @@ class Room:
                     lx = x + 2 if side_left else x1 - 6
                     self.platform(lx, lx + 4, ly)
         self.fill("facade", x + 1, top + 1, x1, top + 2, "cornice")
+        # painted front (covers the whole house front, fades when you are inside) and painted rooms per floor
+        global KIT
+        if facade or interiors:
+            if KIT is None:
+                from tools.level import kit as KIT
+        if facade:
+            key = f"{self.id}_f{len(self.images)}"
+            self.images.append(KIT.facade(key, facade, x * T, gy * T, w * T, (gy - top + 1) * T, self.L, x, x1, top, gy))
+        if interiors:
+            for f in range(floors):
+                fy0, fy1 = gy - (f + 1) * fh + 1, gy - f * fh
+                key = f"{self.id}_i{len(self.images)}"
+                names = interiors[f % len(interiors):] + interiors[:f % len(interiors)]
+                self.images.append(KIT.interior(key, names, (x + 1) * T, fy1 * T, (x1 - x - 1) * T, (fy1 - fy0) * T))
         # walls and roof
         self.wall(x, top, x + 1, gy, "brick")
         self.wall(x1, top, x1 + 1, gy, "brick")
@@ -245,6 +262,12 @@ class Room:
                           "rotation": 0, "visible": True, "properties": [{"name": "opens", "type": "string", "value": flag}]})
         layers.append({"id": 6, "name": "gates", "type": "objectgroup", "draworder": "topdown", "opacity": 1, "visible": True,
                        "x": 0, "y": 0, "objects": gobjs})
+        for im in self.images:
+            oid += 1
+            objs.append({"id": oid, "name": im["key"], "type": "image", "x": im["x"], "y": im["y"], "point": True, "width": 0, "height": 0,
+                         "rotation": 0, "visible": True, "properties": [
+                             {"name": "key", "type": "string", "value": im["key"]}, {"name": "w", "type": "int", "value": im["w"]},
+                             {"name": "h", "type": "int", "value": im["h"]}, {"name": "layer", "type": "string", "value": im["layer"]}]})
         layers.append({"id": 5, "name": "markers", "type": "objectgroup", "draworder": "topdown", "opacity": 1, "visible": True,
                        "x": 0, "y": 0, "objects": objs})
         return {"type": "map", "version": "1.10", "tiledversion": "1.10.2", "orientation": "orthogonal", "renderorder": "right-down",

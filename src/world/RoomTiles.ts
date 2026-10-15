@@ -3,6 +3,8 @@ import { TILE, type RoomData } from './tiled';
 
 export const TILESET_KEY = 'tiles_istvan';
 const DEPTH = { back: 1, terrain: 3, facade: 15, shade: 16 } as const;
+/** Painted fronts sit behind the player (10) but above terrain and props. */
+const DEPTH_FACADE_IMAGE = 9;
 /** Facade opacity while you are inside that building, and how fast it fades (per second). */
 const INSIDE_ALPHA = 0.12;
 const FADE_PER_S = 5;
@@ -14,6 +16,8 @@ export class RoomTiles {
   private readonly facade: Phaser.Tilemaps.TilemapLayer | null = null;
   private readonly byComponent: Phaser.Tilemaps.Tile[][] = [];
   private readonly alpha: Float32Array;
+  /** Painted house fronts and the building interior each belongs to. */
+  private readonly facadeImages: { img: Phaser.GameObjects.Image; component: number }[] = [];
   private inside = -1;
 
   constructor(scene: Phaser.Scene, private readonly room: RoomData) {
@@ -32,6 +36,19 @@ export class RoomTiles {
       layer.putTilesAt(rows, 0, 0, false).setDepth(DEPTH[name]);
       if (name === 'facade') this.facade = layer;
     }
+    for (const im of room.images) {
+      if (!scene.textures.exists(im.key)) continue;
+      const img = scene.add.image(im.x, im.y, im.key).setOrigin(0, 1);
+      if (im.layer === 'interior') {
+        img.setDepth(DEPTH.back + 0.5);
+      } else {
+        // In front of the street, behind the player (who walks past it or on its roof); fades with its interior.
+        img.setDepth(DEPTH_FACADE_IMAGE);
+        this.facadeImages.push({ img, component: this.interiorAt(im.x + TILE * 2, im.y - TILE * 2) });
+      }
+    }
+    // Painted fronts replace the tile facade where they exist.
+    if (this.facade && this.facadeImages.length) this.facade.setVisible(false);
     if (this.facade) {
       for (let i = 0; i < room.interior.length; i++) {
         const id = room.interior[i]!;
@@ -60,6 +77,7 @@ export class RoomTiles {
       const next = a < target ? Math.min(target, a + step) : Math.max(target, a - step);
       this.alpha[id] = next;
       for (const t of this.byComponent[id] ?? []) t.alpha = next;
+      for (const f of this.facadeImages) if (f.component === id) f.img.setAlpha(next);
     }
   }
 }

@@ -1,0 +1,6 @@
+Building kit r1 — 2026-10-15 (Higgsfield nano_banana_pro, 2k, 21:9, no references; our own written descriptions). 2 credits each, 6 total.
+- e83b7b91-e5d3-4627-9f81-cae5a8e02da3 townhouses_r1: house_ochre, house_rose, house_gothic, house_blue
+- ebf6a43d-a3fd-41d9-8064-d1ce71735236 landmarks_r1: tavern, station_hall, clock_tower
+- ba9982b4-411d-4fc3-8692-fc02bef38f3a interiors_r1: room_poor, room_tavern, room_stair
+Cut with `python3 -E -s -m tools.level.approve_kit <sheet> names` into art/source/approved/kit/ (high-res crops);
+baked per building by tools/level/kit.py into public/assets/rooms/ (palette-locked, light dither).

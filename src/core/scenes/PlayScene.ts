@@ -134,6 +134,12 @@ export class PlayScene extends Phaser.Scene {
     return { x, y: ground ? ground.y : r.height / 2, facing: 1 };
   }
 
+  /** Painted art for this room (house fronts, interiors) is loaded when the room starts. */
+  preload(): void {
+    const r = getRoom(this.start.room);
+    for (const im of r.images) if (!this.textures.exists(im.key)) this.load.image(im.key, `assets/rooms/${im.key}.png`);
+  }
+
   create(): void {
     this.roomData = getRoom(this.start.room);
     gameState.visit(this.roomData.id);
