@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "hurt": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 48,
+  "cell_width": 48,
+  "columns": 1,
+  "entity": "enemy_fairy",
+  "palette": "requiem48.hex",
+  "pivot_x": 24,
+  "pivot_y": 48,
+  "sheet": "enemy_fairy_hurt.png",
+  "source_hashes": [
+    "sha256:427680a637f81683c37acee74f1bb674465709a1c9aba86d802fa06113ffbd33"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "scream": {
+      "durations_ms": [
+        260,
+        300
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 48,
+  "cell_width": 48,
+  "columns": 2,
+  "entity": "enemy_fairy",
+  "palette": "requiem48.hex",
+  "pivot_x": 24,
+  "pivot_y": 48,
+  "sheet": "enemy_fairy_scream.png",
+  "source_hashes": [
+    "sha256:0c2c6d70b426a42abae3add5b50dcd2bbe1fa9468fdfae36333520e3712bc3c9",
+    "sha256:2bf4b0e5c255b0b8d16f579e6d1f5513cc8fb39bc43ea653162d977abf896f58"
+  ]
+}

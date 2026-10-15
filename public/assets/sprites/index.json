@@ -1250,6 +1250,110 @@
         "sha256:2a040f847ed148bd240b9a3776407d18d8168f594ba6243866a76790997025ef"
       ]
     },
+    "enemies/bat/enemy_bat_fly.png": {
+      "animations": {
+        "fly": {
+          "durations_ms": [
+            110,
+            110
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 16,
+      "cell_width": 24,
+      "columns": 2,
+      "entity": "enemy_bat",
+      "palette": "requiem48.hex",
+      "pivot_x": 12,
+      "pivot_y": 16,
+      "sheet": "enemy_bat_fly.png",
+      "source_hashes": [
+        "code:tools/critters.py"
+      ]
+    },
+    "enemies/bat/enemy_bat_swoop.png": {
+      "animations": {
+        "swoop": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 16,
+      "cell_width": 24,
+      "columns": 1,
+      "entity": "enemy_bat",
+      "palette": "requiem48.hex",
+      "pivot_x": 12,
+      "pivot_y": 16,
+      "sheet": "enemy_bat_swoop.png",
+      "source_hashes": [
+        "code:tools/critters.py"
+      ]
+    },
+    "enemies/bonerat/enemy_bonerat_bite.png": {
+      "animations": {
+        "bite": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 12,
+      "cell_width": 24,
+      "columns": 1,
+      "entity": "enemy_bonerat",
+      "palette": "requiem48.hex",
+      "pivot_x": 12,
+      "pivot_y": 12,
+      "sheet": "enemy_bonerat_bite.png",
+      "source_hashes": [
+        "code:tools/critters.py"
+      ]
+    },
+    "enemies/bonerat/enemy_bonerat_walk.png": {
+      "animations": {
+        "walk": {
+          "durations_ms": [
+            140,
+            140
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 12,
+      "cell_width": 24,
+      "columns": 2,
+      "entity": "enemy_bonerat",
+      "palette": "requiem48.hex",
+      "pivot_x": 12,
+      "pivot_y": 12,
+      "sheet": "enemy_bonerat_walk.png",
+      "source_hashes": [
+        "code:tools/critters.py"
+      ]
+    },
     "enemies/death_hunter/enemy_death_hunter_chop.png": {
       "animations": {
         "chop": {
@@ -1391,6 +1495,112 @@
       "source_hashes": [
         "sha256:4a01d25f56aec9d3f28e6829cb67e9ea621a29c617ec8957859beea1a13896e5",
         "sha256:57c58dac6829962cdaaeb6c62d755696198dfa063e6a2f5d586f3c4b9533ecc0"
+      ]
+    },
+    "enemies/fairy/enemy_fairy_dive.png": {
+      "animations": {
+        "dive": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 48,
+      "cell_width": 48,
+      "columns": 1,
+      "entity": "enemy_fairy",
+      "palette": "requiem48.hex",
+      "pivot_x": 24,
+      "pivot_y": 48,
+      "sheet": "enemy_fairy_dive.png",
+      "source_hashes": [
+        "sha256:b1b0eb307236d24897c50bd9359baefd6092a557df0a29a8faa39268a533b681"
+      ]
+    },
+    "enemies/fairy/enemy_fairy_hover.png": {
+      "animations": {
+        "hover": {
+          "durations_ms": [
+            120,
+            120
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 48,
+      "cell_width": 48,
+      "columns": 2,
+      "entity": "enemy_fairy",
+      "palette": "requiem48.hex",
+      "pivot_x": 24,
+      "pivot_y": 48,
+      "sheet": "enemy_fairy_hover.png",
+      "source_hashes": [
+        "sha256:0c9c35568569b9d50b84fcefe7bb9e8cae5f51a1f08bf106dddbd8ce940c8706",
+        "sha256:65063419bfb7776874b19f82cfadf08ba58fbfc5f5e4147ecfc397d3503cddc8"
+      ]
+    },
+    "enemies/fairy/enemy_fairy_hurt.png": {
+      "animations": {
+        "hurt": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 48,
+      "cell_width": 48,
+      "columns": 1,
+      "entity": "enemy_fairy",
+      "palette": "requiem48.hex",
+      "pivot_x": 24,
+      "pivot_y": 48,
+      "sheet": "enemy_fairy_hurt.png",
+      "source_hashes": [
+        "sha256:427680a637f81683c37acee74f1bb674465709a1c9aba86d802fa06113ffbd33"
+      ]
+    },
+    "enemies/fairy/enemy_fairy_scream.png": {
+      "animations": {
+        "scream": {
+          "durations_ms": [
+            260,
+            300
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 48,
+      "cell_width": 48,
+      "columns": 2,
+      "entity": "enemy_fairy",
+      "palette": "requiem48.hex",
+      "pivot_x": 24,
+      "pivot_y": 48,
+      "sheet": "enemy_fairy_scream.png",
+      "source_hashes": [
+        "sha256:0c2c6d70b426a42abae3add5b50dcd2bbe1fa9468fdfae36333520e3712bc3c9",
+        "sha256:2bf4b0e5c255b0b8d16f579e6d1f5513cc8fb39bc43ea653162d977abf896f58"
       ]
     },
     "enemies/thrall/enemy_thrall_claw.png": {

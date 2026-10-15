@@ -35,6 +35,9 @@ def crypt():
     r.mark("lore", 12, 14, lore="hunter_warning")
     r.mark("enemy", 34, 14, enemy="thrall")
     r.mark("enemy", 86, 14, enemy="deathHunter")
+    r.mark("enemy", 60, 14, enemy="boneRat")
+    r.mark("enemy", 96, 14, enemy="boneRat")
+    r.mark("enemy", 78, 8, enemy="bat")
     return r
 
 
@@ -64,6 +67,9 @@ def ossuary():
     r.mark("enemy", 50, 14, enemy="thrall")
     r.mark("enemy", 34, 23, enemy="thrall")
     r.mark("enemy", 54, 31, enemy="thrall")
+    r.mark("enemy", 34, 12, enemy="fairy")
+    r.mark("enemy", 72, 20, enemy="fairy")
+    r.mark("enemy", 50, 31, enemy="boneRat")
     return r
 
 
@@ -89,6 +95,9 @@ def water_tunnels():
     r.prop("column", 96, 14, 64)
     r.mark("enemy", 44, 14, enemy="thrall")
     r.mark("enemy", 86, 14, enemy="thrall")
+    r.mark("enemy", 40, 8, enemy="bat")
+    r.mark("enemy", 82, 8, enemy="bat")
+    r.mark("enemy", 64, 14, enemy="boneRat")
     return r
 
 
@@ -106,6 +115,8 @@ def long_stair():
         r.platform(x0, x0 + 6, y)
     r.prop("cage", 22, 1, -48)
     r.mark("enemy", 13, 22, enemy="thrall")
+    r.mark("enemy", 15, 20, enemy="fairy")
+    r.mark("enemy", 12, 36, enemy="bat")
     return r
 
 
@@ -123,6 +134,9 @@ def drowned():
     r.prop("statue_saint", 10, 14, 48)
     r.mark("lore", 84, 19, lore="drowned_ledger")
     r.mark("enemy", 80, 19, enemy="deathHunter")
+    r.mark("enemy", 20, 10, enemy="fairy")
+    r.mark("enemy", 70, 10, enemy="fairy")
+    r.mark("enemy", 45, 26, enemy="bat")
     return r
 
 
@@ -168,6 +182,9 @@ def cellars():
     for x in (20, 24, 50, 54):
         r.mark("decor", x, 14, item="barrel")
     r.mark("lore", 10, 14, lore="cellar_crest")
+    r.mark("enemy", 30, 14, enemy="boneRat")
+    r.mark("enemy", 40, 14, enemy="boneRat")
+    r.mark("enemy", 60, 8, enemy="bat")
     return r
 
 

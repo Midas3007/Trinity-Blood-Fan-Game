@@ -44,6 +44,8 @@ import { Banner } from '../../ui/Banner';
 import { ChainLashView } from '../../combat/ChainLashView';
 import { loreEntry } from '../../ui/LorePanel';
 import { BossArena } from '../../world/BossArena';
+import { FlyerManager } from '../../enemies/flyers/FlyerManager';
+import { isFlyer } from '../../enemies/flyers/FlyerBrain';
 
 /** Long frames (tab switches, hitches) are clamped so timers and states don't jump. */
 const MAX_FRAME_MS = 50;
@@ -92,6 +94,7 @@ export class PlayScene extends Phaser.Scene {
   private roomData!: RoomData;
   private runtime!: RoomRuntime;
   private arena: BossArena | null = null;
+  private flyers!: FlyerManager;
   private start: RoomStart = { room: START.room, entry: START.entry };
   private leaving = false;
   /** Must stand up once before praying again (no loop when spawning at an altar while holding down). */
@@ -220,7 +223,8 @@ export class PlayScene extends Phaser.Scene {
       return d;
     });
 
-    const spawns: EnemySpawn[] = r.enemies;
+    // Flying creatures (fairies, bats) have their own manager; everything else walks.
+    const spawns: EnemySpawn[] = r.enemies.filter((sp) => !isFlyer(sp.type));
     // Enemies sense floors and ledges on solids and one-way platforms alike.
     this.enemies = new EnemyManager(this, this.player, [...solidRects, ...r.oneways], solids, ENEMY_RESPAWN_MS, oneways);
     for (const type of new Set(spawns.map((sp) => sp.type))) {
@@ -229,6 +233,7 @@ export class PlayScene extends Phaser.Scene {
     // Test mode only: ?test&peaceful spawns no enemies (mechanics playtests).
     const peaceful = testHookEnabled() && new URLSearchParams(location.search).has('peaceful');
     if (!peaceful) for (const sp of spawns) this.enemies.spawn(sp);
+    this.flyers = new FlyerManager(this, peaceful ? [] : r.enemies.filter((sp) => isFlyer(sp.type)));
     this.combatSystem = new CombatSystem(this.bus, this.player);
 
     this.sparks = new SparkPool(this, effects.maxSparks, COLORS.spark, effects.sparkLifeMs, effects.sparkSpeed);
@@ -388,10 +393,12 @@ export class PlayScene extends Phaser.Scene {
       arena.update(dt, this.player.x, this.player.onGround);
       if (arena.talking && (this.actions.justPressed('attack') || this.actions.justPressed('jump'))) arena.advanceDialogue();
     }
+    const p0 = this.player;
+    this.flyers.update(dt, p0.x, p0.y);
     this.combatSystem.step(
-      [...this.dummies, ...living, ...this.runtime.levers, ...(arena?.targets ?? [])],
+      [...this.dummies, ...living, ...this.runtime.levers, ...(arena?.targets ?? []), ...this.flyers.targets],
       [...living, ...(arena?.attackers ?? [])],
-      [...this.dummies, ...(arena?.hazards ?? [])],
+      [...this.dummies, ...(arena?.hazards ?? []), ...this.flyers.hazards(p0.hurtbox(), p0.x, p0.y)],
     );
     this.sparks.update(dt);
     this.shotFlash.update(dt);

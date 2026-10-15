@@ -1,0 +1,14 @@
+{
+  "source": "fairy_r1_ed0fe290.png",
+  "source_hash": "sha256:88a0c6b7fa2df53052715365966a41a8b4822f124257fe023c3ecb1f8c5636bd",
+  "figures": [
+    5
+  ],
+  "standing_px": 630,
+  "factor": 0.330159,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "fairy_r1_ed0fe290_f5.png"
+  ]
+}

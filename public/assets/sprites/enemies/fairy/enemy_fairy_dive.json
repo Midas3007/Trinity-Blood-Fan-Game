@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "dive": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 48,
+  "cell_width": 48,
+  "columns": 1,
+  "entity": "enemy_fairy",
+  "palette": "requiem48.hex",
+  "pivot_x": 24,
+  "pivot_y": 48,
+  "sheet": "enemy_fairy_dive.png",
+  "source_hashes": [
+    "sha256:b1b0eb307236d24897c50bd9359baefd6092a557df0a29a8faa39268a533b681"
+  ]
+}

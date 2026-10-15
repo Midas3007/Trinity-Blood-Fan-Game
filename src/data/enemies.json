@@ -102,6 +102,57 @@
         }
       },
       "puppetString": false
+    },
+    "boneRat": {
+      "label": "Bone-rat",
+      "width": 14,
+      "height": 9,
+      "color": "0xddd7e6",
+      "telegraphColor": "0xd9963a",
+      "maxHealth": 12,
+      "walkSpeed": 30,
+      "chaseSpeed": 80,
+      "brakeDecel": 600,
+      "patrolDistance": 40,
+      "idleMs": 500,
+      "detectRange": 100,
+      "detectRear": 40,
+      "detectHeight": 20,
+      "loseRange": 170,
+      "reactionMs": 150,
+      "attackRange": 18,
+      "attackCooldownMs": 600,
+      "giveUpMs": 2000,
+      "attack": "rat_bite",
+      "hurtStunMs": 180,
+      "staggerBelowFraction": 0,
+      "staggerMs": 800,
+      "drainable": false,
+      "knockbackTaken": 1.2,
+      "interruptibleDuringActive": true,
+      "deathMs": 350,
+      "attacks": {
+        "rat_bite": {
+          "startupMs": 260,
+          "activeMs": 90,
+          "recoveryMs": 320,
+          "damage": 6,
+          "knockbackX": 80,
+          "knockbackY": 40,
+          "hitstopMs": 40,
+          "shakeMs": 0,
+          "shakeIntensity": 0,
+          "stepSpeed": 110,
+          "cancelIntoDodge": false,
+          "hitbox": {
+            "x": 10,
+            "y": 0,
+            "w": 14,
+            "h": 10
+          }
+        }
+      },
+      "puppetString": false
     }
   }
 }

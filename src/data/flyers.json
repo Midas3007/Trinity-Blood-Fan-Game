@@ -1,0 +1,22 @@
+{
+  "_note": "Flying creatures (no gravity, they ignore walls but stay near home). 'swoop': a dash at Abel with contact damage. 'scream': an expanding ring of sound that hurts where its edge passes (dodge through it or stay out of reach; it can't be parried). Times ms, speeds px/s, distances px.",
+  "types": {
+    "bat": {
+      "label": "Catacomb bat", "width": 14, "height": 10, "maxHealth": 10,
+      "speed": 70, "detectRange": 150, "loseRange": 260, "leash": 220,
+      "hoverAmp": 6, "hoverMs": 900, "preferredDistance": 0, "hoverAbove": 6,
+      "attack": "swoop", "attackRange": 70, "windupMs": 320, "attackMs": 380, "recoverMs": 700, "cooldownMs": 900,
+      "swoopSpeed": 230, "contactDamage": 8,
+      "hurtMs": 220, "deathMs": 450, "knockback": 120, "anim": "enemy_bat"
+    },
+    "fairy": {
+      "label": "Fairy of the catacombs", "width": 14, "height": 22, "maxHealth": 24,
+      "speed": 55, "detectRange": 170, "loseRange": 280, "leash": 240,
+      "hoverAmp": 5, "hoverMs": 1300, "preferredDistance": 76, "hoverAbove": 24,
+      "attack": "scream", "attackRange": 110, "windupMs": 520, "attackMs": 300, "recoverMs": 900, "cooldownMs": 1600,
+      "contactDamage": 0,
+      "ring": { "speed": 120, "maxRadius": 84, "thickness": 7, "damage": 12 },
+      "hurtMs": 260, "deathMs": 600, "knockback": 90, "anim": "enemy_fairy"
+    }
+  }
+}

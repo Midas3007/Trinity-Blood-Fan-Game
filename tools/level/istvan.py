@@ -162,6 +162,7 @@ def cathedral_square():
     r.mark("lore", 14, GY - 1, lore="esther_prayer")
     r.mark("enemy", 22, GY - 1, enemy="thrall")
     r.mark("enemy", 84, T - 1, enemy="deathHunter")
+    r.mark("enemy", 20, 8, enemy="bat")
     return r
 
 
@@ -228,6 +229,8 @@ def sewer_shaft():
     r.platform(3, 9, 3)
     r.fill("terrain", 6, r.H - 3, 11, r.H - 2, "spikes")
     r.backwall(["wall_roman"], 3, r.H - 2, 3, 26)
+    r.mark("enemy", 18, 10, enemy="bat")
+    r.mark("enemy", 10, 22, enemy="bat")
     return r
 
 

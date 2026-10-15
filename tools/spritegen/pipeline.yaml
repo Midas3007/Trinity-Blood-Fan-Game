@@ -147,6 +147,18 @@ entities:
       hurt:     { loop: false, durations_ms: 200 }
       collapse: { loop: false, durations_ms: 700, anchor: centre }
 
+  enemy_fairy:
+    cell: [48, 48]
+    sprite_height: 26
+    source_dir: art/source/approved/enemies/fairy/
+    output_dir: public/assets/sprites/enemies/fairy/
+    keep_largest: true
+    animations:
+      hover:  { loop: true,  durations_ms: 120 }
+      scream: { loop: false, durations_ms: [260, 300] }
+      dive:   { loop: false, durations_ms: 300 }
+      hurt:   { loop: false, durations_ms: 300 }
+
   boss_marchesa:
     cell: [128, 128]
     sprite_height: 60      # duel scale (Crisanta-style): one and a half times Abel

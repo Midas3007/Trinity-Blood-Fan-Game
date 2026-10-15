@@ -5,6 +5,7 @@ import { worldProblems, reachable } from '../src/world/roomGraph';
 import { mergeCells, parseRoom, type TiledMap } from '../src/world/tiled';
 import { GameState } from '../src/systems/GameState';
 import { enemyConfigs } from '../src/enemies/enemyConfig';
+import { flyerConfigs } from '../src/enemies/flyers/FlyerBrain';
 import { loreEntry } from '../src/ui/LorePanel';
 import world from '../src/data/world.json';
 
@@ -22,7 +23,7 @@ describe('rooms (Tiled maps)', () => {
   it('every enemy marker names a known enemy type, every gate has a lever or story event, every lore id exists', () => {
     const levers = new Set([...Object.values(rooms).flatMap((r) => r.levers.map((l) => l.flag)), ...world.storyFlags]);
     for (const r of Object.values(rooms)) {
-      for (const e of r.enemies) expect(enemyConfigs[e.type], `${r.id}: ${e.type}`).toBeDefined();
+      for (const e of r.enemies) expect(enemyConfigs[e.type] ?? flyerConfigs[e.type], `${r.id}: ${e.type}`).toBeDefined();
       for (const g of r.gates) expect(levers.has(g.opens), `${r.id}: gate ${g.opens}`).toBe(true);
       for (const l of r.lore) expect(loreEntry(l.id), `${r.id}: lore ${l.id}`).not.toBeNull();
     }

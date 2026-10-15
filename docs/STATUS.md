@@ -14,7 +14,7 @@ Last updated: 2026-10-15
 | 7 | Progression | in progress: holy-water flasks ✅, map ✅, altars/checkpoints ✅, pause ✅, save/load ✅, Crusnik form + leap gate + chain lash ✅, parry ✅, dialogue box ✅, **first boss: the Marchesa ✅**; left: boss rematch polish, more dialogue/cutscenes |
 
 | 8 | Mini bosses from the series (owner, 2026-10-15) | planned: 3 mini bosses (plan below), each with a cutscene tied to the plot and a permanent reward (strength, health, healing, blood); Abel's **first Crusnik transformation** happens in one of these fights; victory cards in **Latin** |
-| 9 | Creatures and villains in the maps | planned: **fairies** (pale winged, ultrasonic scream), bats, bone-rats, Iron Choir marionette soldiers, Inquisition hunters, puppeted Methuselah |
+| 9 | Creatures and villains in the maps | in progress: **fairies** ✅ (hover, scream rings), **bats** ✅ (swoop), **bone-rats** ✅ placed through the sewers, crypts, ossuary, tunnels, stair and cellars (+ bats in the sewer shaft and cathedral square); left: Iron Choir soldiers, Inquisition hunters, puppeted Methuselah |
 | 10 | Cutscenes and story | planned: code-animated manga-panel cutscenes — opening, one per mini boss, the Marchesa, the final battle (Dietrich / Gyula Kádár), and a **post-credits teaser for the next arc**; original dialogue |
 | 11 | Audio | planned: **voices** for cutscene lines, **copyright-free gothic music** (per region, boss themes), SFX; audio unlock on first touch. Blocked: the sandbox network denies free-music sites (see Blockers) |
 | 12 | Region 2 + final battle | planned: the cathedral and the count's fortress, Dietrich's Grand Marionette, Gyula Kádár and the Star of Sorrow, the 80% Crusnik moment, ending |
@@ -61,11 +61,23 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 - Art: two pose sheets (4 credits, about 44 left): stance, walk, slash, lunge, reel, hanging, leap, dive, impact, charge, death. Strings are drawn in code (they snap in phase 2). A faint crimson aura keeps her readable in the dark ballroom.
 - Verified: 150/150 tests (brain: intro, combo + lunge distance, plummet + shockwaves, parry stagger + double damage, phase 2 vanish/charge to the far edge, a 2-minute random fight never stuck; parry state and combat hook). Bot runs: a 40-second fight saw every state including phase 2 (the bot lost, as it should); a low-health run went through death → dialogue → flag → arena opened, no errors.
 
+## Done (latest) — creatures in the maps
+- **Fairies** (original): pale child-like things with insect wings that hover at a distance, glow amber, then **scream a ring of sound** — dodge through it or stay out of reach (it can't be parried). Ossuary, Long Stair, Drowned Crypt. (Art gap: most of the violet wing membrane was lost against the magenta background; the wings read as thin white lines.)
+- **Bats**: bob near their perch, swoop at you (they only hurt while swooping). Sewer Shaft, Hunter's Crypt, Water Tunnels, Long Stair, Drowned Crypt, Cellars, Cathedral Square.
+- **Bone-rats**: small, fast, weak biters. Crypt, Ossuary, Tunnels, Cellars.
+- Bats and rats are drawn in code (no credits); the fairy cost 2 credits (about 40 left). Kills fill the Crusnik blood bar too.
+- Verified: 153/153 tests (bat swoop, fairy ring hits once, give-up and return home, falling when killed); browser: creatures spawn, a bone-rat bit Abel, no errors.
+
 ## In progress
 - the Crusnik form + leap gate, then the Marchesa boss.
 
 ## Blockers
 - **Music downloads blocked:** the sandbox's network policy denies opengameart.org, incompetech.com, freepd.com, archive.org, pixabay.com and freesound.org. To allow them: in the session's cloud environment menu (title bar) → Edit → Network access → add those domains under Allowed domains (keep "Allow package managers" ticked). Steps: https://code.claude.com/docs/en/cloud-environments#network-access. Until then the audio system is built and waits for the tracks. Higgsfield: about 44 credits left.
+
+## Owner must test (on phone) — creatures
+1. Sewer Shaft / Hunter's Crypt: bats drop from their perch and swoop; hit them out of the air. Bone-rats scuttle and bite.
+2. Ossuary / Drowned Crypt: fairies hover out of reach, flash amber and scream a pale ring: roll through it.
+3. Tell me: too many? too annoying? do the fairies look right?
 
 ## Owner must test (on phone) — PARRY and the Marchesa
 1. Find PARRY (left of JUMP). Near a thrall, tap it just as the amber claw comes: steel flash, it reels with the red diamond → ATK for the revolver finisher.

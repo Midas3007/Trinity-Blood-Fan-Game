@@ -53,5 +53,37 @@
     "dead": {
       "anim": "enemy_death_hunter_collapse"
     }
+  },
+  "boneRat": {
+    "idle": {
+      "anim": "enemy_bonerat_walk",
+      "frame": 0
+    },
+    "patrol": {
+      "anim": "enemy_bonerat_walk"
+    },
+    "alert": {
+      "anim": "enemy_bonerat_walk",
+      "frame": 0
+    },
+    "pursue": {
+      "anim": "enemy_bonerat_walk",
+      "timeScale": 1.8
+    },
+    "attack": {
+      "anim": "enemy_bonerat_bite"
+    },
+    "hurt": {
+      "anim": "enemy_bonerat_bite",
+      "frame": 0
+    },
+    "staggered": {
+      "anim": "enemy_bonerat_bite",
+      "frame": 0
+    },
+    "dead": {
+      "anim": "enemy_bonerat_walk",
+      "frame": 0
+    }
   }
 }
