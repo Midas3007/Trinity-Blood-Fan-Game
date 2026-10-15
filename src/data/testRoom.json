@@ -1,5 +1,5 @@
 {
-  "_note": "Hand-written test room (internal pixels). Tall ledge on the right tests hard landings. Grey dummies are punching bags; the red one at the far right hurts on contact. Real rooms come from Tiled in Milestone 5.",
+  "_note": "Hand-written test room (internal pixels). Grey dummies are punching bags; the red dummy hurts on contact; thralls are the first real enemy (one on the floor, one patrolling the top ledge). Real rooms come from Tiled in Milestone 5.",
   "width": 960,
   "height": 270,
   "spawn": {
@@ -63,5 +63,18 @@
       "contactDamage": 15,
       "respawnMs": 1500
     }
-  ]
+  ],
+  "enemies": [
+    {
+      "type": "thrall",
+      "x": 560,
+      "y": 238
+    },
+    {
+      "type": "thrall",
+      "x": 685,
+      "y": 74
+    }
+  ],
+  "enemyRespawnMs": 4000
 }

@@ -83,7 +83,8 @@ export class TrainingDummy implements Damageable {
     };
   }
 
-  receiveHit(hit: HitInfo): void {
+  receiveHit(hit: HitInfo): boolean {
+    if (!this.alive) return false;
     this.health.damage(hit.damage);
     this.body.setVelocity(hit.knockbackX, -hit.knockbackY);
     this.flashMs = effects.hitFlashMs;
@@ -93,6 +94,7 @@ export class TrainingDummy implements Damageable {
       this.bar.setVisible(false);
       this.body.enable = false;
     }
+    return true;
   }
 
   update(dtMs: number): void {

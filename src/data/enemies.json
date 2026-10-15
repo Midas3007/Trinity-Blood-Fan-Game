@@ -1,0 +1,40 @@
+{
+  "_note": "Enemy types. Times in ms, distances in px, speeds in px/s. 'attacks' use the same format as src/data/attacks.json. Values are design choices for a slow, telegraphed melee enemy (see docs/feel-spec.md).",
+  "types": {
+    "thrall": {
+      "label": "String-bound thrall",
+      "width": 16,
+      "height": 30,
+      "color": "0xc9c2d6",
+      "telegraphColor": "0xd9963a",
+      "maxHealth": 40,
+      "walkSpeed": 28,
+      "chaseSpeed": 55,
+      "brakeDecel": 500,
+      "patrolDistance": 48,
+      "idleMs": 900,
+      "detectRange": 110,
+      "detectRear": 28,
+      "detectHeight": 36,
+      "loseRange": 180,
+      "reactionMs": 350,
+      "attackRange": 26,
+      "attackCooldownMs": 700,
+      "giveUpMs": 2500,
+      "attack": "thrall_claw",
+      "hurtStunMs": 260,
+      "knockbackTaken": 0.8,
+      "interruptibleDuringActive": false,
+      "deathMs": 600,
+      "attacks": {
+        "thrall_claw": {
+          "startupMs": 480, "activeMs": 120, "recoveryMs": 520,
+          "damage": 15, "knockbackX": 150, "knockbackY": 120,
+          "hitstopMs": 80, "shakeMs": 100, "shakeIntensity": 0.004,
+          "stepSpeed": 70, "cancelIntoDodge": false,
+          "hitbox": { "x": 16, "y": 0, "w": 22, "h": 20 }
+        }
+      }
+    }
+  }
+}

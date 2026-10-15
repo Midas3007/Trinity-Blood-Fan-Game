@@ -52,5 +52,6 @@ export interface Damageable {
   readonly alive: boolean;
   readonly x: number;
   hurtbox(): Rect;
-  receiveHit(hit: HitInfo): void;
+  /** Applies the hit; returns false if it was ignored (e.g. invulnerable). */
+  receiveHit(hit: HitInfo): boolean;
 }

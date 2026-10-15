@@ -45,3 +45,17 @@
 | Sparks use a fixed pool; `src/data/effects.json` can turn shake/sparks off | Phone performance; low-effects mode | Phaser particle emitters |
 | Training dummies (grey = punching bag, red = contact damage) stand in for enemies | Something to hit before Milestone 4's enemy AI | Building the first enemy now |
 | Player death = respawn at the room spawn with full health | Placeholder until checkpoints (Milestone 5) | Game-over screen |
+
+## 2026-10-15 — Milestone 4 first enemy (string-bound thrall)
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Enemy types are data (`src/data/enemies.json`), incl. their attacks in the same format as player attacks; validated at load | Reuse the combat pipeline; new enemy variants without code | Hard-coded per-enemy classes |
+| One shared "melee walker" state machine: idle → patrol → alert → pursue → attack, plus hurt and dead; every state exits by time or condition | Covers the thrall and future simple melee enemies; "no stuck states" is tested with a 2-minute randomised run | Behaviour trees (overkill now) |
+| Vision = box in front (+ short range behind), height-limited; no wall line-of-sight yet | Simple and readable; rooms are open for now | Raycasts (add with Tiled rooms in M5) |
+| Ledge awareness by probing the room's solid rectangles just past the leading foot | Enemies never walk off platforms | Physics raycasts |
+| Long, coloured wind-up (480 ms, turns amber) before the claw; super armour only during the claw's active frames | Readable, fair, deliberate combat matching the reference feel | Instant attacks |
+| Enemies come from a fixed `Pool` per type, pre-created at room load; dead enemies return to the pool and respawn (test room: 4 s) | No allocation during play (CLAUDE.md Part 7); checkpoints will control respawns in M5 | Create/destroy on demand |
+| Combat resolution moved into a pure `CombatSystem` (player attacks, enemy attacks, contact hazards → events) | Scene stays thin; whole hit flow unit-tested with fakes | Keep it in the scene |
+| `Damageable.receiveHit` returns whether the hit landed | Invulnerable targets don't trigger hit feedback | Separate pre-check |
+| Enemies and the player pass through each other (no body collision) | Matches the reference dodge-through feel; avoids getting pinned | Solid bodies |

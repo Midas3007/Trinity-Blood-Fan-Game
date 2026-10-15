@@ -31,10 +31,16 @@ export function validateAttacks(table: AttackTable): void {
   }
 }
 
-export function buildAttackTable(file: RawAttackFile): AttackTable {
+/** Builds and validates a table from `{ id: attack-without-id }` records (player or enemy attacks). */
+export function tableFromRecord(rec: Record<string, Omit<AttackDef, 'id'>>): AttackTable {
   const table: AttackTable = {};
-  for (const [id, a] of Object.entries(file.attacks)) table[id] = { ...a, id };
+  for (const [id, a] of Object.entries(rec)) table[id] = { ...a, id };
   validateAttacks(table);
+  return table;
+}
+
+export function buildAttackTable(file: RawAttackFile): AttackTable {
+  const table = tableFromRecord(file.attacks);
   for (const starter of [file.groundStarter, file.airStarter]) {
     if (!(starter in table)) throw new Error(`starter attack "${starter}" does not exist`);
   }

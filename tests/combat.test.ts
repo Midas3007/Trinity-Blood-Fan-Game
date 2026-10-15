@@ -44,8 +44,9 @@ class Target implements Damageable {
   hurtbox(): Rect {
     return this.box;
   }
-  receiveHit(hit: HitInfo): void {
+  receiveHit(hit: HitInfo): boolean {
     this.hits.push(hit);
+    return true;
   }
 }
 

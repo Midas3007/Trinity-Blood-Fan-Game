@@ -9,8 +9,10 @@ import { EventBus } from '../../systems/EventBus';
 import type { GameEvents } from '../../systems/gameEvents';
 import { HitStop } from '../../combat/HitStop';
 import { SparkPool } from '../../combat/SparkPool';
-import { overlaps } from '../../combat/geometry';
-import { activeHitbox, resolveAttack } from '../../combat/resolve';
+import { CombatSystem } from '../../combat/CombatSystem';
+import { activeHitbox } from '../../combat/resolve';
+import type { Rect } from '../../combat/types';
+import { EnemyManager, type EnemySpawn } from '../../enemies/EnemyManager';
 import { TrainingDummy, type DummyConfig } from '../../enemies/TrainingDummy';
 import { DebugOverlay } from '../../ui/DebugOverlay';
 import { Hud } from '../../ui/Hud';
@@ -24,11 +26,15 @@ import testRoom from '../../data/testRoom.json';
 /** Long frames (tab switches, hitches) are clamped so timers and states don't jump. */
 const MAX_FRAME_MS = 50;
 const FLOOR_Y = 238;
+/** Extra pooled enemies per type beyond the room's spawn count. */
+const ENEMY_POOL_SPARE = 1;
 
 /** Test room: floor, ledges, training dummies and the placeholder player. */
 export class PlayScene extends Phaser.Scene {
   private player!: Player;
   private dummies: TrainingDummy[] = [];
+  private enemies!: EnemyManager;
+  private combatSystem!: CombatSystem;
   private readonly actions = new ActionState();
   private readonly bus = new EventBus<GameEvents>();
   private readonly hitStop = new HitStop();
@@ -49,7 +55,8 @@ export class PlayScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, width, height);
 
     const solids = this.physics.add.staticGroup();
-    for (const r of testRoom.solids) {
+    const solidRects: Rect[] = testRoom.solids;
+    for (const r of solidRects) {
       solids.add(this.add.rectangle(r.x + r.w / 2, r.y + r.h / 2, r.w, r.h, COLORS.floor));
     }
 
@@ -63,6 +70,14 @@ export class PlayScene extends Phaser.Scene {
       this.physics.add.collider(d.sprite, solids);
       return d;
     });
+
+    const spawns: EnemySpawn[] = testRoom.enemies;
+    this.enemies = new EnemyManager(this, this.player, solidRects, solids, testRoom.enemyRespawnMs);
+    for (const type of new Set(spawns.map((sp) => sp.type))) {
+      this.enemies.preload(type, spawns.filter((sp) => sp.type === type).length + ENEMY_POOL_SPARE);
+    }
+    for (const sp of spawns) this.enemies.spawn(sp);
+    this.combatSystem = new CombatSystem(this.bus, this.player);
 
     this.sparks = new SparkPool(this, effects.maxSparks, COLORS.spark, effects.sparkLifeMs, effects.sparkSpeed);
     this.hud = new Hud(this);
@@ -113,11 +128,17 @@ export class PlayScene extends Phaser.Scene {
 
     this.player.update(dt);
     for (const d of this.dummies) d.update(dt);
-    this.resolveCombat();
+    this.enemies.update(dt);
+    const living = this.enemies.alive;
+    this.combatSystem.step([...this.dummies, ...living], living, this.dummies);
     this.sparks.update(dt);
 
-    const box = activeHitbox(this.player.combat, this.player.x, this.player.y, this.player.facing);
-    this.debug.drawHitboxes(box ? [box] : []);
+    const boxes: Rect[] = [];
+    for (const a of [this.player, ...living]) {
+      const box = activeHitbox(a.combat, a.x, a.y, a.facing);
+      if (box) boxes.push(box);
+    }
+    this.debug.drawHitboxes(boxes);
     this.debug.update({
       state: `${this.player.state}${this.player.invulnerable ? ' INV' : ''}`,
       vel: `${this.player.vx.toFixed(0)},${this.player.vy.toFixed(0)}`,
@@ -126,23 +147,5 @@ export class PlayScene extends Phaser.Scene {
       input: `${this.actions.moveX.toFixed(2)} ${this.actions.heldSummary()}`,
       hp: `${this.player.health.hp}/${this.player.health.max}`,
     });
-  }
-
-  private resolveCombat(): void {
-    const p = this.player;
-    for (const r of resolveAttack(p.combat, p.x, p.y, p.facing, this.dummies)) {
-      this.bus.emit('combat:hit', { x: r.x, y: r.y, hit: r.hit, targetId: r.target.id, byPlayer: true });
-      if (!r.target.alive) this.bus.emit('enemy:died', { id: r.target.id, x: r.target.x, y: r.y });
-    }
-
-    for (const d of this.dummies) {
-      if (!d.alive || d.contactDamage <= 0 || p.invulnerable) continue;
-      if (!overlaps(p.hurtbox(), d.hurtbox())) continue;
-      const hit = d.contactHit(p.x);
-      if (!p.takeHit(hit)) continue;
-      this.bus.emit('combat:hit', { x: p.x, y: p.y, hit, targetId: p.id, byPlayer: false });
-      this.bus.emit('player:hurt', { hp: p.health.hp, max: p.health.max });
-      if (p.health.dead) this.bus.emit('player:died', {});
-    }
   }
 }

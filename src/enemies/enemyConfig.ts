@@ -1,0 +1,66 @@
+import raw from '../data/enemies.json';
+import { tableFromRecord, type AttackTable } from '../combat/attackData';
+import type { AttackDef } from '../combat/types';
+
+export interface EnemyConfig {
+  type: string;
+  label: string;
+  width: number;
+  height: number;
+  color: number;
+  telegraphColor: number;
+  maxHealth: number;
+  walkSpeed: number;
+  chaseSpeed: number;
+  brakeDecel: number;
+  patrolDistance: number;
+  idleMs: number;
+  detectRange: number;
+  detectRear: number;
+  detectHeight: number;
+  loseRange: number;
+  reactionMs: number;
+  attackRange: number;
+  attackCooldownMs: number;
+  giveUpMs: number;
+  attack: string;
+  hurtStunMs: number;
+  knockbackTaken: number;
+  interruptibleDuringActive: boolean;
+  deathMs: number;
+  attacks: AttackTable;
+}
+
+type RawEnemy = Omit<EnemyConfig, 'type' | 'color' | 'telegraphColor' | 'attacks'> & {
+  color: string;
+  telegraphColor: string;
+  attacks: Record<string, Omit<AttackDef, 'id'>>;
+};
+
+/** Converts and validates one raw enemy entry; throws a readable error on bad data. */
+export function buildEnemyConfig(type: string, r: RawEnemy): EnemyConfig {
+  const attacks = tableFromRecord(r.attacks);
+  if (!(r.attack in attacks)) throw new Error(`enemy "${type}": attack "${r.attack}" not in its attacks`);
+  if (r.attackRange <= 0 || r.detectRange <= r.attackRange) {
+    throw new Error(`enemy "${type}": detectRange must be larger than attackRange`);
+  }
+  if (r.loseRange < r.detectRange) throw new Error(`enemy "${type}": loseRange must be >= detectRange`);
+  return {
+    ...r,
+    type,
+    color: Number(r.color),
+    telegraphColor: Number(r.telegraphColor),
+    attacks,
+  };
+}
+
+const file = raw as { types: Record<string, RawEnemy> };
+export const enemyConfigs: Record<string, EnemyConfig> = Object.fromEntries(
+  Object.entries(file.types).map(([type, r]) => [type, buildEnemyConfig(type, r)]),
+);
+
+export function enemyConfig(type: string): EnemyConfig {
+  const cfg = enemyConfigs[type];
+  if (!cfg) throw new Error(`unknown enemy type "${type}"`);
+  return cfg;
+}

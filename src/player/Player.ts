@@ -7,6 +7,7 @@ import { centredRect } from '../combat/geometry';
 import { Health } from '../combat/Health';
 import { nextEntityId } from '../combat/ids';
 import type { HitInfo, Rect } from '../combat/types';
+import type { PlayerCombatant } from '../combat/CombatSystem';
 import { StateMachine } from './StateMachine';
 import { PlayerTimers } from './PlayerTimers';
 import { gravityFor } from './movement';
@@ -18,7 +19,7 @@ const INVULNERABLE_ALPHA = 0.45;
 const BLINK_MS = 80;
 
 /** Placeholder player: a rectangle with an Arcade body driven by the player state machine. */
-export class Player implements PlayerContext {
+export class Player implements PlayerContext, PlayerCombatant {
   readonly id = nextEntityId();
   readonly sprite: Phaser.GameObjects.Rectangle;
   readonly body: Phaser.Physics.Arcade.Body;
@@ -107,6 +108,14 @@ export class Player implements PlayerContext {
 
   hurtbox(): Rect {
     return centredRect(this.x, this.y, this.tuning.width, this.tuning.height);
+  }
+
+  get alive(): boolean {
+    return !this.health.dead;
+  }
+
+  receiveHit(hit: HitInfo): boolean {
+    return this.takeHit(hit);
   }
 
   /** Applies a hit unless invulnerable or dead. Returns true if it landed. */
