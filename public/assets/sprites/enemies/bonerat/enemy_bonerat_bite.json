@@ -11,13 +11,13 @@
       "loop": false
     }
   },
-  "cell_height": 12,
-  "cell_width": 24,
+  "cell_height": 13,
+  "cell_width": 26,
   "columns": 1,
   "entity": "enemy_bonerat",
   "palette": "requiem48.hex",
-  "pivot_x": 12,
-  "pivot_y": 12,
+  "pivot_x": 13,
+  "pivot_y": 13,
   "sheet": "enemy_bonerat_bite.png",
   "source_hashes": [
     "code:tools/critters.py"

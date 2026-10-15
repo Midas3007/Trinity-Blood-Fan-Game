@@ -1715,13 +1715,13 @@
           "loop": true
         }
       },
-      "cell_height": 16,
-      "cell_width": 24,
+      "cell_height": 17,
+      "cell_width": 26,
       "columns": 2,
       "entity": "enemy_bat",
       "palette": "requiem48.hex",
-      "pivot_x": 12,
-      "pivot_y": 16,
+      "pivot_x": 13,
+      "pivot_y": 17,
       "sheet": "enemy_bat_fly.png",
       "source_hashes": [
         "code:tools/critters.py"
@@ -1740,13 +1740,13 @@
           "loop": false
         }
       },
-      "cell_height": 16,
-      "cell_width": 24,
+      "cell_height": 17,
+      "cell_width": 26,
       "columns": 1,
       "entity": "enemy_bat",
       "palette": "requiem48.hex",
-      "pivot_x": 12,
-      "pivot_y": 16,
+      "pivot_x": 13,
+      "pivot_y": 17,
       "sheet": "enemy_bat_swoop.png",
       "source_hashes": [
         "code:tools/critters.py"
@@ -1765,13 +1765,13 @@
           "loop": false
         }
       },
-      "cell_height": 12,
-      "cell_width": 24,
+      "cell_height": 13,
+      "cell_width": 26,
       "columns": 1,
       "entity": "enemy_bonerat",
       "palette": "requiem48.hex",
-      "pivot_x": 12,
-      "pivot_y": 12,
+      "pivot_x": 13,
+      "pivot_y": 13,
       "sheet": "enemy_bonerat_bite.png",
       "source_hashes": [
         "code:tools/critters.py"
@@ -1792,13 +1792,13 @@
           "loop": true
         }
       },
-      "cell_height": 12,
-      "cell_width": 24,
+      "cell_height": 13,
+      "cell_width": 26,
       "columns": 2,
       "entity": "enemy_bonerat",
       "palette": "requiem48.hex",
-      "pivot_x": 12,
-      "pivot_y": 12,
+      "pivot_x": 13,
+      "pivot_y": 13,
       "sheet": "enemy_bonerat_walk.png",
       "source_hashes": [
         "code:tools/critters.py"
@@ -2194,6 +2194,306 @@
       "source_hashes": [
         "sha256:e0e03a617cdd1ceef83a4688fc9edc6e94b40d834080fd3455e779ddc36dbe6b",
         "sha256:51aca36b5a20b783c950ff30d2e8b5c75762128c7adbc23e3c68df950142e437"
+      ]
+    },
+    "npcs/dietrich/npc_dietrich_bow.png": {
+      "animations": {
+        "bow": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_dietrich",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "npc_dietrich_bow.png",
+      "source_hashes": [
+        "sha256:21a20eb605ff41fe5a8048929ba73697fd0649af4360855c07c3e672e5803039"
+      ]
+    },
+    "npcs/dietrich/npc_dietrich_conduct.png": {
+      "animations": {
+        "conduct": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_dietrich",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "npc_dietrich_conduct.png",
+      "source_hashes": [
+        "sha256:7ba57ea42ea2a97d534e209765e57dd3a8bd4d71d722497530ea7b9d9ae91835"
+      ]
+    },
+    "npcs/dietrich/npc_dietrich_laugh.png": {
+      "animations": {
+        "laugh": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_dietrich",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "npc_dietrich_laugh.png",
+      "source_hashes": [
+        "sha256:a14d537bb427f2763fa555074ca3f1c5bc928fb924f25b50e22ffdb2044abe05"
+      ]
+    },
+    "npcs/dietrich/npc_dietrich_stand.png": {
+      "animations": {
+        "stand": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_dietrich",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "npc_dietrich_stand.png",
+      "source_hashes": [
+        "sha256:bef8998aaea1b44735deddaf0d2e31097c7dba530260001d4b7e001ac9a0b35e"
+      ]
+    },
+    "npcs/dietrich/npc_dietrich_threads.png": {
+      "animations": {
+        "threads": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_dietrich",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "npc_dietrich_threads.png",
+      "source_hashes": [
+        "sha256:2e56662b65fce0b7b60157227d1d586c258b8bfe930bc4620f4e4f9f6c4f47a9"
+      ]
+    },
+    "npcs/dietrich/npc_dietrich_violin.png": {
+      "animations": {
+        "violin": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_dietrich",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "npc_dietrich_violin.png",
+      "source_hashes": [
+        "sha256:8d79b57737f083a13e9d1baa943dd4ce0967e01c8f7c7111f1917f02aa9f4e94"
+      ]
+    },
+    "npcs/esther/npc_esther_aim.png": {
+      "animations": {
+        "aim": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_esther",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "npc_esther_aim.png",
+      "source_hashes": [
+        "sha256:a0d1aa6da4a522c622b139c1d14de8785274afe03534a150bff20f1e480bed15"
+      ]
+    },
+    "npcs/esther/npc_esther_collapsed.png": {
+      "animations": {
+        "collapsed": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_esther",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "npc_esther_collapsed.png",
+      "source_hashes": [
+        "sha256:e28d5fd2de050c8bab2ac350d9c6ac276d832bcf9427abb959be1dfb53d9626a"
+      ]
+    },
+    "npcs/esther/npc_esther_pray.png": {
+      "animations": {
+        "pray": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_esther",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "npc_esther_pray.png",
+      "source_hashes": [
+        "sha256:c16664249ed47b865c203626064b091e0f7070ed6fe3c66ddecd621d02e51e41"
+      ]
+    },
+    "npcs/esther/npc_esther_run.png": {
+      "animations": {
+        "run": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_esther",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "npc_esther_run.png",
+      "source_hashes": [
+        "sha256:8cfbf14796f4ffcdec02eb1b7d766bf964025855926afe842c6aff1c370f14ee"
+      ]
+    },
+    "npcs/esther/npc_esther_shock.png": {
+      "animations": {
+        "shock": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_esther",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "npc_esther_shock.png",
+      "source_hashes": [
+        "sha256:194df23388b806a2ca75572e3acc4e8e811131fa419e1a7d0b897e50f03b996e"
+      ]
+    },
+    "npcs/esther/npc_esther_stand.png": {
+      "animations": {
+        "stand": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_esther",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "npc_esther_stand.png",
+      "source_hashes": [
+        "sha256:e30253e759841a4e007edc2e98407c935e1bfb264a0cc1ed9ff326a9d4064b4e"
       ]
     }
   }

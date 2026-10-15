@@ -241,3 +241,15 @@
 | 420 health, ×2 damage while reeling from a parry; phase 2 at half health (strings snap, faster, vanish-and-charge added) | About 10 priest combos; parry and the Crusnik both shorten it | Longer fight (phone sessions are short) |
 | Her dying words are a new reusable `DialogueBox` (typed text, tap/ATK to advance; data in `src/data/dialogue.json`, original lines) | Milestone 7 dialogue item; reused by cutscenes later | Lore panel |
 | Arena = the ballroom's middle screen; the curtains rise when Abel steps 40 px inside; dying ends the fight (rematch on return) | Same as Blasphemous boss rooms | Locking at the door |
+
+## 2026-10-15 — Mini bosses, cutscenes, relics
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Mini bosses are data (`src/data/bosses/*.json`) run by one `DuelistBrain` (combo/lunge, dash, leap, teleport, cast, summon, slam; phases with fixed patterns) | Three fights (and later ones) without three state machines; each tested for 2 minutes of random play | One class per boss (the Marchesa keeps hers) |
+| Amber glow = parry it; red glow = unparryable (jump/dodge) | Consistent telegraph language across every enemy and boss (Blasphemous-style) | Per-boss colours |
+| Inquisition fights are non-lethal (they yield); the Magus escapes | Fits the series (they recur) and the "atonement" theme | Kill everyone |
+| The first Crusnik transformation is a mid-fight cutscene in the Kämpfer fight (phase change held until it ends), not a lore pickup | Owner request; makes the power arrive under pressure with a witness (Esther) | Unlock on reading the page |
+| Rewards as relics (flags): +1 flask, +25 health, +15% damage; Latin victory cards from `relics.json` | Blasphemous-style permanent upgrades from bosses; saved with the other flags | Stat points |
+| Cutscenes: own Phaser scene over the paused game, data in `src/data/cutscenes.json` (pure loader `src/core/cutscenes.ts`), sprites from the sprite index, painted room art as backgrounds | Owner chose code-animated manga panels; zero credits per scene | Pre-rendered video |
+| Title progress: 70% story fights (incl. planned Region 2 fights), 20% rooms visited, 10% lore found | Never shows 100% before the end; rewards exploring | Rooms only |

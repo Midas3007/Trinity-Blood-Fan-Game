@@ -80,6 +80,9 @@ def reliquary():
     r.backwall(["wall_crypt"], 8, 15, 2, r.W - 1)
     r.prop("statue_saint", 8, 14, 48)
     r.mark("lore", 18, 14, lore="crusnik_legend")
+    # Mini boss 2: the Magus waits by the page. Abel's first Crusnik transformation happens in this fight.
+    r.mark("boss", 9, 14, boss="kampfer", arenaLeft=2 * 16, arenaRight=28 * 16, defeatFlag="kampfer_defeated",
+           intro="kampfer_intro", outro="kampfer_outro")
     return r
 
 
@@ -93,11 +96,13 @@ def water_tunnels():
     r.platform(48, 56, 10)
     r.prop("column", 20, 14, 64)
     r.prop("column", 96, 14, 64)
-    r.mark("enemy", 44, 14, enemy="thrall")
+    r.mark("enemy", 22, 14, enemy="thrall")
     r.mark("enemy", 86, 14, enemy="thrall")
-    r.mark("enemy", 40, 8, enemy="bat")
     r.mark("enemy", 82, 8, enemy="bat")
-    r.mark("enemy", 64, 14, enemy="boneRat")
+    r.mark("enemy", 100, 14, enemy="boneRat")
+    # Mini boss 1: Sister Paula holds the flat middle stretch between the two cisterns.
+    r.mark("boss", 60, 14, boss="paula", arenaLeft=36 * 16, arenaRight=66 * 16, defeatFlag="paula_defeated",
+           intro="paula_intro", outro="paula_outro")
     return r
 
 
@@ -170,7 +175,8 @@ def ballroom():
     r.prop("chandelier", 45, 1, -72)
     r.mark("lore", 82, 14, lore="ballroom_invitation")
     # The duel: the middle screen is the arena (walls rise when Abel steps in). Her defeat opens the west gate.
-    r.mark("boss", 45, 14, boss="marchesa", arenaLeft=30 * 16, arenaRight=60 * 16, defeatFlag="marchesa_defeated")
+    r.mark("boss", 45, 14, boss="marchesa", arenaLeft=30 * 16, arenaRight=60 * 16, defeatFlag="marchesa_defeated",
+           intro="marchesa_intro", outro="marchesa_outro")
     return r
 
 
@@ -184,7 +190,9 @@ def cellars():
     r.mark("lore", 10, 14, lore="cellar_crest")
     r.mark("enemy", 30, 14, enemy="boneRat")
     r.mark("enemy", 40, 14, enemy="boneRat")
-    r.mark("enemy", 60, 8, enemy="bat")
+    # Mini boss 3: Brother Petros, sent to take "the vampire priest" back to Rome in chains.
+    r.mark("boss", 66, 14, boss="petros", arenaLeft=50 * 16, arenaRight=80 * 16, defeatFlag="petros_defeated",
+           intro="petros_intro", outro="petros_outro")
     return r
 
 

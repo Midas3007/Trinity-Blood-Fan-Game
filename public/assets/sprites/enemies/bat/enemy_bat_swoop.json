@@ -11,13 +11,13 @@
       "loop": false
     }
   },
-  "cell_height": 16,
-  "cell_width": 24,
+  "cell_height": 17,
+  "cell_width": 26,
   "columns": 1,
   "entity": "enemy_bat",
   "palette": "requiem48.hex",
-  "pivot_x": 12,
-  "pivot_y": 16,
+  "pivot_x": 13,
+  "pivot_y": 17,
   "sheet": "enemy_bat_swoop.png",
   "source_hashes": [
     "code:tools/critters.py"

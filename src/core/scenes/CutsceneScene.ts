@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-import data from '../../data/cutscenes.json';
 import { GAME_HEIGHT, GAME_WIDTH, SCENES } from '../constants';
-import { DialogueBox, type DialogueLine } from '../../ui/DialogueBox';
+import { DialogueBox } from '../../ui/DialogueBox';
+import { cutscene, cutsceneImages, type CutsceneActor, type CutsceneData, type CutscenePanel, type PanelLayout } from '../cutscenes';
 import { GothicButton } from '../../ui/GothicButton';
 
 /**
@@ -9,60 +9,11 @@ import { GothicButton } from '../../ui/GothicButton';
  * painted background drifting slowly, the game's own character sprites posed large inside it, and speech in the
  * dialogue box. Tap advances; SKIP ends. Data: src/data/cutscenes.json (original lines).
  */
-export interface CutsceneActor {
-  anim: string;
-  frame?: number;
-  /** Feet position as fractions of the panel. */
-  x: number;
-  y: number;
-  scale?: number;
-  flip?: boolean;
-  enter?: 'left' | 'right' | 'up' | 'fade' | 'none';
-  /** Tint (e.g. silhouettes '0x000000', a red glow). */
-  tint?: string;
-  alpha?: number;
-}
-
-export type PanelLayout = 'full' | 'left' | 'right' | 'top' | 'bottom' | 'tl' | 'tr' | 'bl' | 'br' | 'wide';
-
-export interface CutscenePanel {
-  layout: PanelLayout;
-  /** Image key: 'rooms/<file>' (painted room art), 'title', 'cathedral_front', or 'color:0xRRGGBB'. */
-  bg?: string;
-  tint?: string;
-  actors?: CutsceneActor[];
-  caption?: string;
-  lines?: DialogueLine[];
-  fx?: 'flash' | 'redflash' | 'shake' | 'speedlines' | 'none';
-  /** Start a fresh page before this panel. */
-  newPage?: boolean;
-}
-
-export interface CutsceneData {
-  panels: CutscenePanel[];
-}
-
-const scenes = (data as unknown as { scenes: Record<string, CutsceneData> }).scenes;
 const GUTTER = 6;
 const BORDER = 0xeadfc4;
 const ACTOR_DEPTH = 5;
 const PANEL_ENTER_MS = 420;
 const TEXT_AREA = 74; // the dialogue box covers the bottom; panels stop above it
-
-export function cutsceneIds(): string[] {
-  return Object.keys(scenes);
-}
-
-export function cutscene(id: string): CutsceneData | undefined {
-  return scenes[id];
-}
-
-/** All image keys a scene needs (to preload). Pure; exported for tests. */
-export function cutsceneImages(c: CutsceneData): string[] {
-  const keys = new Set<string>();
-  for (const p of c.panels) if (p.bg && !p.bg.startsWith('color:')) keys.add(p.bg);
-  return [...keys];
-}
 
 function rectFor(layout: PanelLayout): Phaser.Geom.Rectangle {
   const W = GAME_WIDTH;
@@ -109,7 +60,7 @@ export class CutsceneScene extends Phaser.Scene {
 
   init(d: { id: string }): void {
     this.id = d.id;
-    this.data_ = scenes[d.id] ?? { panels: [] };
+    this.data_ = cutscene(d.id) ?? { panels: [] };
     this.index = -1;
     this.page = [];
     this.ending = false;

@@ -130,6 +130,8 @@ OUT = Path("public/assets/sprites/enemies")
 
 
 def sheet(entity: str, frames: dict, anims: dict) -> None:
+    # One transparent pixel of margin all round (the validator rejects art touching the cell edge).
+    frames = {k: ["." * (len(rows[0]) + 2)] + ["." + r + "." for r in rows] for k, rows in frames.items()}
     names = list(frames)
     h = len(frames[names[0]])
     w = len(frames[names[0]][0])

@@ -13,12 +13,12 @@ Last updated: 2026-10-15
 | 6 | Art integration | in progress: Abel full set (incl. walk, climb, pray, drink), thrall, Death Hunter, title, HUD portrait, shaded tileset, altar + dove, cathedral front, painted house fronts/interiors/props, underground walls; left: NPCs, VFX, more enemies, cathedral interior |
 | 7 | Progression | in progress: holy-water flasks ✅, map ✅, altars/checkpoints ✅, pause ✅, save/load ✅, Crusnik form + leap gate + chain lash ✅, parry ✅, dialogue box ✅, **first boss: the Marchesa ✅**; left: boss rematch polish, more dialogue/cutscenes |
 
-| 8 | Mini bosses from the series (owner, 2026-10-15) | planned: 3 mini bosses (plan below), each with a cutscene tied to the plot and a permanent reward (strength, health, healing, blood); Abel's **first Crusnik transformation** happens in one of these fights; victory cards in **Latin** |
+| 8 | Mini bosses from the series (owner, 2026-10-15) | **done:** Sister Paula (Water Tunnels → +1 flask), Isaak Kämpfer the Magus (Forgotten Reliquary → **Abel's first Crusnik transformation**), Brother Petros (Count's Cellars → +25 health); the Marchesa now gives +15% damage; **Latin victory cards** |
 | 9 | Creatures and villains in the maps | in progress: **fairies** ✅ (hover, scream rings), **bats** ✅ (swoop), **bone-rats** ✅ placed through the sewers, crypts, ossuary, tunnels, stair and cellars (+ bats in the sewer shaft and cathedral square); left: Iron Choir soldiers, Inquisition hunters, puppeted Methuselah |
-| 10 | Cutscenes and story | planned: code-animated manga-panel cutscenes — opening, one per mini boss, the Marchesa, the final battle (Dietrich / Gyula Kádár), and a **post-credits teaser for the next arc**; original dialogue |
+| 10 | Cutscenes and story | in progress: manga-panel cutscene system ✅; opening ✅, intro + outro for every fight ✅, first transformation ✅; left: Region 2, final battle, ending, **teaser for the next arc** |
 | 11 | Audio | planned: **voices** for cutscene lines, **copyright-free gothic music** (per region, boss themes), SFX; audio unlock on first touch. Blocked: the sandbox network denies free-music sites (see Blockers) |
 | 12 | Region 2 + final battle | planned: the cathedral and the count's fortress, Dietrich's Grand Marionette, Gyula Kádár and the Star of Sorrow, the 80% Crusnik moment, ending |
-| 14 | Start-menu progress bar | planned (owner): the title screen's Continue shows how far the save has gone (percent and bar) |
+| 14 | Start-menu progress bar | **done:** Continue shows a percentage and a gold bar (fights 70%, map 20%, lore 10%) |
 | 13 | Full recorded playthrough | planned (owner): a bot plays the finished game start to end and the run is recorded as a video |
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
@@ -69,11 +69,33 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 - Bats and rats are drawn in code (no credits); the fairy cost 2 credits (about 40 left). Kills fill the Crusnik blood bar too.
 - Verified: 153/153 tests (bat swoop, fairy ring hits once, give-up and return home, falling when killed); browser: creatures spawn, a bone-rat bit Abel, no errors.
 
+## Done (latest) — mini bosses, cutscenes, relics
+- **Three mini bosses from the series**, each a duel with its own moves, two phases, parryable blades (amber glow) and unparryable attacks (red glow — dodge or jump):
+  - **Sister Paula** (Inquisition), Water Tunnels: twin-blade combo with a long lunge, a dash, a leaping strike; phase 2 she blinks behind you. Reward **Lacrima** (+1 flask) — *MISERERE NOBIS*.
+  - **Isaak Fernand von Kämpfer, the Magus** (Rosenkreuz), Forgotten Reliquary (behind the Ossuary lever): shadow-flame bolts and volleys (jump or roll), a cane-flame sweep (parry it), teleports, summons bats. At 60% he breaks Abel and **the first Crusnik transformation** plays as a cutscene (Esther almost sees); you finish the fight as the Crusnik. Reward: the Crusnik — *DIES IRAE*.
+  - **Brother Petros** (Inquisition), the Count's Cellars: slow lance thrusts (parry), a red-glowing charge from the arena edge (jump it), a slam with floor shockwaves. Reward **Cor Leonis** (+25 health) — *DOMINUS VOBISCUM*.
+  - The Marchesa now grants **Sanguis** (+15% damage) — *REQUIESCAT IN PACE*.
+- **Cutscenes** as moving manga panels (bordered panels slide onto a black page, painted backgrounds drift, sprites posed inside, typed dialogue, SKIP): the opening (Abel arrives in Istvan), an intro and outro for all four fights, and the first transformation. They tie the plot together: the vanished people were *led* away by a man with a violin → the Magus serves "a friend who plays the strings" → the Marchesa names the golden-haired puppeteer → Petros hunts Abel as a monster while violin music plays over the cathedral (Region 2). Original lines throughout.
+- New characters for the story: **Esther** and **Dietrich** (cutscene sprites).
+- **Start-menu progress bar**: Continue shows how far the save has gone.
+- Art this stage: fairy, three mini bosses, Esther, Dietrich (12 credits; about 30 left).
+- Verified: 166/166 tests (each mini boss fights 2 minutes without getting stuck, uses its moves, changes phase and goes down; parry rules; every cutscene's sprites, backgrounds and lines exist; every boss's scenes are written; progress maths), 92 sprite sheets valid, build passes. Bot runs: all three mini bosses from intro scene → fight → (Kämpfer's transformation scene) → outro → relic flag, no errors.
+- **Moved:** the Crusnik is no longer unlocked by reading the Forgotten Reliquary page; that page is now foreshadowing and the form wakes in the Kämpfer fight beside it.
+
 ## In progress
 - the Crusnik form + leap gate, then the Marchesa boss.
 
 ## Blockers
 - **Music downloads blocked:** archive.org search now works, but its files are served from `*.archive.org` storage hosts (e.g. dn711007.ca.archive.org, ia800300.us.archive.org), which are still denied. Add `*.archive.org` (or `.archive.org`) to Allowed domains. Tracks are already chosen (see docs/audio-plan.md). Other sites (opengameart.org, incompetech.com, freepd.com, pixabay.com, freesound.org) are still denied. To allow them: in the session's cloud environment menu (title bar) → Edit → Network access → add those domains under Allowed domains (keep "Allow package managers" ticked). Steps: https://code.claude.com/docs/en/cloud-environments#network-access. Until then the audio system is built and waits for the tracks. Higgsfield: about 44 credits left.
+
+## Owner must test (on phone) — mini bosses and cutscenes
+1. New game: the opening scene plays (tap to advance, SKIP top-right).
+2. Water Tunnels, middle stretch: Sister Paula. Parry her amber slashes, jump her leap, dodge her dash. Win → her outro, then *MISERERE NOBIS* and a 4th flask vial.
+3. Ossuary lever → Forgotten Reliquary: the Magus. Roll through his violet bolts, parry the cane sweep. At about half health the transformation scene plays and you fight on as the Crusnik. Win → *DIES IRAE*.
+4. Ballroom (Crusnik leap from the Chapel of Bones): the Marchesa now has an intro and an outro scene.
+5. Count's Cellars (west of the ballroom): Brother Petros. Jump his red charge and the floor shockwaves; parry the thrusts. Win → *DOMINUS VOBISCUM*, more health.
+6. Title screen: Continue now shows a percentage and a bar.
+7. Tell me: are the scenes too long? do the characters look right? which fight is too hard or too easy?
 
 ## Owner must test (on phone) — creatures
 1. Sewer Shaft / Hunter's Crypt: bats drop from their perch and swoop; hit them out of the air. Bone-rats scuttle and bite.

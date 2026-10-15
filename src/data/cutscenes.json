@@ -1,1 +1,802 @@
-{ "_note": "Cutscenes (moving manga panels). Original dialogue written for this fan game. See src/core/scenes/CutsceneScene.ts for the format.", "scenes": {} }
+{
+ "_note": "Cutscenes (moving manga panels). Original dialogue written for this fan game (not quoted from the anime, manga or novels). Format: src/core/scenes/CutsceneScene.ts. Actor animations come from the sprite index.",
+ "scenes": {
+  "opening": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "cathedral_front",
+     "tint": "0x8a7ca0",
+     "caption": "Istvan. A city freed from its Methuselah lord only a season ago.",
+     "actors": [
+      {
+       "anim": "abel_walk",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "Istvan... prettier than the reports said. Colder, too."
+      },
+      {
+       "speaker": "Sealed orders",
+       "text": "Its people vanish by night into the old water tunnels. Go below. Learn who takes them, and why. Trust no one. — C."
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "rooms/sewer_shaft_w0",
+     "tint": "0x6a6a8a",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "Down into the dark, then. On an empty stomach. Splendid."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "rooms/hunters_crypt_w0",
+     "tint": "0x7a5060",
+     "actors": [
+      {
+       "anim": "enemy_thrall_walk",
+       "x": 0.35,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      },
+      {
+       "anim": "enemy_thrall_idle",
+       "x": 0.7,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "...Lord, let these be only rumours."
+      }
+     ]
+    }
+   ]
+  },
+  "paula_intro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/water_tunnels_w0",
+     "caption": "The Water Tunnels.",
+     "actors": [
+      {
+       "anim": "boss_paula_idle",
+       "x": 0.72,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "right"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.25,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Sister Paula",
+       "text": "Halt. By order of the Holy Inquisition, you will kneel."
+      },
+      {
+       "speaker": "Abel",
+       "text": "Ah — good evening, Sister. Only a priest from Rome, I'm afraid. Terribly lost."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "rooms/water_tunnels_w0",
+     "tint": "0xa06070",
+     "actors": [
+      {
+       "anim": "boss_paula_dash",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "right"
+      }
+     ],
+     "fx": "speedlines",
+     "lines": [
+      {
+       "speaker": "Sister Paula",
+       "text": "A priest who walks the dark under Istvan without a lamp. People vanish here, Father. Their blood is found. They are not."
+      },
+      {
+       "speaker": "Sister Paula",
+       "text": "The Inquisition hunts whatever does it. Kneel, or be judged with it."
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "rooms/water_tunnels_w0",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "Then I suppose we'll settle this the hard way. Forgive me, Sister."
+      }
+     ]
+    }
+   ]
+  },
+  "paula_outro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/water_tunnels_w0",
+     "actors": [
+      {
+       "anim": "boss_paula_defeated",
+       "x": 0.65,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Sister Paula",
+       "text": "Enough. You fight like no priest I have known."
+      },
+      {
+       "speaker": "Abel",
+       "text": "And you like no nun I'd care to meet twice."
+      }
+     ]
+    },
+    {
+     "layout": "top",
+     "bg": "rooms/water_tunnels_w0",
+     "tint": "0x7090b0",
+     "actors": [
+      {
+       "anim": "boss_paula_defeated",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Sister Paula",
+       "text": "The vanished were not taken by a beast. They were led away. Music in the square, a gentle man with a violin case... then nothing."
+      },
+      {
+       "speaker": "Sister Paula",
+       "text": "Brother Petros is coming from Rome. If you are what I suspect, pray he does not find you first."
+      }
+     ]
+    },
+    {
+     "layout": "bottom",
+     "bg": "rooms/water_tunnels_w0",
+     "caption": "She is gone into the dark. On the stones: a flask of blessed water.",
+     "actors": [
+      {
+       "anim": "abel_pray",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "...A violin."
+      }
+     ]
+    }
+   ]
+  },
+  "kampfer_intro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/forgotten_reliquary_w0",
+     "caption": "The Forgotten Reliquary.",
+     "actors": [
+      {
+       "anim": "boss_kampfer_idle",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "none"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.8,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "right"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Magus",
+       "text": "'...beings that hunger not for the blood of men, but for the blood of those who drink it.' Such careful prose, the Vatican's. Good evening, Father Nightroad."
+      },
+      {
+       "speaker": "Abel",
+       "text": "You know my name. I don't believe we've met."
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "rooms/forgotten_reliquary_w0",
+     "tint": "0x8060a0",
+     "actors": [
+      {
+       "anim": "boss_kampfer_cast",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "none"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Magus",
+       "text": "We haven't. But my order has waited a very long time to meet what sleeps inside you."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "rooms/forgotten_reliquary_w0",
+     "tint": "0x6040a0",
+     "fx": "speedlines",
+     "actors": [
+      {
+       "anim": "boss_kampfer_summon",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Magus",
+       "text": "Shall we wake it? I promise it will only hurt the ones you love."
+      }
+     ]
+    }
+   ]
+  },
+  "kampfer_awakening": {
+   "panels": [
+    {
+     "layout": "tl",
+     "bg": "rooms/forgotten_reliquary_w0",
+     "tint": "0x503060",
+     "caption": "Abel is down.",
+     "actors": [
+      {
+       "anim": "abel_land",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade",
+       "frame": 0
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Magus",
+       "text": "Is that all? How disappointing. Perhaps the girl will scream more convincingly."
+      }
+     ]
+    },
+    {
+     "layout": "tr",
+     "bg": "rooms/ossuary_w0",
+     "tint": "0x605070",
+     "actors": [
+      {
+       "anim": "npc_esther_run",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "A young voice, far off",
+       "text": "Father Abel? Father — are you down there?"
+      }
+     ]
+    },
+    {
+     "layout": "bottom",
+     "bg": "color:0x1a0408",
+     "fx": "redflash",
+     "actors": [
+      {
+       "anim": "abel_crusnik40_transform",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade",
+       "frame": 0
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "...Leave her out of this."
+      },
+      {
+       "speaker": "Abel",
+       "text": "Crusnik. Forty percent. ...Release."
+      }
+     ]
+    },
+    {
+     "layout": "full",
+     "bg": "rooms/forgotten_reliquary_w0",
+     "tint": "0xa03040",
+     "fx": "shake",
+     "caption": "DIES IRAE",
+     "actors": [
+      {
+       "anim": "abel_crusnik40_transform",
+       "x": 0.62,
+       "y": 0.96,
+       "scale": 3,
+       "flip": true,
+       "enter": "none",
+       "frame": 1
+      },
+      {
+       "anim": "boss_kampfer_idle",
+       "x": 0.2,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "none"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Magus",
+       "text": "There it is. Oh, magnificent."
+      }
+     ]
+    }
+   ]
+  },
+  "kampfer_outro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/forgotten_reliquary_w0",
+     "actors": [
+      {
+       "anim": "boss_kampfer_defeated",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      },
+      {
+       "anim": "abel_crusnik40_idle",
+       "x": 0.72,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Magus",
+       "text": "Ha... ha. Forgive me if I don't stay for the second act."
+      },
+      {
+       "speaker": "Abel",
+       "text": "Who sent you?"
+      },
+      {
+       "speaker": "The Magus",
+       "text": "A friend of yours. He plays the strings beautifully. Soon the whole city will dance."
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "rooms/forgotten_reliquary_w0",
+     "fx": "flash",
+     "caption": "Black feathers. Then nothing.",
+     "actors": [
+      {
+       "anim": "boss_kampfer_vanish",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "rooms/ossuary_w0",
+     "tint": "0x605070",
+     "actors": [
+      {
+       "anim": "npc_esther_collapsed",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "Esther...?"
+      },
+      {
+       "speaker": "Esther",
+       "text": "An angel... with a scythe... no. I was dreaming. Father, what happened?"
+      },
+      {
+       "speaker": "Abel",
+       "text": "Nothing at all. You fainted. Let's get you somewhere safe."
+      }
+     ]
+    }
+   ]
+  },
+  "marchesa_intro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/marchesa_ballroom_w0",
+     "caption": "The Marchesa's Ballroom.",
+     "actors": [
+      {
+       "anim": "boss_marchesa_hang",
+       "x": 0.5,
+       "y": 0.8,
+       "scale": 2,
+       "flip": false,
+       "enter": "up"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Marchesa",
+       "text": "Another guest. He said there would be a guest tonight."
+      },
+      {
+       "speaker": "The Marchesa",
+       "text": "Please... when the music starts, run. I cannot stop my hands."
+      }
+     ]
+    },
+    {
+     "layout": "wide",
+     "bg": "rooms/marchesa_ballroom_w0",
+     "tint": "0xa04050",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      },
+      {
+       "anim": "boss_marchesa_idle",
+       "x": 0.7,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "Then I'll cut the strings, signora. Hold on a little longer."
+      }
+     ]
+    }
+   ]
+  },
+  "marchesa_outro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/marchesa_ballroom_w0",
+     "tint": "0x806070",
+     "actors": [
+      {
+       "anim": "boss_marchesa_death",
+       "x": 0.6,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      },
+      {
+       "anim": "abel_pray",
+       "x": 0.35,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Marchesa",
+       "text": "...The strings. They are gone. How strange, to feel my own hands again."
+      },
+      {
+       "speaker": "Abel",
+       "text": "Rest now, signora. Please. Who did this to you?"
+      }
+     ]
+    },
+    {
+     "layout": "top",
+     "bg": "color:0x0b0a10",
+     "actors": [
+      {
+       "anim": "npc_dietrich_violin",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade",
+       "tint": "0x303040"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Marchesa",
+       "text": "A young man. Golden hair, a choirboy's smile. He played the strings as if they were a violin... and he called it a rehearsal."
+      }
+     ]
+    },
+    {
+     "layout": "bottom",
+     "bg": "rooms/marchesa_ballroom_w0",
+     "actors": [
+      {
+       "anim": "abel_pray",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Marchesa",
+       "text": "He is above us, Father. In the city. Do not let him make Istvan dance."
+      },
+      {
+       "speaker": "Abel",
+       "text": "I won't. Requiescat in pace."
+      }
+     ]
+    }
+   ]
+  },
+  "petros_intro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/count_cellars_w0",
+     "caption": "The Count's Cellars.",
+     "actors": [
+      {
+       "anim": "boss_petros_walk",
+       "x": 0.7,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "right"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.25,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Brother Petros",
+       "text": "Abel Nightroad. Priest of the Department of Holy Affairs."
+      },
+      {
+       "speaker": "Brother Petros",
+       "text": "Sister Paula reports a monster in a cassock. The Inquisition has come to take it home in chains."
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "rooms/count_cellars_w0",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "Must we, Brother? A madman is playing this city's people like puppets."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "rooms/count_cellars_w0",
+     "tint": "0xa04040",
+     "fx": "speedlines",
+     "actors": [
+      {
+       "anim": "boss_petros_windup",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Brother Petros",
+       "text": "Then I will cut his strings after I have cut yours. Stand and be judged!"
+      }
+     ]
+    }
+   ]
+  },
+  "petros_outro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/count_cellars_w0",
+     "actors": [
+      {
+       "anim": "boss_petros_defeated",
+       "x": 0.65,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Brother Petros",
+       "text": "Impossible... God's hammer, turned aside."
+      },
+      {
+       "speaker": "Abel",
+       "text": "God wasn't holding it, Brother. You were."
+      }
+     ]
+    },
+    {
+     "layout": "wide",
+     "bg": "cathedral_front",
+     "tint": "0x6a6a9a",
+     "caption": "High above, the cathedral bells begin to toll — and someone is playing a violin.",
+     "actors": [
+      {
+       "anim": "npc_dietrich_violin",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Brother Petros",
+       "text": "The Cardinal recalls me. This is not over, monster."
+      },
+      {
+       "speaker": "Abel",
+       "text": "No. It's only just begun."
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

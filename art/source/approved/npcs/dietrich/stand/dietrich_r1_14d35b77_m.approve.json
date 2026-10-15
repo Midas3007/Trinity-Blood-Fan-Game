@@ -1,0 +1,14 @@
+{
+  "source": "dietrich_r1_14d35b77_m.png",
+  "source_hash": "sha256:9ca03659b3b06fa614bb643e9556fac0a1c689f5e595f53c96d6450b5b276392",
+  "figures": [
+    0
+  ],
+  "standing_px": 1125,
+  "factor": 0.327111,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "dietrich_r1_14d35b77_m_f0.png"
+  ]
+}

@@ -45,7 +45,7 @@ import { ChainLashView } from '../../combat/ChainLashView';
 import { loreEntry } from '../../ui/LorePanel';
 import { BossArena } from '../../world/BossArena';
 import { playerStats, relic } from '../../systems/progression';
-import { cutscene } from './CutsceneScene';
+import { cutscene } from '../cutscenes';
 import { FlyerManager } from '../../enemies/flyers/FlyerManager';
 import { isFlyer } from '../../enemies/flyers/FlyerBrain';
 
@@ -232,6 +232,11 @@ export class PlayScene extends Phaser.Scene {
     const peaceful = testHookEnabled() && new URLSearchParams(location.search).has('peaceful');
     if (!peaceful) for (const sp of spawns) this.enemies.spawn(sp);
     this.flyers = new FlyerManager(this, peaceful ? [] : r.enemies.filter((sp) => isFlyer(sp.type)));
+    // A new game opens with Abel's arrival in Istvan (once).
+    if (r.id === START.room && !gameState.hasFlag('seen:opening') && !testHookEnabled()) {
+      gameState.setFlag('seen:opening');
+      this.time.delayedCall(50, () => this.playCutscene('opening', () => undefined));
+    }
     if (r.boss && !gameState.hasFlag(r.boss.defeatFlag)) {
       this.arena = new BossArena(this, r, solids, solidRects, this.flyers, {
         playCutscene: (id, done) => this.playCutscene(id, done),

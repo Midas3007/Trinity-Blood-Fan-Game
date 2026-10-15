@@ -113,7 +113,7 @@ export class BossArena {
     this.bar.update(dtMs);
     if (!this.active) return;
     for (const s of this.boss.drainSummons()) {
-      for (let i = 0; i < s.count; i++) this.flyers.spawn(s.creature, this.left + 40 + Math.random() * (this.right - this.left - 80), this.floorY - 120);
+      for (let i = 0; i < s.count; i++) this.flyers.spawn(s.creature, this.left + 40 + Math.random() * (this.right - this.left - 80), this.floorY - 70);
     }
     if (this.boss.drainPhaseChange() && this.boss.phaseScene) {
       const id = this.boss.phaseScene;

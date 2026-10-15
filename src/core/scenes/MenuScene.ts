@@ -3,6 +3,7 @@ import { COLORS, FAN_NOTICE, GAME_HEIGHT, GAME_WIDTH, SCENES, TITLE_ART_KEY } fr
 import { gameState } from '../../systems/GameState';
 import { saveStore } from '../../systems/save/SaveStore';
 import { GothicButton } from '../../ui/GothicButton';
+import { gameProgress } from '../../systems/gameProgress';
 
 /** Title block sits in the painting's empty left third. */
 const TITLE_X_WITH_ART = GAME_WIDTH * 0.26;
@@ -69,10 +70,15 @@ export class MenuScene extends Phaser.Scene {
       this.input.keyboard?.once('keydown', () => begin(true));
       return;
     }
-    // A save exists: Continue, or New game (tap twice, so a stray tap never wipes progress).
-    new GothicButton(this, cx, GAME_HEIGHT * 0.6, 'Continue', () => begin(false), 120, 22);
+    // A save exists: Continue (with how far it has gone), or New game (tap twice, so a stray tap never wipes progress).
+    const pct = Math.round(gameProgress(save) * 100);
+    new GothicButton(this, cx, GAME_HEIGHT * 0.6, `Continue  ·  ${pct}%`, () => begin(false), 120, 22);
+    const barW = 104;
+    const barY = GAME_HEIGHT * 0.6 + 14;
+    this.add.rectangle(cx - barW / 2, barY, barW, 3, 0x0b0a10).setOrigin(0, 0.5).setStrokeStyle(1, 0x6e5222);
+    this.add.rectangle(cx - barW / 2, barY, Math.max(1, (barW * pct) / 100), 3, 0xc4a04a).setOrigin(0, 0.5);
     let armed = false;
-    const fresh: GothicButton = new GothicButton(this, cx, GAME_HEIGHT * 0.6 + 30, 'New game', () => {
+    const fresh: GothicButton = new GothicButton(this, cx, GAME_HEIGHT * 0.6 + 34, 'New game', () => {
       if (armed) return begin(true);
       armed = true;
       fresh.setText('Tap again to erase');

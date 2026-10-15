@@ -1,0 +1,14 @@
+{
+  "source": "esther_r1_9e8b1eed_m.png",
+  "source_hash": "sha256:5d941c2e75b4d51818a2a9e31776e1e619cd04350ab5bc5194e27ee914b25a6c",
+  "figures": [
+    3
+  ],
+  "standing_px": 969,
+  "factor": 0.313725,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "esther_r1_9e8b1eed_m_f3.png"
+  ]
+}

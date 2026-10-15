@@ -7,10 +7,8 @@ const BOX_H = 58;
 const AUTO_MS = 7000;
 const CHARS_PER_MS = 0.045;
 
-export interface DialogueLine {
-  speaker: string;
-  text: string;
-}
+import type { DialogueLine } from './dialogueLine';
+export type { DialogueLine };
 
 /**
  * A framed dialogue box at the bottom of the screen. Text types out; a tap (or ATK/JUMP via `advance`) shows
