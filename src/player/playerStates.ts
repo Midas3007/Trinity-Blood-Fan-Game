@@ -19,7 +19,8 @@ export type PlayerStateKey =
   | 'slide'
   | 'crouchAttack'
   | 'finisher'
-  | 'climb';
+  | 'climb'
+  | 'heal';
 
 /** Body posture for each state; the Player resizes its body to match. */
 export type Posture = 'stand' | 'roll' | 'low';
@@ -44,14 +45,22 @@ export interface PlayerContext {
   readonly crouchHeld: boolean;
   /** False when a ceiling is too low to stand up here. */
   readonly canStand: boolean;
+  /** HEAL pressed this frame, a flask is left and health is not full. */
+  readonly healWanted: boolean;
+  /** Drink one flask (the health is applied by the state at drinkHealAtMs). */
+  drinkFlask(): void;
   /** Stick vertical (-1 up .. 1 down). */
   readonly moveY: number;
   /** A ladder overlaps the body (stick up grabs it). */
   readonly ladderHere: boolean;
   /** A ladder starts just under the feet (stick down climbs onto it). */
   readonly ladderBelow: boolean;
+  /** Climbing up has brought the feet level with the floor at the ladder's top. */
+  readonly atLadderTop: boolean;
   /** Turn ladder mode on (snap to the ladder, no gravity) or off. */
   setClimbing(on: boolean): void;
+  /** Step off the top of the ladder onto the floor it leads to. */
+  finishClimbAtTop(): void;
   /** Standing on a platform you can drop through. */
   readonly onOneway: boolean;
   /** Fall through the platform underfoot. */
@@ -104,6 +113,7 @@ function groundUpdate(ctx: PlayerContext, dtMs: number): PlayerStateKey {
   if (ctx.timers.canJump && ctx.canStand) return 'jump';
   if (!ctx.onGround) return 'fall';
   if (ctx.crouchHeld || !ctx.canStand) return 'crouch';
+  if (ctx.healWanted) return 'heal';
   if (ctx.attackPressed) return ctx.finisherReady ? 'finisher' : 'attack';
   if (canDodge(ctx)) return 'dodge';
   return ctx.moveX !== 0 || ctx.vx !== 0 ? 'run' : 'idle';
@@ -299,6 +309,17 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     },
   },
 
+  heal: {
+    // Drinking holy water: stand still; the health arrives part-way through. Getting hit interrupts it (hurt).
+    update(ctx, dtMs, stateMs) {
+      brake(ctx, dtMs);
+      if (stateMs >= ctx.tuning.drinkHealAtMs && stateMs - dtMs < ctx.tuning.drinkHealAtMs) ctx.drinkFlask();
+      if (!ctx.onGround) return 'fall';
+      if (stateMs >= ctx.tuning.drinkMs) return ctx.moveX !== 0 ? 'run' : 'idle';
+      return undefined;
+    },
+  },
+
   climb: {
     enter(ctx) {
       ctx.setClimbing(true);
@@ -312,8 +333,12 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
         if (ctx.moveY > -0.3) return 'jump';
         ctx.timers.consumeJump();
       }
-      if (!ctx.ladderHere && !ctx.ladderBelow) return ctx.onGround ? 'idle' : 'fall';
-      if (ctx.onGround && ctx.moveY > 0.3 && !ctx.ladderBelow) return 'idle';
+      if (ctx.vy < 0 && ctx.atLadderTop) {
+        ctx.finishClimbAtTop();
+        return 'idle';
+      }
+      if (!ctx.ladderHere) return ctx.onGround ? 'idle' : 'fall';
+      if (ctx.onGround && ctx.vy > 0) return 'idle';
       return undefined;
     },
     exit(ctx) {

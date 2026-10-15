@@ -1,0 +1,20 @@
+{
+  "source": "poses_walk_r1_da408b7b.png",
+  "source_hash": "sha256:ccc664ec717f9b441c264bf989dd1f96b3e49e9f79cb7569684c539f8549346a",
+  "figures": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "standing_px": 1267,
+  "factor": 0.252565,
+  "open_px": 0,
+  "expected": 5,
+  "outputs": [
+    "poses_walk_r1_da408b7b_f1.png",
+    "poses_walk_r1_da408b7b_f2.png",
+    "poses_walk_r1_da408b7b_f3.png",
+    "poses_walk_r1_da408b7b_f4.png"
+  ]
+}

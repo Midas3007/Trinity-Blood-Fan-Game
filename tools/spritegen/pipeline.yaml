@@ -44,6 +44,10 @@ entities:
         finisher: revolver
         durations_ms: [250, 270, 380]
         events: [{ frame: 2, type: strike }]
+      walk:      { loop: true,  durations_ms: 170 }            # calm walk (small stick push)
+      climb:     { loop: true,  durations_ms: 180 }            # ladder, seen from behind
+      pray:      { loop: false, durations_ms: 1000 }           # kneeling at an altar
+      drink:     { loop: false, durations_ms: 700 }            # holy water flask
       # Low postures (one sheet, poses_low_r2). Roll: tucked ball, then kneeling recovery (sum = dodge duration).
       dodge:     { loop: false, durations_ms: [220, 160] }
       slide:     { loop: true,  durations_ms: 200, anchor: centre }   # lying pose: centre on the body, not the forward feet

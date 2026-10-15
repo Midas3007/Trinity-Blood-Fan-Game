@@ -5,12 +5,14 @@ import type { PlayerStateKey } from './playerStates';
 
 export type { StateVisual };
 
-const states = mapping.states as Record<PlayerStateKey, StateVisual | null>;
+/** Visual keys: every player state plus a few looks within a state (walk, pray, climbStill). */
+export type VisualKey = PlayerStateKey | 'walk' | 'pray' | 'climbStill';
+const states = mapping.states as Record<string, StateVisual | null>;
 const PLAYER_DEPTH = 10;
 
 /** The visual for a state, or null for "show the placeholder". `{attack}` resolves to the running attack id.
  * Pure; exported for tests. */
-export function visualFor(state: PlayerStateKey, attackId: string | null = null): StateVisual | null {
+export function visualFor(state: VisualKey, attackId: string | null = null): StateVisual | null {
   const v = states[state] ?? null;
   if (!v || !v.anim.includes('{attack}')) return v;
   return attackId ? { ...v, anim: v.anim.replace('{attack}', attackId) } : null;
@@ -36,7 +38,7 @@ export class PlayerView {
     return this.view.label;
   }
 
-  update(state: PlayerStateKey, attackId: string | null, feetX: number, feetY: number, facing: 1 | -1, alpha: number): void {
+  update(state: VisualKey, attackId: string | null, feetX: number, feetY: number, facing: 1 | -1, alpha: number): void {
     const shown = this.view.show(visualFor(state, attackId), feetX, feetY, facing, alpha);
     this.placeholder.setVisible(!shown);
     this.facingMark.setVisible(!shown);

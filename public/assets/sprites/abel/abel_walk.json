@@ -1,0 +1,34 @@
+{
+  "animations": {
+    "walk": {
+      "durations_ms": [
+        170,
+        170,
+        170,
+        170
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 4,
+  "entity": "abel",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "abel_walk.png",
+  "source_hashes": [
+    "sha256:7507ee76fd490615e47ebfc84935367973debc0f0bffb650ce44b527597a9abc",
+    "sha256:e3886c64e973147a71b2101940129374eaf1725f61d747f2604e987c75bff47d",
+    "sha256:ec34c07d09afaf43828c0d10ca972e078908bd2e843577a36ca2a229c597bebe",
+    "sha256:a348a6bf20ad04dbcd4becc76d1d8250d57346e9e4f9cfbad3ec8238723f9f36"
+  ]
+}

@@ -1,5 +1,33 @@
 {
   "sheets": {
+    "abel/abel_climb.png": {
+      "animations": {
+        "climb": {
+          "durations_ms": [
+            180,
+            180
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 2,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_climb.png",
+      "source_hashes": [
+        "sha256:23c95662a7d111f74ef9ef9e1c84e318c90110c7b09689899d4dba11b22756c6",
+        "sha256:bcac06f3ce5acd51f7da035dc3f07814ceeb4e4de48c0b42ce0c6bb7f76de8b6"
+      ]
+    },
     "abel/abel_crouch.png": {
       "animations": {
         "crouch": {
@@ -51,6 +79,31 @@
       "source_hashes": [
         "sha256:2c5515fc128a0ee4e05a75e31f0fb6c1020e914efdcf69bfde7d9bb8f97eafea",
         "sha256:b278e5881bb149d0f1ed764dead9b97f47d2cf3954ed39eb85675c74227475a1"
+      ]
+    },
+    "abel/abel_drink.png": {
+      "animations": {
+        "drink": {
+          "durations_ms": [
+            700
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_drink.png",
+      "source_hashes": [
+        "sha256:0e306d160517681f562df38864f051688acff4b11c0eb3b3b81ab4b7452dfb25"
       ]
     },
     "abel/abel_fall.png": {
@@ -157,6 +210,31 @@
       "sheet": "abel_land.png",
       "source_hashes": [
         "sha256:257af34135753f02a5f6adc932d59fbdd2248bdf2429d9814b0996c2cbc510ed"
+      ]
+    },
+    "abel/abel_pray.png": {
+      "animations": {
+        "pray": {
+          "durations_ms": [
+            1000
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_pray.png",
+      "source_hashes": [
+        "sha256:4b42b0adc5648945cb3d9a8011b4e535dbc0da6ffaee46fb242090d8db1c3086"
       ]
     },
     "abel/abel_priest1.png": {
@@ -407,6 +485,40 @@
       "sheet": "abel_slide.png",
       "source_hashes": [
         "sha256:507d3c6ee504170e3394d38b17dc147770e529679cfb5c4fa70446362d1e79a8"
+      ]
+    },
+    "abel/abel_walk.png": {
+      "animations": {
+        "walk": {
+          "durations_ms": [
+            170,
+            170,
+            170,
+            170
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 4,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_walk.png",
+      "source_hashes": [
+        "sha256:7507ee76fd490615e47ebfc84935367973debc0f0bffb650ce44b527597a9abc",
+        "sha256:e3886c64e973147a71b2101940129374eaf1725f61d747f2604e987c75bff47d",
+        "sha256:ec34c07d09afaf43828c0d10ca972e078908bd2e843577a36ca2a229c597bebe",
+        "sha256:a348a6bf20ad04dbcd4becc76d1d8250d57346e9e4f9cfbad3ec8238723f9f36"
       ]
     },
     "abel_crusnik/abel_crusnik_reference.png": {

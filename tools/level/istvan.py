@@ -148,6 +148,11 @@ def hill_street():
     r.wall(47, GY - 6, r.W, GY - 3)
     r.fill("terrain", 47, GY - 6, r.W, GY - 5, "cobble")
     r.building(52, 14, GY - 6, floors=3, doors=("left",), lit=0.4)
+    # puzzle: a portcullis bars the upper street; its lever is on the roof of the house below
+    r.wall(46, 0, 48, GY - 9, "gothic_stone")                   # gate tower: no way over the top
+    r.gate(46, GY - 9, 48, GY - 6, "hill_gate")
+    r.mark("lever", 34, GY - 3 - 18 - 1, flag="hill_gate")
+    r.mark("label", 32, GY - 3 - 18 - 5, text="a lever on the roof...")
     r.wall(r.W - 1, GY - 6, r.W, r.H)
     r.street_props(0, 18, GY)
     r.street_props(70, 90, GY - 6, every=10)

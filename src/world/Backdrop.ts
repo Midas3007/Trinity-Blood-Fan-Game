@@ -152,6 +152,20 @@ export class Backdrop {
         scene.add.image(i * SKYLINE_W, horizon - 4, 'skyline_mid').setOrigin(0, 1).setScrollFactor(MID_SCROLL, 1).setTint(col(look.mid)).setDepth(DEPTH_SKY + 4);
       }
     }
+    // Vignette: darker screen edges give depth (one canvas texture, drawn once).
+    if (!scene.textures.exists('vignette')) {
+      const tex = scene.textures.createCanvas('vignette', GAME_WIDTH, GAME_HEIGHT);
+      const ctx = tex?.getContext();
+      if (tex && ctx) {
+        const g = ctx.createRadialGradient(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_HEIGHT * 0.35, GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH * 0.62);
+        g.addColorStop(0, 'rgba(11,10,16,0)');
+        g.addColorStop(1, 'rgba(11,10,16,0.55)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+        tex.refresh();
+      }
+    }
+    if (scene.textures.exists('vignette')) scene.add.image(0, 0, 'vignette').setOrigin(0).setScrollFactor(0).setDepth(DEPTH_OVERLAY + 5);
     if (look.overlay) {
       scene.add
         .rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, col(look.overlay))

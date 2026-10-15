@@ -1,0 +1,3 @@
+Pose sheet 6 — Abel climb (back view x2), kneeling prayer, drinking — 2026-10-15
+Tool: Higgsfield nano_banana_pro, 2k, 21:9, refs d2348a6e + 004f2d9e (our outputs). Cost: 2 credits.
+Job: 94d69580-659c-47a8-a8bb-94cba21f9122. Approved (--expect 5 --ref-height 1272): 1-2 climb, 3 pray, 4 drink.

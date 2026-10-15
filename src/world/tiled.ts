@@ -88,7 +88,7 @@ export interface RoomData {
   cols: number;
   rows: number;
   /** Tile layers (gids, row-major); empty arrays for object-only rooms. */
-  layers: { back: number[]; terrain: number[]; facade: number[] };
+  layers: { back: number[]; terrain: number[]; facade: number[]; shade: number[] };
   /** Building interior id per cell (-1 = outdoors), from the facade layer; and how many there are. */
   interior: Int16Array;
   interiorCount: number;
@@ -151,7 +151,7 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
     originY: gridY * CELL_ROWS * TILE,
     cols,
     rows,
-    layers: { back: tiles('back'), terrain, facade },
+    layers: { back: tiles('back'), terrain, facade, shade: tiles('shade') },
     interior,
     interiorCount,
     solids: [...layer('solids').map(rect), ...mergeCells(terrain, cols, rows, (g) => tileKind(g) === 'solid')],

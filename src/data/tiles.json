@@ -149,60 +149,96 @@
   },
   {
    "gid": 25,
-   "name": "wallpaper",
+   "name": "back_house_b",
    "kind": "none",
    "layer": "back"
   },
   {
    "gid": 26,
-   "name": "back_window",
+   "name": "back_house_b_window",
    "kind": "none",
    "layer": "back"
   },
   {
    "gid": 27,
-   "name": "beam",
+   "name": "back_cornice",
    "kind": "none",
    "layer": "back"
   },
   {
    "gid": 28,
+   "name": "shade1",
+   "kind": "none",
+   "layer": "shade"
+  },
+  {
+   "gid": 29,
+   "name": "shade2",
+   "kind": "none",
+   "layer": "shade"
+  },
+  {
+   "gid": 30,
+   "name": "shade3",
+   "kind": "none",
+   "layer": "shade"
+  },
+  {
+   "gid": 31,
+   "name": "wallpaper",
+   "kind": "none",
+   "layer": "back"
+  },
+  {
+   "gid": 32,
+   "name": "back_window",
+   "kind": "none",
+   "layer": "back"
+  },
+  {
+   "gid": 33,
+   "name": "beam",
+   "kind": "none",
+   "layer": "back"
+  },
+  {
+   "gid": 34,
    "name": "alley_wall",
    "kind": "none",
    "layer": "back"
   },
   {
-   "gid": 29,
+   "gid": 35,
    "name": "plaster",
    "kind": "none",
    "layer": "facade"
   },
   {
-   "gid": 30,
+   "gid": 36,
    "name": "window_lit",
    "kind": "none",
    "layer": "facade"
   },
   {
-   "gid": 31,
+   "gid": 37,
    "name": "window_dark",
    "kind": "none",
    "layer": "facade"
   },
   {
-   "gid": 32,
+   "gid": 38,
    "name": "door",
    "kind": "none",
    "layer": "facade"
   },
   {
-   "gid": 33,
+   "gid": 39,
    "name": "cornice",
    "kind": "none",
    "layer": "facade"
   },
   {
-   "gid": 34,
+   "gid": 40,
    "name": "plaster_dark",
    "kind": "none",
    "layer": "facade"

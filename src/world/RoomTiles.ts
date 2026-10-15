@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { TILE, type RoomData } from './tiled';
 
 export const TILESET_KEY = 'tiles_istvan';
-const DEPTH = { back: 1, terrain: 3, facade: 15 } as const;
+const DEPTH = { back: 1, terrain: 3, facade: 15, shade: 16 } as const;
 /** Facade opacity while you are inside that building, and how fast it fades (per second). */
 const INSIDE_ALPHA = 0.12;
 const FADE_PER_S = 5;
@@ -22,7 +22,7 @@ export class RoomTiles {
     const map = scene.make.tilemap({ tileWidth: TILE, tileHeight: TILE, width: room.cols, height: room.rows });
     const ts = map.addTilesetImage('istvan', TILESET_KEY, TILE, TILE, 0, 0, 1);
     if (!ts) return;
-    for (const name of ['back', 'terrain', 'facade'] as const) {
+    for (const name of ['back', 'terrain', 'facade', 'shade'] as const) {
       const data = room.layers[name];
       if (!data.length) continue;
       const layer = map.createBlankLayer(name, ts);

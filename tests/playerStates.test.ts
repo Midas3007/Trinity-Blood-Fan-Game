@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { framesFor, SimPlayer } from './playerSim';
+import { DT, framesFor, SimPlayer } from './playerSim';
 import { jumpHeight } from '../src/player/movement';
 import { playerTuning as t } from '../src/player/tuning';
 import { attackTable } from '../src/combat/attackData';
@@ -313,6 +313,24 @@ describe('ladders', () => {
     p.ladderBelow = true;
     p.step({ moveY: 1 });
     expect(p.state).toBe('climb');
+  });
+});
+
+describe('holy water', () => {
+  it('HEAL drinks one flask: stands still, health arrives part-way, then back to idle', () => {
+    const p = new SimPlayer();
+    p.run(5);
+    p.healWanted = true;
+    p.step();
+    p.healWanted = false;
+    expect(p.state).toBe('heal');
+    p.run(Math.floor(p.tuning.drinkHealAtMs / DT) - 2);
+    expect(p.flasksDrunk).toBe(0);
+    p.run(4);
+    expect(p.flasksDrunk).toBe(1);
+    p.run(Math.ceil((p.tuning.drinkMs - p.tuning.drinkHealAtMs) / DT) + 2);
+    expect(p.state).toBe('idle');
+    expect(p.flasksDrunk).toBe(1);
   });
 });
 

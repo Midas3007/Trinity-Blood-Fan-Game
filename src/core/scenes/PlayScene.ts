@@ -33,6 +33,9 @@ import { rooms as allRooms } from '../../world/rooms';
 import { TILE } from '../../world/tiled';
 import { playerTuning } from '../../player/tuning';
 import { LorePanel } from '../../ui/LorePanel';
+import { MapOverlay } from '../../ui/MapOverlay';
+import { PauseMenu } from '../../ui/PauseMenu';
+import { CornerButtons } from '../../ui/CornerButtons';
 import type { RoomData } from '../../world/tiled';
 import { gameState } from '../../systems/GameState';
 
@@ -46,6 +49,8 @@ const FADE_MS = 120;
 /** Half the standing body height: spawn points are feet, edge crossings use the body centre. */
 const PLAYER_HALF_HEIGHT = playerTuning.height / 2;
 const ROOM_TITLE_MS = 1800;
+/** Length of the prayer ceremony at an altar (ms). */
+const PRAYER_MS = 1800;
 
 /** Where to put the player when a room starts. */
 export interface RoomStart {
@@ -59,7 +64,7 @@ export interface RoomStart {
 /** How far inside the new room to place the player after crossing an edge (px). */
 const EDGE_INSET = 6;
 /** How close (px, horizontally) the player must be to a ladder's centre to grab it. */
-const LADDER_REACH_X = 8;
+const LADDER_REACH_X = 12;
 /** Extra pooled enemies per type beyond the room's spawn count. */
 const ENEMY_POOL_SPARE = 1;
 
@@ -88,6 +93,10 @@ export class PlayScene extends Phaser.Scene {
   private lorePanel!: LorePanel;
   private tiles!: RoomTiles;
   private backdrop!: Backdrop;
+  private map!: MapOverlay;
+  /** The prayer ceremony at an altar (ms elapsed and which altar), or null. */
+  private praying: { ms: number; checkpoint: string } | null = null;
+  private pauseMenu!: PauseMenu;
   private shotFlash!: ShotFlash;
 
   constructor() {
@@ -101,6 +110,7 @@ export class PlayScene extends Phaser.Scene {
     if (forced) this.start = { room: forced };
     this.leaving = false;
     this.prayArmed = false;
+    this.praying = null;
     this.dummies = [];
   }
 
@@ -204,8 +214,23 @@ export class PlayScene extends Phaser.Scene {
       });
       this.bus.emit('enemy:died', { id: target.id, x: target.x, y: target.y });
     };
-    this.hud = new Hud(this);
+    this.player.flasks = gameState.flasks ?? playerTuning.flasks;
+    this.hud = new Hud(this, playerTuning.flasks);
     this.hud.setHealth(this.player.health.fraction);
+    this.hud.setFlasks(this.player.flasks);
+    this.player.onHealed = () => {
+      this.hud.setHealth(this.player.health.fraction);
+      this.hud.setFlasks(this.player.flasks);
+    };
+    this.map = new MapOverlay(this);
+    this.pauseMenu = new PauseMenu(
+      this,
+      () => this.setPaused(null),
+      () => this.scene.start(SCENES.menu),
+    );
+    new CornerButtons(this, () => this.setPaused(this.map.open ? null : 'map'), () => this.setPaused(this.pauseMenu.open ? null : 'pause'));
+    this.input.keyboard?.on('keydown-M', () => this.setPaused(this.map.open ? null : 'map'));
+    this.input.keyboard?.on('keydown-ESC', () => this.setPaused(this.pauseMenu.open || this.map.open ? null : 'pause'));
     this.lorePanel = new LorePanel(this);
     this.cameras.main.fadeIn(FADE_MS);
     const title = this.add
@@ -263,6 +288,15 @@ export class PlayScene extends Phaser.Scene {
 
   update(_time: number, deltaMs: number): void {
     const dt = Math.min(deltaMs, MAX_FRAME_MS);
+    if (this.map.open || this.pauseMenu.open) {
+      this.map.update(dt);
+      return;
+    }
+    this.hud.update(dt);
+    if (this.praying) {
+      this.updatePrayer(dt);
+      return;
+    }
 
     // Hit-stop: freeze gameplay and physics. Inputs are not read, so presses made now are kept for the next frame.
     if (this.hitStop.tick(dt)) {
@@ -332,29 +366,17 @@ export class PlayScene extends Phaser.Scene {
       }
       p.placeAt(this.safe.x, this.safe.y);
     } else if (ev.type === 'pray' && this.prayArmed) {
-      // Kneel at an altar: full health, this altar becomes the respawn point, enemies return.
-      gameState.checkpoint = { room: this.roomData.id, id: ev.checkpoint };
-      gameState.hp = null;
-      this.cameras.main.flash(300, 217, 150, 58);
-      this.goTo({ room: this.roomData.id, checkpoint: ev.checkpoint });
+      this.startPrayer(ev.checkpoint);
     }
   }
 
-  /** Ladders around the player: one overlapping the body (climbable until the feet reach its top), or one just below. */
+  /** The ladder in reach: its column near the player and its span (plus the floor at its top) around the feet. */
   private senseLadders(): void {
     const p = this.player;
-    const reachX = LADDER_REACH_X;
-    let here: number | null = null;
-    let below: number | null = null;
-    for (const l of this.roomData.ladders) {
-      const cx = l.x + l.w / 2;
-      if (Math.abs(p.x - cx) > reachX) continue;
-      // Climbable until the feet reach the floor the ladder leads up to (one tile above its top).
-      if (p.y >= l.y - TILE - PLAYER_HALF_HEIGHT && p.y <= l.y + l.h) here = cx;
-      if (p.feetY >= l.y - TILE - 2 && p.feetY <= l.y + 2) below = cx;
-    }
-    p.ladderX = here;
-    p.ladderBelowX = here === null ? below : null;
+    p.ladder =
+      this.roomData.ladders.find(
+        (l) => Math.abs(p.x - (l.x + l.w / 2)) <= LADDER_REACH_X && p.feetY >= l.y - TILE - 2 && p.feetY <= l.y + l.h + 2,
+      ) ?? null;
   }
 
   /** Is the player standing on a one-way platform (not solid ground)? */
@@ -378,12 +400,57 @@ export class PlayScene extends Phaser.Scene {
     return true;
   }
 
+  /** Kneel at an altar: a beam of light, the dove of the Holy Spirit descends over Abel, then rest. */
+  private startPrayer(checkpoint: string): void {
+    const p = this.player;
+    this.praying = { ms: 0, checkpoint };
+    p.body.setVelocity(0, 0);
+    p.praying = true;
+    const head = p.feetY - playerTuning.lowHeight - 6;
+    const beam = this.add.rectangle(p.x, head - 100, 14, 200, 0xf6e3a3, 0).setBlendMode(Phaser.BlendModes.ADD).setDepth(32);
+    this.tweens.add({ targets: beam, fillAlpha: 0.22, duration: 400, yoyo: true, hold: PRAYER_MS - 800 });
+    if (this.textures.exists('dove')) {
+      const dove = this.add.sprite(p.x + 2, head - 70, 'dove', 0).setDepth(33);
+      if (this.anims.exists('dove_fly')) dove.play('dove_fly');
+      this.tweens.add({ targets: dove, y: head - 4, duration: PRAYER_MS * 0.55, ease: 'Sine.easeOut' });
+      this.tweens.add({ targets: dove, alpha: 0, delay: PRAYER_MS * 0.8, duration: PRAYER_MS * 0.2 });
+    }
+  }
+
+  private updatePrayer(dt: number): void {
+    const pr = this.praying!;
+    pr.ms += dt;
+    if (pr.ms < PRAYER_MS) return;
+    // Rested: full health and flasks, this altar is the respawn point, enemies return.
+    gameState.checkpoint = { room: this.roomData.id, id: pr.checkpoint };
+    gameState.hp = null;
+    gameState.flasks = null;
+    this.cameras.main.flash(250, 246, 227, 163);
+    this.goTo({ room: this.roomData.id, checkpoint: pr.checkpoint });
+  }
+
+  /** Open the map or pause menu (gameplay and physics stop), or close both (null). */
+  private setPaused(what: 'map' | 'pause' | null): void {
+    this.map.hide();
+    this.pauseMenu.hide();
+    if (what === 'map') this.map.show(allRooms, (id) => gameState.hasVisited(id), this.roomData, this.player.x, this.player.y);
+    if (what === 'pause') this.pauseMenu.show();
+    if (what) {
+      this.physics.world.pause();
+      this.touch.releaseAll();
+    } else if (!this.hitStop.active) {
+      this.physics.world.resume();
+    }
+  }
+
   /** Fade out and start another room (or restart this one), carrying health over. */
   private goTo(next: RoomStart): void {
     if (this.leaving) return;
     this.leaving = true;
     // Walking between rooms keeps your health; praying or dying refills it.
     gameState.hp = next.checkpoint === undefined && !this.player.health.dead ? this.player.health.hp : null;
+    // Flasks carry over between rooms; praying and dying refill them.
+    gameState.flasks = next.checkpoint === undefined && !this.player.health.dead ? this.player.flasks : null;
     this.physics.world.pause();
     this.cameras.main.fadeOut(FADE_MS);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.restart(next));

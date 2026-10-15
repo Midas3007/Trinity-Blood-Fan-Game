@@ -14,8 +14,9 @@ class Room:
     def __init__(self, rid, title, gx, gy, sw, sh, seed=1, sky=True):
         self.id, self.title, self.gx, self.gy, self.sky = rid, title, gx, gy, sky
         self.W, self.H = sw * SW, sh * SH
-        self.L = {name: [[None] * self.W for _ in range(self.H)] for name in ("terrain", "back", "facade")}
+        self.L = {name: [[None] * self.W for _ in range(self.H)] for name in ("terrain", "back", "facade", "shade")}
         self.markers = []
+        self.gates = []  # (x0, y0, x1, y1, flag) in tiles
         self.horizon = self.H  # street row (tiles); skylines stand on it
         self.rng = random.Random(seed)
 
@@ -128,18 +129,30 @@ class Room:
         """A continuous row of houses behind the street (background only), with gabled tops and dim windows.
         Fills only cells still empty in the back layer, so buildings in front keep their own interiors."""
         x = x0
+        tone = 0
         while x < x1:
             w = self.rng.randint(5, 9)
             h = self.rng.randint(hmin, hmax)
             top = gy - h
+            tone ^= 1
+
             for cx in range(x, min(x + w, x1)):
                 for y in range(top, gy):
                     if self.L["back"][y][cx] is None:
                         win = (cx - x) % 3 == 1 and (gy - y) % 3 == 2 and y < gy - 1
-                        name = "back_house"
-                        if win:
-                            name = "back_house_window" if self.rng.random() < 0.35 else "back_house_dark"
+                        name = "back_house_b" if tone else "back_house"
+                        if y == top:
+                            name = "back_cornice"
+                        elif win:
+                            lit = self.rng.random() < 0.35
+                            name = ("back_house_b_window" if tone else "back_house_window") if lit else "back_house_dark"
                         self.put("back", cx, y, name)
+            # chimney
+            cx = x + self.rng.randint(1, max(1, w - 2))
+            if w >= 6 and cx < x1 and self.rng.random() < 0.6:
+                for y in range(max(0, top - (w + 1) // 2 - 2), top):
+                    if self.L["back"][y][cx] is None:
+                        self.put("back", cx, y, "back_house")
             # gable
             for i in range((w + 1) // 2):
                 for cx, nm in ((x + i, "back_roof_r"), (x + w - 1 - i, "back_roof_l")):
@@ -153,10 +166,33 @@ class Room:
     def alley_back(self, x0, x1, y0, y1):
         self.fill("back", x0, y0, x1, y1, "alley_wall")
 
+    def gate(self, x0, y0, x1, y1, flag):
+        """A portcullis (solid until a lever sets `flag`). Tiles x0..x1-1, y0..y1-1."""
+        self.gates.append((x0, y0, x1, y1, flag))
+
     # --- markers ---
     def mark(self, kind, x, y, name="", **props):
         """x, y in tiles: (x, y) is the tile the thing stands ON TOP of minus one, i.e. feet at the top of row y+1."""
         self.markers.append((kind, x * T + T // 2, (y + 1) * T, name, props))
+
+    def compute_shade(self):
+        """Ambient-occlusion style shadows: darker just under anything solid or one-way above (eaves, floors,
+        balconies, roofs), and in the cell next to a wall. Only on cells something is drawn in (not open sky)."""
+        kinds = {t["name"]: t["kind"] for t in TILES}
+        blocks = lambda x, y: 0 <= x < self.W and 0 <= y < self.H and kinds.get(self.L["terrain"][y][x]) in ("solid", "oneway")
+        for y in range(self.H):
+            for x in range(self.W):
+                if blocks(x, y) or not (self.L["back"][y][x] or self.L["facade"][y][x]):
+                    continue
+                level = 0
+                for d in (1, 2, 3):
+                    if blocks(x, y - d):
+                        level = 4 - d
+                        break
+                if blocks(x - 1, y) or blocks(x + 1, y):
+                    level = min(3, level + 1)
+                if level:
+                    self.L["shade"][y][x] = f"shade{level}"
 
     # --- output ---
     def cathedral(self, x, w, gy, h, towers=(), rose_at=None):
@@ -195,12 +231,20 @@ class Room:
             if props:
                 o["properties"] = [{"name": k, "type": "int" if isinstance(v, int) else "string", "value": v} for k, v in props.items()]
             objs.append(o)
+        self.compute_shade()
         layers = [{"id": i + 1, "name": n, "type": "tilelayer", "width": self.W, "height": self.H, "x": 0, "y": 0,
-                   "opacity": 1, "visible": True, "data": data(n)} for i, n in enumerate(("back", "terrain", "facade"))]
-        layers.append({"id": 4, "name": "markers", "type": "objectgroup", "draworder": "topdown", "opacity": 1, "visible": True,
+                   "opacity": 1, "visible": True, "data": data(n)} for i, n in enumerate(("back", "terrain", "facade", "shade"))]
+        gobjs = []
+        for x0, y0, x1, y1, flag in self.gates:
+            oid += 1
+            gobjs.append({"id": oid, "name": "", "type": "", "x": x0 * T, "y": y0 * T, "width": (x1 - x0) * T, "height": (y1 - y0) * T,
+                          "rotation": 0, "visible": True, "properties": [{"name": "opens", "type": "string", "value": flag}]})
+        layers.append({"id": 6, "name": "gates", "type": "objectgroup", "draworder": "topdown", "opacity": 1, "visible": True,
+                       "x": 0, "y": 0, "objects": gobjs})
+        layers.append({"id": 5, "name": "markers", "type": "objectgroup", "draworder": "topdown", "opacity": 1, "visible": True,
                        "x": 0, "y": 0, "objects": objs})
         return {"type": "map", "version": "1.10", "tiledversion": "1.10.2", "orientation": "orthogonal", "renderorder": "right-down",
-                "infinite": False, "width": self.W, "height": self.H, "tilewidth": T, "tileheight": T, "nextlayerid": 5,
+                "infinite": False, "width": self.W, "height": self.H, "tilewidth": T, "tileheight": T, "nextlayerid": 7,
                 "nextobjectid": oid + 1,
                 "tilesets": [{"firstgid": 1, "name": "istvan", "image": "../../../public/assets/tiles/istvan.png", "tilewidth": T,
                               "tileheight": T, "tilecount": len(TILES), "columns": len(TILES), "imagewidth": T * len(TILES), "imageheight": T}],

@@ -46,12 +46,22 @@ export class SimPlayer implements PlayerContext {
   dodgePressed = false;
   ledgeX = Infinity;
   onOneway = false;
+  healWanted = false;
+  flasksDrunk = 0;
+  drinkFlask(): void {
+    this.flasksDrunk++;
+  }
   moveY = 0;
   ladderHere = false;
   ladderBelow = false;
   climbing = false;
+  atLadderTop = false;
   setClimbing(on: boolean): void {
     this.climbing = on;
+  }
+  finishClimbAtTop(): void {
+    this.climbing = false;
+    this.vy = 0;
   }
   drops = 0;
   dropThrough(): void {

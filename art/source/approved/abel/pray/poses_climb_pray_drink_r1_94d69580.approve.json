@@ -1,0 +1,14 @@
+{
+  "source": "poses_climb_pray_drink_r1_94d69580.png",
+  "source_hash": "sha256:8b974a29386ec7e15d35dddf2b473aef2562ccea16ae9e4b74c89876793dc900",
+  "figures": [
+    3
+  ],
+  "standing_px": 1272,
+  "factor": 0.251572,
+  "open_px": 0,
+  "expected": 5,
+  "outputs": [
+    "poses_climb_pray_drink_r1_94d69580_f3.png"
+  ]
+}

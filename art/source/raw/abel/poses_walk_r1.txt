@@ -1,0 +1,3 @@
+Pose sheet 7 — Abel walk cycle — 2026-10-15
+Tool: Higgsfield nano_banana_pro, 2k, 21:9, refs d2348a6e + 004f2d9e. Cost: 2 credits.
+Job: da408b7b-b890-4dc6-82b8-d6dd2ab7b674. Figure 0 came out as a front view (unused). Approved (--expect 5 --ref-height 1267): 1-4 walk.

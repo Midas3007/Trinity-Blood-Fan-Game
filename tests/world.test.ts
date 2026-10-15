@@ -33,6 +33,8 @@ describe('rooms (Tiled maps)', () => {
     expect(all.some((r) => r.hazards.length > 0)).toBe(true);
     expect(all.some((r) => r.interiorCount > 0)).toBe(true);
     expect(all.some((r) => r.oneways.length > 0)).toBe(true);
+    expect(all.some((r) => r.gates.length > 0 && r.levers.length > 0)).toBe(true); // a lever-and-gate puzzle
+    expect(all.some((r) => r.ladders.length > 0)).toBe(true);
   });
 
   it('every marker stands inside its room', () => {

@@ -20,6 +20,8 @@ export class GameState {
   hp: number | null = null;
   /** Time of day in the world (the story changes it). */
   time: 'night' | 'dusk' | 'day' = 'night';
+  /** Holy water flasks left (null = full; refilled when praying at an altar). */
+  flasks: number | null = null;
   checkpoint: CheckpointRef | null = null;
   private readonly flags = new Set<string>();
   private readonly visited = new Set<string>();

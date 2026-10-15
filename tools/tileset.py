@@ -27,18 +27,32 @@ def speckle(px, rng, cols, n, x0=0, y0=0, x1=T, y1=T):
         px[rng.randrange(x0, x1), rng.randrange(y0, y1)] = C[rng.choice(cols)] + (255,)
 
 def bricks(px, rng, base, mortar, light, dark, bw=8, bh=4):
+    """Running-bond bricks, each lit on its top/left edge and shaded on its bottom/right, with a little grain."""
     rect(px, 0, 0, T, T, mortar)
     for row in range(T // bh):
         off = (bw // 2) * (row % 2)
         for col in range(-1, T // bw + 1):
             x0 = col * bw + off
-            for y in range(row * bh, row * bh + bh - 1):
+            y0, y1 = row * bh, row * bh + bh - 1
+            for y in range(y0, y1):
                 for x in range(x0, x0 + bw - 1):
                     if 0 <= x < T:
-                        px[x, y] = C[base] + (255,)
-            if 0 <= x0 < T: px[x0, row * bh] = C[light] + (255,)
-            if 0 <= x0 + bw - 2 < T: px[x0 + bw - 2, row * bh + bh - 2] = C[dark] + (255,)
+                        c = base
+                        if y == y0 or x == x0: c = light
+                        elif y == y1 - 1 or x == x0 + bw - 2: c = dark
+                        elif rng.random() < 0.08: c = dark
+                        px[x, y] = C[c] + (255,)
 
+def plaster(px, base, light, dark):
+    """Rough plaster: lighter near the top of each tile row band, grime and cracks lower down."""
+    rect(px, 0, 0, T, T, base)
+    for y in range(T):
+        for x in range(T):
+            r = _r.random()
+            if r < 0.06: px[x, y] = C[light] + (255,)
+            elif r < 0.06 + y * 0.006: px[x, y] = C[dark] + (255,)
+
+_r = __import__('random').Random(5)
 TILES = []  # (name, kind, layer, image)
 def add(name, kind, layer, im): TILES.append((name, kind, layer, im))
 
@@ -52,9 +66,13 @@ im, px = tile(); bricks(px, rng, "r2", "k3", "r3", "r1"); add("brick", "solid", 
 im, px = tile(); rect(px, 0, 0, T, 4, "b3"); rect(px, 0, 0, T, 1, "b4"); rect(px, 0, 3, T, 4, "b1")
 for x in (3, 11): px[x, 1] = C["b1"] + (255,)
 add("plank", "oneway", "terrain", im)
-im, px = tile("k4")
+im, px = tile("k3")
 for y in range(0, T, 4):
-    rect(px, 0, y, T, y + 3, "g2"); rect(px, 0, y, T, y + 1, "g3")
+    off = 4 * ((y // 4) % 2)
+    for x0 in range(-off, T, 8):
+        for x in range(max(0, x0), min(T, x0 + 7)):
+            for yy in range(y, y + 3):
+                px[x, yy] = C["g3" if yy == y else ("g1" if yy == y + 2 or x == x0 + 6 else "g2")] + (255,)
 add("roof", "solid", "terrain", im)
 im, px = tile(); rect(px, 0, 0, T, 2, "k1")
 for x in range(0, T, 4): rect(px, x, 1, x + 1, 3, "g4")
@@ -88,8 +106,8 @@ for y in range(T):
     for x in range(T):
         if x <= y: px[x, y] = C["k4"] + (255,)
 add("back_roof_l", "none", "back", im)
-for nm, base, spk in (("plaster_ochre", "y1", ["b4", "y2"]), ("plaster_rose", "b3", ["b4", "r3"]), ("plaster_blue", "u1", ["u2", "k4"])):
-    im, px = tile(base); speckle(px, rng, spk, 10); add(nm, "none", "facade", im)
+for nm, base, light, dark in (("plaster_ochre", "y1", "y2", "b3"), ("plaster_rose", "b3", "b4", "b2"), ("plaster_blue", "u1", "u2", "k4")):
+    im, px = tile(); plaster(px, base, light, dark); add(nm, "none", "facade", im)
 im, px = tile("g4"); bricks(px, rng, "g4", "g2", "g5", "g3", 16, 8); add("gothic_stone", "solid", "terrain", im)
 im, px = tile("g4"); bricks(px, rng, "g4", "g2", "g5", "g3", 16, 8); add("gothic_face", "none", "facade", im)
 im, px = tile("g4")
@@ -107,6 +125,12 @@ for y in range(T):
         if d2 < 56: px[x, y] = C["k1"] + (255,)
         if d2 < 42: px[x, y] = C["r4" if (abs(dx) < 1 or abs(dy) < 1 or abs(abs(dx) - abs(dy)) < 1) else ("u2" if d2 > 16 else "y2")] + (255,)
 add("rose", "none", "facade", im)
+im, px = tile("g1"); speckle(px, rng, ["k4", "g2"], 12); rect(px, 0, 0, T, 1, "k4"); add("back_house_b", "none", "back", im)
+im, px = tile("g1"); rect(px, 4, 3, 12, 13, "k1"); rect(px, 5, 4, 11, 12, "b2"); rect(px, 7, 4, 9, 12, "k1"); rect(px, 5, 4, 7, 7, "b4"); add("back_house_b_window", "none", "back", im)
+im, px = tile("k4"); rect(px, 0, 10, T, 13, "g2"); rect(px, 0, 10, T, 11, "g3"); rect(px, 0, 13, T, 14, "k2"); add("back_cornice", "none", "back", im)
+# shadow tiles (semi-transparent), used by the generated 'shade' layer
+for nm, a in (("shade1", 60), ("shade2", 105), ("shade3", 150)):
+    im = Image.new("RGBA", (T, T), C["void"] + (a,)); add(nm, "none", "shade", im)
 # --- back (interiors, drawn behind) ---
 im, px = tile("p2")
 for x in range(0, T, 4): rect(px, x, 0, x + 1, T, "p3")
@@ -116,7 +140,7 @@ px[5, 4] = C["u3"] + (255,); add("back_window", "none", "back", im)
 im, px = tile("b1"); rect(px, 0, 0, T, 2, "b2"); rect(px, 0, 14, T, T, "k3"); add("beam", "none", "back", im)
 im, px = tile("k3"); bricks(px, rng, "k4", "k2", "g1", "k1"); add("alley_wall", "none", "back", im)
 # --- facade (front, fades when you go inside) ---
-im, px = tile("g3"); speckle(px, rng, ["g4", "g2"], 10); add("plaster", "none", "facade", im)
+im, px = tile(); plaster(px, "g3", "g4", "g2"); add("plaster", "none", "facade", im)
 im, px = tile("g3"); rect(px, 3, 2, 13, 15, "k1"); rect(px, 4, 3, 12, 14, "y2"); rect(px, 7, 3, 9, 14, "k1"); rect(px, 4, 8, 12, 9, "k1")
 rect(px, 4, 3, 7, 7, "y3"); rect(px, 2, 14, 14, 16, "g5"); add("window_lit", "none", "facade", im)
 im, px = tile("g3"); rect(px, 3, 2, 13, 15, "k1"); rect(px, 4, 3, 12, 14, "k3"); rect(px, 7, 3, 9, 14, "k1"); rect(px, 2, 14, 14, 16, "g5")

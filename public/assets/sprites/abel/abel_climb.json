@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "climb": {
+      "durations_ms": [
+        180,
+        180
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 2,
+  "entity": "abel",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "abel_climb.png",
+  "source_hashes": [
+    "sha256:23c95662a7d111f74ef9ef9e1c84e318c90110c7b09689899d4dba11b22756c6",
+    "sha256:bcac06f3ce5acd51f7da035dc3f07814ceeb4e4de48c0b42ce0c6bb7f76de8b6"
+  ]
+}

@@ -32,6 +32,11 @@ export interface PlayerTuning {
   crawlSpeed: number;
   /** Ladder climbing speed (px/s). */
   climbSpeed: number;
+  /** Holy water flasks: how many, health each restores, how long drinking takes and when the health arrives (ms). */
+  flasks: number;
+  flaskHeal: number;
+  drinkMs: number;
+  drinkHealAtMs: number;
   /** Highest ledge walked up automatically, e.g. a stair step (px). */
   stepUpMax: number;
   slideSpeed: number;

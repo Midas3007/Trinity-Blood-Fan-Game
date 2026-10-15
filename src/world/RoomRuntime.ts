@@ -55,8 +55,16 @@ export class RoomRuntime {
     // Tile rooms draw spikes as tiles; object-only rooms get simple drawn spikes.
     if (!room.layers.terrain.length) for (const h of room.hazards) this.drawSpikes(h);
     for (const c of room.checkpoints) {
-      scene.add.rectangle(c.x, c.y - ALTAR_H / 2, ALTAR_W, ALTAR_H, COLORS.stone);
-      scene.add.rectangle(c.x, c.y - ALTAR_H - 6, 2, 10, COLORS.spark); // candle
+      if (scene.textures.exists('altar')) {
+        scene.add.image(c.x, c.y, 'altar').setOrigin(0.5, 1).setDepth(DEPTH_DECOR);
+        // candle flames glow (altar candles sit 14 px either side of centre, 34 px up)
+        for (const dx of [-14, 14]) {
+          scene.add.circle(c.x + dx, c.y - 34, 10, 0xd9963a, 0.12).setBlendMode(Phaser.BlendModes.ADD).setDepth(DEPTH_GLOW);
+          scene.add.circle(c.x + dx, c.y - 34, 4, 0xe8c86a, 0.3).setBlendMode(Phaser.BlendModes.ADD).setDepth(DEPTH_GLOW);
+        }
+      } else {
+        scene.add.rectangle(c.x, c.y - ALTAR_H / 2, ALTAR_W, ALTAR_H, COLORS.stone);
+      }
     }
     for (const l of room.lore) {
       scene.add.rectangle(l.x, l.y - STONE_H / 2, STONE_W, STONE_H, COLORS.stone);

@@ -13,7 +13,7 @@ import { PlayerTimers } from './PlayerTimers';
 import { gravityFor } from './movement';
 import { playerStates, postureFor, type PlayerContext, type PlayerStateKey, type Posture } from './playerStates';
 import { playerTuning, type PlayerTuning } from './tuning';
-import { PlayerView } from './PlayerView';
+import { PlayerView, type VisualKey } from './PlayerView';
 import { FinisherRunner } from '../combat/FinisherRunner';
 import { StrengthBuff } from '../combat/StrengthBuff';
 import { chooseFinisher, type AbelForm, type FinisherDef, type FinisherTarget } from '../combat/finisherData';
@@ -22,6 +22,11 @@ const INVULNERABLE_ALPHA = 0.45;
 /** How long a deliberate drop ignores one-way platforms (ms), and the small downward push that starts it. */
 const DROP_THROUGH_MS = 220;
 const DROP_NUDGE = 60;
+/** The floor at a ladder's top is one tile above the ladder's first tile; climbing down starts this far under it (px). */
+const LADDER_TOP_OFFSET = 16;
+const LADDER_STEP_DOWN = 6;
+/** Below this fraction of run speed the walk animation plays instead of the run. */
+const WALK_LOOK_FRACTION = 0.6;
 /** Blink period while invulnerable after being hurt (ms). */
 const BLINK_MS = 80;
 
@@ -58,9 +63,8 @@ export class Player implements PlayerContext, PlayerCombatant {
   dropMs = 0;
   /** Set by the scene each frame: standing on a one-way platform. */
   onOneway = false;
-  /** Set by the scene each frame: ladder overlapping the body / starting under the feet (its centre x). */
-  ladderX: number | null = null;
-  ladderBelowX: number | null = null;
+  /** Set by the scene each frame: the ladder in reach (tile rect; its top floor is one tile above it), or null. */
+  ladder: Rect | null = null;
   /** Solid rectangles for stepping up stairs (set by the scene). */
   stepSolids: readonly Rect[] = [];
 
@@ -258,28 +262,60 @@ export class Player implements PlayerContext, PlayerCombatant {
   }
 
   /** Crouched on the ground (prays at an altar). */
+  /** Holy water flasks left. */
+  flasks = this.tuning.flasks;
+
+  get healWanted(): boolean {
+    return this.input.justPressed('heal') && this.flasks > 0 && this.health.hp < this.health.max;
+  }
+
+  drinkFlask(): void {
+    if (this.flasks <= 0) return;
+    this.flasks--;
+    this.health.heal(this.tuning.flaskHeal);
+    this.onHealed?.();
+  }
+
+  /** Called after a flask heals (HUD refresh lives in the scene). */
+  onHealed: (() => void) | null = null;
+
   get moveY(): number {
     return this.input.moveY;
   }
 
-  get ladderHere(): boolean {
-    return this.ladderX !== null;
+  /** Feet on the floor the ladder leads up to (one tile above the ladder's first tile). */
+  private ladderTopY(): number {
+    return (this.ladder?.y ?? 0) - LADDER_TOP_OFFSET;
   }
 
+  /** On the ladder's span: feet below its top floor and not below its bottom. */
+  get ladderHere(): boolean {
+    const l = this.ladder;
+    return l !== null && this.feetY > this.ladderTopY() + 1 && this.feetY <= l.y + l.h + 2;
+  }
+
+  /** Standing on the floor at the ladder's top (stick down climbs down). */
   get ladderBelow(): boolean {
-    return this.ladderBelowX !== null;
+    return this.ladder !== null && this.onGround && Math.abs(this.feetY - this.ladderTopY()) <= 2;
+  }
+
+  get atLadderTop(): boolean {
+    return this.ladder !== null && this.feetY <= this.ladderTopY() + 1;
   }
 
   setClimbing(on: boolean): void {
     this.body.setAllowGravity(!on);
-    if (!on) return;
-    const x = this.ladderX ?? this.ladderBelowX;
-    if (x !== null) this.sprite.x = x;
-    if (this.ladderX === null && this.ladderBelowX !== null) {
-      // Climbing down from the top: step into the ladder below the platform.
-      this.sprite.y += this.tuning.stepUpMax;
-      this.dropMs = DROP_THROUGH_MS;
-    }
+    if (!on || !this.ladder) return;
+    this.sprite.x = this.ladder.x + this.ladder.w / 2;
+    // Coming down from the top floor: step just below it so the ladder takes over.
+    if (this.feetY <= this.ladderTopY() + 2) this.sprite.y += LADDER_STEP_DOWN;
+    this.body.updateFromGameObject();
+    this.vy = 0;
+  }
+
+  finishClimbAtTop(): void {
+    this.body.setAllowGravity(true);
+    this.sprite.y = this.ladderTopY() - this.height / 2;
     this.body.updateFromGameObject();
     this.vy = 0;
   }
@@ -365,8 +401,20 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.sprite.setAlpha(this.alpha);
   }
 
+  /** Kneeling at an altar (set by the scene during the prayer). */
+  praying = false;
+
+  /** Which look to show: the state, or a variant of it (slow run = walk, still on a ladder, praying). */
+  private visualKey(): VisualKey {
+    const s = this.fsm.current;
+    if (this.praying) return 'pray';
+    if (s === 'run' && Math.abs(this.vx) < this.tuning.runSpeed * WALK_LOOK_FRACTION) return 'walk';
+    if (s === 'climb' && this.vy === 0) return 'climbStill';
+    return s;
+  }
+
   private syncView(): void {
     this.facingMark.setPosition(this.sprite.x + this.facing * (this.tuning.width / 2 - 2), this.sprite.y - this.height / 2 + 7);
-    this.view.update(this.fsm.current, this.combat.current?.id ?? this.finishing.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha);
+    this.view.update(this.visualKey(), this.combat.current?.id ?? this.finishing.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha);
   }
 }

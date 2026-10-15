@@ -17,6 +17,9 @@ export class BootScene extends Phaser.Scene {
   preload(): void {
     this.load.json(INDEX_KEY, `${SPRITES_BASE}index.json`);
     this.load.image(TILESET_KEY, tileDefs.image);
+    this.load.image('altar', 'assets/props/altar.png');
+    this.load.image('portrait', 'assets/ui/portrait.png');
+    this.load.spritesheet('dove', 'assets/props/dove.png', { frameWidth: 16, frameHeight: 12 });
     // Title key art (palette-locked painting, tools/spritegen keyart). Missing file = plain text title.
     this.load.image(TITLE_ART_KEY, 'assets/ui/title.png');
     this.load.once(`filecomplete-json-${INDEX_KEY}`, (_key: string, _type: string, data: SpriteIndex) => {
@@ -27,6 +30,7 @@ export class BootScene extends Phaser.Scene {
   }
 
   create(): void {
+    if (this.textures.exists('dove')) this.anims.create({ key: 'dove_fly', frames: this.anims.generateFrameNumbers('dove', { start: 0, end: 1 }), frameRate: 8, repeat: -1 });
     const index = this.cache.json.get(INDEX_KEY) as SpriteIndex | undefined;
     if (index) {
       for (const a of animDefs(index)) {
