@@ -93,6 +93,12 @@ export class RoomRuntime {
         s.add.circle(gx, gy, r * k, 0xd9963a, this.lampGlow * a).setBlendMode(Phaser.BlendModes.ADD).setDepth(DEPTH_GLOW);
       }
     };
+    if (item.startsWith('img:')) {
+      // a painted landmark, standing on its marker (bottom centre)
+      const key = item.slice(4);
+      if (s.textures.exists(key)) s.add.image(x, y, key).setOrigin(0.5, 1).setDepth(DEPTH_DECOR);
+      return;
+    }
     switch (item) {
       case 'lamp': // gas street lamp
         s.add.rectangle(x, y - 14, 2, 28, 0x1c1826).setDepth(DEPTH_DECOR);

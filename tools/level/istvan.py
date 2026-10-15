@@ -23,11 +23,11 @@ def station():
     r.wall(0, 0, 1, r.H)                                       # the world's west end
     r.wall(r.W - 1, GY, r.W, r.H)
     r.building(6, 32, GY, floors=2, fh=7, doors=("left", "right"), chimneys=0, lit=0.9, climb="ladder")   # station hall
-    r.building(42, 8, GY, floors=4, doors=("left",), chimneys=0, lit=0.3, climb="ladder")                 # clock tower
+    r.building(42, 8, GY, floors=4, doors=("left", "right"), chimneys=0, lit=0.3, climb="ladder")                 # clock tower
     r.platform(52, 66, GY - 7, "balcony")                                                                # platform canopy
     for x in (53, 59, 65):
         r.mark("decor", x, GY - 8, item="chain", h=40)
-    r.building(70, 14, GY, floors=3, doors=("right",), balconies=(1, 2), lit=0.5)
+    r.building(70, 14, GY, floors=3, doors=("left", "right"), balconies=(1, 2), lit=0.5)
     r.street_props(50, 88, GY)
     r.mark("entry", 10, GY - 1, "start", facing=1)
     r.mark("lore", 14, GY - 1, lore="ax_orders")
@@ -46,15 +46,15 @@ def old_town():
     r.building(3, 14, GY, floors=3, doors=("left", "right"), balconies=(2,), lit=0.4)
     r.alley_back(17, 22, GY - 12, GY)
     r.mark("decor", 19, GY - 12, item="lantern", h=20)
-    r.building(22, 16, GY, floors=4, doors=("left",), balconies=(1, 3), chimneys=2, lit=0.5, climb="ladder")
-    r.building(41, 12, GY, floors=2, doors=("right",), lit=0.6)
+    r.building(22, 16, GY, floors=4, doors=("left", "right"), balconies=(1, 3), chimneys=2, lit=0.5, climb="ladder")
+    r.building(41, 12, GY, floors=2, doors=("left", "right"), lit=0.6)
     # raised terrace reached by stone stairs, with a house on it
     r.stairs(55, GY, 4)
     r.wall(59, GY - 4, 77, GY)
     r.fill("terrain", 59, GY - 4, 77, GY - 3, "cobble")
     r.building(61, 14, GY - 4, floors=3, doors=("left", "right"), lit=0.4, climb="ladder")
     r.stairs(80, GY, 4, dir=-1)
-    r.building(84, 22, GY, floors=4, doors=("left",), balconies=(2,), chimneys=2, lit=0.5)
+    r.building(84, 22, GY, floors=4, doors=("left", "right"), balconies=(2,), chimneys=2, lit=0.5)
     r.alley_back(106, 120, GY - 8, GY)
     r.mark("decor", 112, GY - 10, item="lantern", h=28)
     r.mark("decor", 34, feet(GY, 4) - 2, item="banner")
@@ -73,8 +73,8 @@ def clock_alley():
     r = Room("clock_alley", "Bellmakers' Alley", 7, 0, 2, 2, seed=16)
     r.ground(GY)
     r.edges(left=True, right=True, ground=GY)
-    r.building(2, 16, GY, floors=4, doors=("right",), balconies=(), chimneys=1, lit=0.3, climb="ladder")
-    r.building(40, 18, GY, floors=4, doors=("left",), chimneys=1, lit=0.6)
+    r.building(2, 16, GY, floors=4, doors=("left", "right"), balconies=(), chimneys=1, lit=0.3, climb="ladder")
+    r.building(40, 18, GY, floors=4, doors=("left", "right"), chimneys=1, lit=0.6)
     r.alley_back(18, 40, 4, GY)
     # zig-zag balconies up the alley walls
     for i, y in enumerate((GY - 5, GY - 10, GY - 15, GY - 20)):
@@ -92,13 +92,13 @@ def square():
     r = Room("market_square", "Market Square", 9, 0, 4, 2, seed=13)
     r.ground(GY)
     r.edges(left=True, right=True, ground=GY)
-    r.building(2, 22, GY, floors=3, doors=("right",), balconies=(1, 2), chimneys=2, lit=0.4)        # gallery houses
+    r.building(2, 22, GY, floors=3, doors=("left", "right"), balconies=(1, 2), chimneys=2, lit=0.4)        # gallery houses
     r.building(28, 16, GY, floors=2, doors=("left", "right"), lit=0.9, climb="ladder")               # the tavern
     r.wall(52, GY - 2, 58, GY, "stone")                     # toppled statue of the old count
     r.wall(54, GY - 4, 56, GY - 2, "stone")
     r.wall(76, GY - 1, 86, GY, "stone")                     # fountain rim
     r.fill("terrain", 64, GY, 68, r.H, None)                # sewer grate, wide open
-    r.building(96, 20, GY, floors=4, doors=("left",), balconies=(2,), chimneys=1, lit=0.3)
+    r.building(96, 20, GY, floors=4, doors=("left", "right"), balconies=(2,), chimneys=1, lit=0.3)
     for x in (6, 12, 18):
         r.mark("decor", x, feet(GY, 3) - 3, item="banner")
     r.street_props(46, 96, GY, every=10)
@@ -122,8 +122,17 @@ def cathedral_square():
     r.stairs(34, GY, 6)
     r.wall(40, T, 98, GY)
     r.fill("terrain", 40, T, 98, T + 1, "cobble")
-    r.cathedral(46, 46, T, 16, towers=((46, 8, 24), (84, 8, 24)), rose_at=69)
-    r.fill("facade", 67, T - 4, 71, T, "door")               # the great doors (locked)
+    # The cathedral front: a painted landmark (public/assets/props/cathedral_front.png, 540x403) standing on the
+    # terrace, with invisible ledges on its plinths, portal canopies, rose gallery, tower balustrades and belfries.
+    CX, IW, IH = 69, 540, 403
+    left_px = CX * 16 + 8 - IW // 2
+    r.mark("decor", CX, T - 1, item="img:cathedral_front")
+    def ledge(ix0, ix1, row):
+        r.platform((left_px + ix0) // 16, (left_px + ix1) // 16, row, "ledge")
+    for row, spans in ((22, ((30, 70), (470, 510))), (19, ((100, 140), (400, 440))), (16, ((115, 195), (345, 425))),
+                       (13, ((205, 335),)), (10, ((100, 210), (330, 440))), (7, ((115, 165), (375, 425)))):
+        for a, b in spans:
+            ledge(a, b, row)
     r.stairs(104, GY, 6, dir=-1)
     r.street_props(0, 34, GY)
     r.street_props(104, 120, GY, lamp_offset=6)
@@ -147,7 +156,7 @@ def hill_street():
     r.stairs(44, GY - 3, 3)
     r.wall(47, GY - 6, r.W, GY - 3)
     r.fill("terrain", 47, GY - 6, r.W, GY - 5, "cobble")
-    r.building(52, 14, GY - 6, floors=3, doors=("left",), lit=0.4)
+    r.building(52, 14, GY - 6, floors=3, doors=("left", "right"), lit=0.4)
     # puzzle: a portcullis bars the upper street; its lever is on the roof of the house below
     r.wall(46, 0, 48, GY - 9, "gothic_stone")                   # gate tower: no way over the top
     r.gate(46, GY - 9, 48, GY - 6, "hill_gate")

@@ -68,6 +68,7 @@ export class TouchControls {
     scene.input.on(Phaser.Input.Events.POINTER_UP, this.onUp, this);
     scene.input.on(Phaser.Input.Events.POINTER_UP_OUTSIDE, this.onUp, this);
     scene.events.once(Phaser.Scenes.Events.SHUTDOWN, this.destroy, this);
+    this.adoptHeldPointers();
   }
 
   read(): InputFrame {
@@ -87,6 +88,25 @@ export class TouchControls {
     this.stickVec = { x: 0, y: 0 };
     this.buttonPointers.clear();
     this.tappedSinceRead.clear();
+    this.refreshVisuals();
+  }
+
+  /**
+   * Fingers already on the screen when the controls are created (e.g. holding the stick through a room change)
+   * keep working: the stick is picked up again and held buttons stay held, without counting as a new tap.
+   */
+  private adoptHeldPointers(): void {
+    for (const p of this.scene.input.manager.pointers) {
+      if (!p.isDown) continue;
+      const inStickZone = p.x < GAME_WIDTH * STICK_ZONE_WIDTH && p.y > GAME_HEIGHT * STICK_ZONE_TOP;
+      if (this.stickPointerId === null && inStickZone) {
+        this.stickPointerId = p.id;
+        this.updateStick(p);
+      } else {
+        const b = buttonAt(this.layout.buttons, p.x, p.y, GAME_WIDTH, GAME_HEIGHT);
+        if (b) this.buttonPointers.set(p.id, b.action);
+      }
+    }
     this.refreshVisuals();
   }
 

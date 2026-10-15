@@ -128,6 +128,7 @@ add("rose", "none", "facade", im)
 im, px = tile("g1"); speckle(px, rng, ["k4", "g2"], 12); rect(px, 0, 0, T, 1, "k4"); add("back_house_b", "none", "back", im)
 im, px = tile("g1"); rect(px, 4, 3, 12, 13, "k1"); rect(px, 5, 4, 11, 12, "b2"); rect(px, 7, 4, 9, 12, "k1"); rect(px, 5, 4, 7, 7, "b4"); add("back_house_b_window", "none", "back", im)
 im, px = tile("k4"); rect(px, 0, 10, T, 13, "g2"); rect(px, 0, 10, T, 11, "g3"); rect(px, 0, 13, T, 14, "k2"); add("back_cornice", "none", "back", im)
+im = Image.new("RGBA", (T, T), (0, 0, 0, 0)); add("ledge", "oneway", "terrain", im)   # invisible ledge on painted landmarks
 # shadow tiles (semi-transparent), used by the generated 'shade' layer
 for nm, a in (("shade1", 60), ("shade2", 105), ("shade3", 150)):
     im = Image.new("RGBA", (T, T), C["void"] + (a,)); add(nm, "none", "shade", im)

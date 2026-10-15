@@ -476,6 +476,11 @@ export class PlayScene extends Phaser.Scene {
         height: p.bodyHeight,
         view: p.view.label,
         strength: p.damageMultiplier,
+        // For playtest bots: is there no floor a short way ahead (a pit or hole)?
+        gapAhead: !this.roomData.solids.concat(this.roomData.oneways).some((g) => {
+          const ax = p.x + p.facing * 22;
+          return ax >= g.x && ax <= g.x + g.w && p.feetY + 2 >= g.y && p.feetY + 2 <= g.y + g.h;
+        }),
       },
       enemies: this.enemies.active.map((e) => ({ type: e.cfg.type, state: e.state, view: e.viewLabel, x: e.x, y: e.y, hp: e.health.hp })),
       dummies: this.dummies.map((d) => ({ x: d.x, hp: d.health.hp, alive: d.alive })),

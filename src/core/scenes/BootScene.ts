@@ -19,6 +19,7 @@ export class BootScene extends Phaser.Scene {
     this.load.image(TILESET_KEY, tileDefs.image);
     this.load.image('altar', 'assets/props/altar.png');
     this.load.image('portrait', 'assets/ui/portrait.png');
+    this.load.image('cathedral_front', 'assets/props/cathedral_front.png');
     this.load.spritesheet('dove', 'assets/props/dove.png', { frameWidth: 16, frameHeight: 12 });
     // Title key art (palette-locked painting, tools/spritegen keyart). Missing file = plain text title.
     this.load.image(TITLE_ART_KEY, 'assets/ui/title.png');

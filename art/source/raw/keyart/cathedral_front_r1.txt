@@ -1,0 +1,4 @@
+Cathedral front r1 — 2026-10-15
+Tool: Higgsfield nano_banana_pro, 2k, 4:3, no references (our own written description; owner's references are read-only notes). Cost: 2 credits.
+Job: 524f39ef-0873-47e3-9f7b-13cc57b5505a -> cathedral_front_r1_524f39ef.png
+Shipped: public/assets/props/cathedral_front.png via `python3 -E -s -m tools.landmark <src> <out> 540` (keyed, 540x403, Requiem 48, dither 8).
