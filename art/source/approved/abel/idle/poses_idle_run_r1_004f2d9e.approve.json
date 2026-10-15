@@ -1,0 +1,16 @@
+{
+  "source": "poses_idle_run_r1_004f2d9e.png",
+  "source_hash": "sha256:09226d129d46c92a89e1608765b7546cd264e9e5bc7bba57362fe9c8ef0fa4b9",
+  "figures": [
+    0,
+    1
+  ],
+  "standing_px": 1436,
+  "factor": 0.222841,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "f0.png",
+    "f1.png"
+  ]
+}

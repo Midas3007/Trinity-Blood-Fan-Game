@@ -41,14 +41,15 @@ def palette_cmd(out: Path) -> None:
 @click.option("--dither", is_flag=True)
 @click.option("--gammas", default="1.0", help="Tone gammas to compare: <1 lifts shadows, >1 darkens mid-tones.")
 @click.option("--squeezes", default="1.0", help="Width factors to compare before pixelation, e.g. 1.0,0.9.")
-def preview(src, out, pal_path, heights, methods, outlines, figure, cell, zoom, open_px, dither, gammas, squeezes) -> None:
+@click.option("--expect", "expected", default=None, type=int, help="Number of figures on the sheet.")
+def preview(src, out, pal_path, heights, methods, outlines, figure, cell, zoom, open_px, dither, gammas, squeezes, expected) -> None:
     """Contact sheet of one figure at several sizes/methods/outlines (the tuning tool)."""
     from .preview import contact_sheet
 
     pal = Palette.from_hex(pal_path)
     sheet = contact_sheet(src, pal, [int(h) for h in heights.split(",")], methods.split(","), outlines.split(","),
                           figure, zoom, cell, open_px, dither, [float(g) for g in gammas.split(",")],
-                          [float(q) for q in squeezes.split(",")])
+                          [float(q) for q in squeezes.split(",")], expected)
     out = out or Path("art/preview") / f"{src.stem}_fig{figure}_preview.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     sheet.save(out)
@@ -64,13 +65,14 @@ def preview(src, out, pal_path, heights, methods, outlines, figure, cell, zoom, 
 @click.option("--sprite-height", default=40)
 @click.option("--ref-height", default=None, type=int, help="Source px of a standing figure (default: tallest on the sheet).")
 @click.option("--open-px", default=0)
-def approve_cmd(src, entity, animation, figures, names, sprite_height, ref_height, open_px) -> None:
+@click.option("--expect", "expected", default=None, type=int, help="Number of figures on the sheet (for figures that nearly touch).")
+def approve_cmd(src, entity, animation, figures, names, sprite_height, ref_height, open_px, expected) -> None:
     """Key, split and shrink an approved raw generation into art/source/approved/<entity>/<animation>/."""
     from .approve import approve
 
     out = Path("art/source/approved") / entity / animation
     figs = [int(f) for f in figures.split(",")] if figures else None
-    for p in approve(src, out, sprite_height, figs, ref_height, open_px, names.split(",") if names else None):
+    for p in approve(src, out, sprite_height, figs, ref_height, open_px, names.split(",") if names else None, expected):
         click.echo(f"wrote {p}")
 
 

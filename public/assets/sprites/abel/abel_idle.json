@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "idle": {
+      "durations_ms": [
+        700,
+        500
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 2,
+  "entity": "abel",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "abel_idle.png",
+  "source_hashes": [
+    "sha256:71be21356fda2e8868db5a9f1044f2111d63c3f2752cbcff51186bc3ba679862",
+    "sha256:ae091fdb9dd213a6d819299ea782d56b3b2f9aaa4ce20fce0dfb2dc7aa094329"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "animations": {
+    "run": {
+      "durations_ms": [
+        110,
+        110,
+        110,
+        110
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 4,
+  "entity": "abel",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "abel_run.png",
+  "source_hashes": [
+    "sha256:ce1a83812cec0017fb673656726f7f271143d75f0ba7cefc7c0973aeca800b20",
+    "sha256:3b93f415a575c869f67b1e113f9331085238e8da7877f50b0e68f318673a1950",
+    "sha256:6bcaa32ca769880f4200ec4a51a4d96eb19d85f52e81b600ce541124fa30ea2f",
+    "sha256:b70c2eb8b52e997d8d3314e48b26e649d4411474aaceef4f1dc507ba01cb4deb"
+  ]
+}

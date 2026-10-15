@@ -15,9 +15,9 @@ WORK_SCALE = 8  # approved crops are 8x sprite size: plenty for the 4x sharpen p
 
 
 def approve(src: Path, out_dir: Path, sprite_height: int, figures: list[int] | None = None, ref_height: int | None = None,
-            open_px: int = 0, names: list[str] | None = None) -> list[Path]:
+            open_px: int = 0, names: list[str] | None = None, expected: int | None = None) -> list[Path]:
     img = alpha.key(ingest.load(src), open_px=open_px)
-    figs = split.figures(img)
+    figs = split.figures_expected(img, expected) if expected else split.figures(img)
     if not figs:
         raise ValueError(f"{src}: no figures found")
     chosen = figures if figures is not None else list(range(len(figs)))
@@ -38,6 +38,6 @@ def approve(src: Path, out_dir: Path, sprite_height: int, figures: list[int] | N
         written.append(p)
     sidecar = out_dir / f"{src.stem}.approve.json"
     meta = {"source": src.name, "source_hash": ingest.sha256(src), "figures": chosen, "standing_px": int(standing),
-            "factor": round(factor, 6), "open_px": open_px, "outputs": [p.name for p in written]}
+            "factor": round(factor, 6), "open_px": open_px, "expected": expected, "outputs": [p.name for p in written]}
     sidecar.write_text(json.dumps(meta, indent=2) + "\n")
     return written

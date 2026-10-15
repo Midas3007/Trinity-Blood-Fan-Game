@@ -32,9 +32,9 @@ def render(fig: np.ndarray, pal: Palette, height: int, method: str, outline_mode
 
 def contact_sheet(src: Path, pal: Palette, heights: list[int], methods: list[str], outlines: list[str], figure: int,
                   zoom: int, cell: int, open_px: int = 0, dither: bool = False, gammas: list[float] | None = None,
-                  squeezes: list[float] | None = None) -> Image.Image:
+                  squeezes: list[float] | None = None, expected: int | None = None) -> Image.Image:
     img = alpha.key(ingest.load(src), open_px=open_px)
-    figs = split.figures(img)
+    figs = split.figures_expected(img, expected) if expected else split.figures(img)
     if not figs:
         raise ValueError(f"{src}: no figure found after background removal")
     fig = figs[min(figure, len(figs) - 1)]

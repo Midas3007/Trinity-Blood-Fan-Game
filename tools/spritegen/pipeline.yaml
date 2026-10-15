@@ -18,8 +18,8 @@ entities:
     output_dir: public/assets/sprites/abel/
     animations:
       reference: { loop: false, durations_ms: 200 }   # turnaround figures, for checking only
-      idle:      { loop: true,  durations_ms: 150 }
-      run:       { loop: true,  durations_ms: 90 }
+      idle:      { loop: true,  durations_ms: [700, 500] }     # 2 key poses: hold, breathe out
+      run:       { loop: true,  durations_ms: 110 }            # 4 key poses (contact, down, passing, up)
       priest1:   { loop: false, attack: priest1 }
 
   abel_crusnik:

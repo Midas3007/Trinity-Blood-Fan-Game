@@ -194,13 +194,13 @@ Key poses only; in-betweens come from hand-pixelling or interpolation (§7.7). F
 
 | # | Entity | Cell | What it is (our words) | Key art needed | Credit budget |
 |---|---|---|---|---|---|
-| 1 | `abel` priest form | 64 | Lanky priest, very dark coat with light piping, long silver ponytail (rounds 1–3) | turnaround + ~45 key poses | 2 + ~20 |
+| 1 | `abel` priest form | 64 | **Locked 2026-10-15:** round 3 turnaround (`art/source/approved/abel/reference/`) + pipeline gamma 1.5, squeeze 0.88 | turnaround ✅ + ~45 key poses | 6 spent + ~20 |
 | 2 | `abel_crusnik` | 96 | Wild loose silver hair, red eyes, big black feathered wings, white sash, crimson segmented spiked scythe and tendrils | turnaround + ~25 poses (wings spread/folded, scythe combo, glide, phase-step, drain) | ~14 |
 | — | Crusnik lightning, aura | VFX | Pale crackling lightning on activation and wing beats | **code-drawn** (procedural bolts), no credits | 0 |
 | 3 | `enemy_thrall` | 64 | String-bound worshipper (Region 1 common enemy) | turnaround + ~15 poses | ~6 |
 | 4 | `enemy_methuselah` | 64 | Pale, elegant vampire noble in dark aristocratic clothes, sharp features, fangs; fast duelist | turnaround + ~15 poses | ~6 |
 | 5 | `enemy_ghoul` | 64 | Night creature: a reanimated Methuselah, emaciated, torn finery, clawed hands, hunched crawl | turnaround + ~12 poses | ~6 |
-| 6 | `enemy_fairy` *(owner to clarify which creature is meant)* | 32–64 | Small flying creature | turnaround + ~8 poses | ~4 |
+| 6 | `enemy_fairy` | 32–64 | Small pale child-like creature with thin translucent wings, hovering; attacks with an ultrasonic scream (expanding sound rings, **code-drawn**) | turnaround + ~8 poses (hover, dive, scream, hurt, fall) | ~4 |
 | 7 | `enemy_iron_choir` | 128 | Marionette soldier in plate armour (creative direction §6) | turnaround + ~12 poses | ~6 |
 | 8 | `boss_marchesa` | 128 | Methuselah noblewoman hung from red strings (boss 1) | turnaround + ~20 poses | ~8 |
 | 9 | `villain_dietrich` | 64 / 256 rig | Auburn-haired puppeteer in a black piped military coat, red armband, red strings (main villain; NPC + boss 2 with the Grand Marionette) | turnaround + ~15 poses; marionette ~10 | ~12 |

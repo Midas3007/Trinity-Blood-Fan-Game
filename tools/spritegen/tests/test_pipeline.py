@@ -83,6 +83,16 @@ class AlphaAndSplitTests(unittest.TestCase):
         keyed = alpha.key(img, erode=0, open_px=2)
         self.assertEqual(len(split.figures(keyed)), 2)
 
+    def test_split_with_expected_count_separates_touching_figures(self):
+        img = canvas(120, 40)
+        for x0 in (10, 50, 90):
+            img[5:35, x0 : x0 + 14] = (40, 40, 60, 255)
+        img[30:32, 24:50] = (40, 40, 60, 255)  # a coat tail bridging figure 1 and 2
+        keyed = alpha.key(img, erode=0)
+        self.assertEqual(len(split.figures(keyed)), 2)  # gap-based split merges them
+        figs = split.figures_expected(keyed, 3)
+        self.assertEqual(len(figs), 3)
+
     def test_split_finds_figures_left_to_right(self):
         img = canvas(100, 30)
         for x0 in (5, 40, 75):

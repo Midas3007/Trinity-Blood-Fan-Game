@@ -1,0 +1,5 @@
+Pose sheet 1 — Abel idle (2) + run (4) key poses — 2026-10-15
+Tool: Higgsfield nano_banana_pro (job reports nano_banana_2), 2k, 16:9, 1 image, image reference: round-3 turnaround d2348a6e. Cost: 2 credits.
+Job: 004f2d9e-2704-4276-b556-c65169369b1d -> poses_idle_run_r1_004f2d9e.png
+Approved: figures 0-1 -> abel/idle, 2-5 -> abel/run (--expect 6 --ref-height 1436: the standing pose's source height).
+Notes: coat tails of neighbouring poses nearly touch -> split.figures_expected added. Idle frame 2 renders narrower than frame 1.
