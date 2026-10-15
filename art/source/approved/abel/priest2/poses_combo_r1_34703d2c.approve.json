@@ -1,0 +1,16 @@
+{
+  "source": "poses_combo_r1_34703d2c.png",
+  "source_hash": "sha256:bc2427a44bc9de023eb66c8c895eaceeb9bbe8f7bed7b602453963c05b5965e4",
+  "figures": [
+    3,
+    4
+  ],
+  "standing_px": 1268,
+  "factor": 0.252366,
+  "open_px": 0,
+  "expected": 7,
+  "outputs": [
+    "f0.png",
+    "f1.png"
+  ]
+}

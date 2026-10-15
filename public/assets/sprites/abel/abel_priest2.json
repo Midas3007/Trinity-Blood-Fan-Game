@@ -1,0 +1,40 @@
+{
+  "animations": {
+    "priest2": {
+      "attack": "priest2",
+      "durations_ms": [
+        100,
+        80,
+        240
+      ],
+      "events": [
+        {
+          "frame": 1,
+          "type": "hitbox_on"
+        },
+        {
+          "frame": 2,
+          "type": "hitbox_off"
+        }
+      ],
+      "frames": [
+        0,
+        1,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 2,
+  "entity": "abel",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "abel_priest2.png",
+  "source_hashes": [
+    "sha256:1c8022338c07097ef543ea74d72c287c4973a050f37fb80ec089dc8cca0c0c7e",
+    "sha256:8632afcd2e690a09a8abef4fa98f660e52452bbcfc6075e448b2fd48d734b89a"
+  ]
+}

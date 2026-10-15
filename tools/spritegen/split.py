@@ -36,9 +36,96 @@ def bbox(img: np.ndarray) -> tuple[int, int, int, int] | None:
     return int(ys.min()), int(xs.min()), int(ys.max()) + 1, int(xs.max()) + 1
 
 
+MAX_ERODE = 10  # coarse pixels; separates touching figures by shrinking until their cores come apart
+
+
+def _box(c: np.ndarray) -> tuple[int, int, int, int]:
+    return int(c[:, 0].min()), int(c[:, 1].min()), int(c[:, 0].max()), int(c[:, 1].max())
+
+
+def _gap(a: tuple[int, int, int, int], b: tuple[int, int, int, int]) -> int:
+    dy = max(0, max(a[0], b[0]) - min(a[2], b[2]))
+    dx = max(0, max(a[1], b[1]) - min(a[3], b[3]))
+    return dx + dy
+
+
+def _seed_labels(coarse: np.ndarray, expected: int) -> np.ndarray | None:
+    """Label map (-1 = none) with `expected` figures. Seeds are the largest components after eroding just enough
+    to separate touching figures; seeds then grow back through the silhouette (multi-source flood)."""
+    from collections import deque
+
+    for k in range(MAX_ERODE + 1):
+        m = morph.erode(coarse, k) if k else coarse
+        comps = sorted(morph.components(m), key=len, reverse=True)
+        if len(comps) >= expected and len(comps[expected - 1]) >= 0.05 * len(comps[0]):
+            break
+    else:
+        return None
+    labels = np.full(coarse.shape, -1, dtype=np.int32)
+    q: deque[tuple[int, int]] = deque()
+    for i, c in enumerate(comps[:expected]):
+        labels[c[:, 0], c[:, 1]] = i
+        q.extend((int(y), int(x)) for y, x in c)
+    h, w = coarse.shape
+    while q:
+        y, x = q.popleft()
+        for dy, dx in morph.N8:
+            ny, nx = y + dy, x + dx
+            if 0 <= ny < h and 0 <= nx < w and coarse[ny, nx] and labels[ny, nx] < 0:
+                labels[ny, nx] = labels[y, x]
+                q.append((ny, nx))
+    # Detached bits never reached by the flood join the figure whose box is nearest.
+    boxes = [_box(np.argwhere(labels == i)) for i in range(expected)]
+    for bit in morph.components(coarse & (labels < 0)):
+        owner = min(range(expected), key=lambda i: (_gap(_box(bit), boxes[i]), i))
+        labels[bit[:, 0], bit[:, 1]] = owner
+    return labels
+
+
+def figures_by_components(img: np.ndarray, expected: int) -> list[np.ndarray] | None:
+    """2D separation into exactly `expected` figures (separate or touching). None if it can't be done."""
+    mask = img[..., 3] > 0
+    coarse = mask[::COARSE, ::COARSE]
+    labels = _seed_labels(coarse, expected)
+    if labels is None:
+        return None
+    # Fine pixels take the label of their coarse cell; pixels in unlabeled cells take a labeled 8-neighbour cell.
+    full = np.repeat(np.repeat(labels, COARSE, axis=0), COARSE, axis=1)[: mask.shape[0], : mask.shape[1]]
+    for _ in range(COARSE):
+        missing = mask & (full < 0)
+        if not missing.any():
+            break
+        for dy, dx in morph.N8:
+            shifted = np.full_like(full, -1)
+            ys, xs = slice(max(dy, 0), full.shape[0] + min(dy, 0)), slice(max(dx, 0), full.shape[1] + min(dx, 0))
+            yd, xd = slice(max(-dy, 0), full.shape[0] + min(-dy, 0)), slice(max(-dx, 0), full.shape[1] + min(-dx, 0))
+            shifted[yd, xd] = full[ys, xs]
+            fill = missing & (full < 0) & (shifted >= 0)
+            full[fill] = shifted[fill]
+    lefts = [int(np.nonzero((full == i).any(axis=0))[0].min()) for i in range(expected)]
+    out = []
+    for i in sorted(range(expected), key=lambda i: lefts[i]):
+        sel = mask & (full == i)
+        cols = np.nonzero(sel.any(axis=0))[0]
+        a, b = int(cols.min()), int(cols.max()) + 1
+        piece = np.zeros((img.shape[0], b - a, 4), dtype=np.uint8)
+        keep = sel[:, a:b]
+        piece[keep] = img[:, a:b][keep]
+        out.append(piece)
+    return out
+
+
 def figures_expected(img: np.ndarray, expected: int) -> list[np.ndarray]:
-    """For sheets whose figures nearly touch (flaring coats): cut at the `expected - 1` emptiest columns, spaced
-    apart, then keep only the largest connected body in each slice so stray bits of neighbours are dropped."""
+    """Separate exactly `expected` figures: 2D components first; if figures truly touch, cut at the
+    `expected - 1` emptiest columns and keep the largest body in each slice."""
+    found = figures_by_components(img, expected)
+    if found is not None:
+        return found
+    return _figures_by_columns(img, expected)
+
+
+def _figures_by_columns(img: np.ndarray, expected: int) -> list[np.ndarray]:
+    """Column-cut fallback for figures that touch."""
     mask = img[..., 3] > 0
     occ = mask.sum(axis=0).astype(np.float64)
     cols = np.nonzero(occ)[0]

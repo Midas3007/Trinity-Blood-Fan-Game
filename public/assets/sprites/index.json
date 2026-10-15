@@ -1,5 +1,83 @@
 {
   "sheets": {
+    "abel/abel_crouch.png": {
+      "animations": {
+        "crouch": {
+          "durations_ms": [
+            400
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_crouch.png",
+      "source_hashes": [
+        "sha256:e3ed1894efe50b2487ca3ac82418bc228dc9b0df95ec9c743bfbe3b7216ab9d4"
+      ]
+    },
+    "abel/abel_dodge.png": {
+      "animations": {
+        "dodge": {
+          "durations_ms": [
+            220,
+            160
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 2,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_dodge.png",
+      "source_hashes": [
+        "sha256:2c5515fc128a0ee4e05a75e31f0fb6c1020e914efdcf69bfde7d9bb8f97eafea",
+        "sha256:b278e5881bb149d0f1ed764dead9b97f47d2cf3954ed39eb85675c74227475a1"
+      ]
+    },
+    "abel/abel_fall.png": {
+      "animations": {
+        "fall": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_fall.png",
+      "source_hashes": [
+        "sha256:14861fd3d9f46c22a232ec649e01cb3541494c5774cf4007a8fea1840c6827b5"
+      ]
+    },
     "abel/abel_idle.png": {
       "animations": {
         "idle": {
@@ -24,8 +102,181 @@
       "pivot_y": 64,
       "sheet": "abel_idle.png",
       "source_hashes": [
-        "sha256:71be21356fda2e8868db5a9f1044f2111d63c3f2752cbcff51186bc3ba679862",
-        "sha256:ae091fdb9dd213a6d819299ea782d56b3b2f9aaa4ce20fce0dfb2dc7aa094329"
+        "sha256:5ddcb57d6383493050accdadbc72bbab7c079328abe5f586d26fa79748e04c9b",
+        "sha256:ab852d6a3ffafc1fcaf9330dbf41ba88b68827c1e26cddd24b08325df706d2f8"
+      ]
+    },
+    "abel/abel_jump.png": {
+      "animations": {
+        "jump": {
+          "durations_ms": [
+            220,
+            400
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 2,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_jump.png",
+      "source_hashes": [
+        "sha256:12936f804e243ef96056ba65fa9e30edc6f2aeac192d41efb7b2d2164fb9b7c3",
+        "sha256:55f60649a2d31ad891f1df56c63b507a7e1af289237cfc8ca16c6aff7b44b7d9"
+      ]
+    },
+    "abel/abel_land.png": {
+      "animations": {
+        "land": {
+          "durations_ms": [
+            350
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_land.png",
+      "source_hashes": [
+        "sha256:257af34135753f02a5f6adc932d59fbdd2248bdf2429d9814b0996c2cbc510ed"
+      ]
+    },
+    "abel/abel_priest1.png": {
+      "animations": {
+        "priest1": {
+          "attack": "priest1",
+          "durations_ms": [
+            110,
+            80,
+            220
+          ],
+          "events": [
+            {
+              "frame": 1,
+              "type": "hitbox_on"
+            },
+            {
+              "frame": 2,
+              "type": "hitbox_off"
+            }
+          ],
+          "frames": [
+            0,
+            1,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 2,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_priest1.png",
+      "source_hashes": [
+        "sha256:a53aea61bf517ad1aab052cfc473ee1dac92f6e61966136171bacae370ce7101",
+        "sha256:97ef3f0c3f2e95f50e3f3589a16f6f8652cb7fb31d58a24262dbb1ec6ff6a7d2"
+      ]
+    },
+    "abel/abel_priest2.png": {
+      "animations": {
+        "priest2": {
+          "attack": "priest2",
+          "durations_ms": [
+            100,
+            80,
+            240
+          ],
+          "events": [
+            {
+              "frame": 1,
+              "type": "hitbox_on"
+            },
+            {
+              "frame": 2,
+              "type": "hitbox_off"
+            }
+          ],
+          "frames": [
+            0,
+            1,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 2,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_priest2.png",
+      "source_hashes": [
+        "sha256:1c8022338c07097ef543ea74d72c287c4973a050f37fb80ec089dc8cca0c0c7e",
+        "sha256:8632afcd2e690a09a8abef4fa98f660e52452bbcfc6075e448b2fd48d734b89a"
+      ]
+    },
+    "abel/abel_priest3.png": {
+      "animations": {
+        "priest3": {
+          "attack": "priest3",
+          "durations_ms": [
+            170,
+            100,
+            380
+          ],
+          "events": [
+            {
+              "frame": 1,
+              "type": "hitbox_on"
+            },
+            {
+              "frame": 2,
+              "type": "hitbox_off"
+            }
+          ],
+          "frames": [
+            0,
+            1,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 2,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_priest3.png",
+      "source_hashes": [
+        "sha256:b3cdb2acb0e7fb1be24c6a2ba59b8835884e4cf5eba4ac80e872f255a0b2297d",
+        "sha256:340c59f4859f1027167d6d75faa099561275e7adeaf446bcb08e20982a429432"
       ]
     },
     "abel/abel_reference.png": {
@@ -90,10 +341,35 @@
       "pivot_y": 64,
       "sheet": "abel_run.png",
       "source_hashes": [
-        "sha256:ce1a83812cec0017fb673656726f7f271143d75f0ba7cefc7c0973aeca800b20",
-        "sha256:3b93f415a575c869f67b1e113f9331085238e8da7877f50b0e68f318673a1950",
-        "sha256:6bcaa32ca769880f4200ec4a51a4d96eb19d85f52e81b600ce541124fa30ea2f",
-        "sha256:b70c2eb8b52e997d8d3314e48b26e649d4411474aaceef4f1dc507ba01cb4deb"
+        "sha256:3d7cab44a9a59ef64bebdb2970f2e4c21106ec8882ce9147bff85cbed90e1962",
+        "sha256:476ef8120dac89bc273c501841d06448029008fae288d684197c50dd7c929f49",
+        "sha256:4837d296ddaed3bbacec49f1d3c90bae9e2316e753a9fc90b00c1605afd272d7",
+        "sha256:2fd51192acd9dabe52f94e9124d4eb8d3bdb76d530e54cd20bc4634d9f948e1f"
+      ]
+    },
+    "abel/abel_slide.png": {
+      "animations": {
+        "slide": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "abel",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "abel_slide.png",
+      "source_hashes": [
+        "sha256:507d3c6ee504170e3394d38b17dc147770e529679cfb5c4fa70446362d1e79a8"
       ]
     }
   }

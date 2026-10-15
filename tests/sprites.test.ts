@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { animDefs, sheetLoads, textureKey, type SpriteIndex } from '../src/systems/sprites/spriteIndex';
 import { visualFor } from '../src/player/PlayerView';
 import { playerStates, type PlayerStateKey } from '../src/player/playerStates';
-import { attackTable } from '../src/combat/attackData';
+import player from '../src/data/player.json';
 import index from '../public/assets/sprites/index.json';
 
 const idx = index as unknown as SpriteIndex;
@@ -39,7 +39,7 @@ describe('player visuals', () => {
 
   it('every player state has a visual entry, and every animation it names exists in the sprite index', () => {
     for (const s of allStates) {
-      const v = visualFor(s);
+      const v = visualFor(s, 'priest1');
       if (v === null) continue;
       expect(anims.has(v.anim), `${s} -> ${v.anim}`).toBe(true);
       if (v.frame !== undefined) {
@@ -49,8 +49,23 @@ describe('player visuals', () => {
     }
   });
 
-  it('low postures (crouch, slide, roll) use the placeholder until they have art that fits the shorter body', () => {
-    for (const s of ['crouch', 'slide', 'dodge', 'crouchAttack'] as const) expect(visualFor(s)).toBeNull();
-    expect(Object.keys(attackTable).length).toBeGreaterThan(0);
+  it('each combo hit plays its own animation', () => {
+    for (const id of ['priest1', 'priest2', 'priest3']) {
+      const v = visualFor('attack', id);
+      expect(v?.anim).toBe(`abel_${id}`);
+      expect(anims.has(v!.anim)).toBe(true);
+    }
+    expect(visualFor('attack', null)).toBeNull();
+  });
+
+  it('low postures (crouch, slide, roll) have art and the roll animation lasts as long as the dodge', () => {
+    for (const s of ['crouch', 'slide', 'dodge', 'crouchAttack'] as const) {
+      const v = visualFor(s);
+      expect(v).not.toBeNull();
+      expect(anims.has(v!.anim)).toBe(true);
+    }
+    const roll = animDefs(idx).find((a) => a.key === 'abel_dodge');
+    const total = roll!.frames.reduce((t, f) => t + f.duration, 0);
+    expect(total).toBe(player.dodgeDurationMs);
   });
 });

@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "jump": {
+      "durations_ms": [
+        220,
+        400
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 2,
+  "entity": "abel",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "abel_jump.png",
+  "source_hashes": [
+    "sha256:12936f804e243ef96056ba65fa9e30edc6f2aeac192d41efb7b2d2164fb9b7c3",
+    "sha256:55f60649a2d31ad891f1df56c63b507a7e1af289237cfc8ca16c6aff7b44b7d9"
+  ]
+}

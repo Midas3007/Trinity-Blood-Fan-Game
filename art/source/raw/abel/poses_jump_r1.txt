@@ -1,0 +1,4 @@
+Pose sheet 2 — Abel jump/fall/land key poses — 2026-10-15
+Tool: Higgsfield nano_banana_pro (job reports nano_banana_2), 2k, 1 image, image reference: round-3 turnaround d2348a6e. Cost: 2 credits.
+Job: fdd4204f… -> poses_jump_r1_fdd4204f.png
+Approved (--ref-height 1442): figures 2-3 -> abel/jump, 4 -> abel/fall, 5 -> abel/land.

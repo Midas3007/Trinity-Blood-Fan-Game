@@ -1,0 +1,6 @@
+Pose sheet 4 — Abel low postures (roll, slide, crouch)
+r1 (417055ca, 2 credits): REJECTED — poses overlapped too much to split cleanly.
+r2 (1c1162cd, 2 credits): 21:9, 5 poses (standing anchor, tucked roll, kneeling recovery, feet-first slide, crouch).
+  Image reference: round-3 turnaround d2348a6e.
+  Approved (--expect 5 --ref-height 1271): figures 1-2 -> dodge (roll), 3 -> slide (anchor: centre), 4 -> crouch.
+Notes: slide art is 19 px tall against an 18 px gap under the test beam, so hair overlaps the beam by ~1 px.

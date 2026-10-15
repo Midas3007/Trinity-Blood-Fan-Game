@@ -26,7 +26,9 @@ def key(img: np.ndarray, tolerance: float = 40.0, despeckle: int = 4, holes: int
     dist = np.linalg.norm(rgb - target, axis=-1)
     # Pink fringe from soft AI edges: strongly magenta-tinted pixels (R and B both well above G) count as background.
     tinted = (rgb[..., 0] - rgb[..., 1] > 90) & (rgb[..., 2] - rgb[..., 1] > 90) & (np.abs(rgb[..., 0] - rgb[..., 2]) < 70)
-    opaque = (dist >= tolerance) & ~tinted & (img[..., 3] > 127)
+    # Pale magenta-pink (models sometimes add "motion swoosh" marks): bright, red ~ blue, green clearly lower.
+    pale = (rgb[..., 0] > 200) & (rgb[..., 2] > 200) & (np.abs(rgb[..., 0] - rgb[..., 2]) < 40) & (rgb[..., 1] < rgb[..., 0] - 40)
+    opaque = (dist >= tolerance) & ~tinted & ~pale & (img[..., 3] > 127)
     if open_px:
         # Morphological opening removes structures thinner than 2*open_px+1 (e.g. a drawn ground line).
         opaque = morph.dilate(morph.erode(opaque, open_px), open_px)

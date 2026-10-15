@@ -9,9 +9,12 @@ export interface StateVisual {
 
 const states = mapping.states as Record<PlayerStateKey, StateVisual | null>;
 
-/** The visual for a state, or null for "show the placeholder". Pure; exported for tests. */
-export function visualFor(state: PlayerStateKey): StateVisual | null {
-  return states[state] ?? null;
+/** The visual for a state, or null for "show the placeholder". `{attack}` resolves to the running attack id.
+ * Pure; exported for tests. */
+export function visualFor(state: PlayerStateKey, attackId: string | null = null): StateVisual | null {
+  const v = states[state] ?? null;
+  if (!v || !v.anim.includes('{attack}')) return v;
+  return attackId ? { ...v, anim: v.anim.replace('{attack}', attackId) } : null;
 }
 
 /**
@@ -42,8 +45,8 @@ export class PlayerView {
     return this.sprite?.visible ? this.current : 'placeholder';
   }
 
-  update(state: PlayerStateKey, feetX: number, feetY: number, facing: 1 | -1, alpha: number): void {
-    const v = this.sprite ? visualFor(state) : null;
+  update(state: PlayerStateKey, attackId: string | null, feetX: number, feetY: number, facing: 1 | -1, alpha: number): void {
+    const v = this.sprite ? visualFor(state, attackId) : null;
     const showArt = this.sprite !== null && v !== null && this.scene.anims.exists(v.anim);
     this.placeholder.setVisible(!showArt);
     this.facingMark.setVisible(!showArt);

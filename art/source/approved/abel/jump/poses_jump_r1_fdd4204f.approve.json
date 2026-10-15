@@ -1,0 +1,16 @@
+{
+  "source": "poses_jump_r1_fdd4204f.png",
+  "source_hash": "sha256:f381f1e0df9f9dc96ab0802accf3e39448d42b913224c6ea9cb5058a34b9bd05",
+  "figures": [
+    2,
+    3
+  ],
+  "standing_px": 1442,
+  "factor": 0.221914,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "f0.png",
+    "f1.png"
+  ]
+}

@@ -1,18 +1,36 @@
 {
-  "_note": "Which sprite animation each player state shows. 'frame' freezes one frame (for states without their own art yet). null = show the placeholder rectangle (used where the body is shorter than the art: crouch, slide, roll). Update as new pose sets are built.",
+  "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's id (priest1/priest2/priest3), so each combo hit plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built.",
   "entity": "abel",
   "states": {
-    "idle": { "anim": "abel_idle" },
-    "run": { "anim": "abel_run" },
-    "jump": { "anim": "abel_run", "frame": 3 },
-    "fall": { "anim": "abel_run", "frame": 1 },
-    "hardLand": { "anim": "abel_run", "frame": 1 },
-    "attack": { "anim": "abel_idle", "frame": 0 },
-    "airAttack": { "anim": "abel_run", "frame": 3 },
-    "hurt": { "anim": "abel_idle", "frame": 0 },
-    "dodge": null,
-    "crouch": null,
-    "slide": null,
-    "crouchAttack": null
+    "idle": {
+      "anim": "abel_idle"
+    },
+    "run": {
+      "anim": "abel_run"
+    },
+    "jump": {
+      "anim": "abel_jump"
+    },
+    "fall": {
+      "anim": "abel_fall"
+    },
+    "hardLand": {
+      "anim": "abel_land"
+    },
+    "attack": {
+      "anim": "abel_{attack}"
+    },
+    "airAttack": {
+      "anim": "abel_priest1",
+      "frame": 1
+    },
+    "hurt": {
+      "anim": "abel_land",
+      "frame": 0
+    },
+    "dodge": {"anim":"abel_dodge"},
+    "crouch": {"anim":"abel_crouch"},
+    "slide": {"anim":"abel_slide"},
+    "crouchAttack": {"anim":"abel_crouch","frame":0}
   }
 }

@@ -35,6 +35,7 @@ export class Player implements PlayerContext, PlayerCombatant {
   private height: number;
   canStand = true;
   private blinkMs = 0;
+  private alpha = 1;
   private readonly fsm: StateMachine<PlayerStateKey, PlayerContext>;
   private readonly facingMark: Phaser.GameObjects.Rectangle;
   readonly view: PlayerView;
@@ -59,6 +60,10 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.airTopY = y;
     this.fsm = new StateMachine(playerStates, 'idle', this as PlayerContext);
     this.view = new PlayerView(scene, this.sprite, this.facingMark);
+    // Draw after Arcade has copied this step's body position onto the game object (POST_UPDATE), so the
+    // sprite never trails the body by a frame at roll/slide speeds.
+    scene.events.on(Phaser.Scenes.Events.POST_UPDATE, this.syncView, this);
+    scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => scene.events.off(Phaser.Scenes.Events.POST_UPDATE, this.syncView, this));
   }
 
   get state(): PlayerStateKey {
@@ -218,9 +223,12 @@ export class Player implements PlayerContext, PlayerCombatant {
 
     this.blinkMs = Math.max(0, this.blinkMs - dtMs);
     const blinkOff = this.blinkMs > 0 && Math.floor(this.blinkMs / BLINK_MS) % 2 === 0;
-    const alpha = blinkOff ? 0.2 : this.invulnerable ? INVULNERABLE_ALPHA : 1;
-    this.sprite.setAlpha(alpha);
+    this.alpha = blinkOff ? 0.2 : this.invulnerable ? INVULNERABLE_ALPHA : 1;
+    this.sprite.setAlpha(this.alpha);
+  }
+
+  private syncView(): void {
     this.facingMark.setPosition(this.sprite.x + this.facing * (this.tuning.width / 2 - 2), this.sprite.y - this.height / 2 + 7);
-    this.view.update(this.fsm.current, this.sprite.x, this.feetY, this.facing, alpha);
+    this.view.update(this.fsm.current, this.combat.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha);
   }
 }

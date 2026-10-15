@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "dodge": {
+      "durations_ms": [
+        220,
+        160
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 64,
+  "columns": 2,
+  "entity": "abel",
+  "palette": "requiem48.hex",
+  "pivot_x": 32,
+  "pivot_y": 64,
+  "sheet": "abel_dodge.png",
+  "source_hashes": [
+    "sha256:2c5515fc128a0ee4e05a75e31f0fb6c1020e914efdcf69bfde7d9bb8f97eafea",
+    "sha256:b278e5881bb149d0f1ed764dead9b97f47d2cf3954ed39eb85675c74227475a1"
+  ]
+}

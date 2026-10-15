@@ -20,7 +20,29 @@ entities:
       reference: { loop: false, durations_ms: 200 }   # turnaround figures, for checking only
       idle:      { loop: true,  durations_ms: [700, 500] }     # 2 key poses: hold, breathe out
       run:       { loop: true,  durations_ms: 110 }            # 4 key poses (contact, down, passing, up)
-      priest1:   { loop: false, attack: priest1 }
+      jump:      { loop: false, durations_ms: [220, 400] }     # rising, top of the jump
+      fall:      { loop: true,  durations_ms: 200 }
+      land:      { loop: false, durations_ms: 350 }            # hard landing (matches hardLandingLockMs)
+      # Attacks: wind-up for startupMs, strike for activeMs, strike held for recoveryMs (src/data/attacks.json).
+      priest1:
+        attack: priest1
+        sequence: [0, 1, 1]
+        durations_ms: [110, 80, 220]
+        events: [{ frame: 1, type: hitbox_on }, { frame: 2, type: hitbox_off }]   # frame = sequence step
+      priest2:
+        attack: priest2
+        sequence: [0, 1, 1]
+        durations_ms: [100, 80, 240]
+        events: [{ frame: 1, type: hitbox_on }, { frame: 2, type: hitbox_off }]
+      priest3:
+        attack: priest3
+        sequence: [0, 1, 1]
+        durations_ms: [170, 100, 380]
+        events: [{ frame: 1, type: hitbox_on }, { frame: 2, type: hitbox_off }]
+      # Low postures (one sheet, poses_low_r2). Roll: tucked ball, then kneeling recovery (sum = dodge duration).
+      dodge:     { loop: false, durations_ms: [220, 160] }
+      slide:     { loop: true,  durations_ms: 200, anchor: centre }   # lying pose: centre on the body, not the forward feet
+      crouch:    { loop: true,  durations_ms: 400 }
 
   abel_crusnik:
     cell: [96, 96]

@@ -100,3 +100,12 @@
 | Pipeline writes `public/assets/sprites/index.json`; `BootScene` loads it, then each sheet, and builds Phaser animations from the manifests | No imports from `public/`; adding sheets needs no code change | Hard-coded loader list |
 | `PlayerView` draws the sprite at the physics body's feet (origin bottom-centre, whole pixels, mirrored for facing); the Arcade rectangle stays the collision body | Art never changes collision; placeholder fallback if sheets fail to load | Sprite as physics body |
 | `src/data/playerAnimations.json` maps states to animations; states without art borrow a frozen frame, low postures show the placeholder | Playable now, filled in as pose sets arrive | Wait for every pose |
+
+## 2026-10-15 — Full priest-form animation set
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Attack sheets use `sequence: [0,1,1]` (wind-up, strike, strike held) with durations equal to `attacks.json` startup/active/recovery | One strike drawing per hit is enough at 40 px; timing test keeps art and hitboxes in sync | One frame per phase (more credits) |
+| Low-pose sheet regenerated wide (21:9, 5 poses, spaced) after r1 could not be split | 2 credits cheaper than hand-cleaning overlapping figures | Manual masking |
+| Per-animation `anchor: centre` for lying poses (slide) | Foot-centre anchor is for upright poses | Hand offsets per frame |
+| Player sprite drawn on the scene's POST_UPDATE event | `scene.update` runs before Arcade copies the body position to the game object, so the art trailed by one step (~4 px at roll speed) | Reading `body.center` in update |

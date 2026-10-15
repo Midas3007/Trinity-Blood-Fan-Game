@@ -1,0 +1,5 @@
+Pose sheet 3 — Abel three-hit priest combo (wind-up + strike per hit) — 2026-10-15
+Tool: Higgsfield nano_banana_pro (job reports nano_banana_2), 2k, 1 image, image reference: round-3 turnaround d2348a6e. Cost: 2 credits.
+Job: 34703d2c… -> poses_combo_r1_34703d2c.png
+Approved (--ref-height 1268): figures 1-2 -> priest1, 3-4 -> priest2, 5-6 -> priest3.
+Notes: the final kick reads weak at 40 px; candidate for a redo.

@@ -25,18 +25,28 @@ Last updated: 2026-10-15
 - **Sprite pipeline spec tailored to the project:** `docs/sprite-pipeline.md` (original kept in `docs/references/sprite-pipeline-spec-original.md`). `CLAUDE.md` Part 6 now points to it. Five owner decisions listed in its §10.
 
 - **Sprite pipeline built** (`tools/spritegen`, `npm run sprites:*`): palette Requiem 48 (`art/palette/`), preview contact sheets, approve → build → validate, 18 Python unit tests, Vitest check that sprite timing matches `attacks.json`, GitHub Actions CI (`.github/workflows/ci.yml`).
-- **Higgsfield:** 8 of 104 credits used (96 left). Round 3 combined round 1's tails and round 2's hair; darker coat and lankier build applied in the pipeline (gamma 1.5, squeeze 0.88) instead of more credits.
+- **Higgsfield:** 17.75 of 104 credits used (86.25 left, checked 2026-10-15). Round 3 combined round 1's tails and round 2's hair; darker coat and lankier build applied in the pipeline (gamma 1.5, squeeze 0.88) instead of more credits.
 - Previously: Abel design round 1 (2 variants) and round 2 (1 image, brief rewritten from the owner's reference notes). Round 2 matches the costume and reads well at 40 px; face reads older and proportions aren't lanky enough.
 
-- **Abel's real sprites are in the game:** idle and run animate; he faces left/right; jump/fall/attack/hurt borrow a frozen frame until their poses exist; crouch, slide and roll still show the placeholder rectangle (their bodies are shorter). Verified in the browser; 78/78 tests.
+- **Abel's priest form is fully animated:** idle, run, jump, fall, hard landing, the three combo hits (wind-up + strike, timed to `attacks.json`), roll (tucked ball → kneeling recovery, 380 ms like the dodge), slide and crouch. Hurt and air attack borrow a frozen frame. 4 pose sheets (one redone) cost 10 credits.
+  - Fixed: the sprite trailed the body by one frame (visible at roll/slide speed); it now draws after physics.
+  - Verified: 82/82 game tests, 23/23 pipeline tests, 12 sheets validate, build passes; headless browser shows the right animation for every state with no errors.
+  - Known art gaps: idle frame 2 slightly narrower (small flicker), only 4 run frames, final kick reads weak, slide hair touches the underside of the test beam by ~1 px.
 
 ## In progress
-- Waiting for the owner's phone test of Milestones 2–4 (feel and comfort can't be judged here).
+- Rest of the cast (next credit rounds, see `docs/sprite-pipeline.md`): Crusnik Abel, thrall, Methuselah, ghoul, fairy, Iron Choir, Marchesa, Dietrich, backgrounds.
 
 ## Blockers
 - None.
 
-## Owner must test (on phone) — new controls
+## Owner must test (on phone) — Abel's sprites
+1. Stand still → Abel breathes (2-frame idle). Run left and right → he faces the way he runs.
+2. Jump → rising pose, then falling pose; drop from the highest ledge → crouched landing.
+3. ATK three times → three different strikes.
+4. DODGE → he tucks into a ball, then kneels and stands. Stick down → crouch pose. Stick down + DODGE → feet-first slide under the beam.
+5. Tell me anything that pops, flickers, slides off his feet, or is hard to read at phone size.
+
+## Owner must test (on phone) — new controls (done, kept for reference)
 1. Push the stick **up** → jump; hold it up for a higher jump. Running with the stick slightly up should NOT jump.
 2. Push the stick **down** → crouch (shorter rectangle). Tap ATK while crouched → low attack.
 3. Tap DODGE → roll (shorter, see-through). Hold the stick down and tap DODGE → slide (even lower, longer).
@@ -56,8 +66,5 @@ Open https://trinity-blood-fan-game.vercel.app (reopen the page/app to get the u
 9. Tell me in plain words: is the wind-up too long or too short? Is it too fast or too slow when chasing? Too much health?
 
 ## Next step
-- Owner: confirm round 3 + pipeline settings as Abel's locked design; clarify which 'fairies' are meant.
-- Then: generate idle + run key poses (~4 credits), tune in preview, build the first real sprite sheets.
-- Owner: answer the 5 sprite-pipeline decisions (`docs/sprite-pipeline.md` §10).
-- Owner phone test → tune `src/data/enemies.json`, `attacks.json`, `player.json`.
+- Crusnik Abel sheet (96×96, wings; lightning drawn in code), then the thrall's real sprite.
 - Then Milestone 5: level slice — connected rooms from Tiled, room transitions that keep state, a hazard, checkpoints (altars that refill health and respawn enemies), one simple puzzle, and a room-graph test.

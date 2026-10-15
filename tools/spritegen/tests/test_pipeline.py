@@ -66,6 +66,16 @@ class AlphaAndSplitTests(unittest.TestCase):
         self.assertTrue(set(np.unique(out[..., 3])) <= {0, 255})
         self.assertEqual(int((out[..., 3] == 255).sum()), 400)
 
+    def test_pale_pink_swoosh_is_background_but_white_and_skin_are_not(self):
+        img = canvas(30, 10)
+        img[2:8, 2:8] = (230, 165, 230, 255)  # swoosh
+        img[2:8, 12:18] = (240, 240, 240, 255)  # white piping
+        img[2:8, 22:28] = (230, 195, 180, 255)  # skin
+        out = alpha.key(img, erode=0, despeckle=0)
+        self.assertEqual(out[5, 5, 3], 0)
+        self.assertEqual(out[5, 15, 3], 255)
+        self.assertEqual(out[5, 25, 3], 255)
+
     def test_specks_removed_and_small_holes_filled(self):
         img = canvas(40, 40)
         img[5:25, 5:25] = (40, 40, 60, 255)
@@ -92,6 +102,17 @@ class AlphaAndSplitTests(unittest.TestCase):
         self.assertEqual(len(split.figures(keyed)), 2)  # gap-based split merges them
         figs = split.figures_expected(keyed, 3)
         self.assertEqual(len(figs), 3)
+
+    def test_split_handles_figures_that_overlap_in_columns_without_touching(self):
+        img = canvas(120, 60)
+        img[5:55, 10:30] = (40, 40, 60, 255)  # A: tall, left
+        img[40:55, 38:80] = (40, 40, 60, 255)  # B: low and wide
+        img[5:25, 50:70] = (60, 40, 40, 255)  # C: floats above B, sharing B's columns
+        keyed = alpha.key(img, erode=0)
+        figs = split.figures_expected(keyed, 3)
+        self.assertEqual(len(figs), 3)
+        sizes = sorted(int((f[..., 3] > 0).sum()) for f in figs)
+        self.assertEqual(sizes, sorted([50 * 20, 15 * 42, 20 * 20]))
 
     def test_split_finds_figures_left_to_right(self):
         img = canvas(100, 30)
@@ -157,6 +178,18 @@ class PlacePackValidateTests(unittest.TestCase):
         self.assertAlmostEqual((cols.min() + cols.max() + 1) / 2, 32, delta=1)
         self.assertFalse(meta["clipped"])
 
+    def test_centre_anchor_centres_a_lying_pose_instead_of_its_feet(self):
+        fig = np.zeros((10, 40, 4), np.uint8)
+        fig[2:7, 2:12] = (46, 40, 54, 255)    # torso at the back, off the ground
+        fig[7:9, 12:38] = (46, 40, 54, 255)   # long legs forward, on the ground
+        feet, _ = crop.place(fig, (64, 64))
+        centre, _ = crop.place(fig, (64, 64), anchor="centre")
+        span = lambda c: np.nonzero(c[..., 3].any(axis=0))[0]
+        self.assertAlmostEqual((span(centre).min() + span(centre).max() + 1) / 2, 32, delta=1)
+        self.assertLess(span(feet).min(), span(centre).min())   # foot anchor pushes the torso back
+        with self.assertRaises(ValueError):
+            crop.place(fig, (64, 64), anchor="head")
+
     def test_pack_validate_round_trip_and_determinism(self):
         pal = Palette(np.array([[46, 40, 54], [11, 10, 16]], np.uint8), "test.hex")
         frames = [crop.place(self.make_frame(), (64, 64))[0] for _ in range(3)]
@@ -185,6 +218,13 @@ class PlacePackValidateTests(unittest.TestCase):
             problems, _ = validate_sheet(png, pal)
             self.assertTrue(any("off-palette" in p for p in problems))
             self.assertTrue(any("touches the cell edge" in p for p in problems))
+
+    def test_manifest_sequence_can_hold_a_frame(self):
+        m = build_manifest("a.png", "a", "priest1", (64, 64), 2, 2,
+                           {"sequence": [0, 1, 1], "durations_ms": [110, 80, 220], "attack": "priest1"}, "p", [])
+        self.assertEqual(m["animations"]["priest1"]["frames"], [0, 1, 1])
+        with self.assertRaises(ValueError):
+            build_manifest("a.png", "a", "x", (64, 64), 2, 2, {"sequence": [0, 2]}, "p", [])
 
     def test_manifest_rejects_wrong_duration_count(self):
         with self.assertRaises(ValueError):

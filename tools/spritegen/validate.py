@@ -34,7 +34,7 @@ def validate_sheet(png: Path, pal: Palette) -> tuple[list[str], Counter]:
         problems.append(f"{png.name}: {len(off)} off-palette colours, e.g. #{''.join(f'{v:02x}' for v in off[0])}")
     cols = m["columns"]
     for anim, data in m["animations"].items():
-        for f in data["frames"]:
+        for f in sorted(set(data["frames"])):
             r, c = divmod(f, cols)
             cell = a[r * ch : (r + 1) * ch, c * cw : (c + 1) * cw]
             if cell.shape != (ch, cw):

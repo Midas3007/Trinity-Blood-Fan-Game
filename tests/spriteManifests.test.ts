@@ -27,7 +27,8 @@ const found = import.meta.glob<Manifest>(['/public/assets/sprites/**/*.json', '!
   import: 'default',
 });
 
-const timeBefore = (a: Anim, frame: number): number => a.durations_ms.slice(0, frame).reduce((s, d) => s + d, 0);
+/** Time from the start of the animation until sequence step `step` begins (events refer to sequence steps). */
+const timeBefore = (a: Anim, step: number): number => a.durations_ms.slice(0, step).reduce((s, d) => s + d, 0);
 
 describe('sprite manifests agree with combat data', () => {
   it('loads every manifest', () => {

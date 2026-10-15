@@ -1,5 +1,6 @@
 """Stage 3/placement: put a scaled figure into a fixed cell with the pivot at bottom-centre.
-Horizontal anchor = centre of the figure's lowest 30% (feet/legs), so weapon swings don't shift the body."""
+Horizontal anchor = centre of the figure's lowest 30% (feet/legs), so weapon swings don't shift the body.
+Lying or sprawled poses (slide) use the bounding-box centre instead, so the art sits over the body box."""
 from __future__ import annotations
 
 import numpy as np
@@ -19,7 +20,13 @@ def foot_centre_x(img: np.ndarray) -> float:
     return float(xs.mean()) + 0.5 if len(xs) else img.shape[1] / 2
 
 
-def place(fig: np.ndarray, cell: tuple[int, int], lift: int = 0, foot_x: float | None = None) -> tuple[np.ndarray, dict]:
+def bbox_centre_x(img: np.ndarray) -> float:
+    b = bbox(img)
+    return img.shape[1] / 2 if b is None else (b[1] + b[3]) / 2
+
+
+def place(fig: np.ndarray, cell: tuple[int, int], lift: int = 0, foot_x: float | None = None,
+          anchor: str = "feet") -> tuple[np.ndarray, dict]:
     """Returns (cell RGBA, metadata). Feet land on the cell's bottom row (pivot = (w/2, h)); `lift` raises the
     figure (for airborne frames). Pixels that would fall outside the cell are reported as clipped."""
     cw, ch = cell
@@ -29,7 +36,12 @@ def place(fig: np.ndarray, cell: tuple[int, int], lift: int = 0, foot_x: float |
     if b is None:
         return out, meta
     top, left, bottom, right = b
-    fx = foot_centre_x(fig) if foot_x is None else foot_x
+    if anchor not in ("feet", "centre"):
+        raise ValueError(f"anchor must be 'feet' or 'centre', got {anchor!r}")
+    if foot_x is not None:
+        fx = foot_x
+    else:
+        fx = foot_centre_x(fig) if anchor == "feet" else bbox_centre_x(fig)
     dx = round(cw / 2 - fx)
     dy = ch - bottom - lift
     ys, xs = np.nonzero(fig[..., 3] > 0)

@@ -30,7 +30,7 @@ def frame_from_crop(crop_img: np.ndarray, pal: Palette, opts: dict, cell: tuple[
     small = outline.outline(small, pal, opts.get("outline", "selective"))
     padded = np.zeros((small.shape[0] + 2, small.shape[1] + 2, 4), dtype=np.uint8)
     padded[1:-1, 1:-1] = small
-    return crop.place(padded, cell, lift=int(opts.get("lift", 0)))
+    return crop.place(padded, cell, lift=int(opts.get("lift", 0)), anchor=str(opts.get("anchor", "feet")))
 
 
 SPRITES_ROOT = Path("public/assets/sprites")

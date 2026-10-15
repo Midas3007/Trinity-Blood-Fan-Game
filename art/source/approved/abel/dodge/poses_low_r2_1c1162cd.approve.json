@@ -1,0 +1,16 @@
+{
+  "source": "poses_low_r2_1c1162cd.png",
+  "source_hash": "sha256:ad391c8b7d6758596ebd588bf9ec6592419694d3bc2337a1f4650e4a10fd9d5a",
+  "figures": [
+    1,
+    2
+  ],
+  "standing_px": 1271,
+  "factor": 0.25177,
+  "open_px": 0,
+  "expected": 5,
+  "outputs": [
+    "poses_low_r2_1c1162cd_f1.png",
+    "poses_low_r2_1c1162cd_f2.png"
+  ]
+}

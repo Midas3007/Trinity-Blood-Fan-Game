@@ -8,12 +8,16 @@ from pathlib import Path
 
 def build(sheet_name: str, entity: str, animation: str, cell: tuple[int, int], columns: int, frame_count: int,
           anim_cfg: dict, palette_name: str, source_hashes: list[str]) -> dict:
+    # `sequence` may repeat frames (e.g. hold the strike frame through recovery); events refer to sequence positions.
+    sequence = [int(f) for f in anim_cfg.get("sequence", range(frame_count))]
+    if any(f < 0 or f >= frame_count for f in sequence):
+        raise ValueError(f"{entity}/{animation}: sequence {sequence} refers to frames outside 0..{frame_count - 1}")
     durations = anim_cfg.get("durations_ms", 100)
     if isinstance(durations, (int, float)):
-        durations = [int(durations)] * frame_count
-    if len(durations) != frame_count:
-        raise ValueError(f"{entity}/{animation}: {len(durations)} durations for {frame_count} frames")
-    anim = {"frames": list(range(frame_count)), "durations_ms": durations, "loop": bool(anim_cfg.get("loop", False)),
+        durations = [int(durations)] * len(sequence)
+    if len(durations) != len(sequence):
+        raise ValueError(f"{entity}/{animation}: {len(durations)} durations for {len(sequence)} sequence steps")
+    anim = {"frames": sequence, "durations_ms": durations, "loop": bool(anim_cfg.get("loop", False)),
             "events": anim_cfg.get("events", [])}
     for key in ("attack", "hitboxes", "hurtbox"):
         if key in anim_cfg:
