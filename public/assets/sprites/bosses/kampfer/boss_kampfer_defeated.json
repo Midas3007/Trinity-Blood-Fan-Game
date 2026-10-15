@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "defeated": {
+      "durations_ms": [
+        600
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 112,
+  "cell_width": 128,
+  "columns": 1,
+  "entity": "boss_kampfer",
+  "palette": "requiem48.hex",
+  "pivot_x": 64,
+  "pivot_y": 112,
+  "sheet": "boss_kampfer_defeated.png",
+  "source_hashes": [
+    "sha256:250b98f2535c51b3c841cae4d980f4c19903995852e5ed6f6a832e3d9cae3cec"
+  ]
+}

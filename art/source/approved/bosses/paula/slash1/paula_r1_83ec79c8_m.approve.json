@@ -1,0 +1,14 @@
+{
+  "source": "paula_r1_83ec79c8_m.png",
+  "source_hash": "sha256:0bea68e97306d6b67ae6f48955f119679a560563983909b22d6d6f0b70eca610",
+  "figures": [
+    2
+  ],
+  "standing_px": 672,
+  "factor": 0.52381,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "paula_r1_83ec79c8_m_f2.png"
+  ]
+}

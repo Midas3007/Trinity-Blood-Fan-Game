@@ -1,0 +1,144 @@
+{
+  "_note": "Isaak Fernand von Kampfer, 'the Magus' (Rosenkreuz, verify) \u2014 mini boss 2, Drowned Crypt. A sorcerer: shadow-flame bolts (jump/dodge, can't be parried), a cane-flame sweep (parry it), teleports, summons bats. At 60% health the scene plays Abel's first Crusnik transformation (phase 2). He withdraws at 0.",
+  "id": "kampfer",
+  "name": "Isaak Fernand von Kampfer, the Magus",
+  "maxHealth": 260,
+  "width": 14,
+  "height": 44,
+  "introMs": 1200,
+  "phaseMs": 1500,
+  "approachRange": 60,
+  "walkMaxMs": 1800,
+  "staggerMs": 1100,
+  "staggerDamageMultiplier": 2,
+  "recoverMs": 500,
+  "yields": true,
+  "deathMs": 1600,
+  "shockwave": {
+    "speed": 200,
+    "width": 14,
+    "height": 12,
+    "damage": 12,
+    "lifeMs": 2400
+  },
+  "phases": [
+    {
+      "at": 1,
+      "pattern": [
+        "bolt",
+        "blink",
+        "bolt",
+        "hounds",
+        "sweep"
+      ],
+      "idleMs": 700,
+      "walkSpeed": 60
+    },
+    {
+      "at": 0.6,
+      "pattern": [
+        "volley",
+        "blink",
+        "hounds",
+        "volley",
+        "sweep",
+        "blink"
+      ],
+      "idleMs": 420,
+      "walkSpeed": 80
+    }
+  ],
+  "moves": {
+    "bolt": {
+      "type": "cast",
+      "windupMs": 520,
+      "recoverMs": 520,
+      "count": 1,
+      "spreadDeg": 0,
+      "aimed": true,
+      "projectile": {
+        "speed": 170,
+        "damage": 12,
+        "size": 10,
+        "lifeMs": 3200,
+        "color": "#7a3cff"
+      }
+    },
+    "volley": {
+      "type": "cast",
+      "windupMs": 600,
+      "recoverMs": 600,
+      "count": 3,
+      "spreadDeg": 34,
+      "aimed": true,
+      "projectile": {
+        "speed": 200,
+        "damage": 12,
+        "size": 10,
+        "lifeMs": 3200,
+        "color": "#7a3cff"
+      }
+    },
+    "sweep": {
+      "type": "combo",
+      "attacks": [
+        "k_sweep"
+      ],
+      "lunges": [
+        40
+      ]
+    },
+    "blink": {
+      "type": "teleport",
+      "attack": "k_sweep",
+      "vanishMs": 520
+    },
+    "hounds": {
+      "type": "summon",
+      "creature": "bat",
+      "count": 2,
+      "windupMs": 700
+    }
+  },
+  "attacks": {
+    "k_sweep": {
+      "startupMs": 420,
+      "activeMs": 130,
+      "recoveryMs": 460,
+      "damage": 14,
+      "knockbackX": 170,
+      "knockbackY": 60,
+      "hitstopMs": 70,
+      "shakeMs": 90,
+      "shakeIntensity": 0.004,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 28,
+        "y": -4,
+        "w": 52,
+        "h": 30
+      }
+    }
+  },
+  "visuals": {
+    "intro": "idle",
+    "idle": "idle",
+    "walk": "idle",
+    "cast": "cast",
+    "summon": "summon",
+    "vanish": "vanish",
+    "recover": "idle",
+    "staggered": "defeated",
+    "phase": "summon",
+    "defeated": "defeated",
+    "attack:k_sweep": "sweep",
+    "telegraph": "cast",
+    "leap": "idle",
+    "hang": "idle",
+    "dive": "idle",
+    "dash": "sweep"
+  },
+  "phaseScene": "kampfer_awakening",
+  "relic": "crusnik"
+}

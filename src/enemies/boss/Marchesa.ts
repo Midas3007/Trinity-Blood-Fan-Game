@@ -6,6 +6,7 @@ import type { ContactHazard } from '../../combat/CombatSystem';
 import type { Damageable, HitInfo, Rect } from '../../combat/types';
 import { SpriteView, type StateVisual } from '../../systems/sprites/SpriteView';
 import { MarchesaBrain, type MarchesaState } from './MarchesaBrain';
+import type { ArenaFighter } from './ArenaFighter';
 
 const DEPTH = 9.5;
 const ANIM = 'boss_marchesa_';
@@ -75,7 +76,7 @@ class Shock implements ContactHazard {
  * The Marchesa in the scene: draws the brain's state (sprite, strings, shockwaves, telegraph glow) and plugs it
  * into combat as an attacker (her sabre), a target (her hurtbox) and hazards (shockwaves).
  */
-export class Marchesa implements Damageable {
+export class Marchesa implements Damageable, ArenaFighter {
   readonly id = nextEntityId();
   private readonly view: SpriteView;
   private readonly placeholder: Phaser.GameObjects.Rectangle;
@@ -96,6 +97,39 @@ export class Marchesa implements Damageable {
     this.placeholder = scene.add.rectangle(0, 0, brain.cfg.width, brain.cfg.height, 0x5a1424).setDepth(DEPTH).setVisible(false);
     this.fx = scene.add.graphics().setDepth(DEPTH + 0.1);
     this.aura = scene.add.ellipse(0, 0, 54, 76, AURA, 0.32).setDepth(DEPTH - 0.1).setBlendMode(Phaser.BlendModes.ADD);
+  }
+
+  private phaseChanged = false;
+  readonly relic = 'sanguis';
+  readonly phaseScene = undefined;
+  get name(): string {
+    return this.brain.cfg.name;
+  }
+  get healthFraction(): number {
+    return this.brain.health.fraction;
+  }
+  get beaten(): boolean {
+    return !this.brain.alive;
+  }
+  get finished(): boolean {
+    return this.brain.finished;
+  }
+  get stateLabel(): string {
+    return this.brain.state;
+  }
+  get phaseNumber(): number {
+    return this.brain.phase;
+  }
+  holdPhase(_on: boolean): void {
+    /* her phase change plays in-game (the strings snap); no cutscene */
+  }
+  drainSummons(): { creature: string; count: number }[] {
+    return [];
+  }
+  drainPhaseChange(): boolean {
+    const p = this.phaseChanged;
+    this.phaseChanged = false;
+    return p;
   }
 
   // --- Attacker (her sabre) ---
@@ -131,14 +165,16 @@ export class Marchesa implements Damageable {
   }
 
   /** The live shockwaves as contact hazards for this frame. */
-  hazards(): ContactHazard[] {
+  hazards(_playerBox?: Rect): ContactHazard[] {
     const s = this.brain.cfg.shockwave;
     return this.brain.shockwaves.map((w) => new Shock(w.x, this.floorY, s.width, s.height, s.damage));
   }
 
-  update(dtMs: number): void {
+  update(dtMs: number, playerX = 0, active = false): void {
     this.flashMs = Math.max(0, this.flashMs - dtMs);
     const b = this.brain;
+    if (active) b.update(dtMs, playerX);
+    for (const e of b.drainEvents()) if (e === 'phase2') this.phaseChanged = true;
     if (b.phase === 2) this.snapMs += dtMs;
     const feetY = this.floorY - b.lift;
     const fading = b.state === 'dead' ? Math.max(0.35, 1 - b.stateMs / b.cfg.deathMs) : 1;

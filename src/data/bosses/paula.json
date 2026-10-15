@@ -1,0 +1,178 @@
+{
+  "_note": "Sister Paula (Inquisition, verify) \u2014 mini boss 1, Water Tunnels. Fast twin-blade duellist; parry her slashes. Non-lethal: she yields. Data for DuelistBrain (see its header).",
+  "id": "paula",
+  "name": "Sister Paula, Inquisitor",
+  "maxHealth": 220,
+  "width": 14,
+  "height": 38,
+  "introMs": 1200,
+  "phaseMs": 1100,
+  "approachRange": 56,
+  "walkMaxMs": 2000,
+  "staggerMs": 1200,
+  "staggerDamageMultiplier": 2,
+  "recoverMs": 420,
+  "yields": true,
+  "deathMs": 1600,
+  "shockwave": {
+    "speed": 200,
+    "width": 14,
+    "height": 12,
+    "damage": 12,
+    "lifeMs": 2400
+  },
+  "phases": [
+    {
+      "at": 1,
+      "pattern": [
+        "combo",
+        "dash",
+        "combo",
+        "leap"
+      ],
+      "idleMs": 520,
+      "walkSpeed": 95
+    },
+    {
+      "at": 0.5,
+      "pattern": [
+        "blink",
+        "combo",
+        "dash",
+        "blink",
+        "leap"
+      ],
+      "idleMs": 330,
+      "walkSpeed": 120
+    }
+  ],
+  "moves": {
+    "combo": {
+      "type": "combo",
+      "attacks": [
+        "p_slash1",
+        "p_slash2"
+      ],
+      "lunges": [
+        0,
+        90
+      ]
+    },
+    "dash": {
+      "type": "dash",
+      "attack": "p_dash",
+      "distance": 260,
+      "speed": 380,
+      "telegraphMs": 380
+    },
+    "leap": {
+      "type": "leap",
+      "attack": "p_dive",
+      "height": 110,
+      "riseMs": 380,
+      "hangMs": 220,
+      "diveSpeed": 520
+    },
+    "blink": {
+      "type": "teleport",
+      "attack": "p_slash1",
+      "vanishMs": 360
+    }
+  },
+  "attacks": {
+    "p_slash1": {
+      "startupMs": 300,
+      "activeMs": 90,
+      "recoveryMs": 160,
+      "damage": 10,
+      "knockbackX": 130,
+      "knockbackY": 40,
+      "hitstopMs": 70,
+      "shakeMs": 90,
+      "shakeIntensity": 0.004,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 24,
+        "y": -4,
+        "w": 32,
+        "h": 22
+      }
+    },
+    "p_slash2": {
+      "startupMs": 190,
+      "activeMs": 110,
+      "recoveryMs": 420,
+      "damage": 12,
+      "knockbackX": 160,
+      "knockbackY": 60,
+      "hitstopMs": 70,
+      "shakeMs": 90,
+      "shakeIntensity": 0.004,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 24,
+        "y": -2,
+        "w": 34,
+        "h": 20
+      }
+    },
+    "p_dash": {
+      "startupMs": 0,
+      "activeMs": 5000,
+      "recoveryMs": 0,
+      "damage": 12,
+      "knockbackX": 170,
+      "knockbackY": 60,
+      "hitstopMs": 70,
+      "shakeMs": 90,
+      "shakeIntensity": 0.004,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 8,
+        "y": 0,
+        "w": 26,
+        "h": 28
+      }
+    },
+    "p_dive": {
+      "startupMs": 0,
+      "activeMs": 5000,
+      "recoveryMs": 0,
+      "damage": 14,
+      "knockbackX": 140,
+      "knockbackY": 100,
+      "hitstopMs": 70,
+      "shakeMs": 90,
+      "shakeIntensity": 0.004,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 0,
+        "y": 14,
+        "w": 20,
+        "h": 22
+      },
+      "parryable": false
+    }
+  },
+  "visuals": {
+    "intro": "idle",
+    "idle": "idle",
+    "walk": "dash",
+    "telegraph": "dash",
+    "dash": "dash",
+    "leap": "leap",
+    "hang": "leap",
+    "dive": "leap",
+    "recover": "idle",
+    "staggered": "idle",
+    "phase": "idle",
+    "defeated": "defeated",
+    "attack:p_slash1": "slash1",
+    "attack:p_slash2": "slash2"
+  },
+  "relic": "lacrima"
+}

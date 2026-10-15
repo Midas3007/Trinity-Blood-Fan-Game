@@ -44,6 +44,8 @@ import { Banner } from '../../ui/Banner';
 import { ChainLashView } from '../../combat/ChainLashView';
 import { loreEntry } from '../../ui/LorePanel';
 import { BossArena } from '../../world/BossArena';
+import { playerStats, relic } from '../../systems/progression';
+import { cutscene } from './CutsceneScene';
 import { FlyerManager } from '../../enemies/flyers/FlyerManager';
 import { isFlyer } from '../../enemies/flyers/FlyerBrain';
 
@@ -192,10 +194,6 @@ export class PlayScene extends Phaser.Scene {
     }
 
     this.runtime = new RoomRuntime(this, r, gameState, solids, solidRects, timeLook(gameState.time).lampGlow);
-    if (r.boss && !gameState.hasFlag(r.boss.defeatFlag)) {
-      const flag = r.boss.defeatFlag;
-      this.arena = new BossArena(this, r, solids, solidRects, () => this.bossDefeated(flag));
-    }
     const at = this.spawnPoint();
     this.player = new Player(this, at.x, at.y - 20, this.actions, physics.gravityY, solidRects);
     this.player.placeAt(at.x, at.y);
@@ -234,6 +232,13 @@ export class PlayScene extends Phaser.Scene {
     const peaceful = testHookEnabled() && new URLSearchParams(location.search).has('peaceful');
     if (!peaceful) for (const sp of spawns) this.enemies.spawn(sp);
     this.flyers = new FlyerManager(this, peaceful ? [] : r.enemies.filter((sp) => isFlyer(sp.type)));
+    if (r.boss && !gameState.hasFlag(r.boss.defeatFlag)) {
+      this.arena = new BossArena(this, r, solids, solidRects, this.flyers, {
+        playCutscene: (id, done) => this.playCutscene(id, done),
+        onPhaseScene: (id) => this.phaseSceneDone(id),
+        onDefeated: (flag, relicId) => this.bossDefeated(flag, relicId),
+      });
+    }
     this.combatSystem = new CombatSystem(this.bus, this.player);
 
     this.sparks = new SparkPool(this, effects.maxSparks, COLORS.spark, effects.sparkLifeMs, effects.sparkSpeed);
@@ -248,8 +253,12 @@ export class PlayScene extends Phaser.Scene {
       });
       this.bus.emit('enemy:died', { id: target.id, x: target.x, y: target.y });
     };
-    this.player.flasks = gameState.flasks ?? playerTuning.flasks;
-    this.hud = new Hud(this, playerTuning.flasks);
+    // Relics from beaten bosses: more health, flasks and damage.
+    const stats = playerStats((f) => gameState.hasFlag(f));
+    this.player.applyStats(stats);
+    if (gameState.hp !== null) this.player.setHealth(Math.min(gameState.hp, stats.maxHealth));
+    this.player.flasks = gameState.flasks ?? stats.flasks;
+    this.hud = new Hud(this, stats.flasks);
     this.hud.setHealth(this.player.health.fraction);
     this.hud.setFlasks(this.player.flasks);
     this.player.onHealed = () => {
@@ -359,6 +368,7 @@ export class PlayScene extends Phaser.Scene {
 
   update(_time: number, deltaMs: number): void {
     const dt = Math.min(deltaMs, MAX_FRAME_MS);
+    if (this.cutsceneOn) return;
     if (this.map.open || this.pauseMenu.open) {
       this.map.update(dt);
       return;
@@ -391,14 +401,13 @@ export class PlayScene extends Phaser.Scene {
     const arena = this.arena;
     if (arena) {
       arena.update(dt, this.player.x, this.player.onGround);
-      if (arena.talking && (this.actions.justPressed('attack') || this.actions.justPressed('jump'))) arena.advanceDialogue();
     }
     const p0 = this.player;
     this.flyers.update(dt, p0.x, p0.y);
     this.combatSystem.step(
       [...this.dummies, ...living, ...this.runtime.levers, ...(arena?.targets ?? []), ...this.flyers.targets],
       [...living, ...(arena?.attackers ?? [])],
-      [...this.dummies, ...(arena?.hazards ?? []), ...this.flyers.hazards(p0.hurtbox(), p0.x, p0.y)],
+      [...this.dummies, ...(arena?.hazards(p0.hurtbox()) ?? []), ...this.flyers.hazards(p0.hurtbox(), p0.x, p0.y)],
     );
     this.sparks.update(dt);
     this.shotFlash.update(dt);
@@ -520,11 +529,51 @@ export class PlayScene extends Phaser.Scene {
   }
 
   /** The boss fell and her last words are done: open the way on and save. */
-  private bossDefeated(flag: string): void {
+  /** A boss fell (or yielded) and the outro played: open the way, grant the relic, show the Latin card, save. */
+  private bossDefeated(flag: string, relicId: string): void {
     this.runtime.open(flag);
     this.arena = null;
-    this.banner.show('REQUIESCAT IN PACE', 'The strings are cut. The way west is open.');
+    const r = relic(relicId);
+    gameState.setFlag(r.flag);
+    const stats = playerStats((f) => gameState.hasFlag(f));
+    this.player.applyStats(stats);
+    this.player.flasks = Math.min(stats.flasks, this.player.flasks + (r.flasks ?? 0));
+    this.hud.setMaxFlasks(stats.flasks);
+    this.hud.setFlasks(this.player.flasks);
+    this.hud.setHealth(this.player.health.fraction);
+    this.banner.show(r.card, r.gift);
     saveStore.save(gameState.toSave(Date.now()));
+  }
+
+  private cutsceneOn = false;
+
+  /** Plays a cutscene over the game; gameplay waits until it ends. */
+  private playCutscene(id: string, done: () => void): void {
+    if (!cutscene(id)) {
+      done();
+      return;
+    }
+    this.cutsceneOn = true;
+    this.touch.releaseAll();
+    this.physics.world.pause();
+    this.game.events.once(`cutscene-done:${id}`, () => {
+      this.cutsceneOn = false;
+      this.physics.world.resume();
+      done();
+    });
+    this.scene.launch(SCENES.cutscene, { id });
+    this.scene.bringToTop(SCENES.cutscene);
+  }
+
+  /** A boss's mid-fight cutscene ended. Kampfer's is Abel's first transformation: the Crusnik wakes, now. */
+  private phaseSceneDone(id: string): void {
+    if (id !== 'kampfer_awakening') return;
+    gameState.setFlag(crusnikConfig.unlockFlag);
+    const cm = this.player.crusnik;
+    cm.unlocked = true;
+    cm.fill();
+    this.player.forceTransform();
+    this.banner.show('NANOMACHINE CRUSNIK', 'Forty percent. ABIL throws the chain; the blue bar is his blood.', 2600);
   }
 
   /** A progression unlock from reading lore. Today only the Crusnik form. */
@@ -605,7 +654,7 @@ export class PlayScene extends Phaser.Scene {
       enemies: this.enemies.active.map((e) => ({ type: e.cfg.type, state: e.state, view: e.viewLabel, x: e.x, y: e.y, hp: e.health.hp })),
       dummies: this.dummies.map((d) => ({ x: d.x, hp: d.health.hp, alive: d.alive })),
       boss: this.arena
-        ? { state: this.arena.brain.state, hp: this.arena.brain.health.hp, phase: this.arena.brain.phase, x: this.arena.brain.x, active: this.arena.active, talking: this.arena.talking }
+        ? { state: this.arena.fighter.stateLabel, hp: this.arena.fighter.healthFraction, phase: this.arena.fighter.phaseNumber, x: this.arena.fighter.x, active: this.arena.active, cutscene: this.cutsceneOn }
         : null,
     };
   }

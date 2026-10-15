@@ -105,7 +105,7 @@ export interface RoomData {
   dummies: { x: number; y: number; maxHealth: number; contactDamage: number }[];
   checkpoints: { id: string; x: number; y: number }[];
   /** A boss fight: where she starts (feet), the arena's walls (px), and the flag her defeat sets. */
-  boss: { id: string; x: number; y: number; arenaLeft: number; arenaRight: number; defeatFlag: string } | null;
+  boss: { id: string; x: number; y: number; arenaLeft: number; arenaRight: number; defeatFlag: string; intro?: string; outro?: string } | null;
   levers: { flag: string; x: number; y: number }[];
   labels: { x: number; y: number; text: string }[];
   lore: { id: string; x: number; y: number }[];
@@ -221,7 +221,11 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
       case 'boss':
         if (!p.boss || p.arenaLeft === undefined || p.arenaRight === undefined) fail(`boss marker ${o.id} needs boss, arenaLeft, arenaRight`);
         if (!p.defeatFlag) fail(`boss marker ${o.id} needs a 'defeatFlag'`);
-        room.boss = { id: String(p.boss), x: o.x, y: o.y, arenaLeft: Number(p.arenaLeft), arenaRight: Number(p.arenaRight), defeatFlag: String(p.defeatFlag) };
+        room.boss = {
+          id: String(p.boss), x: o.x, y: o.y, arenaLeft: Number(p.arenaLeft), arenaRight: Number(p.arenaRight), defeatFlag: String(p.defeatFlag),
+          ...(p.intro ? { intro: String(p.intro) } : {}),
+          ...(p.outro ? { outro: String(p.outro) } : {}),
+        };
         break;
       case 'lore':
         if (!p.lore) fail(`lore marker ${o.id} needs a 'lore' property`);

@@ -1,3 +1,4 @@
+import { CutsceneScene } from './scenes/CutsceneScene';
 import Phaser from 'phaser';
 import { COLORS, GAME_HEIGHT, GAME_WIDTH, MAX_TOUCH_POINTERS } from './constants';
 import { BootScene } from './scenes/BootScene';
@@ -32,6 +33,6 @@ export function createGameConfig(parent: string): Phaser.Types.Core.GameConfig {
         debug: false,
       },
     },
-    scene: [BootScene, MenuScene, PlayScene],
+    scene: [BootScene, MenuScene, PlayScene, CutsceneScene],
   };
 }

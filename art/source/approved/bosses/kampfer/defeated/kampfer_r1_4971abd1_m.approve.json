@@ -1,0 +1,14 @@
+{
+  "source": "kampfer_r1_4971abd1_m.png",
+  "source_hash": "sha256:524bf1f1279031931ff2b4de4b13d19709a42789932fe658d798e4ca17b58529",
+  "figures": [
+    5
+  ],
+  "standing_px": 1014,
+  "factor": 0.394477,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "kampfer_r1_4971abd1_m_f5.png"
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  "_note": "Brother Petros, 'Knight of Destruction' (Inquisition, verify) \u2014 mini boss 3, the Count's Cellars. Heavy lancer: slow thrusts (parry), a red-glowing charge from the arena edge (can't be parried: jump it), a slam with floor shockwaves. Non-lethal: he's called back.",
+  "id": "petros",
+  "name": "Brother Petros, Knight of Destruction",
+  "maxHealth": 340,
+  "width": 22,
+  "height": 50,
+  "introMs": 1400,
+  "phaseMs": 1100,
+  "approachRange": 76,
+  "walkMaxMs": 2600,
+  "staggerMs": 1300,
+  "staggerDamageMultiplier": 2,
+  "recoverMs": 620,
+  "yields": true,
+  "deathMs": 1800,
+  "shockwave": {
+    "speed": 210,
+    "width": 16,
+    "height": 12,
+    "damage": 14,
+    "lifeMs": 2400
+  },
+  "phases": [
+    {
+      "at": 1,
+      "pattern": [
+        "thrust",
+        "charge",
+        "slam",
+        "thrust"
+      ],
+      "idleMs": 700,
+      "walkSpeed": 50
+    },
+    {
+      "at": 0.5,
+      "pattern": [
+        "double",
+        "charge",
+        "slam",
+        "charge",
+        "double"
+      ],
+      "idleMs": 440,
+      "walkSpeed": 72
+    }
+  ],
+  "moves": {
+    "thrust": {
+      "type": "combo",
+      "attacks": [
+        "t_thrust"
+      ],
+      "lunges": [
+        70
+      ]
+    },
+    "double": {
+      "type": "combo",
+      "attacks": [
+        "t_thrust",
+        "t_thrust"
+      ],
+      "lunges": [
+        60,
+        60
+      ]
+    },
+    "charge": {
+      "type": "dash",
+      "attack": "t_charge",
+      "distance": 9999,
+      "speed": 330,
+      "fromEdge": true,
+      "telegraphMs": 700
+    },
+    "slam": {
+      "type": "slam",
+      "attack": "t_slam",
+      "shockwaves": true
+    }
+  },
+  "attacks": {
+    "t_thrust": {
+      "startupMs": 520,
+      "activeMs": 140,
+      "recoveryMs": 560,
+      "damage": 22,
+      "knockbackX": 220,
+      "knockbackY": 80,
+      "hitstopMs": 90,
+      "shakeMs": 120,
+      "shakeIntensity": 0.006,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 44,
+        "y": -6,
+        "w": 64,
+        "h": 16
+      }
+    },
+    "t_charge": {
+      "startupMs": 0,
+      "activeMs": 5000,
+      "recoveryMs": 0,
+      "damage": 24,
+      "knockbackX": 240,
+      "knockbackY": 120,
+      "hitstopMs": 100,
+      "shakeMs": 160,
+      "shakeIntensity": 0.008,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 14,
+        "y": 0,
+        "w": 34,
+        "h": 44
+      },
+      "parryable": false
+    },
+    "t_slam": {
+      "startupMs": 620,
+      "activeMs": 120,
+      "recoveryMs": 700,
+      "damage": 20,
+      "knockbackX": 180,
+      "knockbackY": 140,
+      "hitstopMs": 100,
+      "shakeMs": 180,
+      "shakeIntensity": 0.01,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 22,
+        "y": 4,
+        "w": 40,
+        "h": 30
+      },
+      "parryable": false
+    }
+  },
+  "visuals": {
+    "intro": "idle",
+    "idle": "idle",
+    "walk": "walk",
+    "telegraph": "windup",
+    "dash": "charge",
+    "recover": "idle",
+    "staggered": "windup",
+    "phase": "defeated",
+    "defeated": "defeated",
+    "attack:t_thrust": "thrust",
+    "attack:t_slam": "windup",
+    "leap": "idle",
+    "hang": "idle",
+    "dive": "idle"
+  },
+  "relic": "corLeonis"
+}

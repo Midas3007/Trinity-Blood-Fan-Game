@@ -59,12 +59,27 @@ export class Hud {
     this.crusnikFrame = fix(scene.add.rectangle(BAR_X - 1, my - 1, CRUSNIK_W + 2, CRUSNIK_H + 2, VOID).setOrigin(0).setStrokeStyle(1, GOLD_DARK));
     this.crusnik = fix(scene.add.rectangle(BAR_X, my, 0, CRUSNIK_H, BLUE).setOrigin(0), 1);
     // holy water vials
-    const vy = my + CRUSNIK_H + 5;
-    for (let i = 0; i < maxFlasks; i++) {
+    this.vialY = my + CRUSNIK_H + 5;
+    this.scene = scene;
+    this.setMaxFlasks(maxFlasks);
+  }
+
+  private readonly scene: Phaser.Scene;
+  private readonly vialY: number;
+
+  /** One vial per flask; more appear when a relic raises the count. */
+  setMaxFlasks(n: number): void {
+    const vy = this.vialY;
+    for (let i = this.vials.length; i < n; i++) {
       const vx = BAR_X + i * FLASK_GAP;
-      fix(scene.add.rectangle(vx + 2, vy, 2, 2, GOLD).setOrigin(0.5, 0), 1);
-      fix(scene.add.rectangle(vx + 2, vy + 2, 5, 6, VOID).setOrigin(0.5, 0).setStrokeStyle(1, 0x8a8392), 0);
-      this.vials.push(fix(scene.add.rectangle(vx + 2, vy + 4, 3, 4, 0xbfe0ef).setOrigin(0.5, 0), 1));
+      const fix = <T extends Phaser.GameObjects.Components.ScrollFactor & Phaser.GameObjects.Components.Depth>(o: T, d: number): T => {
+        o.setScrollFactor(0);
+        o.setDepth(DEPTH + d);
+        return o;
+      };
+      fix(this.scene.add.rectangle(vx + 2, vy, 2, 2, GOLD).setOrigin(0.5, 0), 1);
+      fix(this.scene.add.rectangle(vx + 2, vy + 2, 5, 6, VOID).setOrigin(0.5, 0).setStrokeStyle(1, 0x8a8392), 0);
+      this.vials.push(fix(this.scene.add.rectangle(vx + 2, vy + 4, 3, 4, 0xbfe0ef).setOrigin(0.5, 0), 1));
     }
   }
 

@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "vanish": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 112,
+  "cell_width": 128,
+  "columns": 1,
+  "entity": "boss_kampfer",
+  "palette": "requiem48.hex",
+  "pivot_x": 64,
+  "pivot_y": 112,
+  "sheet": "boss_kampfer_vanish.png",
+  "source_hashes": [
+    "sha256:764a6d78fee95cfdad77fbbaa7692d2227edcb59f887de26c63d18c1f48d0a37"
+  ]
+}

@@ -18,6 +18,7 @@ Last updated: 2026-10-15
 | 10 | Cutscenes and story | planned: code-animated manga-panel cutscenes — opening, one per mini boss, the Marchesa, the final battle (Dietrich / Gyula Kádár), and a **post-credits teaser for the next arc**; original dialogue |
 | 11 | Audio | planned: **voices** for cutscene lines, **copyright-free gothic music** (per region, boss themes), SFX; audio unlock on first touch. Blocked: the sandbox network denies free-music sites (see Blockers) |
 | 12 | Region 2 + final battle | planned: the cathedral and the count's fortress, Dietrich's Grand Marionette, Gyula Kádár and the Star of Sorrow, the 80% Crusnik moment, ending |
+| 14 | Start-menu progress bar | planned (owner): the title screen's Continue shows how far the save has gone (percent and bar) |
 | 13 | Full recorded playthrough | planned (owner): a bot plays the finished game start to end and the run is recorded as a video |
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
@@ -72,7 +73,7 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 - the Crusnik form + leap gate, then the Marchesa boss.
 
 ## Blockers
-- **Music downloads blocked:** the sandbox's network policy denies opengameart.org, incompetech.com, freepd.com, archive.org, pixabay.com and freesound.org. To allow them: in the session's cloud environment menu (title bar) → Edit → Network access → add those domains under Allowed domains (keep "Allow package managers" ticked). Steps: https://code.claude.com/docs/en/cloud-environments#network-access. Until then the audio system is built and waits for the tracks. Higgsfield: about 44 credits left.
+- **Music downloads blocked:** archive.org search now works, but its files are served from `*.archive.org` storage hosts (e.g. dn711007.ca.archive.org, ia800300.us.archive.org), which are still denied. Add `*.archive.org` (or `.archive.org`) to Allowed domains. Tracks are already chosen (see docs/audio-plan.md). Other sites (opengameart.org, incompetech.com, freepd.com, pixabay.com, freesound.org) are still denied. To allow them: in the session's cloud environment menu (title bar) → Edit → Network access → add those domains under Allowed domains (keep "Allow package managers" ticked). Steps: https://code.claude.com/docs/en/cloud-environments#network-access. Until then the audio system is built and waits for the tracks. Higgsfield: about 44 credits left.
 
 ## Owner must test (on phone) — creatures
 1. Sewer Shaft / Hunter's Crypt: bats drop from their perch and swoop; hit them out of the air. Bone-rats scuttle and bite.

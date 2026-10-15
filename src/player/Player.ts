@@ -156,6 +156,14 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.onFormChange?.(form);
   }
 
+  /** Scripted: become the Crusnik at once (the meter must be unlocked; it starts draining). */
+  forceTransform(): void {
+    if (this.form === 'crusnik') return;
+    this.crusnik.fill();
+    this.crusnik.activate();
+    this.setForm('crusnik');
+  }
+
   /** Entering a room mid-transformation: stay the Crusnik (the meter was restored active). */
   resumeCrusnik(): void {
     if (this.crusnik.active) this.setForm('crusnik');
@@ -165,6 +173,17 @@ export class Player implements PlayerContext, PlayerCombatant {
   endCrusnik(): void {
     this.crusnik.end();
     this.setForm('priest');
+  }
+
+  /** Extra damage from relics (set from the earned relics when the room starts). */
+  relicDamage = 1;
+  /** Flasks when full (base + relics). */
+  maxFlasks = playerTuning.flasks;
+
+  applyStats(s: { maxHealth: number; flasks: number; damage: number }): void {
+    this.health.setMax(s.maxHealth);
+    this.relicDamage = s.damage;
+    this.maxFlasks = s.flasks;
   }
 
   get state(): PlayerStateKey {
@@ -267,7 +286,7 @@ export class Player implements PlayerContext, PlayerCombatant {
   }
 
   get damageMultiplier(): number {
-    return this.strength.damageMultiplier * (this.form === 'crusnik' ? crusnikConfig.damageMultiplier : 1);
+    return this.strength.damageMultiplier * this.relicDamage * (this.form === 'crusnik' ? crusnikConfig.damageMultiplier : 1);
   }
 
   /** The nearest valid finisher in front of the player, or null. */

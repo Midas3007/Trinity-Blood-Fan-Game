@@ -1,9 +1,22 @@
 /** Hit points with clamping. Pure. */
 export class Health {
   private value: number;
+  private maxValue: number;
 
-  constructor(readonly max: number) {
+  constructor(max: number) {
+    this.maxValue = max;
     this.value = max;
+  }
+
+  get max(): number {
+    return this.maxValue;
+  }
+
+  /** Raise (or lower) the maximum; health grows by the same amount (a relic's gift is filled in). */
+  setMax(max: number): void {
+    const gain = max - this.maxValue;
+    this.maxValue = max;
+    this.value = Math.max(0, Math.min(max, this.value + Math.max(0, gain)));
   }
 
   get hp(): number {

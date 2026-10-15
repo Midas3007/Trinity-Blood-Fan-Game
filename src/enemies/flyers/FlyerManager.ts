@@ -116,12 +116,21 @@ export class FlyerManager {
   private readonly flyers: Flyer[] = [];
   private readonly rings: Phaser.GameObjects.Graphics;
 
-  constructor(scene: Phaser.Scene, spawns: readonly { type: string; x: number; y: number }[]) {
+  constructor(
+    private readonly scene: Phaser.Scene,
+    spawns: readonly { type: string; x: number; y: number }[],
+  ) {
     for (const sp of spawns) {
       const cfg = flyerConfigs[sp.type];
       if (cfg) this.flyers.push(new Flyer(scene, new FlyerBrain(cfg, sp.x, sp.y - 40)));
     }
     this.rings = scene.add.graphics().setDepth(DEPTH + 0.1);
+  }
+
+  /** Summoned creatures (a boss calling bats): they appear at once, already hunting. */
+  spawn(type: string, x: number, y: number): void {
+    const cfg = flyerConfigs[type];
+    if (cfg) this.flyers.push(new Flyer(this.scene, new FlyerBrain(cfg, x, y)));
   }
 
   get targets(): Damageable[] {

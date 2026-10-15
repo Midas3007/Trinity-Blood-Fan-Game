@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "dash": {
+      "durations_ms": [
+        200
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 112,
+  "columns": 1,
+  "entity": "boss_paula",
+  "palette": "requiem48.hex",
+  "pivot_x": 56,
+  "pivot_y": 96,
+  "sheet": "boss_paula_dash.png",
+  "source_hashes": [
+    "sha256:3419bf05469df2f5cbc53c7da138ce9203bc4ec61d98f8d9d62b7305a34972e3"
+  ]
+}

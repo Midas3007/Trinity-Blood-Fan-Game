@@ -1,0 +1,9 @@
+{
+  "_note": "Permanent rewards for beating bosses and mini bosses. 'flag' is set by the fight's victory; stats stack. 'card' is the Latin victory card, 'gift' the line under it.",
+  "relics": {
+    "lacrima": { "flag": "relic:lacrima", "name": "Lacrima", "card": "MISERERE NOBIS", "gift": "Lacrima — one more holy water flask.", "flasks": 1 },
+    "crusnik": { "flag": "crusnik", "name": "The Crusnik", "card": "DIES IRAE", "gift": "The Crusnik has woken. Fill the blue bar, then press ABIL.", "flasks": 0 },
+    "sanguis": { "flag": "relic:sanguis", "name": "Sanguis", "card": "REQUIESCAT IN PACE", "gift": "Sanguis — your blows strike harder.", "damage": 0.15 },
+    "corLeonis": { "flag": "relic:cor_leonis", "name": "Cor Leonis", "card": "DOMINUS VOBISCUM", "gift": "Cor Leonis — your life grows stronger.", "maxHealth": 25 }
+  }
+}

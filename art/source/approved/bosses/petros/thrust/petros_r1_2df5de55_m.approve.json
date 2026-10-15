@@ -1,0 +1,14 @@
+{
+  "source": "petros_r1_2df5de55_m.png",
+  "source_hash": "sha256:2c8551e53e5c5d3e5b6ae11281ac22bc07f42f75246520724155ba73b0a91d41",
+  "figures": [
+    3
+  ],
+  "standing_px": 774,
+  "factor": 0.620155,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "petros_r1_2df5de55_m_f3.png"
+  ]
+}

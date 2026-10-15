@@ -972,6 +972,156 @@
         "sha256:b767d92c200097e8d4c9b687e9011dc840d4c2fa468072b869adcc71ba2c8465"
       ]
     },
+    "bosses/kampfer/boss_kampfer_cast.png": {
+      "animations": {
+        "cast": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 112,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_kampfer",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 112,
+      "sheet": "boss_kampfer_cast.png",
+      "source_hashes": [
+        "sha256:c2e4f4960c5c28824fa090831915ef48dd8ffad8ec01c7f1b4de22934b273249"
+      ]
+    },
+    "bosses/kampfer/boss_kampfer_defeated.png": {
+      "animations": {
+        "defeated": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 112,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_kampfer",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 112,
+      "sheet": "boss_kampfer_defeated.png",
+      "source_hashes": [
+        "sha256:250b98f2535c51b3c841cae4d980f4c19903995852e5ed6f6a832e3d9cae3cec"
+      ]
+    },
+    "bosses/kampfer/boss_kampfer_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 112,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_kampfer",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 112,
+      "sheet": "boss_kampfer_idle.png",
+      "source_hashes": [
+        "sha256:c6066b4511519447c5b1dc7985d92b2dbac3e91603e75488e927845806b9f184"
+      ]
+    },
+    "bosses/kampfer/boss_kampfer_summon.png": {
+      "animations": {
+        "summon": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 112,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_kampfer",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 112,
+      "sheet": "boss_kampfer_summon.png",
+      "source_hashes": [
+        "sha256:4a42533982aa4a5877fc079b24d01ad4a242e251acc553d6bfc53d218ddb78c3"
+      ]
+    },
+    "bosses/kampfer/boss_kampfer_sweep.png": {
+      "animations": {
+        "sweep": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 112,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_kampfer",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 112,
+      "sheet": "boss_kampfer_sweep.png",
+      "source_hashes": [
+        "sha256:333a44bd61d29748e8bce4cfb4ae01187d81b4b8bbc4c91474b0df8a8a62a5e6"
+      ]
+    },
+    "bosses/kampfer/boss_kampfer_vanish.png": {
+      "animations": {
+        "vanish": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 112,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_kampfer",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 112,
+      "sheet": "boss_kampfer_vanish.png",
+      "source_hashes": [
+        "sha256:764a6d78fee95cfdad77fbbaa7692d2227edcb59f887de26c63d18c1f48d0a37"
+      ]
+    },
     "bosses/marchesa/boss_marchesa_charge.png": {
       "animations": {
         "charge": {
@@ -1248,6 +1398,306 @@
       "sheet": "boss_marchesa_walk.png",
       "source_hashes": [
         "sha256:2a040f847ed148bd240b9a3776407d18d8168f594ba6243866a76790997025ef"
+      ]
+    },
+    "bosses/paula/boss_paula_dash.png": {
+      "animations": {
+        "dash": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "boss_paula",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 96,
+      "sheet": "boss_paula_dash.png",
+      "source_hashes": [
+        "sha256:3419bf05469df2f5cbc53c7da138ce9203bc4ec61d98f8d9d62b7305a34972e3"
+      ]
+    },
+    "bosses/paula/boss_paula_defeated.png": {
+      "animations": {
+        "defeated": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "boss_paula",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 96,
+      "sheet": "boss_paula_defeated.png",
+      "source_hashes": [
+        "sha256:8a4165d508638e5221977cf6136d22cb1b9a9c2c192fb791bb564f6a8a50aad9"
+      ]
+    },
+    "bosses/paula/boss_paula_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "boss_paula",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 96,
+      "sheet": "boss_paula_idle.png",
+      "source_hashes": [
+        "sha256:7a7bc7a35ab28716ac05c1e9fa2fbd8d6c26345172d8dd22d74e524befa81b61"
+      ]
+    },
+    "bosses/paula/boss_paula_leap.png": {
+      "animations": {
+        "leap": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "boss_paula",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 96,
+      "sheet": "boss_paula_leap.png",
+      "source_hashes": [
+        "sha256:39d8b016047ee32d38669188be1515cd12246632bba38b08f87238cba33f6aa2"
+      ]
+    },
+    "bosses/paula/boss_paula_slash1.png": {
+      "animations": {
+        "slash1": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "boss_paula",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 96,
+      "sheet": "boss_paula_slash1.png",
+      "source_hashes": [
+        "sha256:5bba2d46923cbf8124cfabf2d6b33043a88d76c99a85c3a5e5aea53a416ca9f4"
+      ]
+    },
+    "bosses/paula/boss_paula_slash2.png": {
+      "animations": {
+        "slash2": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "boss_paula",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 96,
+      "sheet": "boss_paula_slash2.png",
+      "source_hashes": [
+        "sha256:9745e28f4fe396083c9db2ac41f4c0553e2489b3f241a083661c708bbb340b3d"
+      ]
+    },
+    "bosses/petros/boss_petros_charge.png": {
+      "animations": {
+        "charge": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 112,
+      "cell_width": 176,
+      "columns": 1,
+      "entity": "boss_petros",
+      "palette": "requiem48.hex",
+      "pivot_x": 88,
+      "pivot_y": 112,
+      "sheet": "boss_petros_charge.png",
+      "source_hashes": [
+        "sha256:19fabe9c0b4e2a2d4a0ff16d0b627439719c35442bac9bf1a06a4acc04ace4ff"
+      ]
+    },
+    "bosses/petros/boss_petros_defeated.png": {
+      "animations": {
+        "defeated": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 112,
+      "cell_width": 176,
+      "columns": 1,
+      "entity": "boss_petros",
+      "palette": "requiem48.hex",
+      "pivot_x": 88,
+      "pivot_y": 112,
+      "sheet": "boss_petros_defeated.png",
+      "source_hashes": [
+        "sha256:d045e7deda067d9b6a451e31eaee3921b22cf3d99341341f860987b096ac9e2e"
+      ]
+    },
+    "bosses/petros/boss_petros_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 112,
+      "cell_width": 176,
+      "columns": 1,
+      "entity": "boss_petros",
+      "palette": "requiem48.hex",
+      "pivot_x": 88,
+      "pivot_y": 112,
+      "sheet": "boss_petros_idle.png",
+      "source_hashes": [
+        "sha256:688e4d77e261cb9921eabe9e62feaf8724357ec044550ec005985ce44b4c6494"
+      ]
+    },
+    "bosses/petros/boss_petros_thrust.png": {
+      "animations": {
+        "thrust": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 112,
+      "cell_width": 176,
+      "columns": 1,
+      "entity": "boss_petros",
+      "palette": "requiem48.hex",
+      "pivot_x": 88,
+      "pivot_y": 112,
+      "sheet": "boss_petros_thrust.png",
+      "source_hashes": [
+        "sha256:e88adf8e6479d2a02ebb6bfa82509dbc44baadc8e3b27a308ea98b3d1c9f872e"
+      ]
+    },
+    "bosses/petros/boss_petros_walk.png": {
+      "animations": {
+        "walk": {
+          "durations_ms": [
+            400
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 112,
+      "cell_width": 176,
+      "columns": 1,
+      "entity": "boss_petros",
+      "palette": "requiem48.hex",
+      "pivot_x": 88,
+      "pivot_y": 112,
+      "sheet": "boss_petros_walk.png",
+      "source_hashes": [
+        "sha256:ecfd8b8b2c41e2fe327c3e350d943a32c7744751e822b7c7f1986a2193acb4f9"
+      ]
+    },
+    "bosses/petros/boss_petros_windup.png": {
+      "animations": {
+        "windup": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 112,
+      "cell_width": 176,
+      "columns": 1,
+      "entity": "boss_petros",
+      "palette": "requiem48.hex",
+      "pivot_x": 88,
+      "pivot_y": 112,
+      "sheet": "boss_petros_windup.png",
+      "source_hashes": [
+        "sha256:298e40fe69b8364ad7581809e8182a11504f90e02d754f50de30916c341258b6"
       ]
     },
     "enemies/bat/enemy_bat_fly.png": {
