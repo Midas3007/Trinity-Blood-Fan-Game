@@ -55,12 +55,20 @@ Last updated: 2026-10-15
 
 - **Stale-app fix:** the installed app now checks for a new deploy whenever it comes back to the foreground and every minute (it used to only check when fully restarted). The title screen shows `build xxxxxxx` (the commit id) top-right so you can see which version is running.
 
+- **Crouch-under-beam bug fixed:** the crouch art (24 px) was taller than the low body (15 px) and the beam gap (18 px), so Abel's head drew inside the beam. Low body is now 22 px, the beam gap 24 px, and the roll body 26 px (rolling still can't pass under). Browser-checked: clear space above his head while sliding under.
+- **Crusnik 40% (no wings)** made from the 80% art by erasing the wings in code (`erase` + `keep_largest` pipeline options) — zero credits. 80% (winged) stays for scripted moments.
+- **Cutscene plan recorded** (creative direction §13): code-animated manga panels, script by Claude, plot from an arc in both manga and anime (candidate: Istvan arc, to confirm), original dialogue. **Sword** noted for later content (§14).
+
 ## In progress
 - Nothing blocked.
 - Rest of the cast (next credit rounds, see `docs/sprite-pipeline.md`): Crusnik Abel, thrall, Methuselah, ghoul, fairy, Iron Choir, Marchesa, Dietrich, backgrounds.
 
 ## Blockers
 - None.
+
+## Owner must test (on phone) — crouch fix
+1. Slide under the beam and stop/crawl under it: Abel's head should no longer go into the beam.
+2. Rolling (DODGE without stick down) still can't get under it.
 
 ## Owner must test (on phone) — Death Hunter
 1. Past the thrall (keep walking right) a masked hooded figure with an axe waits. It notices you from further away and runs at you fast.

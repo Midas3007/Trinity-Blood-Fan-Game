@@ -154,3 +154,11 @@
 |---|---|---|
 | Call `registration.update()` on `visibilitychange` (visible) and every 60 s; autoUpdate then reloads | Owner's installed app kept serving an old build: browsers only look for a new service worker on navigation | Prompting the user to reload |
 | Show the build commit id on the title screen | Lets the owner confirm the phone runs the latest deploy | — |
+
+## 2026-10-15 — Crouch body, Crusnik 40%, cutscenes
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| lowHeight 15→22, rollHeight 20→26, test beam gap 18→24 | Bodies now match the art (crouch 24, roll ball 18–25), so art never draws into ceilings | Shrinking the art |
+| Crusnik 40% = 80% art with wings erased in code (polygon on dark-grey pixels + keep largest island) | Owner: 40% has no wings; saves credits | New generation |
+| Cutscenes: code-animated manga panels; plot from an arc in both manga and anime; original dialogue | Owner choice; CLAUDE.md forbids verbatim dialogue | AI stills; verbatim excerpts |

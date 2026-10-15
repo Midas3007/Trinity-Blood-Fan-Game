@@ -254,3 +254,18 @@ class KeyArtTests(unittest.TestCase):
             colours = {tuple(c) for c in img.reshape(-1, 3)}
             self.assertTrue(colours <= {tuple(c) for c in pal.colours.tolist()})
 
+
+class EraseTests(unittest.TestCase):
+    def test_erase_removes_only_dark_grey_inside_the_polygon_and_keep_largest_drops_islands(self):
+        from tools.spritegen import erase
+        img = np.zeros((20, 20, 4), np.uint8)
+        img[2:18, 2:18] = (30, 30, 34, 255)    # dark grey "wing/body"
+        img[5, 5] = (212, 40, 62, 255)          # crimson detail inside the wing area survives
+        out = erase.erase(img, [[[0, 0], [9, 0], [9, 19], [0, 19]]])
+        self.assertEqual(out[10, 4, 3], 0)      # erased inside
+        self.assertEqual(out[10, 14, 3], 255)   # kept outside
+        self.assertEqual(out[5, 5, 3], 255)     # coloured pixel kept
+        cleaned = erase.keep_largest(out)
+        self.assertEqual(cleaned[5, 5, 3], 0)   # isolated island dropped
+        self.assertEqual(cleaned[10, 14, 3], 255)
+

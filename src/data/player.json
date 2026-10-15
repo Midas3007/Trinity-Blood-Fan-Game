@@ -25,8 +25,8 @@
   "dodgeInvulnerableMs": 260,
   "dodgeCooldownMs": 300,
 
-  "rollHeight": 20,
-  "lowHeight": 15,
+  "rollHeight": 26,
+  "lowHeight": 22,
   "crouchStickThreshold": 0.6,
   "crawlSpeed": 40,
   "slideSpeed": 300,

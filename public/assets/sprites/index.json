@@ -440,6 +440,31 @@
         "sha256:318b5bb5bad417b84e299331020aa4f730fb5af0088bb0093fd81e66301e3e67"
       ]
     },
+    "abel_crusnik40/abel_crusnik40_reference.png": {
+      "animations": {
+        "reference": {
+          "durations_ms": [
+            1000
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "abel_crusnik40",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
+      "sheet": "abel_crusnik40_reference.png",
+      "source_hashes": [
+        "sha256:5712aeaf65cc5004dc0b19d0bf2cdae88adb99c1751e723a58c76ee7588d8e9f"
+      ]
+    },
     "enemies/death_hunter/enemy_death_hunter_chop.png": {
       "animations": {
         "chop": {

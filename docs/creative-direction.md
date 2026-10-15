@@ -26,6 +26,7 @@ Rome, during the anime, at night. Three connected areas:
 > **Updated 2026-10-15 from owner-supplied references** (read only; never attached to AI tools or committed). Written in our own words for prompts and pixel art:
 > - **Priest form:** long **charcoal-grey** priest's coat (not pure black) with **white/silver piping** on every edge; a **short shoulder cape** over it; **high stand-up collar**; tan leather belt straps at the waist; a white stripe down the front opening of the long skirt; round glasses; long low silver ponytail reaching mid-back; black boots. The light piping is what keeps the sprite readable against dark backgrounds.
 > - **Crusnik form:** long silver hair loose and wild; glowing red eyes; **large black feathered wings**; long white sash; dark coat with silver trim and a red cross at the hem; a **huge crimson segmented organic scythe** (spine/centipede-like, lined with small hooked spikes) and red spiked tendrils coiling around the arms; crackling pale lightning when activating.
+> - **Crusnik forms (owner, 2026-10-15):** **40%** (playable, timed) has **no wings**; **80%** (scripted boss moments) has the wings. The 40% sprites are the 80% art with the wings erased in the pipeline (no extra AI credits).
 > - **Crusnik redesign (owner, 2026-10-15):** taller and gaunter (about ten heads; 54 px sprite vs 40 px priest), more Gothic (high collar, gothic-arch filigree, iron cross, clawed gauntlets, tattered sash, ragged fallen-angel wings, waist-length hair), very pale cold grey-ivory skin that is clearly darker than his white hair.
 > - **Dietrich von Lohengrin:** auburn shoulder-length hair; black double-breasted military coat with white piping; red armband on the left arm; cross pendant; white gloves; cold smile; controls **red puppet strings** with his fingers.
 
@@ -134,3 +135,12 @@ The first six and the crimson are already used by the Milestone 1 placeholders.
 ---
 
 **Owner decisions (2026-10-14):** story, palette, Abel ≈ 40 px in 64×64 frames, and ability button mapping all approved.
+
+## 13. Cutscenes (owner decision 2026-10-15)
+- **Animated in code** with the game's own sprites, in a **moving manga-panel** style: panels slide in, pan and zoom over sprite poses and painted/pixel backgrounds, with speech boxes. Whichever reads better per scene; panels are cheaper than full animation.
+- **Script and staging by Claude.** The plot will follow a storyline that exists in **both the manga and the anime** so there is enough source material to draw from. Candidate (to confirm before writing, *unverified*): the Istvan arc (Esther's introduction, Dietrich's manipulation, Gyula Kádár and the "Star of Sorrow"). This would replace or reframe the original "Requiem for Rome" side story — owner to approve.
+- **Dialogue is written fresh** (CLAUDE.md Part 6: no verbatim anime/manga/novel dialogue). Scenes follow the source's events and characters, in our own words.
+
+## 14. Later content (owner idea, after the vertical slice)
+- A **sword** for Abel, as part of a later side story / content update.
+

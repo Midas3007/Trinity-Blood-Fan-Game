@@ -58,6 +58,22 @@ entities:
     animations:
       reference: { loop: false, durations_ms: 1000 }   # side, front, back (design lock; poses come with the Crusnik ability)
 
+  # Crusnik 40% (playable form) = the 80% design without wings, derived in code (owner, 2026-10-15).
+  abel_crusnik40:
+    cell: [96, 96]
+    sprite_height: 54
+    gamma: 1.5
+    source_dir: art/source/approved/abel_crusnik/
+    output_dir: public/assets/sprites/abel_crusnik40/
+    animations:
+      reference:
+        source: reference
+        pick: [0]                      # side view only (the game is side-on)
+        durations_ms: 1000
+        # Wing outline on the side-view crop (approved-crop pixels); only dark grey pixels inside are removed.
+        keep_largest: true             # drop fragments left floating (scythe tip behind the wing)
+        erase: [[[0, 0], [205, 0], [205, 60], [192, 130], [185, 200], [170, 260], [140, 310], [105, 350], [70, 395], [0, 395]]]
+
   enemy_thrall:
     cell: [64, 64]
     sprite_height: 30

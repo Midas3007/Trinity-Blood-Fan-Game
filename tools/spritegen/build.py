@@ -9,7 +9,7 @@ from PIL import Image
 
 import json
 
-from . import approve, cleanup, crop, downscale, ingest, manifest, outline, overrides, pack, quantize, tone
+from . import erase, approve, cleanup, crop, downscale, ingest, manifest, outline, overrides, pack, quantize, tone
 from .palette import Palette
 
 OVERRIDES = Path("art/overrides")
@@ -61,14 +61,20 @@ def build_all(cfg_path: Path, only: str | None = None) -> list[str]:
         cell = tuple(ecfg["cell"])
         src_root, out_dir = Path(ecfg["source_dir"]), Path(ecfg["output_dir"])
         for anim, acfg in (ecfg.get("animations") or {}).items():
-            files = sorted((src_root / anim).glob("*.png"))
+            acfg_ = acfg or {}
+            # `source` reuses another animation's approved crops; `pick` keeps only some of them (by index).
+            files = sorted((src_root / acfg_.get("source", anim)).glob("*.png"))
+            if "pick" in acfg_:
+                files = [files[i] for i in acfg_["pick"] if i < len(files)]
             if not files:
                 log.append(f"skip {entity}/{anim}: no approved sources in {src_root / anim}")
                 continue
             aopts = {**opts, **(acfg or {})}
             frames, hashes = [], []
             for f in files:
-                img = np.array(Image.open(f).convert("RGBA"))
+                img = erase.erase(np.array(Image.open(f).convert("RGBA")), aopts.get("erase", []))
+                if aopts.get("keep_largest"):
+                    img = erase.keep_largest(img)
                 frame, meta = frame_from_crop(img, pal, aopts, cell)
                 if meta["clipped"]:
                     log.append(f"WARN {entity}/{anim}: {f.name} clipped by the {cell[0]}x{cell[1]} cell")
