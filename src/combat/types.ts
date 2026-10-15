@@ -32,6 +32,8 @@ export interface AttackDef {
   hitbox: RelativeBox;
   /** Next attack in the combo, if the attack button is pressed again in time. */
   next?: string;
+  /** False for attacks a parry cannot stop (they glow before they land). Default: parryable. */
+  parryable?: boolean;
 }
 
 export type AttackPhase = 'startup' | 'active' | 'recovery' | 'done';
@@ -44,6 +46,8 @@ export interface HitInfo {
   hitstopMs: number;
   shakeMs: number;
   shakeIntensity: number;
+  /** False when a parry cannot stop it. */
+  parryable?: boolean;
 }
 
 /** Anything that can be hit by an attack. */

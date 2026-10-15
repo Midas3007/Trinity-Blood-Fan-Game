@@ -229,3 +229,15 @@
 | Ability gate: Chapel of Bones → Ballroom doorway sits on a 96 px sheer wall of bones; tests check priest jump < wall < Crusnik leap | The ballroom (boss) becomes the payoff for the new power | Breakable wall (needs another mechanic) |
 | Form and meter carry between rooms (session only); praying or dying ends the form but keeps the blood; not written to the save | Saves stay small; a loaded game starts as the priest at an altar | Saving the meter |
 | 80% (winged) flight poses built as their own sprite entity for scripted moments and cutscenes; not a playable form yet | Owner asked for flight art; flight gameplay would need flight-specific level design | Playable flight now |
+
+## 2026-10-15 — Parry and the Marchesa (first boss)
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| New PARRY button (touch, O/B keys, gamepad LB): 200 ms window, 260 ms recovery if nothing comes, 400 ms safety after a success; a deflected attacker reels; ATK right after a success = riposte | The owner asked for a fight like Crisanta's, which is built around parrying (research W4/W5); a dedicated button like Blasphemous mobile | Parry on DODGE timing; hold-to-block |
+| Regular enemies: a parry staggers them, which opens the revolver finisher | One rule everywhere; parrying becomes useful outside the boss | Boss-only parry |
+| Attacks are parryable unless their data says `parryable: false`; contact hazards (her shockwaves) are never parried | Data-driven, matches Crisanta (blade parried, explosions jumped) | Per-enemy code |
+| The Marchesa: pure `MarchesaBrain` (states, pattern rotation, arena clamp, shockwaves) + Phaser `Marchesa` view + `BossArena` (walls of string, camera lock, boss bar, dying words, defeat flag). Fixed move rotation per phase, not random | Testable, never stuck (2-minute random test), readable and learnable like a Blasphemous boss | Random choice |
+| 420 health, ×2 damage while reeling from a parry; phase 2 at half health (strings snap, faster, vanish-and-charge added) | About 10 priest combos; parry and the Crusnik both shorten it | Longer fight (phone sessions are short) |
+| Her dying words are a new reusable `DialogueBox` (typed text, tap/ATK to advance; data in `src/data/dialogue.json`, original lines) | Milestone 7 dialogue item; reused by cutscenes later | Lore panel |
+| Arena = the ballroom's middle screen; the curtains rise when Abel steps 40 px inside; dying ends the fight (rematch on return) | Same as Blasphemous boss rooms | Locking at the door |

@@ -42,5 +42,9 @@
 
   "maxHealth": 100,
   "hurtStunMs": 320,
-  "hurtInvulnerableMs": 1000
+  "hurtInvulnerableMs": 1000,
+
+  "parryWindowMs": 200,
+  "parryRecoveryMs": 260,
+  "parrySuccessInvulnerableMs": 400
 }

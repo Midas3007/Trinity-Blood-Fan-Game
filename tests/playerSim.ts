@@ -24,6 +24,8 @@ export interface SimInput {
   moveY?: number;
   /** True on the frame ABIL is pressed. */
   ability?: boolean;
+  /** True on the frame PARRY is pressed. */
+  parry?: boolean;
 }
 
 /**
@@ -101,6 +103,23 @@ export class SimPlayer implements PlayerContext {
   endFinisher(): void {
     this.finishing.stop();
   }
+  parryPressed = false;
+  private parryWindow = false;
+  parrySucceeded = false;
+  get parryOpen(): boolean {
+    return this.parryWindow;
+  }
+  set parryOpen(open: boolean) {
+    if (open && !this.parryWindow) this.parrySucceeded = false;
+    this.parryWindow = open;
+  }
+  /** An enemy hit arrives now: returns true if the parry deflected it. */
+  hitArrives(parryable = true): boolean {
+    if (!this.parryWindow || !parryable) return false;
+    this.parryWindow = false;
+    this.parrySucceeded = true;
+    return true;
+  }
   form: AbelForm = 'priest';
   abilityPressed = false;
   readonly crusnik = new CrusnikMeter();
@@ -147,6 +166,7 @@ export class SimPlayer implements PlayerContext {
     this.dodgePressed = input.dodge ?? false;
     this.attackPressed = input.attack ?? false;
     this.abilityPressed = input.ability ?? false;
+    this.parryPressed = input.parry ?? false;
     this.crouchHeld = input.down ?? false;
     this.moveY = input.moveY ?? (this.crouchHeld ? 1 : 0);
 

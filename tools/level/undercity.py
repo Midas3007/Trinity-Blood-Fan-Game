@@ -155,7 +155,8 @@ def ballroom():
     r.platform(r.W - 18, r.W - 8, 9, "balcony")
     r.prop("chandelier", 45, 1, -72)
     r.mark("lore", 82, 14, lore="ballroom_invitation")
-    r.mark("label", 45, 6, text="Something hangs among the red cords... (boss: Milestone 7)")
+    # The duel: the middle screen is the arena (walls rise when Abel steps in). Her defeat opens the west gate.
+    r.mark("boss", 45, 14, boss="marchesa", arenaLeft=30 * 16, arenaRight=60 * 16, defeatFlag="marchesa_defeated")
     return r
 
 

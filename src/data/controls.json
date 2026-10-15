@@ -6,7 +6,8 @@
     { "action": "jump",    "label": "JUMP", "x": 0.91, "y": 0.62, "radius": 20 },
     { "action": "dodge",   "label": "DODGE","x": 0.69, "y": 0.86, "radius": 16 },
     { "action": "ability", "label": "ABIL", "x": 0.80, "y": 0.50, "radius": 16 },
-    { "action": "heal",    "label": "HEAL", "x": 0.91, "y": 0.36, "radius": 14 }
+    { "action": "heal",    "label": "HEAL", "x": 0.91, "y": 0.36, "radius": 14 },
+    { "action": "parry",   "label": "PARRY","x": 0.69, "y": 0.62, "radius": 16 }
   ],
   "debugToggle": { "taps": 3, "windowMs": 600, "cornerSize": 48 }
 }

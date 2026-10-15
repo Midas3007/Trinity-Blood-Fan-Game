@@ -4,6 +4,7 @@
   "sparks": true,
   "maxSparks": 32,
   "sparksPerHit": 6,
+  "parryHitstopMs": 110,
   "sparkLifeMs": 220,
   "sparkSpeed": 140,
   "hitFlashMs": 70,

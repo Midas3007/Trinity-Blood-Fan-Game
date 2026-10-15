@@ -1,0 +1,14 @@
+{
+  "source": "marchesa_b_r1_b9b20ad1_m.png",
+  "source_hash": "sha256:3680db564b9d261f1d99a7b8a8f13709376a8e233d08b0f2928de4770d6c61b4",
+  "figures": [
+    5
+  ],
+  "standing_px": 755,
+  "factor": 0.635762,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "marchesa_b_r1_b9b20ad1_m_f5.png"
+  ]
+}

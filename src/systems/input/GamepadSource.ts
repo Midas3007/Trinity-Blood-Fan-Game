@@ -3,7 +3,7 @@ import { emptyFrame, type InputFrame } from './actions';
 
 const AXIS_DEAD_ZONE = 0.25;
 
-/** Standard-mapping gamepad: left stick or d-pad to move; A jump, X attack, B dodge, Y ability, RB heal. */
+/** Standard-mapping gamepad: left stick or d-pad to move; A jump, X attack, B dodge, Y ability, RB heal, LB parry. */
 export class GamepadSource {
   constructor(private readonly plugin: Phaser.Input.Gamepad.GamepadPlugin | null) {}
 
@@ -20,6 +20,7 @@ export class GamepadSource {
     f.buttons.dodge = pad.B;
     f.buttons.ability = pad.Y;
     f.buttons.heal = pad.R1 > 0;
+    f.buttons.parry = pad.L1 > 0;
     return f;
   }
 }

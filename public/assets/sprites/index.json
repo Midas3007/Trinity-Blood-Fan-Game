@@ -972,6 +972,284 @@
         "sha256:b767d92c200097e8d4c9b687e9011dc840d4c2fa468072b869adcc71ba2c8465"
       ]
     },
+    "bosses/marchesa/boss_marchesa_charge.png": {
+      "animations": {
+        "charge": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_marchesa",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_marchesa_charge.png",
+      "source_hashes": [
+        "sha256:e92bf79c1497a835370edb45994e138f6efaf97d4c0740a55ebc1b6526c39a25"
+      ]
+    },
+    "bosses/marchesa/boss_marchesa_death.png": {
+      "animations": {
+        "death": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_marchesa",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_marchesa_death.png",
+      "source_hashes": [
+        "sha256:3537be3c93a5d5a8d125997cbcedb055a3e1bde7d9cd52f84eb9f0e363a3b588"
+      ]
+    },
+    "bosses/marchesa/boss_marchesa_dive.png": {
+      "animations": {
+        "dive": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_marchesa",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_marchesa_dive.png",
+      "source_hashes": [
+        "sha256:474bdb45cfe505545f436d6931e2882d4b860d9dc25e598ef74481d5bcd15ac8"
+      ]
+    },
+    "bosses/marchesa/boss_marchesa_hang.png": {
+      "animations": {
+        "hang": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_marchesa",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_marchesa_hang.png",
+      "source_hashes": [
+        "sha256:9414d16502767aed07dc3a9cb7535c6178a8bfb5b24aa5f82afb39f3f0fff274"
+      ]
+    },
+    "bosses/marchesa/boss_marchesa_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_marchesa",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_marchesa_idle.png",
+      "source_hashes": [
+        "sha256:376b8e80a1fcd0a18ac08cc703631c43848113a5d824e471b60edf5de2f6af6b"
+      ]
+    },
+    "bosses/marchesa/boss_marchesa_impact.png": {
+      "animations": {
+        "impact": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_marchesa",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_marchesa_impact.png",
+      "source_hashes": [
+        "sha256:0d1fc03b165cafab963f623d6b4fe06bbb871d040bb42eb1c322fe478b9f747f"
+      ]
+    },
+    "bosses/marchesa/boss_marchesa_leap.png": {
+      "animations": {
+        "leap": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_marchesa",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_marchesa_leap.png",
+      "source_hashes": [
+        "sha256:883ad4e21daa4ccfd69112b8c41eadad23d55b4b5670b6c3fb22fde7d41dadad"
+      ]
+    },
+    "bosses/marchesa/boss_marchesa_lunge.png": {
+      "animations": {
+        "lunge": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_marchesa",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_marchesa_lunge.png",
+      "source_hashes": [
+        "sha256:35727e6ff0db9a33c2536fb41ea98841ca12c26df69f06a226ff54d5185261d2"
+      ]
+    },
+    "bosses/marchesa/boss_marchesa_slash.png": {
+      "animations": {
+        "slash": {
+          "durations_ms": [
+            200,
+            200
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 2,
+      "entity": "boss_marchesa",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_marchesa_slash.png",
+      "source_hashes": [
+        "sha256:71e6942e409b10c252939d7313316accfc72f07c761f6484b667f4ac4fe44a1b",
+        "sha256:d3d8aa03df0fa9cce5b9488f845a1c1f1c0d1b335171ad932a19faa3be967249"
+      ]
+    },
+    "bosses/marchesa/boss_marchesa_staggered.png": {
+      "animations": {
+        "staggered": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_marchesa",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_marchesa_staggered.png",
+      "source_hashes": [
+        "sha256:a3441cafa1f33d25639c067a9ba0450575994d6bac31534cbb2909ad749f83ba"
+      ]
+    },
+    "bosses/marchesa/boss_marchesa_walk.png": {
+      "animations": {
+        "walk": {
+          "durations_ms": [
+            260
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_marchesa",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_marchesa_walk.png",
+      "source_hashes": [
+        "sha256:2a040f847ed148bd240b9a3776407d18d8168f594ba6243866a76790997025ef"
+      ]
+    },
     "enemies/death_hunter/enemy_death_hunter_chop.png": {
       "animations": {
         "chop": {

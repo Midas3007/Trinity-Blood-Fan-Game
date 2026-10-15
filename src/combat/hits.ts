@@ -15,5 +15,6 @@ export function hitFromAttack(a: AttackDef, direction: 1 | -1): HitInfo {
     hitstopMs: a.hitstopMs,
     shakeMs: a.shakeMs,
     shakeIntensity: a.shakeIntensity,
+    ...(a.parryable === false ? { parryable: false } : {}),
   };
 }

@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "lunge": {
+      "durations_ms": [
+        200
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 128,
+  "cell_width": 128,
+  "columns": 1,
+  "entity": "boss_marchesa",
+  "palette": "requiem48.hex",
+  "pivot_x": 64,
+  "pivot_y": 128,
+  "sheet": "boss_marchesa_lunge.png",
+  "source_hashes": [
+    "sha256:35727e6ff0db9a33c2536fb41ea98841ca12c26df69f06a226ff54d5185261d2"
+  ]
+}

@@ -180,6 +180,16 @@ export class Enemy implements EnemyContext, Damageable, FinisherTarget {
     return true;
   }
 
+  /** Parried: the swing is cut off and the enemy reels, open to a finisher (a parry earns one even if its
+   * low-health stagger was already used). */
+  onParried(): void {
+    if (!this.fsm || !this.alive) return;
+    this.combat.stop();
+    this.staggerUsed = true;
+    this.body.setVelocity(0, 0);
+    this.fsm.transition('staggered');
+  }
+
   spawn(x: number, feetY: number): void {
     this.id = nextEntityId(); // fresh id so old "already hit" records never apply
     this.homeX = x;

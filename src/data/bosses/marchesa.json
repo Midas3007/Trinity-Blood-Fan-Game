@@ -1,0 +1,62 @@
+{
+  "_note": "The Marchesa of the Catacombs, first boss. A duel modelled on the structure of Crisanta's fight in Blasphemous (docs/reference-findings.md W5): phase 1 = a two-slash combo whose second slash is a long lunge, and a plummet (yanked up by her strings, blade-first dive, shockwaves along the floor that must be jumped); at phase2At health her strings snap and she adds a vanish -> reappear at the arena edge -> charge across. Every blade attack can be PARRIED (she reels and takes staggerDamageMultiplier x damage); the shockwaves cannot. All numbers are design choices. Times in ms, speeds px/s, distances px.",
+  "name": "The Marchesa of the Catacombs",
+  "maxHealth": 420,
+  "width": 18,
+  "height": 46,
+  "phase2At": 0.5,
+  "introMs": 2400,
+  "idleMs": 650,
+  "idleMsPhase2": 380,
+  "walkSpeed": 70,
+  "walkSpeedPhase2": 95,
+  "walkMaxMs": 2200,
+  "slashRange": 64,
+  "lungeDistance": 230,
+  "leapHeight": 150,
+  "leapRiseMs": 520,
+  "leapHangMs": 300,
+  "diveSpeed": 560,
+  "impactMs": 780,
+  "staggerMs": 1300,
+  "staggerDamageMultiplier": 2,
+  "stringsMs": 1400,
+  "vanishMs": 450,
+  "reappearMs": 600,
+  "chargeSpeed": 420,
+  "tiredMs": 1000,
+  "deathMs": 1800,
+  "shockwave": { "speed": 210, "width": 14, "height": 12, "damage": 12, "lifeMs": 2400 },
+  "patternPhase1": ["slash", "slash", "plummet"],
+  "patternPhase2": ["charge", "slash", "plummet", "slash", "charge", "slash"],
+  "attacks": {
+    "slash1": {
+      "startupMs": 420, "activeMs": 110, "recoveryMs": 160,
+      "damage": 14, "knockbackX": 140, "knockbackY": 60,
+      "hitstopMs": 70, "shakeMs": 90, "shakeIntensity": 0.004,
+      "stepSpeed": 40, "cancelIntoDodge": false,
+      "hitbox": { "x": 30, "y": -6, "w": 42, "h": 26 }
+    },
+    "slash2": {
+      "startupMs": 330, "activeMs": 260, "recoveryMs": 650,
+      "damage": 18, "knockbackX": 200, "knockbackY": 80,
+      "hitstopMs": 90, "shakeMs": 120, "shakeIntensity": 0.006,
+      "stepSpeed": 0, "cancelIntoDodge": false,
+      "hitbox": { "x": 30, "y": -4, "w": 40, "h": 16 }
+    },
+    "dive": {
+      "startupMs": 0, "activeMs": 5000, "recoveryMs": 0,
+      "damage": 20, "knockbackX": 160, "knockbackY": 120,
+      "hitstopMs": 90, "shakeMs": 160, "shakeIntensity": 0.008,
+      "stepSpeed": 0, "cancelIntoDodge": false,
+      "hitbox": { "x": 0, "y": 18, "w": 22, "h": 24 }
+    },
+    "charge": {
+      "startupMs": 0, "activeMs": 5000, "recoveryMs": 0,
+      "damage": 20, "knockbackX": 220, "knockbackY": 100,
+      "hitstopMs": 90, "shakeMs": 140, "shakeIntensity": 0.007,
+      "stepSpeed": 0, "cancelIntoDodge": false,
+      "hitbox": { "x": 10, "y": 0, "w": 30, "h": 40 }
+    }
+  }
+}

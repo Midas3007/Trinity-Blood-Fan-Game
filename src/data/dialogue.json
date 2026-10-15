@@ -1,0 +1,12 @@
+{
+  "_note": "Dialogue scenes. Original lines written for this fan game (not quoted from the anime, manga or novels). Speakers: names as shown in the box.",
+  "scenes": {
+    "marchesa_defeated": [
+      { "speaker": "The Marchesa", "text": "...The strings. They are gone. How strange, to feel my own hands again." },
+      { "speaker": "Abel", "text": "Rest now, signora. Please. Who did this to you?" },
+      { "speaker": "The Marchesa", "text": "A young man. Golden hair, a choirboy's smile. He played the strings as if they were a violin, and he called it... a rehearsal." },
+      { "speaker": "The Marchesa", "text": "He is above us, Father. In the city. Do not let him make Istvan dance." },
+      { "speaker": "Abel", "text": "I won't. Requiescat in pace." }
+    ]
+  }
+}

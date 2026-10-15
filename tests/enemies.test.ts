@@ -223,6 +223,48 @@ describe('CombatSystem', () => {
     expect(events).toEqual(['hurt']);
   });
 
+  it('a parried swing does no damage, staggers the attacker and is announced; unparryable hits still land', () => {
+    const bus = new EventBus<GameEvents>();
+    const parries: number[] = [];
+    bus.on('combat:parry', ({ x }) => parries.push(x));
+    const player = fakePlayer();
+    let open = true;
+    let pending = false;
+    player.receiveHit = (hit: HitInfo) => {
+      if (open && hit.parryable !== false) {
+        open = false;
+        pending = true;
+        return false;
+      }
+      player.hits.push(hit);
+      return true;
+    };
+    player.consumeParry = () => {
+      const p = pending;
+      pending = false;
+      return p;
+    };
+    const sys = new CombatSystem(bus, player);
+    let staggered = 0;
+    const enemy = { x: -15, y: 0, facing: 1 as const, combat: new AttackRunner(cfg.attacks), onParried: () => staggered++ };
+    enemy.combat.begin(cfg.attack);
+    enemy.combat.tick(cfg.attacks[cfg.attack]!.startupMs + 1);
+    sys.step([], [enemy], []);
+    expect(player.hits).toHaveLength(0);
+    expect(staggered).toBe(1);
+    expect(parries).toHaveLength(1);
+    // A shockwave (contact, unparryable) lands even with the parry window open.
+    open = true;
+    const shock: ContactHazard = {
+      alive: true,
+      contactDamage: 12,
+      hurtbox: () => ({ x: -5, y: -5, w: 10, h: 10 }),
+      contactHit: () => ({ damage: 12, knockbackX: 1, knockbackY: 0, hitstopMs: 0, shakeMs: 0, shakeIntensity: 0, parryable: false }),
+    };
+    sys.step([], [], [shock]);
+    expect(player.hits).toHaveLength(1);
+  });
+
   it('dodge invulnerability ignores contact damage; the player hitting an enemy reports a kill', () => {
     const bus = new EventBus<GameEvents>();
     const deaths: number[] = [];

@@ -11,7 +11,7 @@ Last updated: 2026-10-15
 | 4 | First enemy | done (thrall + Death Hunter) |
 | 5 | Level slice | done: Istvan Old Town + Undercity, edge transitions, spikes/water, altars, lever-gate puzzles, room-graph test — **phone test pending** |
 | 6 | Art integration | in progress: Abel full set (incl. walk, climb, pray, drink), thrall, Death Hunter, title, HUD portrait, shaded tileset, altar + dove, cathedral front, painted house fronts/interiors/props, underground walls; left: NPCs, VFX, more enemies, cathedral interior |
-| 7 | Progression | in progress: holy-water flasks ✅, map ✅, altars/checkpoints ✅, pause ✅, save/load ✅, Crusnik form + leap gate + chain lash ✅; left: dialogue, Marchesa boss |
+| 7 | Progression | in progress: holy-water flasks ✅, map ✅, altars/checkpoints ✅, pause ✅, save/load ✅, Crusnik form + leap gate + chain lash ✅, parry ✅, dialogue box ✅, **first boss: the Marchesa ✅**; left: boss rematch polish, more dialogue/cutscenes |
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
@@ -43,11 +43,30 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 - Known art gap: the Crusnik climb frames still show the ladder the art was drawn on (it sits over the real ladder at about the same width); fix on the next art pass.
 - Verified: 138/138 tests (meter, transform, scythe/lash/slide, drain back to priest, leap height vs the wall, every Crusnik state has art); bot run: priest can't climb the wall → ABIL → Crusnik → scythe, lash, slide → leap → Ballroom, still transformed.
 
+## Done (latest) — the Marchesa (first boss) and PARRY
+- **PARRY** (new button left of JUMP; keys O/B; gamepad LB): a short guard. Catch a blade in the window → steel flash, the attacker reels; press ATK straight after for the riposte. Thralls and Death Hunters reel too, which opens the revolver finisher. Mistimed parries leave Abel open for a moment.
+- **The Marchesa of the Catacombs** (the Ballroom, reached by the Crusnik leap from the Chapel of Bones). Built on the structure of Crisanta's fight in Blasphemous (research W5), with original art and story:
+  - Walk into the middle of the ballroom: curtains of crimson string drop on both sides, the camera locks, her name and health bar appear at the bottom. She hangs limp in her strings, then drops.
+  - **Phase 1 (strings):** two-slash combo, the second a long lunge across the floor (parry it or be far away); **plummet**: her strings yank her up, she hovers over you and dives blade-first; the impact sends crimson shockwaves both ways along the floor (jump them, they can't be parried).
+  - **Phase 2 (half health):** the strings snap (she's briefly untouchable), she's faster, and adds a **vanish → reappear at the far edge (glowing) → charge across**: jump over it or parry it.
+  - Parried, she reels and takes double damage. Her blade glows amber before every slash.
+  - When she falls: her last words in a dialogue box (tap to advance; original lines that point at the puppeteer), "REQUIESCAT IN PACE", the west gate opens, the game saves.
+- Art: two pose sheets (4 credits, about 44 left): stance, walk, slash, lunge, reel, hanging, leap, dive, impact, charge, death. Strings are drawn in code (they snap in phase 2). A faint crimson aura keeps her readable in the dark ballroom.
+- Verified: 150/150 tests (brain: intro, combo + lunge distance, plummet + shockwaves, parry stagger + double damage, phase 2 vanish/charge to the far edge, a 2-minute random fight never stuck; parry state and combat hook). Bot runs: a 40-second fight saw every state including phase 2 (the bot lost, as it should); a low-health run went through death → dialogue → flag → arena opened, no errors.
+
 ## In progress
 - the Crusnik form + leap gate, then the Marchesa boss.
 
 ## Blockers
 - None. Higgsfield: about 56 credits left.
+
+## Owner must test (on phone) — PARRY and the Marchesa
+1. Find PARRY (left of JUMP). Near a thrall, tap it just as the amber claw comes: steel flash, it reels with the red diamond → ATK for the revolver finisher.
+2. The Ballroom: leap up from the Chapel of Bones as the Crusnik (or keep the blood bar for the fight). Walk to the middle: curtains drop, the boss bar appears.
+3. Phase 1: parry her slashes (the amber glow is your cue; the second one lunges far). When she's pulled up, move away and jump the red shockwaves.
+4. Phase 2: when she vanishes, watch the edges: she glows red, then charges: jump over or parry.
+5. Beat her: read her last words (tap), then the west gate is open. Die instead: you return to the chapel altar and can try again.
+6. Tell me: too hard/easy? parry window too tight? is she easy to see? does it feel like Crisanta?
 
 ## Owner must test (on phone) — the Crusnik
 1. Get to the Forgotten Reliquary (Ossuary: top floor west ladder → lever → bottom-floor gate) and stand at the page. The banner appears and the blue bar shows, glowing.
@@ -81,4 +100,4 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 ## Next step
 - When the slice is finished: a bot plays the whole game start to end and the run is recorded as a video for the owner (owner request).
 - Optional (owner's call): redraw characters taller (about 56 px, Blasphemous scale) for real detail; costs Higgsfield credits and changes his size against doors.
-- Crusnik 40% form + leap ability that opens a blocked path, then the Marchesa boss in her ballroom.
+- After your boss feedback: the first cutscene (Abel arrives in Istvan, code-animated manga panels) and Region 2.

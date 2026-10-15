@@ -1,4 +1,4 @@
-export const ACTIONS = ['attack', 'jump', 'dodge', 'ability', 'heal'] as const;
+export const ACTIONS = ['attack', 'jump', 'dodge', 'ability', 'heal', 'parry'] as const;
 export type Action = (typeof ACTIONS)[number];
 
 /** One input source's reading for a single frame. moveX/moveY are in [-1, 1]. */
@@ -9,7 +9,7 @@ export interface InputFrame {
 }
 
 export function emptyFrame(): InputFrame {
-  return { moveX: 0, moveY: 0, buttons: { attack: false, jump: false, dodge: false, ability: false, heal: false } };
+  return { moveX: 0, moveY: 0, buttons: { attack: false, jump: false, dodge: false, ability: false, heal: false, parry: false } };
 }
 
 /** Combines touch, keyboard and gamepad: strongest axis wins, buttons are OR-ed. */

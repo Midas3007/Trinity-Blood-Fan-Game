@@ -103,6 +103,37 @@ export class Player implements PlayerContext, PlayerCombatant {
     return this.form === 'crusnik' ? CRUSNIK_TUNING : playerTuning;
   }
 
+  get parryPressed(): boolean {
+    return this.input.justPressed('parry');
+  }
+
+  private parryWindow = false;
+  private parryHit = false;
+  private parryPending = false;
+  /** Called when a parry deflects a hit (feedback lives in the scene). */
+  onParry: (() => void) | null = null;
+
+  get parryOpen(): boolean {
+    return this.parryWindow;
+  }
+
+  set parryOpen(open: boolean) {
+    // Closed -> open only happens when a new parry starts (the window never reopens within one).
+    if (open && !this.parryWindow) this.parryHit = false;
+    this.parryWindow = open;
+  }
+
+  get parrySucceeded(): boolean {
+    return this.parryHit;
+  }
+
+  /** True once after a hit was deflected (the combat system then staggers the attacker). */
+  consumeParry(): boolean {
+    const p = this.parryPending;
+    this.parryPending = false;
+    return p;
+  }
+
   get abilityPressed(): boolean {
     return this.input.justPressed('ability');
   }
@@ -287,6 +318,14 @@ export class Player implements PlayerContext, PlayerCombatant {
   }
 
   receiveHit(hit: HitInfo): boolean {
+    if (this.parryWindow && hit.parryable !== false && !this.health.dead) {
+      this.parryWindow = false;
+      this.parryHit = true;
+      this.parryPending = true;
+      this.timers.invulnerable = Math.max(this.timers.invulnerable, this.tuning.parrySuccessInvulnerableMs);
+      this.onParry?.();
+      return false;
+    }
     return this.takeHit(hit);
   }
 

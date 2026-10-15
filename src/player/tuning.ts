@@ -46,6 +46,10 @@ export interface PlayerTuning {
   maxHealth: number;
   hurtStunMs: number;
   hurtInvulnerableMs: number;
+  /** PARRY: how long it catches a hit, how long Abel is stuck if nothing comes, and the safety after a success (ms). */
+  parryWindowMs: number;
+  parryRecoveryMs: number;
+  parrySuccessInvulnerableMs: number;
 }
 
 export const playerTuning: PlayerTuning = raw;

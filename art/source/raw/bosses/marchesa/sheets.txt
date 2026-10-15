@@ -1,0 +1,5 @@
+The Marchesa (original boss) — 2026-10-15. Higgsfield nano_banana_pro, 2k, 21:9, 2 credits each.
+- d6493192 sheet A (no reference; our own description): stance, walk, slash wind-up, slash, lunge, staggered.
+- b9b20ad1 sheet B (reference: sheet A): hanging, yanked up, dive, impact, charge (strings snapped), death.
+Backgrounds were pink-magenta with a ground line: repainted pure magenta (flood fill + line removal) to *_m.png, then approved
+at ref-height 672 (A) / 755 (B) so both sheets share one scale.

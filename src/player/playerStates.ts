@@ -24,7 +24,8 @@ export type PlayerStateKey =
   | 'climb'
   | 'heal'
   | 'transform'
-  | 'lash';
+  | 'lash'
+  | 'parry';
 
 /** Body posture for each state; the Player resizes its body to match. */
 export type Posture = 'stand' | 'roll' | 'low';
@@ -85,6 +86,12 @@ export interface PlayerContext {
   endFinisher(): void;
   /** Priest or Crusnik: picks the attacks and (via tuning) the leap and run speed. */
   readonly form: AbelForm;
+  /** PARRY pressed this frame. */
+  readonly parryPressed: boolean;
+  /** Set by the parry state: a hit arriving now is deflected. */
+  parryOpen: boolean;
+  /** A hit was deflected during this parry (ATK may follow at once: the riposte). */
+  readonly parrySucceeded: boolean;
   /** ABIL pressed this frame. */
   readonly abilityPressed: boolean;
   /** The Crusnik form can be taken now (awakened and the blood meter full). */
@@ -140,6 +147,7 @@ function groundUpdate(ctx: PlayerContext, dtMs: number): PlayerStateKey {
   if (!ctx.onGround) return 'fall';
   if (ctx.crouchHeld || !ctx.canStand) return 'crouch';
   if (ctx.healWanted) return 'heal';
+  if (ctx.parryPressed) return 'parry';
   const ability = abilityState(ctx);
   if (ability) return ability;
   if (ctx.attackPressed) return ctx.finisherReady ? 'finisher' : 'attack';
@@ -406,6 +414,26 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     },
     exit(ctx) {
       ctx.combat.stop();
+    },
+  },
+
+  // PARRY: a short guard. A hit during the window is deflected (the attacker reels); otherwise Abel is left open.
+  parry: {
+    enter(ctx) {
+      faceInput(ctx);
+      ctx.vx = 0;
+      ctx.parryOpen = true;
+    },
+    update(ctx, dtMs, stateMs) {
+      brake(ctx, dtMs);
+      ctx.parryOpen = !ctx.parrySucceeded && stateMs < ctx.tuning.parryWindowMs;
+      if (ctx.parrySucceeded && ctx.attackPressed) return ctx.finisherReady ? 'finisher' : 'attack'; // riposte
+      if (!ctx.onGround) return 'fall';
+      if (stateMs >= ctx.tuning.parryWindowMs + ctx.tuning.parryRecoveryMs) return ctx.moveX !== 0 ? 'run' : 'idle';
+      return undefined;
+    },
+    exit(ctx) {
+      ctx.parryOpen = false;
     },
   },
 

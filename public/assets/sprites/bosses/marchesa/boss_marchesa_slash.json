@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "slash": {
+      "durations_ms": [
+        200,
+        200
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 128,
+  "cell_width": 128,
+  "columns": 2,
+  "entity": "boss_marchesa",
+  "palette": "requiem48.hex",
+  "pivot_x": 64,
+  "pivot_y": 128,
+  "sheet": "boss_marchesa_slash.png",
+  "source_hashes": [
+    "sha256:71e6942e409b10c252939d7313316accfc72f07c761f6484b667f4ac4fe44a1b",
+    "sha256:d3d8aa03df0fa9cce5b9488f845a1c1f1c0d1b335171ad932a19faa3be967249"
+  ]
+}

@@ -104,6 +104,8 @@ export interface RoomData {
   enemies: { type: string; x: number; y: number }[];
   dummies: { x: number; y: number; maxHealth: number; contactDamage: number }[];
   checkpoints: { id: string; x: number; y: number }[];
+  /** A boss fight: where she starts (feet), the arena's walls (px), and the flag her defeat sets. */
+  boss: { id: string; x: number; y: number; arenaLeft: number; arenaRight: number; defeatFlag: string } | null;
   levers: { flag: string; x: number; y: number }[];
   labels: { x: number; y: number; text: string }[];
   lore: { id: string; x: number; y: number }[];
@@ -184,6 +186,7 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
     outdoor: String(mp.sky ?? 'open') !== 'none',
     horizon: Number(mp.horizon ?? rows * map.tileheight),
     images: [],
+    boss: null,
   };
   for (const o of layer('markers')) {
     const p = props(o);
@@ -214,6 +217,11 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
         break;
       case 'decor':
         room.decor.push({ item: String(p.item ?? 'crate'), x: o.x, y: o.y, h: Number(p.h ?? 0) });
+        break;
+      case 'boss':
+        if (!p.boss || p.arenaLeft === undefined || p.arenaRight === undefined) fail(`boss marker ${o.id} needs boss, arenaLeft, arenaRight`);
+        if (!p.defeatFlag) fail(`boss marker ${o.id} needs a 'defeatFlag'`);
+        room.boss = { id: String(p.boss), x: o.x, y: o.y, arenaLeft: Number(p.arenaLeft), arenaRight: Number(p.arenaRight), defeatFlag: String(p.defeatFlag) };
         break;
       case 'lore':
         if (!p.lore) fail(`lore marker ${o.id} needs a 'lore' property`);

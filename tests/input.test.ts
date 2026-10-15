@@ -81,7 +81,7 @@ describe('touch layout', () => {
     }
   });
   it('defines all five actions with buttons fully on screen', () => {
-    expect(new Set(buttons.map((b) => b.action))).toEqual(new Set(['attack', 'jump', 'dodge', 'ability', 'heal']));
+    expect(new Set(buttons.map((b) => b.action))).toEqual(new Set(['attack', 'jump', 'dodge', 'ability', 'heal', 'parry']));
     for (const b of buttons) {
       expect(b.x * 480 - b.radius).toBeGreaterThan(0);
       expect(b.x * 480 + b.radius).toBeLessThan(480);

@@ -9,6 +9,7 @@ const BINDINGS: Record<Action, number[]> = {
   dodge: [KC.L, KC.SHIFT, KC.C],
   ability: [KC.I, KC.V],
   heal: [KC.H, KC.F],
+  parry: [KC.O, KC.B],
 };
 
 /** Desktop test controls: arrows/WASD to move (up also jumps, down crouches), see BINDINGS for actions. */

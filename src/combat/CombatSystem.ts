@@ -12,6 +12,8 @@ export interface Attacker {
   readonly x: number;
   readonly y: number;
   readonly facing: 1 | -1;
+  /** The player parried this attacker's swing (stagger it). */
+  onParried?(): void;
 }
 
 /** Something that hurts on touch (e.g. the red training dummy, later spikes). */
@@ -27,6 +29,8 @@ export interface PlayerCombatant extends Attacker, Damageable {
   readonly invulnerable: boolean;
   /** Outgoing damage multiplier (blood-drain strength); 1 when absent. */
   readonly damageMultiplier?: number;
+  /** True once after a hit was parried (the hit itself was ignored). */
+  consumeParry?(): boolean;
 }
 
 /**
@@ -50,6 +54,10 @@ export class CombatSystem {
     for (const e of enemyAttackers) {
       if (!p.alive) break;
       for (const r of resolveAttack(e.combat, e.x, e.y, e.facing, [p])) this.playerWasHit(r.hit, r.x, r.y);
+      if (p.consumeParry?.()) {
+        e.onParried?.();
+        this.bus.emit('combat:parry', { x: (p.x + e.x) / 2, y: p.y - 4 });
+      }
     }
 
     for (const h of hazards) {

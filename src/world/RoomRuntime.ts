@@ -139,7 +139,8 @@ export class RoomRuntime {
   }
 
   /** Lever thrown: remember it and lift the gate out of the way. */
-  private open(flag: string): void {
+  /** Sets the flag and raises every gate it opens (levers, and story events such as a boss's defeat). */
+  open(flag: string): void {
     this.state.setFlag(flag);
     for (const r of this.gates.get(flag) ?? []) {
       const body = r.body as Phaser.Physics.Arcade.StaticBody;
