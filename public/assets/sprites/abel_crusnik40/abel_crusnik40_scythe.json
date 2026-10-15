@@ -1,0 +1,40 @@
+{
+  "animations": {
+    "scythe": {
+      "attack": "scythe",
+      "durations_ms": [
+        160,
+        100,
+        260
+      ],
+      "events": [
+        {
+          "frame": 1,
+          "type": "hitbox_on"
+        },
+        {
+          "frame": 2,
+          "type": "hitbox_off"
+        }
+      ],
+      "frames": [
+        0,
+        1,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 96,
+  "columns": 2,
+  "entity": "abel_crusnik40",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 96,
+  "sheet": "abel_crusnik40_scythe.png",
+  "source_hashes": [
+    "sha256:51f77a60f7111315ffadb5f826651e76cadd8b513a97ec7c8785d45a42ee7ac7",
+    "sha256:a404f5c6cd814e73e8b060a96de3d2dc6d427a182c58301960306598f3da77b5"
+  ]
+}

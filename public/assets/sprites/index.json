@@ -552,6 +552,146 @@
         "sha256:318b5bb5bad417b84e299331020aa4f730fb5af0088bb0093fd81e66301e3e67"
       ]
     },
+    "abel_crusnik40/abel_crusnik40_fall.png": {
+      "animations": {
+        "fall": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "abel_crusnik40",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
+      "sheet": "abel_crusnik40_fall.png",
+      "source_hashes": [
+        "sha256:ec11922b1a527cfc9c49d6e64cfc18c235259b5a77185ee7fa9d6c6ffde1e5d8"
+      ]
+    },
+    "abel_crusnik40/abel_crusnik40_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "abel_crusnik40",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
+      "sheet": "abel_crusnik40_idle.png",
+      "source_hashes": [
+        "sha256:24105331931cc72accb6bf2704c4190ec1039153127340ccec2dd70151cefbe7"
+      ]
+    },
+    "abel_crusnik40/abel_crusnik40_jump.png": {
+      "animations": {
+        "jump": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "abel_crusnik40",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
+      "sheet": "abel_crusnik40_jump.png",
+      "source_hashes": [
+        "sha256:2e67c3d169efcf07fd972c6bcf0779250eda02e5acc3f48ffce2a3865933db49"
+      ]
+    },
+    "abel_crusnik40/abel_crusnik40_land.png": {
+      "animations": {
+        "land": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "abel_crusnik40",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
+      "sheet": "abel_crusnik40_land.png",
+      "source_hashes": [
+        "sha256:d098145614022c019854c396da818176a40fc9793b2bb7c74f12355ecb116edd"
+      ]
+    },
+    "abel_crusnik40/abel_crusnik40_lash.png": {
+      "animations": {
+        "lash": {
+          "attack": "lash",
+          "durations_ms": [
+            180,
+            120,
+            260
+          ],
+          "events": [
+            {
+              "frame": 1,
+              "type": "hitbox_on"
+            },
+            {
+              "frame": 2,
+              "type": "hitbox_off"
+            }
+          ],
+          "frames": [
+            0,
+            1,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 2,
+      "entity": "abel_crusnik40",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
+      "sheet": "abel_crusnik40_lash.png",
+      "source_hashes": [
+        "sha256:41887f5bf72333285e07c59cdf4432ba64967da313c27c76fb808a95c2f3d889",
+        "sha256:c0755a6416fe2362fc3daf8ccc4186f984d16e0e9d664fb045430b63a812d079"
+      ]
+    },
     "abel_crusnik40/abel_crusnik40_reference.png": {
       "animations": {
         "reference": {
@@ -575,6 +715,99 @@
       "sheet": "abel_crusnik40_reference.png",
       "source_hashes": [
         "sha256:5712aeaf65cc5004dc0b19d0bf2cdae88adb99c1751e723a58c76ee7588d8e9f"
+      ]
+    },
+    "abel_crusnik40/abel_crusnik40_run.png": {
+      "animations": {
+        "run": {
+          "durations_ms": [
+            140,
+            140
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 2,
+      "entity": "abel_crusnik40",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
+      "sheet": "abel_crusnik40_run.png",
+      "source_hashes": [
+        "sha256:4652919fe5afc09e34f2317b7495e844779f69378ebee47824862bec046e35dd",
+        "sha256:1ffc0e052597d335f2ef4d92dd3e85ae40907d5cafc3c49258a7813d73486a32"
+      ]
+    },
+    "abel_crusnik40/abel_crusnik40_scythe.png": {
+      "animations": {
+        "scythe": {
+          "attack": "scythe",
+          "durations_ms": [
+            160,
+            100,
+            260
+          ],
+          "events": [
+            {
+              "frame": 1,
+              "type": "hitbox_on"
+            },
+            {
+              "frame": 2,
+              "type": "hitbox_off"
+            }
+          ],
+          "frames": [
+            0,
+            1,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 2,
+      "entity": "abel_crusnik40",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
+      "sheet": "abel_crusnik40_scythe.png",
+      "source_hashes": [
+        "sha256:51f77a60f7111315ffadb5f826651e76cadd8b513a97ec7c8785d45a42ee7ac7",
+        "sha256:a404f5c6cd814e73e8b060a96de3d2dc6d427a182c58301960306598f3da77b5"
+      ]
+    },
+    "abel_crusnik40/abel_crusnik40_transform.png": {
+      "animations": {
+        "transform": {
+          "durations_ms": [
+            650
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "abel_crusnik40",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
+      "sheet": "abel_crusnik40_transform.png",
+      "source_hashes": [
+        "sha256:8cdefbbec824e0d4ae7fe0d7ca8c226f8d5090cc40baf8d7c7bc7275f810b247"
       ]
     },
     "enemies/death_hunter/enemy_death_hunter_chop.png": {

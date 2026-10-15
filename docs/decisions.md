@@ -218,3 +218,14 @@
 | Decision | Reason | Alternatives considered |
 |---|---|---|
 | Texture stage in the sprite pipeline (grade dark cloth toward violet + local contrast, dither 10, rim light/core shadow), on for every entity; Abel gamma 1.5 → 1.3 | Owner: sprites looked flat next to the painted rooms; free, re-runs on every sheet | Regenerate art (credits), hand-paint every frame |
+
+## 2026-10-15 — Crusnik form (Milestone 7 ability)
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Unlocked by reading the "Forbidden page" lore in the Forgotten Reliquary (behind the Ossuary lever puzzle); lore entries can carry `unlocks` | Ties the power to discovery and to Abel's secret, Blasphemous-style relic gating without a new item system | Boss reward; story cutscene only |
+| Blood meter fills from hits (+8) and kills (+20); full meter + ABIL transforms (650 ms, invulnerable); drains 7/s (~14 s); a blood drain finisher refills it | Fervour-like resource: a reward for fighting well, not always-on; numbers in `src/data/crusnik.json` | Toggle at will; timer only |
+| Crusnik: scythe for every melee press (×1.5 damage), ABIL = chain lash (long thin hitbox, drawn in code to the hitbox's reach), DODGE = slide (owner: he's too tall to roll), leap 470 px/s (~122 px vs the priest's 64 px), run 145 | One clear upgrade in each verb; the chain's reach is data so art and hitbox always match | Separate weapon menu |
+| Ability gate: Chapel of Bones → Ballroom doorway sits on a 96 px sheer wall of bones; tests check priest jump < wall < Crusnik leap | The ballroom (boss) becomes the payoff for the new power | Breakable wall (needs another mechanic) |
+| Form and meter carry between rooms (session only); praying or dying ends the form but keeps the blood; not written to the save | Saves stay small; a loaded game starts as the priest at an altar | Saving the meter |
+| 80% (winged) flight poses built as their own sprite entity for scripted moments and cutscenes; not a playable form yet | Owner asked for flight art; flight gameplay would need flight-specific level design | Playable flight now |

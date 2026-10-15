@@ -66,6 +66,18 @@ entities:
     animations:
       reference: { loop: false, durations_ms: 1000 }   # side, front, back (design lock; poses come with the Crusnik ability)
 
+  # Crusnik 80% (winged): flight poses for scripted moments and cutscenes (sheet c3c9f3fa).
+  abel_crusnik80:
+    cell: [128, 128]
+    sprite_height: 54
+    gamma: 1.5
+    source_dir: art/source/approved/abel_crusnik80/
+    output_dir: public/assets/sprites/abel_crusnik80/
+    animations:
+      fly:   { loop: true,  durations_ms: 160 }
+      hover: { loop: true,  durations_ms: 600 }
+      dive:  { loop: false, durations_ms: 400 }
+
   # Crusnik 40% (playable form) = the 80% design without wings, derived in code (owner, 2026-10-15).
   abel_crusnik40:
     cell: [96, 96]
@@ -80,6 +92,23 @@ entities:
         durations_ms: 1000
         # Wing outline on the side-view crop (approved-crop pixels); only dark grey pixels inside are removed.
         keep_largest: true             # drop fragments left floating (scythe tip behind the wing)
+      # Playable poses (sheets 28c2f6ce movement, 54dbe26e combat; drawn wingless). Attack timings match attacks.json.
+      idle:      { loop: true,  durations_ms: 600 }
+      run:       { loop: true,  durations_ms: 140 }
+      jump:      { loop: false, durations_ms: 300 }
+      fall:      { loop: true,  durations_ms: 200 }
+      land:      { loop: false, durations_ms: 300 }
+      transform: { loop: false, durations_ms: 650 }
+      scythe:
+        attack: scythe
+        sequence: [0, 1, 1]
+        durations_ms: [160, 100, 260]
+        events: [{ frame: 1, type: hitbox_on }, { frame: 2, type: hitbox_off }]
+      lash:
+        attack: lash
+        sequence: [0, 1, 1]
+        durations_ms: [180, 120, 260]
+        events: [{ frame: 1, type: hitbox_on }, { frame: 2, type: hitbox_off }]
         erase: [[[0, 0], [205, 0], [205, 60], [192, 130], [185, 200], [170, 260], [140, 310], [105, 350], [70, 395], [0, 395]]]
 
   enemy_thrall:

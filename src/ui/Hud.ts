@@ -25,6 +25,9 @@ export class Hud {
   private readonly hp: Phaser.GameObjects.Rectangle;
   private readonly hpLag: Phaser.GameObjects.Rectangle;
   private readonly crusnik: Phaser.GameObjects.Rectangle;
+  private readonly crusnikFrame: Phaser.GameObjects.Rectangle;
+  private pulseMs = 0;
+  private crusnikReady = false;
   private readonly vials: Phaser.GameObjects.Rectangle[] = [];
   private lag = 1;
   private target = 1;
@@ -53,7 +56,7 @@ export class Hud {
     for (const ex of [BAR_X - 4, BAR_X + HP_W + 3]) fix(scene.add.rectangle(ex, hy + HP_H / 2, 3, 3, GOLD).setAngle(45), 5);
     // Crusnik meter (empty until the form is unlocked)
     const my = hy + HP_H + 4;
-    fix(scene.add.rectangle(BAR_X - 1, my - 1, CRUSNIK_W + 2, CRUSNIK_H + 2, VOID).setOrigin(0).setStrokeStyle(1, GOLD_DARK));
+    this.crusnikFrame = fix(scene.add.rectangle(BAR_X - 1, my - 1, CRUSNIK_W + 2, CRUSNIK_H + 2, VOID).setOrigin(0).setStrokeStyle(1, GOLD_DARK));
     this.crusnik = fix(scene.add.rectangle(BAR_X, my, 0, CRUSNIK_H, BLUE).setOrigin(0), 1);
     // holy water vials
     const vy = my + CRUSNIK_H + 5;
@@ -75,13 +78,20 @@ export class Hud {
     this.vials.forEach((v, i) => v.setVisible(i < left));
   }
 
-  setCrusnik(fraction: number): void {
+  /** The blood meter: hidden until the form is awakened; the frame glows when ABIL can transform. */
+  setCrusnik(fraction: number, awakened: boolean, ready: boolean): void {
     this.crusnik.width = CRUSNIK_W * Phaser.Math.Clamp(fraction, 0, 1);
+    this.crusnik.setVisible(awakened);
+    this.crusnikFrame.setVisible(awakened);
+    this.crusnikReady = ready;
   }
 
   /** The pale trail behind the health bar drains after a hit. */
   update(dtMs: number): void {
     if (this.lag > this.target) this.lag = Math.max(this.target, this.lag - dtMs / 1500);
     this.hpLag.width = HP_W * this.lag;
+    this.pulseMs += dtMs;
+    const glow = this.crusnikReady && Math.floor(this.pulseMs / 250) % 2 === 0;
+    this.crusnikFrame.setStrokeStyle(1, glow ? 0xeaf6ff : GOLD_DARK);
   }
 }

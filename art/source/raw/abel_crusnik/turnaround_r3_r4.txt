@@ -3,3 +3,9 @@ r3 (ccf9997f, 2 credits, ref r2): REJECTED — model copied r2's two scythes.
 r4 (45823f11-5066-408c-a1c2-5b62c64a70d0, 2 credits, ref r2): phrased as an edit of r2 ("keep everything, change only the weapons"). APPROVED: one scythe + spiked centipede chain looping to the other hand.
 Approved (--expect 3 --ref-height 1122) at sprite_height 54.
 Lesson: to fix one detail of an existing design, write an edit instruction against that image, not a fresh brief.
+
+Crusnik 40% pose sheets — 2026-10-15 (nano_banana_pro, 2k, 21:9, ref r4 45823f11 = our own output; 2 credits each, 8 total)
+- 28c2f6ce movement: idle, run x2, leap, fall, land (grey background; repainted magenta -> *_m.png before approval)
+- 54dbe26e combat: scythe x2, chain lash x2, hurt (unused: a stray chain crosses it), transform
+- d1336ff7 extra: walk x2, climb x2 (ladder drawn behind; thin lines drop out at sprite size), slide, awaken
+- c3c9f3fa Crusnik 80% winged: fly x2, hover, dive (entity abel_crusnik80)

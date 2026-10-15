@@ -3,7 +3,9 @@ import type { PlayerTimers } from './PlayerTimers';
 import type { PlayerTuning } from './tuning';
 import { approach, horizontalVelocity } from './movement';
 import type { AttackRunner } from '../combat/AttackRunner';
-import { AIR_STARTER, CROUCH_STARTER, GROUND_STARTER } from '../combat/attackData';
+import { STARTERS } from '../combat/attackData';
+import type { AbelForm } from '../combat/finisherData';
+import { crusnikConfig } from './CrusnikMeter';
 
 export type PlayerStateKey =
   | 'idle'
@@ -20,7 +22,9 @@ export type PlayerStateKey =
   | 'crouchAttack'
   | 'finisher'
   | 'climb'
-  | 'heal';
+  | 'heal'
+  | 'transform'
+  | 'lash';
 
 /** Body posture for each state; the Player resizes its body to match. */
 export type Posture = 'stand' | 'roll' | 'low';
@@ -79,6 +83,15 @@ export interface PlayerContext {
   /** Advances the finisher (the strike lands part-way); returns true when it has finished. */
   tickFinisher(dtMs: number): boolean;
   endFinisher(): void;
+  /** Priest or Crusnik: picks the attacks and (via tuning) the leap and run speed. */
+  readonly form: AbelForm;
+  /** ABIL pressed this frame. */
+  readonly abilityPressed: boolean;
+  /** The Crusnik form can be taken now (awakened and the blood meter full). */
+  readonly transformReady: boolean;
+  /** Start the change (the meter starts draining); `completeTransform` switches the form at the end of the pose. */
+  beginTransform(): void;
+  completeTransform(): void;
 }
 
 function faceInput(ctx: PlayerContext): void {
@@ -92,6 +105,19 @@ function airControl(ctx: PlayerContext, dtMs: number): void {
 
 function brake(ctx: PlayerContext, dtMs: number): void {
   ctx.vx = approach(ctx.vx, 0, (ctx.tuning.groundDecel * dtMs) / 1000);
+}
+
+/** ABIL: take the Crusnik form when it is ready, or (in Crusnik form) throw the chain lash. */
+function abilityState(ctx: PlayerContext): PlayerStateKey | null {
+  if (!ctx.abilityPressed) return null;
+  if (ctx.form === 'priest' && ctx.transformReady && ctx.onGround) return 'transform';
+  if (STARTERS[ctx.form].ranged) return 'lash';
+  return null;
+}
+
+/** DODGE: the priest rolls; the taller Crusnik slides low instead (owner request). */
+function dodgeKind(ctx: PlayerContext): PlayerStateKey {
+  return ctx.form === 'crusnik' ? 'slide' : 'dodge';
 }
 
 function canDodge(ctx: PlayerContext): boolean {
@@ -114,8 +140,10 @@ function groundUpdate(ctx: PlayerContext, dtMs: number): PlayerStateKey {
   if (!ctx.onGround) return 'fall';
   if (ctx.crouchHeld || !ctx.canStand) return 'crouch';
   if (ctx.healWanted) return 'heal';
+  const ability = abilityState(ctx);
+  if (ability) return ability;
   if (ctx.attackPressed) return ctx.finisherReady ? 'finisher' : 'attack';
-  if (canDodge(ctx)) return 'dodge';
+  if (canDodge(ctx)) return dodgeKind(ctx);
   return ctx.moveX !== 0 || ctx.vx !== 0 ? 'run' : 'idle';
 }
 
@@ -149,6 +177,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
         ctx.jumpCut = true;
       }
       if (ctx.attackPressed) return 'airAttack';
+      if (ctx.abilityPressed && STARTERS[ctx.form].ranged) return 'lash';
       if (ctx.vy >= 0) return 'fall';
       return undefined;
     },
@@ -161,6 +190,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       if (ctx.timers.canJump) return 'jump'; // coyote jump after walking off a ledge
       if (ctx.onGround) return landingState(ctx);
       if (ctx.attackPressed) return 'airAttack';
+      if (ctx.abilityPressed && STARTERS[ctx.form].ranged) return 'lash';
       return undefined;
     },
   },
@@ -198,7 +228,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
   attack: {
     enter(ctx) {
       faceInput(ctx);
-      ctx.combat.begin(GROUND_STARTER);
+      ctx.combat.begin(STARTERS[ctx.form].ground);
     },
     update(ctx, dtMs) {
       if (ctx.attackPressed) ctx.combat.pressAttack();
@@ -208,7 +238,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       const def = ctx.combat.current;
 
       if (!ctx.onGround) return 'fall';
-      if (ctx.dodgePressed && ctx.combat.canDodgeCancel && ctx.timers.dodgeCooldown === 0) return 'dodge';
+      if (ctx.dodgePressed && ctx.combat.canDodgeCancel && ctx.timers.dodgeCooldown === 0) return dodgeKind(ctx);
       if (def && def.stepSpeed > 0 && (phase === 'startup' || phase === 'active')) {
         ctx.vx = ctx.facing * def.stepSpeed;
       } else {
@@ -224,7 +254,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
 
   airAttack: {
     enter(ctx) {
-      ctx.combat.begin(AIR_STARTER);
+      ctx.combat.begin(STARTERS[ctx.form].air);
     },
     update(ctx, dtMs) {
       // Steering continues, but facing is locked for the swing.
@@ -346,10 +376,43 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     },
   },
 
+  // The change into the Crusnik: a held pose, invulnerable (see Player.invulnerable), then the new form.
+  transform: {
+    enter(ctx) {
+      ctx.vx = 0;
+      ctx.beginTransform();
+    },
+    update(ctx, dtMs, stateMs) {
+      brake(ctx, dtMs);
+      if (stateMs < crusnikConfig.transformMs) return undefined;
+      ctx.completeTransform();
+      return ctx.onGround ? 'idle' : 'fall';
+    },
+  },
+
+  // Chain lash (Crusnik ABIL): a long, thin ranged strike. Works on the ground and in the air.
+  lash: {
+    enter(ctx) {
+      faceInput(ctx);
+      ctx.combat.begin(STARTERS[ctx.form].ranged ?? STARTERS.crusnik.ranged!);
+    },
+    update(ctx, dtMs) {
+      const phase = ctx.combat.tick(dtMs);
+      if (ctx.onGround) brake(ctx, dtMs);
+      else ctx.vx = horizontalVelocity(ctx.vx, ctx.moveX, dtMs, true, ctx.tuning);
+      if (ctx.dodgePressed && ctx.onGround && ctx.combat.canDodgeCancel && ctx.timers.dodgeCooldown === 0) return dodgeKind(ctx);
+      if (phase === 'done') return ctx.onGround ? 'idle' : 'fall';
+      return undefined;
+    },
+    exit(ctx) {
+      ctx.combat.stop();
+    },
+  },
+
   crouchAttack: {
     enter(ctx) {
       faceInput(ctx);
-      ctx.combat.begin(CROUCH_STARTER);
+      ctx.combat.begin(STARTERS[ctx.form].crouch);
     },
     update(ctx, dtMs) {
       const phase = ctx.combat.tick(dtMs);

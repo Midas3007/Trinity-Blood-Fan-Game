@@ -3,11 +3,20 @@ import type { AttackDef } from './types';
 
 export type AttackTable = Record<string, AttackDef>;
 
+/** Which attack each kind of press starts, per form. `ranged` is ABIL's attack (none for the priest). */
+export interface Starters {
+  ground: string;
+  air: string;
+  crouch: string;
+  ranged: string | null;
+}
+
 interface RawAttackFile {
   attacks: Record<string, Omit<AttackDef, 'id'>>;
   groundStarter: string;
   airStarter: string;
   crouchStarter: string;
+  crusnikStarters: Omit<Starters, 'ranged'> & { ranged: string };
 }
 
 /** Throws with a readable message if attack data is inconsistent. */
@@ -42,7 +51,8 @@ export function tableFromRecord(rec: Record<string, Omit<AttackDef, 'id'>>): Att
 
 export function buildAttackTable(file: RawAttackFile): AttackTable {
   const table = tableFromRecord(file.attacks);
-  for (const starter of [file.groundStarter, file.airStarter, file.crouchStarter]) {
+  const c = file.crusnikStarters;
+  for (const starter of [file.groundStarter, file.airStarter, file.crouchStarter, c.ground, c.air, c.crouch, c.ranged]) {
     if (!(starter in table)) throw new Error(`starter attack "${starter}" does not exist`);
   }
   return table;
@@ -53,3 +63,8 @@ export const attackTable: AttackTable = buildAttackTable(file);
 export const GROUND_STARTER = file.groundStarter;
 export const AIR_STARTER = file.airStarter;
 export const CROUCH_STARTER = file.crouchStarter;
+
+export const STARTERS: Record<'priest' | 'crusnik', Starters> = {
+  priest: { ground: file.groundStarter, air: file.airStarter, crouch: file.crouchStarter, ranged: null },
+  crusnik: { ...file.crusnikStarters },
+};

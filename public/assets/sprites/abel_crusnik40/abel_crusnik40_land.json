@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "land": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 96,
+  "columns": 1,
+  "entity": "abel_crusnik40",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 96,
+  "sheet": "abel_crusnik40_land.png",
+  "source_hashes": [
+    "sha256:d098145614022c019854c396da818176a40fc9793b2bb7c74f12355ecb116edd"
+  ]
+}

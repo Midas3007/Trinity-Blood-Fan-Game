@@ -19,6 +19,8 @@ export class GameState {
   /** Holy water flasks left (null = full; refilled when praying at an altar). */
   flasks: number | null = null;
   checkpoint: CheckpointRef | null = null;
+  /** Blood meter and form carried between rooms this session (null = empty, priest). Not saved to disk. */
+  crusnik: { value: number; active: boolean } | null = null;
   private readonly flags = new Set<string>();
   private readonly visited = new Set<string>();
 
@@ -56,6 +58,7 @@ export class GameState {
   load(d: SaveData | null): void {
     this.hp = null;
     this.flasks = null;
+    this.crusnik = null;
     this.flags.clear();
     this.visited.clear();
     this.checkpoint = d?.checkpoint ?? null;

@@ -1,0 +1,14 @@
+{
+  "source": "poses_extra_r1_d1336ff7.png",
+  "source_hash": "sha256:2e4915e156021ac00be501583b04c303dd40d8df80dd367e38fccb0f1d06a8e4",
+  "figures": [
+    4
+  ],
+  "standing_px": 980,
+  "factor": 0.440816,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "poses_extra_r1_d1336ff7_f4.png"
+  ]
+}

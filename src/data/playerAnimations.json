@@ -1,5 +1,5 @@
 {
- "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's or finisher's id (priest1/priest2/priest3, revolver), so each plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built. Extra visual keys (not player states): walk (slow run), pray (at an altar), climbStill (on a ladder, not moving).",
+ "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's or finisher's id (priest1/priest2/priest3, revolver), so each plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built. Extra visual keys (not player states): walk (slow run), pray (at an altar), climbStill (on a ladder, not moving). crusnikStates: the same keys for the Crusnik 40% form (no slide/roll/climb art yet: the crouching landing pose stands in, so DODGE reads as a low slide).",
  "entity": "abel",
  "states": {
   "idle": {
@@ -58,6 +58,82 @@
   },
   "climbStill": {
    "anim": "abel_climb",
+   "frame": 0
+  },
+  "transform": {
+   "anim": "abel_crusnik40_transform"
+  },
+  "lash": {
+   "anim": "abel_crusnik40_lash"
+  }
+ },
+ "crusnikStates": {
+  "idle": {
+   "anim": "abel_crusnik40_idle"
+  },
+  "run": {
+   "anim": "abel_crusnik40_run"
+  },
+  "walk": {
+   "anim": "abel_crusnik40_run"
+  },
+  "jump": {
+   "anim": "abel_crusnik40_jump"
+  },
+  "fall": {
+   "anim": "abel_crusnik40_fall"
+  },
+  "hardLand": {
+   "anim": "abel_crusnik40_land"
+  },
+  "attack": {
+   "anim": "abel_crusnik40_scythe"
+  },
+  "airAttack": {
+   "anim": "abel_crusnik40_scythe"
+  },
+  "crouchAttack": {
+   "anim": "abel_crusnik40_scythe"
+  },
+  "lash": {
+   "anim": "abel_crusnik40_lash"
+  },
+  "transform": {
+   "anim": "abel_crusnik40_transform"
+  },
+  "hurt": {
+   "anim": "abel_crusnik40_land",
+   "frame": 0
+  },
+  "dodge": {
+   "anim": "abel_crusnik40_land",
+   "frame": 0
+  },
+  "slide": {
+   "anim": "abel_crusnik40_land",
+   "frame": 0
+  },
+  "crouch": {
+   "anim": "abel_crusnik40_land",
+   "frame": 0
+  },
+  "finisher": {
+   "anim": "abel_crusnik40_scythe",
+   "frame": 1
+  },
+  "climb": {
+   "anim": "abel_crusnik40_fall",
+   "frame": 0
+  },
+  "climbStill": {
+   "anim": "abel_crusnik40_fall",
+   "frame": 0
+  },
+  "heal": {
+   "anim": "abel_crusnik40_idle"
+  },
+  "pray": {
+   "anim": "abel_crusnik40_land",
    "frame": 0
   }
  }

@@ -129,19 +129,26 @@ def drowned():
 def chapel():
     r = rock("chapel_of_bones", "Chapel of Bones", 15, 5, 1, 1, 27)
     r.carve(1, 3, r.W - 1, 15)
-    door(r, "east"); door(r, "west")
+    door(r, "east")
+    # Ability gate: the way to the ballroom is a doorway at the top of a sheer wall of bones, 6 tiles (96 px)
+    # up. The priest's jump peaks at 64 px; only the Crusnik leap reaches it.
+    door(r, "west", 4, 9)
+    r.fill("terrain", 1, 9, 5, 15, "stone")
     r.backwall(["wall_ossuary"], 3, 15)
+    r.mark("lore", 7, 14, lore="bone_wall")
     r.mark("checkpoint", 15, 14, "chapel_altar")
     r.prop("bones", 5, 14, 16)
     r.prop("bones", 25, 14, 16)
-    r.mark("lore", 9, 14, lore="marchesa_portrait")
+    r.mark("lore", 11, 14, lore="marchesa_portrait")
     return r
 
 
 def ballroom():
     r = rock("marchesa_ballroom", "The Marchesa's Ballroom", 12, 5, 3, 1, 28)
     r.carve(1, 1, r.W - 1, 15)
-    door(r, "east"); door(r, "west")
+    door(r, "east", 4, 9)                              # high doorway from the Chapel of Bones (Crusnik leap)
+    r.fill("terrain", r.W - 5, 9, r.W - 1, 15, "stone")  # the landing inside it; drop down into the ballroom
+    door(r, "west")
     r.gate(1, 10, 3, 15, "marchesa_defeated")        # opens when she falls (Milestone 7)
     r.backwall(["wall_ballroom"], 1, 15)
     r.platform(8, 18, 9, "balcony")

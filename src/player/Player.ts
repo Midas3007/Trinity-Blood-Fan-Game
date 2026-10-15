@@ -17,6 +17,9 @@ import { PlayerView, type VisualKey } from './PlayerView';
 import { FinisherRunner } from '../combat/FinisherRunner';
 import { StrengthBuff } from '../combat/StrengthBuff';
 import { chooseFinisher, type AbelForm, type FinisherDef, type FinisherTarget } from '../combat/finisherData';
+import { CrusnikMeter, crusnikConfig, crusnikTuning } from './CrusnikMeter';
+
+const CRUSNIK_TUNING = crusnikTuning(playerTuning);
 
 const INVULNERABLE_ALPHA = 0.45;
 /** How long a deliberate drop ignores one-way platforms (ms), and the small downward push that starts it. */
@@ -35,7 +38,6 @@ export class Player implements PlayerContext, PlayerCombatant {
   readonly id = nextEntityId();
   readonly sprite: Phaser.GameObjects.Rectangle;
   readonly body: Phaser.Physics.Arcade.Body;
-  readonly tuning: PlayerTuning = playerTuning;
   readonly timers = new PlayerTimers(playerTuning);
   readonly combat = new AttackRunner(attackTable);
   readonly health = new Health(playerTuning.maxHealth);
@@ -50,8 +52,11 @@ export class Player implements PlayerContext, PlayerCombatant {
   private readonly fsm: StateMachine<PlayerStateKey, PlayerContext>;
   private readonly facingMark: Phaser.GameObjects.Rectangle;
   readonly view: PlayerView;
-  /** Which Abel this is; the Crusnik form arrives with its ability (Milestone 7). */
+  /** Which Abel this is (the Crusnik form comes from ABIL when the blood meter is full). */
   form: AbelForm = 'priest';
+  readonly crusnik = new CrusnikMeter();
+  /** Called when the form changes (flash and HUD live in the scene). */
+  onFormChange: ((form: AbelForm) => void) | null = null;
   readonly finishing = new FinisherRunner();
   readonly strength = new StrengthBuff();
   /** Enemies a finisher could be used on; set by the scene. */
@@ -92,6 +97,43 @@ export class Player implements PlayerContext, PlayerCombatant {
     // sprite never trails the body by a frame at roll/slide speeds.
     scene.events.on(Phaser.Scenes.Events.POST_UPDATE, this.syncView, this);
     scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => scene.events.off(Phaser.Scenes.Events.POST_UPDATE, this.syncView, this));
+  }
+
+  get tuning(): PlayerTuning {
+    return this.form === 'crusnik' ? CRUSNIK_TUNING : playerTuning;
+  }
+
+  get abilityPressed(): boolean {
+    return this.input.justPressed('ability');
+  }
+
+  get transformReady(): boolean {
+    return this.crusnik.ready;
+  }
+
+  beginTransform(): void {
+    this.crusnik.activate();
+  }
+
+  completeTransform(): void {
+    this.setForm('crusnik');
+  }
+
+  private setForm(form: AbelForm): void {
+    if (this.form === form) return;
+    this.form = form;
+    this.onFormChange?.(form);
+  }
+
+  /** Entering a room mid-transformation: stay the Crusnik (the meter was restored active). */
+  resumeCrusnik(): void {
+    if (this.crusnik.active) this.setForm('crusnik');
+  }
+
+  /** Back to the priest at once (death, respawn). */
+  endCrusnik(): void {
+    this.crusnik.end();
+    this.setForm('priest');
   }
 
   get state(): PlayerStateKey {
@@ -190,11 +232,11 @@ export class Player implements PlayerContext, PlayerCombatant {
   }
 
   get invulnerable(): boolean {
-    return this.timers.invulnerable > 0 || this.fsm.current === 'finisher';
+    return this.timers.invulnerable > 0 || this.fsm.current === 'finisher' || this.fsm.current === 'transform';
   }
 
   get damageMultiplier(): number {
-    return this.strength.damageMultiplier;
+    return this.strength.damageMultiplier * (this.form === 'crusnik' ? crusnikConfig.damageMultiplier : 1);
   }
 
   /** The nearest valid finisher in front of the player, or null. */
@@ -375,6 +417,7 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.body.reset(x, y);
     this.health.reset();
     this.strength.clear();
+    this.endCrusnik();
     this.timers.invulnerable = this.tuning.hurtInvulnerableMs;
     this.blinkMs = this.tuning.hurtInvulnerableMs;
     this.airTopY = y;
@@ -401,6 +444,7 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.body.setGravityY(gravityFor(this.vy, this.tuning) - this.worldGravity);
 
     this.strength.tick(dtMs);
+    if (this.crusnik.tick(dtMs)) this.setForm('priest');
     if (this.fsm.current === 'run' || this.fsm.current === 'idle') this.stepUp();
     this.dropMs = Math.max(0, this.dropMs - dtMs);
     this.blinkMs = Math.max(0, this.blinkMs - dtMs);
@@ -423,6 +467,6 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   private syncView(): void {
     this.facingMark.setPosition(this.sprite.x + this.facing * (this.tuning.width / 2 - 2), this.sprite.y - this.height / 2 + 7);
-    this.view.update(this.visualKey(), this.combat.current?.id ?? this.finishing.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha);
+    this.view.update(this.visualKey(), this.combat.current?.id ?? this.finishing.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha, this.form);
   }
 }

@@ -1,0 +1,14 @@
+{
+  "source": "poses_combat_r1_54dbe26e_m.png",
+  "source_hash": "sha256:6d0305f1e2ce788a489cfd345991b8a6f6424532a747c5a490e43551118877f7",
+  "figures": [
+    5
+  ],
+  "standing_px": 840,
+  "factor": 0.514286,
+  "open_px": 0,
+  "expected": 6,
+  "outputs": [
+    "poses_combat_r1_54dbe26e_m_f5.png"
+  ]
+}

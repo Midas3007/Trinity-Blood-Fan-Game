@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "run": {
+      "durations_ms": [
+        140,
+        140
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 96,
+  "columns": 2,
+  "entity": "abel_crusnik40",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 96,
+  "sheet": "abel_crusnik40_run.png",
+  "source_hashes": [
+    "sha256:4652919fe5afc09e34f2317b7495e844779f69378ebee47824862bec046e35dd",
+    "sha256:1ffc0e052597d335f2ef4d92dd3e85ae40907d5cafc3c49258a7813d73486a32"
+  ]
+}

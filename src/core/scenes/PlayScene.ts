@@ -39,6 +39,10 @@ import { CornerButtons } from '../../ui/CornerButtons';
 import type { RoomData } from '../../world/tiled';
 import { gameState } from '../../systems/GameState';
 import { saveStore } from '../../systems/save/SaveStore';
+import { crusnikConfig } from '../../player/CrusnikMeter';
+import { Banner } from '../../ui/Banner';
+import { ChainLashView } from '../../combat/ChainLashView';
+import { loreEntry } from '../../ui/LorePanel';
 
 /** Long frames (tab switches, hitches) are clamped so timers and states don't jump. */
 const MAX_FRAME_MS = 50;
@@ -99,6 +103,8 @@ export class PlayScene extends Phaser.Scene {
   private praying: { ms: number; checkpoint: string } | null = null;
   private pauseMenu!: PauseMenu;
   private shotFlash!: ShotFlash;
+  private banner!: Banner;
+  private chain!: ChainLashView;
 
   constructor() {
     super(SCENES.play);
@@ -238,6 +244,26 @@ export class PlayScene extends Phaser.Scene {
       this.hud.setHealth(this.player.health.fraction);
       this.hud.setFlasks(this.player.flasks);
     };
+    // Crusnik form: awakened by a flag, blood meter and form carried between rooms.
+    const cm = this.player.crusnik;
+    // Test mode only: ?test&crusnik awakens the form with a full meter (ability playtests).
+    const testCrusnik = testHookEnabled() && new URLSearchParams(location.search).has('crusnik') && !gameState.hasFlag(crusnikConfig.unlockFlag);
+    if (testCrusnik) gameState.setFlag(crusnikConfig.unlockFlag);
+    cm.unlocked = gameState.hasFlag(crusnikConfig.unlockFlag);
+    if (gameState.crusnik) cm.restore(gameState.crusnik);
+    if (testCrusnik) cm.fill();
+
+    this.player.resumeCrusnik();
+    this.banner = new Banner(this);
+    this.chain = new ChainLashView(this);
+    this.player.onFormChange = (form) => {
+      if (form === 'crusnik') {
+        this.cameras.main.flash(220, 212, 40, 62);
+        if (effects.screenShake) this.cameras.main.shake(200, 0.008);
+      } else {
+        this.cameras.main.flash(160, 120, 140, 170);
+      }
+    };
     this.map = new MapOverlay(this);
     this.pauseMenu = new PauseMenu(
       this,
@@ -281,6 +307,11 @@ export class PlayScene extends Phaser.Scene {
 
   /** Hit feedback listens to events; combat code never calls effects directly. */
   private wireFeedback(): void {
+    this.bus.on('combat:hit', ({ targetId, byPlayer }) => {
+      // Blood for the Crusnik meter: real targets only (not levers).
+      if (byPlayer && !this.runtime.levers.some((l) => l.id === targetId)) this.player.crusnik.gain(crusnikConfig.gainPerHit);
+    });
+    this.bus.on('enemy:died', () => this.player.crusnik.gain(crusnikConfig.gainPerKill));
     this.bus.on('combat:hit', ({ x, y, hit }) => {
       this.hitStop.trigger(hit.hitstopMs);
       // Pause now: physics steps before the next scene update, so waiting would let one frame of knockback through.
@@ -293,6 +324,7 @@ export class PlayScene extends Phaser.Scene {
       if (this.hitStop.active) this.physics.world.pause();
       if (effects.screenShake && f.shakeMs > 0) this.cameras.main.shake(f.shakeMs, f.shakeIntensity);
       if (f.finisher === 'revolver') this.shotFlash.fire(f.fromX, f.fromY, f.x, f.y);
+      if (f.finisher === 'bloodDrain') this.player.crusnik.feed(crusnikConfig.gainPerDrain);
       if (effects.sparks) this.sparks.burst(f.x, f.y, effects.shotSparks, f.direction);
       this.hud.setHealth(this.player.health.fraction);
     });
@@ -339,6 +371,9 @@ export class PlayScene extends Phaser.Scene {
     this.combatSystem.step([...this.dummies, ...living, ...this.runtime.levers], living, this.dummies);
     this.sparks.update(dt);
     this.shotFlash.update(dt);
+    const p = this.player;
+    this.hud.setCrusnik(p.crusnik.fraction, p.crusnik.unlocked, p.crusnik.ready);
+    this.chain.update(p.state === 'lash' ? activeHitbox(p.combat, p.x, p.y, p.facing) : null, p.x + p.facing * 8, p.y - 4, p.facing);
 
     const boxes: Rect[] = [];
     for (const a of [this.player, ...living]) {
@@ -365,7 +400,11 @@ export class PlayScene extends Phaser.Scene {
     if (this.crossEdge()) return;
     const lore = p.onGround ? this.runtime.loreAt(p.x) : null;
     this.lorePanel.show(lore);
-    if (lore) gameState.setFlag(`lore:${lore}`);
+    if (lore) {
+      gameState.setFlag(`lore:${lore}`);
+      const unlock = loreEntry(lore)?.unlocks;
+      if (unlock && !gameState.hasFlag(unlock)) this.unlock(unlock);
+    }
     const ev = this.runtime.update(p);
     if (!ev) {
       if (p.onGround && this.runtime.safeAt(p.x)) this.safe = { x: p.x, y: p.feetY };
@@ -449,6 +488,19 @@ export class PlayScene extends Phaser.Scene {
     this.goTo({ room: this.roomData.id, checkpoint: pr.checkpoint });
   }
 
+  /** A progression unlock from reading lore. Today only the Crusnik form. */
+  private unlock(flag: string): void {
+    gameState.setFlag(flag);
+    if (flag !== crusnikConfig.unlockFlag) return;
+    const cm = this.player.crusnik;
+    cm.unlocked = true;
+    cm.fill(); // ready at once, so the first try happens here
+    this.cameras.main.flash(400, 140, 20, 40);
+    if (effects.screenShake) this.cameras.main.shake(350, 0.01);
+    this.banner.show('THE CRUSNIK STIRS', 'When the blue bar beneath your health glows, press ABIL to transform.\nAs the Crusnik: ATK scythe, ABIL chain lash, a far higher leap.');
+    saveStore.save(gameState.toSave(Date.now()));
+  }
+
   /** Open the map or pause menu (gameplay and physics stop), or close both (null). */
   private setPaused(what: 'map' | 'pause' | null): void {
     this.map.hide();
@@ -471,6 +523,9 @@ export class PlayScene extends Phaser.Scene {
     gameState.hp = next.checkpoint === undefined && !this.player.health.dead ? this.player.health.hp : null;
     // Flasks carry over between rooms; praying and dying refill them.
     gameState.flasks = next.checkpoint === undefined && !this.player.health.dead ? this.player.flasks : null;
+    // The blood meter carries over; praying or dying ends the form (the blood stays).
+    const blood = this.player.crusnik.snapshot();
+    gameState.crusnik = next.checkpoint === undefined && !this.player.health.dead ? blood : { value: blood.value, active: false };
     // Autosave on every room change and prayer (a loaded game resumes at the last altar).
     saveStore.save(gameState.toSave(Date.now()));
     this.physics.world.pause();
@@ -498,6 +553,8 @@ export class PlayScene extends Phaser.Scene {
         facing: p.facing,
         height: p.bodyHeight,
         view: p.view.label,
+        form: p.form,
+        crusnik: p.crusnik.fraction,
         strength: p.damageMultiplier,
         // For playtest bots: is there no floor a short way ahead (a pit or hole)?
         gapAhead: !this.roomData.solids.concat(this.roomData.oneways).some((g) => {

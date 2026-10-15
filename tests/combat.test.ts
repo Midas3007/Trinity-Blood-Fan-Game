@@ -61,6 +61,7 @@ describe('attack data', () => {
     expect(p3.damage).toBeGreaterThan(p2.damage);
   });
 
+  const crusnikA = { ground: 'a', air: 'a', crouch: 'a', ranged: 'a' };
   it('rejects broken data with a clear error', () => {
     expect(() => validateAttacks(table({ c: { next: 'missing' } }))).toThrow(/does not exist/);
     expect(() => validateAttacks(table({ c: { activeMs: 0 } }))).toThrow(/activeMs/);
@@ -68,7 +69,10 @@ describe('attack data', () => {
       /loops/,
     );
     expect(() =>
-      buildAttackTable({ attacks: { a: base }, groundStarter: 'a', airStarter: 'nope', crouchStarter: 'a' }),
+      buildAttackTable({ attacks: { a: base }, groundStarter: 'a', airStarter: 'nope', crouchStarter: 'a', crusnikStarters: crusnikA }),
+    ).toThrow(/starter/);
+    expect(() =>
+      buildAttackTable({ attacks: { a: base }, groundStarter: 'a', airStarter: 'a', crouchStarter: 'a', crusnikStarters: { ...crusnikA, ranged: 'nope' } }),
     ).toThrow(/starter/);
   });
 });

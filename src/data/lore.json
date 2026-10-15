@@ -1,5 +1,5 @@
 {
-  "_note": "Readable lore found in rooms (marker type 'lore'). Original text written for this fan game, following the Istvan arc's setting. Facts marked (verify) in docs/lore/owner-storyline.md apply here too.",
+  "_note": "Readable lore found in rooms (marker type 'lore'). Original text written for this fan game, following the Istvan arc's setting. Facts marked (verify) in docs/lore/owner-storyline.md apply here too. 'unlocks' sets a progression flag when read (e.g. 'crusnik' awakens the Crusnik form).",
   "entries": {
     "ax_orders": {
       "title": "Sealed dispatch",
@@ -43,7 +43,8 @@
     },
     "crusnik_legend": {
       "title": "Forbidden page",
-      "text": "An old page torn from a Vatican index of heresies: '...and there are said to be beings that hunger not for the blood of men, but for the blood of those who drink it. The ancients gave them a name we will not write here.'"
+      "text": "An old page torn from a Vatican index of heresies: '...and there are said to be beings that hunger not for the blood of men, but for the blood of those who drink it. The ancients gave them a name we will not write here.' Abel reads it twice. His hand will not stop shaking. Somewhere beneath his ribs, something very old opens its eyes.",
+      "unlocks": "crusnik"
     },
     "cathedral_sealed": {
       "title": "Iron door",
@@ -64,6 +65,10 @@
     "cellar_crest": {
       "title": "The count's crest",
       "text": "A wolf crowned with a crescent moon, chiselled from the cellar door and thrown in the wine. Beyond, a passage climbs toward the castle on the hill."
+    },
+    "bone_wall": {
+      "title": "Wall of bones",
+      "text": "Skulls and long bones stacked to the height of three men, packed with lime. At the top a doorway breathes cold air and, impossibly, the scent of roses. There is no ladder and no rope. Whoever goes up there does not climb like a man."
     }
   }
 }

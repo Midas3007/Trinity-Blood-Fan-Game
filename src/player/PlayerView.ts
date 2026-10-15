@@ -2,18 +2,20 @@ import type Phaser from 'phaser';
 import mapping from '../data/playerAnimations.json';
 import { SpriteView, type StateVisual } from '../systems/sprites/SpriteView';
 import type { PlayerStateKey } from './playerStates';
+import type { AbelForm } from '../combat/finisherData';
 
 export type { StateVisual };
 
 /** Visual keys: every player state plus a few looks within a state (walk, pray, climbStill). */
 export type VisualKey = PlayerStateKey | 'walk' | 'pray' | 'climbStill';
 const states = mapping.states as Record<string, StateVisual | null>;
+const crusnikStates = mapping.crusnikStates as Record<string, StateVisual | null>;
 const PLAYER_DEPTH = 10;
 
 /** The visual for a state, or null for "show the placeholder". `{attack}` resolves to the running attack id.
  * Pure; exported for tests. */
-export function visualFor(state: VisualKey, attackId: string | null = null): StateVisual | null {
-  const v = states[state] ?? null;
+export function visualFor(state: VisualKey, attackId: string | null = null, form: AbelForm = 'priest'): StateVisual | null {
+  const v = (form === 'crusnik' ? crusnikStates : states)[state] ?? null;
   if (!v || !v.anim.includes('{attack}')) return v;
   return attackId ? { ...v, anim: v.anim.replace('{attack}', attackId) } : null;
 }
@@ -38,8 +40,8 @@ export class PlayerView {
     return this.view.label;
   }
 
-  update(state: VisualKey, attackId: string | null, feetX: number, feetY: number, facing: 1 | -1, alpha: number): void {
-    const shown = this.view.show(visualFor(state, attackId), feetX, feetY, facing, alpha);
+  update(state: VisualKey, attackId: string | null, feetX: number, feetY: number, facing: 1 | -1, alpha: number, form: AbelForm = 'priest'): void {
+    const shown = this.view.show(visualFor(state, attackId, form), feetX, feetY, facing, alpha);
     this.placeholder.setVisible(!shown);
     this.facingMark.setVisible(!shown);
   }

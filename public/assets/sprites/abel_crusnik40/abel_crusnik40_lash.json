@@ -1,0 +1,40 @@
+{
+  "animations": {
+    "lash": {
+      "attack": "lash",
+      "durations_ms": [
+        180,
+        120,
+        260
+      ],
+      "events": [
+        {
+          "frame": 1,
+          "type": "hitbox_on"
+        },
+        {
+          "frame": 2,
+          "type": "hitbox_off"
+        }
+      ],
+      "frames": [
+        0,
+        1,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 96,
+  "columns": 2,
+  "entity": "abel_crusnik40",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 96,
+  "sheet": "abel_crusnik40_lash.png",
+  "source_hashes": [
+    "sha256:41887f5bf72333285e07c59cdf4432ba64967da313c27c76fb808a95c2f3d889",
+    "sha256:c0755a6416fe2362fc3daf8ccc4186f984d16e0e9d664fb045430b63a812d079"
+  ]
+}

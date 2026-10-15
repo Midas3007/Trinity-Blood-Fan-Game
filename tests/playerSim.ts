@@ -1,3 +1,5 @@
+import type { AbelForm } from '../src/combat/finisherData';
+import { CrusnikMeter, crusnikTuning } from '../src/player/CrusnikMeter';
 import { StateMachine } from '../src/player/StateMachine';
 import { PlayerTimers } from '../src/player/PlayerTimers';
 import { gravityFor } from '../src/player/movement';
@@ -20,6 +22,8 @@ export interface SimInput {
   down?: boolean;
   /** Stick vertical, -1 up .. 1 down (overrides `down` when set). */
   moveY?: number;
+  /** True on the frame ABIL is pressed. */
+  ability?: boolean;
 }
 
 /**
@@ -28,7 +32,10 @@ export interface SimInput {
  * Mirrors the update order in Player.update.
  */
 export class SimPlayer implements PlayerContext {
-  readonly tuning: PlayerTuning;
+  private readonly baseTuning: PlayerTuning;
+  get tuning(): PlayerTuning {
+    return this.form === 'crusnik' ? crusnikTuning(this.baseTuning) : this.baseTuning;
+  }
   readonly timers: PlayerTimers;
   readonly combat = new AttackRunner(attackTable);
   attackPressed = false;
@@ -94,6 +101,18 @@ export class SimPlayer implements PlayerContext {
   endFinisher(): void {
     this.finishing.stop();
   }
+  form: AbelForm = 'priest';
+  abilityPressed = false;
+  readonly crusnik = new CrusnikMeter();
+  get transformReady(): boolean {
+    return this.crusnik.ready;
+  }
+  beginTransform(): void {
+    this.crusnik.activate();
+  }
+  completeTransform(): void {
+    this.form = 'crusnik';
+  }
   /** Floor height under x: 0 before the ledge, far below after it. */
   private floorAt(x: number): number {
     return x <= this.ledgeX ? 0 : 10_000;
@@ -105,7 +124,7 @@ export class SimPlayer implements PlayerContext {
   maxHeight = 0;
 
   constructor(tuning: PlayerTuning = playerTuning) {
-    this.tuning = tuning;
+    this.baseTuning = tuning;
     this.timers = new PlayerTimers(tuning);
     this.fsm = new StateMachine(playerStates, 'idle', this as PlayerContext);
   }
@@ -127,6 +146,7 @@ export class SimPlayer implements PlayerContext {
     this.jumpHeld = jump;
     this.dodgePressed = input.dodge ?? false;
     this.attackPressed = input.attack ?? false;
+    this.abilityPressed = input.ability ?? false;
     this.crouchHeld = input.down ?? false;
     this.moveY = input.moveY ?? (this.crouchHeld ? 1 : 0);
 
@@ -134,6 +154,7 @@ export class SimPlayer implements PlayerContext {
     this.fallDistance = this.y - this.airTopY;
     this.timers.tick({ dtMs: DT, jumpPressed: this.jumpPressedThisFrame, onGround: this.onGround, velocityY: this.vy });
     this.fsm.update(DT);
+    if (this.crusnik.tick(DT)) this.form = 'priest';
     if (this.onGround) this.airTopY = this.y;
 
     // Physics step.

@@ -1,0 +1,13 @@
+{
+  "_note": "Crusnik 40% form (Milestone 7 ability). Unlocked by the flag below (reading the Crusnik legend in the Forgotten Reliquary). The blood meter fills as Abel's hits land and enemies fall; when full, ABIL transforms him. While transformed the meter drains; at zero he returns to the priest form. In Crusnik form ABIL throws the chain lash (attack 'lash'). Times in ms, speeds px/s.",
+  "unlockFlag": "crusnik",
+  "meterMax": 100,
+  "gainPerHit": 8,
+  "gainPerKill": 20,
+  "gainPerDrain": 35,
+  "drainPerSecond": 7,
+  "transformMs": 650,
+  "damageMultiplier": 1.5,
+  "jumpVelocity": 470,
+  "runSpeed": 145
+}

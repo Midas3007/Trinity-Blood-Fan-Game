@@ -1,45 +1,149 @@
 {
-  "_note": "Player attacks. Times in ms, distances in px, speeds in px/s. Hitbox is relative to the player's centre, x measured forward in the facing direction. Add a new attack by adding an entry; link combos with 'next'. Values are design choices (see docs/feel-spec.md).",
+  "_note": "Player attacks. Times in ms, distances in px, speeds in px/s. Hitbox is relative to the player's centre, x measured forward in the facing direction. Add a new attack by adding an entry; link combos with 'next'. Values are design choices (see docs/feel-spec.md). Crusnik form uses crusnikStarters (scythe for every melee press, 'ranged' = the chain lash on ABIL).",
   "attacks": {
     "priest1": {
-      "startupMs": 110, "activeMs": 80, "recoveryMs": 220,
-      "damage": 10, "knockbackX": 90, "knockbackY": 0,
-      "hitstopMs": 50, "shakeMs": 0, "shakeIntensity": 0,
-      "stepSpeed": 0, "cancelIntoDodge": true,
-      "hitbox": { "x": 17, "y": -2, "w": 24, "h": 16 },
+      "startupMs": 110,
+      "activeMs": 80,
+      "recoveryMs": 220,
+      "damage": 10,
+      "knockbackX": 90,
+      "knockbackY": 0,
+      "hitstopMs": 50,
+      "shakeMs": 0,
+      "shakeIntensity": 0,
+      "stepSpeed": 0,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 17,
+        "y": -2,
+        "w": 24,
+        "h": 16
+      },
       "next": "priest2"
     },
     "priest2": {
-      "startupMs": 100, "activeMs": 80, "recoveryMs": 240,
-      "damage": 12, "knockbackX": 110, "knockbackY": 0,
-      "hitstopMs": 60, "shakeMs": 0, "shakeIntensity": 0,
-      "stepSpeed": 40, "cancelIntoDodge": true,
-      "hitbox": { "x": 17, "y": 0, "w": 26, "h": 16 },
+      "startupMs": 100,
+      "activeMs": 80,
+      "recoveryMs": 240,
+      "damage": 12,
+      "knockbackX": 110,
+      "knockbackY": 0,
+      "hitstopMs": 60,
+      "shakeMs": 0,
+      "shakeIntensity": 0,
+      "stepSpeed": 40,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 17,
+        "y": 0,
+        "w": 26,
+        "h": 16
+      },
       "next": "priest3"
     },
     "priest3": {
-      "startupMs": 170, "activeMs": 100, "recoveryMs": 380,
-      "damage": 22, "knockbackX": 220, "knockbackY": 140,
-      "hitstopMs": 110, "shakeMs": 120, "shakeIntensity": 0.006,
-      "stepSpeed": 90, "cancelIntoDodge": true,
-      "hitbox": { "x": 19, "y": -2, "w": 32, "h": 22 }
+      "startupMs": 170,
+      "activeMs": 100,
+      "recoveryMs": 380,
+      "damage": 22,
+      "knockbackX": 220,
+      "knockbackY": 140,
+      "hitstopMs": 110,
+      "shakeMs": 120,
+      "shakeIntensity": 0.006,
+      "stepSpeed": 90,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 19,
+        "y": -2,
+        "w": 32,
+        "h": 22
+      }
     },
     "crouch": {
-      "startupMs": 90, "activeMs": 90, "recoveryMs": 220,
-      "damage": 9, "knockbackX": 80, "knockbackY": 0,
-      "hitstopMs": 50, "shakeMs": 0, "shakeIntensity": 0,
-      "stepSpeed": 0, "cancelIntoDodge": true,
-      "hitbox": { "x": 18, "y": 2, "w": 26, "h": 12 }
+      "startupMs": 90,
+      "activeMs": 90,
+      "recoveryMs": 220,
+      "damage": 9,
+      "knockbackX": 80,
+      "knockbackY": 0,
+      "hitstopMs": 50,
+      "shakeMs": 0,
+      "shakeIntensity": 0,
+      "stepSpeed": 0,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 18,
+        "y": 2,
+        "w": 26,
+        "h": 12
+      }
     },
     "air": {
-      "startupMs": 80, "activeMs": 120, "recoveryMs": 160,
-      "damage": 10, "knockbackX": 80, "knockbackY": 0,
-      "hitstopMs": 50, "shakeMs": 0, "shakeIntensity": 0,
-      "stepSpeed": 0, "cancelIntoDodge": false,
-      "hitbox": { "x": 14, "y": 4, "w": 28, "h": 24 }
+      "startupMs": 80,
+      "activeMs": 120,
+      "recoveryMs": 160,
+      "damage": 10,
+      "knockbackX": 80,
+      "knockbackY": 0,
+      "hitstopMs": 50,
+      "shakeMs": 0,
+      "shakeIntensity": 0,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 14,
+        "y": 4,
+        "w": 28,
+        "h": 24
+      }
+    },
+    "scythe": {
+      "startupMs": 160,
+      "activeMs": 100,
+      "recoveryMs": 260,
+      "damage": 20,
+      "knockbackX": 200,
+      "knockbackY": 80,
+      "hitstopMs": 80,
+      "shakeMs": 90,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 60,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 24,
+        "y": -4,
+        "w": 44,
+        "h": 30
+      }
+    },
+    "lash": {
+      "startupMs": 180,
+      "activeMs": 120,
+      "recoveryMs": 260,
+      "damage": 14,
+      "knockbackX": 140,
+      "knockbackY": 0,
+      "hitstopMs": 60,
+      "shakeMs": 0,
+      "shakeIntensity": 0,
+      "stepSpeed": 0,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 62,
+        "y": -6,
+        "w": 96,
+        "h": 10
+      }
     }
   },
   "groundStarter": "priest1",
   "airStarter": "air",
-  "crouchStarter": "crouch"
+  "crouchStarter": "crouch",
+  "crusnikStarters": {
+    "ground": "scythe",
+    "air": "scythe",
+    "crouch": "scythe",
+    "ranged": "lash"
+  }
 }

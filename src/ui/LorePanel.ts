@@ -9,6 +9,8 @@ const TOP = 34;
 export interface LoreEntry {
   title: string;
   text: string;
+  /** Progression flag set when this is read (e.g. 'crusnik'). */
+  unlocks?: string;
 }
 
 const entries = lore.entries as Record<string, LoreEntry>;

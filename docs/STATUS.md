@@ -11,7 +11,7 @@ Last updated: 2026-10-15
 | 4 | First enemy | done (thrall + Death Hunter) |
 | 5 | Level slice | done: Istvan Old Town + Undercity, edge transitions, spikes/water, altars, lever-gate puzzles, room-graph test — **phone test pending** |
 | 6 | Art integration | in progress: Abel full set (incl. walk, climb, pray, drink), thrall, Death Hunter, title, HUD portrait, shaded tileset, altar + dove, cathedral front, painted house fronts/interiors/props, underground walls; left: NPCs, VFX, more enemies, cathedral interior |
-| 7 | Progression | in progress: holy-water flasks ✅, map ✅, altars/checkpoints ✅, pause ✅, save/load ✅; left: Crusnik form + leap ability gate, chain lash, dialogue, Marchesa boss |
+| 7 | Progression | in progress: holy-water flasks ✅, map ✅, altars/checkpoints ✅, pause ✅, save/load ✅, Crusnik form + leap gate + chain lash ✅; left: dialogue, Marchesa boss |
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
@@ -35,11 +35,25 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 - **Map shows only altars you have prayed at** (gold cross); unused altars stay hidden. Browser-checked: none before praying, one after.
 - **Locked out of Hunter's Crypt fixed:** the crypt's door in the Sewer Shaft sat on a ledge reachable only by precise platform jumps. Added a ladder from the shaft floor (east of the spikes) up to a wider ledge. Bot run: floor → ladder → ledge → crypt → back.
 
+## Done (latest) — the Crusnik awakens
+- **How it works:** read the *Forbidden page* in the Forgotten Reliquary (behind the Ossuary lever) → banner "THE CRUSNIK STIRS" and the blue bar under your health appears, already full. The bar fills from hits (+8) and kills (+20) and **glows** when full: press **ABIL** to transform (crimson flash; you can't be hurt during the change).
+- **As the Crusnik (40%, wingless):** ATK = scythe (×1.5 damage), ABIL = **chain lash** (reaches about 6 tiles, drawn as a spiked chain), DODGE = **slide** (owner request), a much higher **leap** (122 px vs 64), faster run. The bar drains (~14 s); at zero he becomes the priest again. The blood drain finisher refills it.
+- **Ability gate:** the Chapel of Bones' way to the Marchesa's Ballroom is a doorway on a 6-tile wall of bones: only the Crusnik leap reaches it. A lore stone hints at it.
+- **New art (Higgsfield, 8 credits, about 48 left):** Crusnik idle, run, walk, leap, fall, land, scythe, chain lash, slide, climb, transformation; 80% winged flight poses (fly, hover, dive) for cutscenes and scripted moments.
+- Verified: 138/138 tests (meter, transform, scythe/lash/slide, drain back to priest, leap height vs the wall, every Crusnik state has art); bot run: priest can't climb the wall → ABIL → Crusnik → scythe, lash, slide → leap → Ballroom, still transformed.
+
 ## In progress
 - the Crusnik form + leap gate, then the Marchesa boss.
 
 ## Blockers
 - None. Higgsfield: about 56 credits left.
+
+## Owner must test (on phone) — the Crusnik
+1. Get to the Forgotten Reliquary (Ossuary: top floor west ladder → lever → bottom-floor gate) and stand at the page. The banner appears and the blue bar shows, glowing.
+2. Press ABIL: crimson flash, Abel becomes the Crusnik. Try ATK (scythe), ABIL (chain lash: hits from far away), DODGE (slide), JUMP (very high).
+3. Watch the blue bar drain; when empty he turns back. Fight thralls to fill it again (it glows when ready).
+4. Chapel of Bones: as the priest, the wall by the west door can't be climbed; as the Crusnik, leap to the doorway → the Ballroom.
+5. Tell me: is the form too short or too long? lash too strong? leap fun?
 
 ## Owner must test (on phone) — sprite texture
 1. Look at Abel standing and running in a lit street and in the crypt: the coat should show folds, a lighter edge on one side and a darker one on the other, not one flat grey.
