@@ -99,9 +99,13 @@ class Room:
         self.wall(x - roof_overhang, top, x1 + 1 + roof_overhang, top + 1, "roof")
         if hatch:  # trapdoor in the roof above the top-floor ladder
             hx = x + 2 if (floors - 1) % 2 == 0 else x1 - 2
-            self.put("terrain", hx, top, "plank")
+            for dx in (-1, 0, 1):  # three tiles wide so the head clears the roof
+                self.put("terrain", hx + dx, top, "plank")
+        hatch_x = (x + 2 if (floors - 1) % 2 == 0 else x1 - 2) if hatch else None
         for c in range(chimneys):
-            cx = x + 2 + c * max(3, (w - 4) // max(1, chimneys))
+            cx = x1 - 3 - c * max(3, (w - 4) // max(1, chimneys))
+            if hatch_x is not None and abs(cx - hatch_x) < 4:
+                continue  # never above the roof hatch
             self.wall(cx, top - 2, cx + 2, top, "chimney")
         # doors (3 tiles high) on the ground floor
         for side in doors:
