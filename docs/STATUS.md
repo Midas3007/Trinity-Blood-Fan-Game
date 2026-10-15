@@ -24,6 +24,9 @@ Last updated: 2026-10-15
 
 - **Sprite pipeline spec tailored to the project:** `docs/sprite-pipeline.md` (original kept in `docs/references/sprite-pipeline-spec-original.md`). `CLAUDE.md` Part 6 now points to it. Five owner decisions listed in its §10.
 
+- **Sprite pipeline built** (`tools/spritegen`, `npm run sprites:*`): palette Requiem 48 (`art/palette/`), preview contact sheets, approve → build → validate, 18 Python unit tests, Vitest check that sprite timing matches `attacks.json`, GitHub Actions CI (`.github/workflows/ci.yml`).
+- **Higgsfield:** 6 of 104 credits used (98 left). Abel design round 1 (2 variants) and round 2 (1 image, brief rewritten from the owner's reference notes). Round 2 matches the costume and reads well at 40 px; face reads older and proportions aren't lanky enough.
+
 ## In progress
 - Waiting for the owner's phone test of Milestones 2–4 (feel and comfort can't be judged here).
 
@@ -50,6 +53,8 @@ Open https://trinity-blood-fan-game.vercel.app (reopen the page/app to get the u
 9. Tell me in plain words: is the wind-up too long or too short? Is it too fast or too slow when chasing? Too much health?
 
 ## Next step
+- Owner: approve Abel's round-2 design, or OK one more 2-credit round (younger face, taller/thinner, using round 2 as the only image reference).
+- Then: generate idle + run key poses (~4 credits), tune in preview, build the first real sprite sheets.
 - Owner: answer the 5 sprite-pipeline decisions (`docs/sprite-pipeline.md` §10).
 - Owner phone test → tune `src/data/enemies.json`, `attacks.json`, `player.json`.
 - Then Milestone 5: level slice — connected rooms from Tiled, room transitions that keep state, a hazard, checkpoints (altars that refill health and respawn enemies), one simple puzzle, and a room-graph test.
