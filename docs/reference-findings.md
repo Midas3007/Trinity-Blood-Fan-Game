@@ -124,3 +124,20 @@ Format per CLAUDE.md Part 5. "Names" below are exact strings from `global-metada
 | Plain `strings` / `objdump` | Used for this report | — |
 
 **Honest expectation even with all tools:** decompiling `libil2cpp.so` gives unnamed native pseudocode unless symbols are recovered; with recovery it gives method signatures and control flow, but **tuning values live in serialized scene/prefab data that is not in this extract**. More tooling would refine *structure*, not give feel numbers.
+
+---
+
+## Web research pass — 2026-10-15 (public reviews, wikis, player discussion; not extracted data)
+
+| # | Investigated | Evidence | Confidence | Unknown | Reproducible here |
+|---|---|---|---|---|---|
+| W1 | World structure | Reviews: the world is interconnected; early areas can be tackled in a chosen order; shortcuts (elevators, portals) lead back to the hub town (Albero) and gradually tie the map together. One review finds areas feel isolated from each other. ([metroidvaniareview](https://metroidvaniareview.com/blasphemous/), [gamerguides](https://gamerguides.com/blasphemous/review), [keengamer](https://www.keengamer.com/articles/reviews/ps4-reviews/bloody-hack-and-slash-blasphemous-cuts-in-review-ps4/)) | medium | exact shortcut count/placement | yes: hub (Market Square) + lever shortcuts + later fast travel between altars |
+| W2 | Checkpoints | Prie Dieu restores health and Bile Flasks ([fextralife progress route](https://blasphemous.wiki.fextralife.com/Game+Progress+Route)) | high | spacing between them | done: altars restore health and holy water |
+| W3 | Build systems | Rosary Beads = passive perks in limited slots, extra slots from Knots of Rosary Rope; Prayers spend Fervour; Relics give traversal/perception abilities; Guilt Fragment holds currency after death ([fextralife beads](https://blasphemous.wiki.fextralife.com/Rosary+Beads), [fandom](https://blasphemous.fandom.com/wiki/Category:Rosary_Beads)) | medium | numbers | yes, as our own equivalents (see design note) |
+| W4 | Combat | Parry is central (an early enemy works as the parry tutorial and enables a riposte); players criticise inconsistent telegraphing and slow parry startup ([wiki.gg](https://blasphemous.wiki.gg/wiki/Enraged_Wheel_Pilgrim), [Steam discussion](https://steamcommunity.com/app/2114740/discussions/0/3816291905691230859)) | medium (anecdotal) | frame data | yes: keep every wind-up readable (we already tint amber); consider a parry |
+
+**Design implications for us (proposals):**
+1. Keep Market Square as the hub; every new area opens a shortcut back to it.
+2. Later: fast travel between prayed-at altars (M7+).
+3. Our equivalents of the build systems, original and in-setting: **holy medals** (passive perks in limited slots), **Crusnik meter** (our Fervour) spent on Crusnik abilities, **relics** for traversal.
+4. Combat: consider a **parry** (Abel deflects with his revolver, opening a riposte/finisher); keep telegraphs consistent (amber wind-up on every attack).
