@@ -219,7 +219,8 @@ def sewer_shaft():
     r.fill("terrain", 4, 0, 8, 3, None)                     # the grate opening above
     r.fill("terrain", 3, 3, 26, r.H - 2, None)              # the shaft
     r.carve(0, 10, 3, 15)                                   # west, up high: the Hunter's Crypt
-    r.platform(3, 9, 15)
+    r.platform(3, 14, 15)
+    r.ladder(12, 16, r.H - 2)                               # up from the floor (east of the spikes) to the crypt door ledge
     r.carve(26, 27, 30, 32)                                 # east, at the bottom: the Water Tunnels
     for i, y in enumerate(range(r.H - 6, 3, -4)):
         x0 = 6 if i % 2 == 0 else 14

@@ -30,6 +30,11 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 
 - **Sprite texture pass (owner request):** every sprite sheet now goes through a texture stage (`tools/spritegen/texture.py`): violet cloth shadows with local contrast so coat folds and seams show, a light dither like the room art, and a rim light from the upper left for volume. No credits used. Verified: 28/28 pipeline tests, 29 sheets valid, build passes. Limit: at 40 px tall there is only so much room for detail; a bigger jump needs taller sprites (see Next step).
 
+## Done (latest, owner bug reports)
+- **Pause menu buttons fixed:** Resume / Return to title did nothing once the camera had scrolled (their tap areas stayed where the room began). Rebuilt as gothic plaques (gold double border, studs, crimson press) on a framed panel; the title's Continue / New game use the same buttons. Browser-checked in a scrolled room: Resume closes, Return to title goes to the title.
+- **Map shows only altars you have prayed at** (gold cross); unused altars stay hidden. Browser-checked: none before praying, one after.
+- **Locked out of Hunter's Crypt fixed:** the crypt's door in the Sewer Shaft sat on a ledge reachable only by precise platform jumps. Added a ladder from the shaft floor (east of the spikes) up to a wider ledge. Bot run: floor → ladder → ledge → crypt → back.
+
 ## In progress
 - the Crusnik form + leap gate, then the Marchesa boss.
 
@@ -59,5 +64,6 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 4. Pray at an altar: kneel, light beam, dove over his head, health and flasks refilled.
 
 ## Next step
+- When the slice is finished: a bot plays the whole game start to end and the run is recorded as a video for the owner (owner request).
 - Optional (owner's call): redraw characters taller (about 56 px, Blasphemous scale) for real detail; costs Higgsfield credits and changes his size against doors.
 - Crusnik 40% form + leap ability that opens a blocked path, then the Marchesa boss in her ballroom.
