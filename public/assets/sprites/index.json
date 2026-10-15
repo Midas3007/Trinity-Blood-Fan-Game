@@ -552,6 +552,34 @@
         "sha256:318b5bb5bad417b84e299331020aa4f730fb5af0088bb0093fd81e66301e3e67"
       ]
     },
+    "abel_crusnik40/abel_crusnik40_climb.png": {
+      "animations": {
+        "climb": {
+          "durations_ms": [
+            180,
+            180
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 2,
+      "entity": "abel_crusnik40",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
+      "sheet": "abel_crusnik40_climb.png",
+      "source_hashes": [
+        "sha256:b1c8988c7fcea23f4f570d652bb1dd058033db640d62312989fdcf897d760a2a",
+        "sha256:5db6deae6a64122f8d278a40b0963d68b5afe26ff000d244d6dc860e22a405d7"
+      ]
+    },
     "abel_crusnik40/abel_crusnik40_fall.png": {
       "animations": {
         "fall": {
@@ -785,17 +813,17 @@
         "sha256:a404f5c6cd814e73e8b060a96de3d2dc6d427a182c58301960306598f3da77b5"
       ]
     },
-    "abel_crusnik40/abel_crusnik40_transform.png": {
+    "abel_crusnik40/abel_crusnik40_slide.png": {
       "animations": {
-        "transform": {
+        "slide": {
           "durations_ms": [
-            650
+            200
           ],
           "events": [],
           "frames": [
             0
           ],
-          "loop": false
+          "loop": true
         }
       },
       "cell_height": 96,
@@ -805,9 +833,143 @@
       "palette": "requiem48.hex",
       "pivot_x": 48,
       "pivot_y": 96,
+      "sheet": "abel_crusnik40_slide.png",
+      "source_hashes": [
+        "sha256:27760775dfec51bcfc0711d9bb6afa82d8b164fd070eb4cdc449c27b69bffa28"
+      ]
+    },
+    "abel_crusnik40/abel_crusnik40_transform.png": {
+      "animations": {
+        "transform": {
+          "durations_ms": [
+            300,
+            350
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 2,
+      "entity": "abel_crusnik40",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
       "sheet": "abel_crusnik40_transform.png",
       "source_hashes": [
+        "sha256:4de858decbea7ca303cb9fdd62894c23c8e1aab5f97612fb17c7b5a73fcfd96b",
         "sha256:8cdefbbec824e0d4ae7fe0d7ca8c226f8d5090cc40baf8d7c7bc7275f810b247"
+      ]
+    },
+    "abel_crusnik40/abel_crusnik40_walk.png": {
+      "animations": {
+        "walk": {
+          "durations_ms": [
+            220,
+            220
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 96,
+      "columns": 2,
+      "entity": "abel_crusnik40",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 96,
+      "sheet": "abel_crusnik40_walk.png",
+      "source_hashes": [
+        "sha256:5a319fe0a5d3daf703e2ae594ff7fdc6f6e376eabe66af26975f63822204a739",
+        "sha256:1e68d0737588921524730564fc302598e0b14296d4c98136087cfd0cd26c5fbc"
+      ]
+    },
+    "abel_crusnik80/abel_crusnik80_dive.png": {
+      "animations": {
+        "dive": {
+          "durations_ms": [
+            400
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "abel_crusnik80",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "abel_crusnik80_dive.png",
+      "source_hashes": [
+        "sha256:da738faa508ff537581cef6c0d112b376dbe83ec5f3d4bc0ef64c8c25a91ca00"
+      ]
+    },
+    "abel_crusnik80/abel_crusnik80_fly.png": {
+      "animations": {
+        "fly": {
+          "durations_ms": [
+            160,
+            160
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 2,
+      "entity": "abel_crusnik80",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "abel_crusnik80_fly.png",
+      "source_hashes": [
+        "sha256:6e7cb3e92368bda06adb068654806108c153e621c774045951d00c193cf6fd6c",
+        "sha256:dfc423c1d5f5a8bb2baa0f75942c0e6ecf2aa5ac1fd6a4001a78022746eef35d"
+      ]
+    },
+    "abel_crusnik80/abel_crusnik80_hover.png": {
+      "animations": {
+        "hover": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "abel_crusnik80",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "abel_crusnik80_hover.png",
+      "source_hashes": [
+        "sha256:b767d92c200097e8d4c9b687e9011dc840d4c2fa468072b869adcc71ba2c8465"
       ]
     },
     "enemies/death_hunter/enemy_death_hunter_chop.png": {

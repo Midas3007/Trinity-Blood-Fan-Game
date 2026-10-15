@@ -1,0 +1,14 @@
+{
+  "source": "poses_flight_r1_c3c9f3fa.png",
+  "source_hash": "sha256:fee26d4f5da0e2a267f4af17550fabacbbb498a88b2807262f62a55445da7e43",
+  "figures": [
+    3
+  ],
+  "standing_px": 750,
+  "factor": 0.576,
+  "open_px": 0,
+  "expected": 4,
+  "outputs": [
+    "poses_flight_r1_c3c9f3fa_f3.png"
+  ]
+}

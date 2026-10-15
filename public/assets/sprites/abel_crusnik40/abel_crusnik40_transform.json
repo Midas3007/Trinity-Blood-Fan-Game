@@ -2,24 +2,27 @@
   "animations": {
     "transform": {
       "durations_ms": [
-        650
+        300,
+        350
       ],
       "events": [],
       "frames": [
-        0
+        0,
+        1
       ],
       "loop": false
     }
   },
   "cell_height": 96,
   "cell_width": 96,
-  "columns": 1,
+  "columns": 2,
   "entity": "abel_crusnik40",
   "palette": "requiem48.hex",
   "pivot_x": 48,
   "pivot_y": 96,
   "sheet": "abel_crusnik40_transform.png",
   "source_hashes": [
+    "sha256:4de858decbea7ca303cb9fdd62894c23c8e1aab5f97612fb17c7b5a73fcfd96b",
     "sha256:8cdefbbec824e0d4ae7fe0d7ca8c226f8d5090cc40baf8d7c7bc7275f810b247"
   ]
 }

@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "walk": {
+      "durations_ms": [
+        220,
+        220
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 96,
+  "columns": 2,
+  "entity": "abel_crusnik40",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 96,
+  "sheet": "abel_crusnik40_walk.png",
+  "source_hashes": [
+    "sha256:5a319fe0a5d3daf703e2ae594ff7fdc6f6e376eabe66af26975f63822204a739",
+    "sha256:1e68d0737588921524730564fc302598e0b14296d4c98136087cfd0cd26c5fbc"
+  ]
+}

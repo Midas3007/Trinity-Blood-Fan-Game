@@ -1,5 +1,5 @@
 {
- "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's or finisher's id (priest1/priest2/priest3, revolver), so each plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built. Extra visual keys (not player states): walk (slow run), pray (at an altar), climbStill (on a ladder, not moving). crusnikStates: the same keys for the Crusnik 40% form (no slide/roll/climb art yet: the crouching landing pose stands in, so DODGE reads as a low slide).",
+ "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's or finisher's id (priest1/priest2/priest3, revolver), so each plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built. Extra visual keys (not player states): walk (slow run), pray (at an altar), climbStill (on a ladder, not moving). crusnikStates: the same keys for the Crusnik 40% form (crouch and hurt borrow the landing pose).",
  "entity": "abel",
  "states": {
   "idle": {
@@ -75,7 +75,7 @@
    "anim": "abel_crusnik40_run"
   },
   "walk": {
-   "anim": "abel_crusnik40_run"
+   "anim": "abel_crusnik40_walk"
   },
   "jump": {
    "anim": "abel_crusnik40_jump"
@@ -106,12 +106,10 @@
    "frame": 0
   },
   "dodge": {
-   "anim": "abel_crusnik40_land",
-   "frame": 0
+   "anim": "abel_crusnik40_slide"
   },
   "slide": {
-   "anim": "abel_crusnik40_land",
-   "frame": 0
+   "anim": "abel_crusnik40_slide"
   },
   "crouch": {
    "anim": "abel_crusnik40_land",
@@ -122,11 +120,10 @@
    "frame": 1
   },
   "climb": {
-   "anim": "abel_crusnik40_fall",
-   "frame": 0
+   "anim": "abel_crusnik40_climb"
   },
   "climbStill": {
-   "anim": "abel_crusnik40_fall",
+   "anim": "abel_crusnik40_climb",
    "frame": 0
   },
   "heal": {

@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "climb": {
+      "durations_ms": [
+        180,
+        180
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 96,
+  "columns": 2,
+  "entity": "abel_crusnik40",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 96,
+  "sheet": "abel_crusnik40_climb.png",
+  "source_hashes": [
+    "sha256:b1c8988c7fcea23f4f570d652bb1dd058033db640d62312989fdcf897d760a2a",
+    "sha256:5db6deae6a64122f8d278a40b0963d68b5afe26ff000d244d6dc860e22a405d7"
+  ]
+}

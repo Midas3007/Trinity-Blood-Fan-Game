@@ -40,6 +40,7 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 - **As the Crusnik (40%, wingless):** ATK = scythe (×1.5 damage), ABIL = **chain lash** (reaches about 6 tiles, drawn as a spiked chain), DODGE = **slide** (owner request), a much higher **leap** (122 px vs 64), faster run. The bar drains (~14 s); at zero he becomes the priest again. The blood drain finisher refills it.
 - **Ability gate:** the Chapel of Bones' way to the Marchesa's Ballroom is a doorway on a 6-tile wall of bones: only the Crusnik leap reaches it. A lore stone hints at it.
 - **New art (Higgsfield, 8 credits, about 48 left):** Crusnik idle, run, walk, leap, fall, land, scythe, chain lash, slide, climb, transformation; 80% winged flight poses (fly, hover, dive) for cutscenes and scripted moments.
+- Known art gap: the Crusnik climb frames still show the ladder the art was drawn on (it sits over the real ladder at about the same width); fix on the next art pass.
 - Verified: 138/138 tests (meter, transform, scythe/lash/slide, drain back to priest, leap height vs the wall, every Crusnik state has art); bot run: priest can't climb the wall → ABIL → Crusnik → scythe, lash, slide → leap → Ballroom, still transformed.
 
 ## In progress

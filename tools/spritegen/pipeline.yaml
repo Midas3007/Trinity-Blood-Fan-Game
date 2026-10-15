@@ -98,7 +98,10 @@ entities:
       jump:      { loop: false, durations_ms: 300 }
       fall:      { loop: true,  durations_ms: 200 }
       land:      { loop: false, durations_ms: 300 }
-      transform: { loop: false, durations_ms: 650 }
+      transform: { loop: false, durations_ms: [300, 350] }   # hunched awakening, then arms spread (= transformMs)
+      walk:      { loop: true,  durations_ms: 220 }
+      climb:     { loop: true,  durations_ms: 180 }
+      slide:     { loop: true,  durations_ms: 200, anchor: centre }
       scythe:
         attack: scythe
         sequence: [0, 1, 1]
