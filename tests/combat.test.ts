@@ -68,7 +68,7 @@ describe('attack data', () => {
       /loops/,
     );
     expect(() =>
-      buildAttackTable({ attacks: { a: base }, groundStarter: 'a', airStarter: 'nope' }),
+      buildAttackTable({ attacks: { a: base }, groundStarter: 'a', airStarter: 'nope', crouchStarter: 'a' }),
     ).toThrow(/starter/);
   });
 });

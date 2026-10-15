@@ -24,7 +24,10 @@ Record the screen while playing, scrub frame by frame, and use the character's h
 | Hard landing | Exists (`HardLandingBehaviour`, F2) | | after falling ≥160 px; 350 ms stuck |
 | Dodge/slide | Ground slide; brief invulnerability; passes **through enemies**; slides under small gaps; **cannot** avoid magic/projectiles [R1][R3][R4] | | 240 px/s for 380 ms (≈91 px); ground only |
 | Dodge invulnerability | "A few invincibility frames" [R7]; some players say it is mostly about passing through wind-ups [R4] | | first 260 ms of the slide |
-| Dodge cooldown | Exists (`DashCooldown`, F4) | | 300 ms after the slide ends |
+| Dodge cooldown | Exists (`DashCooldown`, F4) | | 300 ms after a roll or slide ends |
+| Roll vs slide (owner request) | Reference has one slide that goes under gaps [R3] | Owner: wants a roll **and** a slide | Roll (DODGE): 380 ms, 240 px/s, invulnerable 260 ms, body 20 px tall. Slide (down + DODGE): 450 ms, 300→140 px/s (≈100 px), invulnerable only 100 ms, body 15 px tall — fits under gaps |
+| Crouch | Exists (`CrouchState`, F2) | Owner: stick down = crouch | body 15 px tall, no walking; crawling only when there is no room to stand; low crouch attack (9 dmg) |
+| Stick up = jump | — | Owner request | stick pushed up past 65 % = JUMP held (works with variable height) |
 | Air boost | "Air impulse": down + attack in the air, up to 2 times per jump [R1][R3] | | not in our game (Abel gets wings instead) |
 | Wall cling | Attack toward certain walls while jumping to cling; jump to drop [R3] | | later milestone |
 | Ledges / ladders | Exist (F5) | | later milestone |

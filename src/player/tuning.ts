@@ -22,6 +22,18 @@ export interface PlayerTuning {
   dodgeDurationMs: number;
   dodgeInvulnerableMs: number;
   dodgeCooldownMs: number;
+  /** Body height while rolling (DODGE). */
+  rollHeight: number;
+  /** Body height while crouching or sliding. */
+  lowHeight: number;
+  /** Stick pushed down beyond this (0-1) means crouch. */
+  crouchStickThreshold: number;
+  /** Movement allowed while crouched only when there is no room to stand up. */
+  crawlSpeed: number;
+  slideSpeed: number;
+  slideEndSpeed: number;
+  slideDurationMs: number;
+  slideInvulnerableMs: number;
   maxHealth: number;
   hurtStunMs: number;
   hurtInvulnerableMs: number;

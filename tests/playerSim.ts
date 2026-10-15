@@ -14,6 +14,8 @@ export interface SimInput {
   dodge?: boolean;
   /** True on the frame the attack button is pressed. */
   attack?: boolean;
+  /** Stick held down (crouch). */
+  down?: boolean;
 }
 
 /**
@@ -26,6 +28,8 @@ export class SimPlayer implements PlayerContext {
   readonly timers: PlayerTimers;
   readonly combat = new AttackRunner(attackTable);
   attackPressed = false;
+  crouchHeld = false;
+  canStand = true;
   x = 0;
   y = 0;
   vx = 0;
@@ -70,6 +74,7 @@ export class SimPlayer implements PlayerContext {
     this.jumpHeld = jump;
     this.dodgePressed = input.dodge ?? false;
     this.attackPressed = input.attack ?? false;
+    this.crouchHeld = input.down ?? false;
 
     if (!this.onGround) this.airTopY = Math.min(this.airTopY, this.y);
     this.fallDistance = this.y - this.airTopY;

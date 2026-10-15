@@ -59,3 +59,13 @@
 | Combat resolution moved into a pure `CombatSystem` (player attacks, enemy attacks, contact hazards → events) | Scene stays thin; whole hit flow unit-tested with fakes | Keep it in the scene |
 | `Damageable.receiveHit` returns whether the hit landed | Invulnerable targets don't trigger hit feedback | Separate pre-check |
 | Enemies and the player pass through each other (no body collision) | Matches the reference dodge-through feel; avoids getting pinned | Solid bodies |
+
+## 2026-10-15 — Owner requests: roll + slide, stick up = jump, stick down = crouch
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| DODGE = **roll** (tucked 20 px body, mostly invulnerable, can't fit under low gaps); **down + DODGE = slide** (15 px body, faster and longer, only 100 ms invulnerable, fits under gaps) | Owner wanted both; gives each a clear job (roll = avoid attacks, slide = traversal) | Separate SLIDE button (more buttons on a phone) |
+| Stick pushed up past 65 % counts as holding JUMP (touch); Up/W also jump on keyboard. JUMP button kept | Owner request ("how games are"); 65 % stops accidental jumps when pushing diagonally while running | Any upward push |
+| Stick/keys down past 60 % = crouch; crouch attack is a separate data attack (`crouch`) | Owner request; matches the reference's crouch and crouch attack | — |
+| Crawling only when a ceiling prevents standing | Players can never get stuck under a low gap after a slide; normal crouch stays planted | Always allow crawling |
+| Posture change resizes the real body (not scale), re-syncs it, and resets its previous position | Scaling/resizing let Arcade drag the body 15 px into the floor (found in the browser playtest) | — |

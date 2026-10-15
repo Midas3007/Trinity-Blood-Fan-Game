@@ -6,6 +6,8 @@ export interface StickLayout {
   radius: number;
   knobRadius: number;
   deadZone: number;
+  /** Stick pushed up beyond this (0-1) counts as holding JUMP. */
+  upJumpThreshold: number;
 }
 
 export interface ButtonLayout {

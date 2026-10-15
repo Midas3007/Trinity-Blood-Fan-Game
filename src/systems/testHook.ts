@@ -5,7 +5,7 @@
 export interface TestSnapshot {
   time: number;
   fps: number;
-  player: { state: string; x: number; y: number; vx: number; vy: number; hp: number; invulnerable: boolean; facing: number };
+  player: { state: string; x: number; y: number; vx: number; vy: number; hp: number; invulnerable: boolean; facing: number; height: number };
   enemies: { type: string; state: string; x: number; y: number; hp: number }[];
   dummies: { x: number; hp: number; alive: boolean }[];
 }

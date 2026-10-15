@@ -3,6 +3,7 @@ import { framesFor, SimPlayer } from './playerSim';
 import { jumpHeight } from '../src/player/movement';
 import { playerTuning as t } from '../src/player/tuning';
 import { attackTable } from '../src/combat/attackData';
+import { postureFor } from '../src/player/playerStates';
 
 describe('player controller (Milestone 2)', () => {
   it('starts idle, runs when moving, returns to idle after decelerating', () => {
@@ -218,5 +219,72 @@ describe('player combat states (Milestone 3)', () => {
     expect(p.state).toBe('hurt');
     p.run(framesFor(t.hurtStunMs) + 30);
     expect(['idle', 'fall']).toContain(p.state);
+  });
+});
+
+describe('crouch, slide and roll', () => {
+  it('holding down crouches and stops; letting go stands up', () => {
+    const p = new SimPlayer();
+    p.run(20, { moveX: 1 });
+    p.step({ moveX: 1, down: true });
+    expect(p.state).toBe('crouch');
+    p.run(20, { moveX: 1, down: true });
+    expect(p.vx).toBe(0); // no crawling when there is room to stand
+    p.step({ moveX: 1 });
+    expect(p.state).toBe('run');
+  });
+
+  it('down + dodge slides: fast, longer than a roll, brief invulnerability, then crouch if still held', () => {
+    const p = new SimPlayer();
+    p.run(2, { down: true });
+    const x0 = p.x;
+    p.step({ down: true, dodge: true });
+    expect(p.state).toBe('slide');
+    expect(p.vx).toBe(t.slideSpeed);
+    expect(p.timers.invulnerable).toBeLessThan(t.dodgeInvulnerableMs);
+    p.run(framesFor(t.slideDurationMs) + 1, { down: true });
+    expect(p.state).toBe('crouch');
+    const slideDist = p.x - x0;
+
+    const r = new SimPlayer();
+    const rx0 = r.x;
+    r.step({ dodge: true });
+    r.run(framesFor(t.dodgeDurationMs) + 1);
+    expect(slideDist).toBeGreaterThan(r.x - rx0);
+  });
+
+  it('a slide ending under a low ceiling stays crouched and can crawl out; no jumping until clear', () => {
+    const p = new SimPlayer();
+    p.run(2, { down: true });
+    p.step({ down: true, dodge: true });
+    p.canStand = false;
+    p.run(framesFor(t.slideDurationMs) + 3);
+    expect(p.state).toBe('crouch');
+    p.run(30, { moveX: 1 });
+    expect(p.vx).toBeCloseTo(t.crawlSpeed);
+    p.step({ moveX: 1, jump: true });
+    expect(p.state).toBe('crouch');
+    p.run(framesFor(t.jumpBufferMs) + 2, { moveX: 1 }); // let the remembered jump press expire
+    p.canStand = true;
+    p.run(2, { moveX: 1 });
+    expect(p.state).toBe('run');
+  });
+
+  it('attack while crouched uses the low crouch attack', () => {
+    const p = new SimPlayer();
+    p.run(2, { down: true });
+    p.step({ down: true, attack: true });
+    expect(p.state).toBe('crouchAttack');
+    expect(p.combat.current?.id).toBe('crouch');
+    p.run(60, { down: true });
+    expect(p.state).toBe('crouch');
+  });
+
+  it('postures: roll is tucked, crouch/slide/crouch attack are low', () => {
+    expect(postureFor('dodge')).toBe('roll');
+    for (const s of ['crouch', 'slide', 'crouchAttack'] as const) expect(postureFor(s)).toBe('low');
+    for (const s of ['idle', 'run', 'jump', 'attack'] as const) expect(postureFor(s)).toBe('stand');
+    expect(t.lowHeight).toBeLessThan(t.rollHeight);
+    expect(t.rollHeight).toBeLessThan(t.height);
   });
 });

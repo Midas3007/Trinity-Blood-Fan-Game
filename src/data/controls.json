@@ -1,6 +1,6 @@
 {
-  "_note": "Touch layout as fractions of the screen (x, y) and internal pixels (radius). Saved per-device overrides come in a later milestone.",
-  "stick": { "x": 0.16, "y": 0.72, "radius": 34, "knobRadius": 14, "deadZone": 0.2 },
+  "_note": "Pushing the stick up past upJumpThreshold (0-1) also presses JUMP. Touch layout as fractions of the screen (x, y) and internal pixels (radius). Saved per-device overrides come in a later milestone.",
+  "stick": { "x": 0.16, "y": 0.72, "radius": 34, "knobRadius": 14, "deadZone": 0.2, "upJumpThreshold": 0.65 },
   "buttons": [
     { "action": "attack",  "label": "ATK",  "x": 0.80, "y": 0.78, "radius": 20 },
     { "action": "jump",    "label": "JUMP", "x": 0.91, "y": 0.62, "radius": 20 },

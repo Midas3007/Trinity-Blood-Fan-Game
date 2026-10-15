@@ -3,7 +3,7 @@ import { COLORS } from '../core/constants';
 import type { ActionState } from '../systems/input/ActionState';
 import { AttackRunner } from '../combat/AttackRunner';
 import { attackTable } from '../combat/attackData';
-import { centredRect } from '../combat/geometry';
+import { centredRect, overlaps } from '../combat/geometry';
 import { Health } from '../combat/Health';
 import { nextEntityId } from '../combat/ids';
 import type { HitInfo, Rect } from '../combat/types';
@@ -11,7 +11,7 @@ import type { PlayerCombatant } from '../combat/CombatSystem';
 import { StateMachine } from './StateMachine';
 import { PlayerTimers } from './PlayerTimers';
 import { gravityFor } from './movement';
-import { playerStates, type PlayerContext, type PlayerStateKey } from './playerStates';
+import { playerStates, postureFor, type PlayerContext, type PlayerStateKey, type Posture } from './playerStates';
 import { playerTuning, type PlayerTuning } from './tuning';
 
 const INVULNERABLE_ALPHA = 0.45;
@@ -31,6 +31,8 @@ export class Player implements PlayerContext, PlayerCombatant {
   jumpCut = false;
   fallDistance = 0;
   private airTopY: number;
+  private height: number;
+  canStand = true;
   private blinkMs = 0;
   private readonly fsm: StateMachine<PlayerStateKey, PlayerContext>;
   private readonly facingMark: Phaser.GameObjects.Rectangle;
@@ -41,8 +43,10 @@ export class Player implements PlayerContext, PlayerCombatant {
     y: number,
     private readonly input: ActionState,
     private readonly worldGravity: number,
+    private readonly solids: readonly Rect[],
   ) {
     const t = this.tuning;
+    this.height = t.height;
     this.sprite = scene.add.rectangle(x, y, t.width, t.height, COLORS.player);
     // Small mark showing which way the player faces (placeholder art).
     this.facingMark = scene.add.rectangle(x, y, 4, 4, COLORS.accent);
@@ -86,6 +90,53 @@ export class Player implements PlayerContext, PlayerCombatant {
     return this.input.justPressed('attack');
   }
 
+  get crouchHeld(): boolean {
+    return this.input.moveY >= this.tuning.crouchStickThreshold;
+  }
+
+  /** Current body height (changes with posture). */
+  get bodyHeight(): number {
+    return this.height;
+  }
+
+  /** y of the player's feet. */
+  get feetY(): number {
+    return this.sprite.y + this.height / 2;
+  }
+
+  /** Would a standing body fit here without overlapping any solid? */
+  private roomToStand(): boolean {
+    const h = this.tuning.height;
+    const r = centredRect(this.x, this.feetY - h / 2, this.tuning.width - 2, h - 1);
+    return !this.solids.some((s) => overlaps(r, s));
+  }
+
+  private heightFor(p: Posture): number {
+    if (p === 'roll') return this.tuning.rollHeight;
+    if (p === 'low') return this.tuning.lowHeight;
+    return this.tuning.height;
+  }
+
+  /** Resizes the body (and placeholder) for the posture, keeping the feet in place. */
+  private applyPosture(p: Posture): void {
+    let h = this.heightFor(p);
+    if (h > this.height && !this.roomToStand()) h = this.height; // never grow into a ceiling
+    if (h === this.height) return;
+    const feet = this.feetY;
+    const w = this.tuning.width;
+    this.height = h;
+    // Change the real size (not scale) and sync the body immediately, so it never overlaps the floor for a frame.
+    this.sprite.setSize(w, h);
+    this.sprite.updateDisplayOrigin();
+    this.sprite.setPosition(this.sprite.x, feet - h / 2);
+    this.body.setSize(w, h);
+    this.body.updateFromGameObject();
+    // Arcade moves the shape by (position - previous position) after each step. Resizing moved the body's
+    // top edge, so mark the new position as the previous one or the shape gets dragged into the floor.
+    this.body.prev.copy(this.body.position);
+    this.body.prevFrame.copy(this.body.position);
+  }
+
   get vx(): number {
     return this.body.velocity.x;
   }
@@ -107,7 +158,7 @@ export class Player implements PlayerContext, PlayerCombatant {
   }
 
   hurtbox(): Rect {
-    return centredRect(this.x, this.y, this.tuning.width, this.tuning.height);
+    return centredRect(this.x, this.y, this.tuning.width, this.height);
   }
 
   get alive(): boolean {
@@ -133,6 +184,7 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   /** Puts the player back at a spawn point with full health (placeholder for checkpoints). */
   respawn(x: number, y: number): void {
+    this.applyPosture('stand');
     this.sprite.setPosition(x, y);
     this.body.reset(x, y);
     this.health.reset();
@@ -153,7 +205,9 @@ export class Player implements PlayerContext, PlayerCombatant {
       onGround: this.onGround,
       velocityY: this.vy,
     });
+    this.canStand = this.height >= this.tuning.height || this.roomToStand();
     this.fsm.update(dtMs);
+    this.applyPosture(postureFor(this.fsm.current));
 
     if (this.onGround) this.airTopY = y;
     // World gravity is already applied; add the difference for the current phase of the jump.
@@ -162,6 +216,6 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.blinkMs = Math.max(0, this.blinkMs - dtMs);
     const blinkOff = this.blinkMs > 0 && Math.floor(this.blinkMs / BLINK_MS) % 2 === 0;
     this.sprite.setAlpha(blinkOff ? 0.2 : this.invulnerable ? INVULNERABLE_ALPHA : 1);
-    this.facingMark.setPosition(this.sprite.x + this.facing * (this.tuning.width / 2 - 2), this.sprite.y - 8);
+    this.facingMark.setPosition(this.sprite.x + this.facing * (this.tuning.width / 2 - 2), this.sprite.y - this.height / 2 + 7);
   }
 }

@@ -61,7 +61,13 @@ export class PlayScene extends Phaser.Scene {
       solids.add(this.add.rectangle(r.x + r.w / 2, r.y + r.h / 2, r.w, r.h, COLORS.floor));
     }
 
-    this.player = new Player(this, testRoom.spawn.x, testRoom.spawn.y, this.actions, physics.gravityY);
+    for (const l of testRoom.labels) {
+      this.add
+        .text(l.x, l.y, l.text, { fontFamily: 'monospace', fontSize: '8px', color: COLORS.textDim })
+        .setOrigin(0.5, 1);
+    }
+
+    this.player = new Player(this, testRoom.spawn.x, testRoom.spawn.y, this.actions, physics.gravityY, solidRects);
     this.physics.add.collider(this.player.sprite, solids);
     this.cameras.main.startFollow(this.player.sprite, true);
     this.cameras.main.setFollowOffset(0, GAME_HEIGHT * 0.1);
@@ -170,6 +176,7 @@ export class PlayScene extends Phaser.Scene {
         hp: p.health.hp,
         invulnerable: p.invulnerable,
         facing: p.facing,
+        height: p.bodyHeight,
       },
       enemies: this.enemies.active.map((e) => ({ type: e.cfg.type, state: e.state, x: e.x, y: e.y, hp: e.health.hp })),
       dummies: this.dummies.map((d) => ({ x: d.x, hp: d.health.hp, alive: d.alive })),

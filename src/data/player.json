@@ -25,6 +25,15 @@
   "dodgeInvulnerableMs": 260,
   "dodgeCooldownMs": 300,
 
+  "rollHeight": 20,
+  "lowHeight": 15,
+  "crouchStickThreshold": 0.6,
+  "crawlSpeed": 40,
+  "slideSpeed": 300,
+  "slideEndSpeed": 140,
+  "slideDurationMs": 450,
+  "slideInvulnerableMs": 100,
+
   "maxHealth": 100,
   "hurtStunMs": 320,
   "hurtInvulnerableMs": 1000

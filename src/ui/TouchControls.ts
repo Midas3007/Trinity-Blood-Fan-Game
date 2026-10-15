@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { COLORS, GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { emptyFrame, type Action, type InputFrame } from '../systems/input/actions';
-import { stickVector, type Vec2 } from '../systems/input/stick';
+import { stickUpJump, stickVector, type Vec2 } from '../systems/input/stick';
 import { buttonAt, STICK_ZONE_TOP, STICK_ZONE_WIDTH, type ButtonLayout, type TouchLayout } from './touchLayout';
 
 const UI_DEPTH = 1000;
@@ -76,6 +76,7 @@ export class TouchControls {
     f.moveY = this.stickVec.y;
     for (const action of this.buttonPointers.values()) f.buttons[action] = true;
     for (const action of this.tappedSinceRead) f.buttons[action] = true;
+    if (stickUpJump(this.stickVec.y, this.layout.stick.upJumpThreshold)) f.buttons.jump = true;
     this.tappedSinceRead.clear();
     return f;
   }

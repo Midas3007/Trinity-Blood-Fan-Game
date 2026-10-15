@@ -15,13 +15,27 @@ Last updated: 2026-10-15
 
 - **Automated playtest of the live build** (simulated touch on a phone-sized screen): see `docs/playtest-2026-10-15.md`. Everything measured matched the data except the hit freeze, which was not taking effect — **fixed** (physics now pauses the moment a hit lands). Added a read-only `?test` hook for these playtests.
 
+- **Owner phone test of Milestones 2–4: all good.** Owner requests added:
+  - **Stick up = jump** (hold up for a high jump, flick for a hop; JUMP button still works). **Stick down = crouch.** Keyboard: Up/W jump, Down/S crouch.
+  - **Roll** (DODGE): tucked roll, mostly invulnerable, passes through enemies. **Slide** (stick down + DODGE): faster and longer, very low, briefly invulnerable, fits under low gaps. A slide that ends under something lets you crawl out.
+  - **Crouch attack** (ATK while crouched).
+  - Test room: a low hanging beam near the start that you can only get past by sliding.
+  - Verified: 72/72 unit tests; browser playtest with simulated touch (see `docs/playtest-2026-10-15.md`). Fixed a bug where crouching dropped the player through the floor.
+
 ## In progress
 - Waiting for the owner's phone test of Milestones 2–4 (feel and comfort can't be judged here).
 
 ## Blockers
 - None.
 
-## Owner must test (on phone)
+## Owner must test (on phone) — new controls
+1. Push the stick **up** → jump; hold it up for a higher jump. Running with the stick slightly up should NOT jump.
+2. Push the stick **down** → crouch (shorter rectangle). Tap ATK while crouched → low attack.
+3. Tap DODGE → roll (shorter, see-through). Hold the stick down and tap DODGE → slide (even lower, longer).
+4. Walk right from the start → a hanging beam blocks you. Walking or rolling won't get you past; **slide** under it.
+5. Tell me if up-to-jump triggers by accident while running, or if crouch triggers when you don't want it.
+
+## Owner must test (on phone) — Milestones 2–4 (done, kept for reference)
 Open https://trinity-blood-fan-game.vercel.app (reopen the page/app to get the update). Triple-tap the top-left corner for debug text and hitbox outlines.
 1. Walk right past the grey dummies. The thrall (pale, with a red string above it) is pacing near its spot.
 2. Approach it from the front → a "!" appears, it pauses, then walks toward you.

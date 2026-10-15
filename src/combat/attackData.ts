@@ -7,6 +7,7 @@ interface RawAttackFile {
   attacks: Record<string, Omit<AttackDef, 'id'>>;
   groundStarter: string;
   airStarter: string;
+  crouchStarter: string;
 }
 
 /** Throws with a readable message if attack data is inconsistent. */
@@ -41,7 +42,7 @@ export function tableFromRecord(rec: Record<string, Omit<AttackDef, 'id'>>): Att
 
 export function buildAttackTable(file: RawAttackFile): AttackTable {
   const table = tableFromRecord(file.attacks);
-  for (const starter of [file.groundStarter, file.airStarter]) {
+  for (const starter of [file.groundStarter, file.airStarter, file.crouchStarter]) {
     if (!(starter in table)) throw new Error(`starter attack "${starter}" does not exist`);
   }
   return table;
@@ -51,3 +52,4 @@ const file = raw as RawAttackFile;
 export const attackTable: AttackTable = buildAttackTable(file);
 export const GROUND_STARTER = file.groundStarter;
 export const AIR_STARTER = file.airStarter;
+export const CROUCH_STARTER = file.crouchStarter;

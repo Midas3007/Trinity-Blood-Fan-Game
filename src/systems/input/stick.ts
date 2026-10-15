@@ -16,3 +16,8 @@ export function stickVector(dx: number, dy: number, radius: number, deadZone: nu
   const scaled = (mag - deadZone) / (1 - deadZone);
   return { x: (dx / len) * scaled, y: (dy / len) * scaled };
 }
+
+/** True when the stick is pushed up far enough to count as a jump press (y is negative upward). */
+export function stickUpJump(y: number, threshold: number): boolean {
+  return y <= -threshold;
+}

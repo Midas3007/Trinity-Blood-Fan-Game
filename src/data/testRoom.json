@@ -1,5 +1,5 @@
 {
-  "_note": "Hand-written test room (internal pixels). Grey dummies are punching bags; the red dummy hurts on contact; thralls are the first real enemy (one on the floor, one patrolling the top ledge). Real rooms come from Tiled in Milestone 5.",
+  "_note": "Hand-written test room. The hanging beam near the start can only be passed by sliding under it. (internal pixels). Grey dummies are punching bags; the red dummy hurts on contact; thralls are the first real enemy (one on the floor, one patrolling the top ledge). Real rooms come from Tiled in Milestone 5.",
   "width": 960,
   "height": 270,
   "spawn": {
@@ -42,6 +42,12 @@
       "y": 206,
       "w": 40,
       "h": 32
+    },
+    {
+      "x": 150,
+      "y": 120,
+      "w": 30,
+      "h": 100
     }
   ],
   "dummies": [
@@ -76,5 +82,12 @@
       "y": 74
     }
   ],
-  "enemyRespawnMs": 4000
+  "enemyRespawnMs": 4000,
+  "labels": [
+    {
+      "x": 165,
+      "y": 104,
+      "text": "stick down + DODGE = slide under"
+    }
+  ]
 }

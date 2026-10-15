@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ActionState } from '../src/systems/input/ActionState';
 import { emptyFrame, mergeFrames } from '../src/systems/input/actions';
-import { stickVector } from '../src/systems/input/stick';
+import { stickUpJump, stickVector } from '../src/systems/input/stick';
 import { TapCounter } from '../src/systems/input/TapCounter';
 import { buttonAt, type ButtonLayout } from '../src/ui/touchLayout';
 import controls from '../src/data/controls.json';
@@ -18,6 +18,15 @@ describe('stickVector', () => {
   it('rescales past the dead zone', () => {
     // halfway between dead zone edge (8px) and radius (40px)
     expect(stickVector(-24, 0, 40, 0.2).x).toBeCloseTo(-0.5);
+  });
+});
+
+describe('stick up = jump', () => {
+  it('only a clearly upward push counts as jump', () => {
+    const th = controls.stick.upJumpThreshold;
+    expect(stickUpJump(stickVector(0, -40, 34, 0.2).y, th)).toBe(true); // straight up
+    expect(stickUpJump(stickVector(40, -10, 34, 0.2).y, th)).toBe(false); // mostly sideways
+    expect(stickUpJump(stickVector(0, 40, 34, 0.2).y, th)).toBe(false); // down
   });
 });
 

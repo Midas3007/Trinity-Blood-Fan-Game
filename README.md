@@ -18,8 +18,8 @@ See [`docs/STATUS.md`](docs/STATUS.md).
 | `npm run icons` | Regenerate PWA icons (Python + Pillow) |
 
 ## Controls
-- **Touch:** stick on the left; ATK, JUMP, DODGE, ABIL, HEAL on the right. Triple-tap the top-left corner for the debug overlay.
-- **Keyboard:** arrows/WASD move; Space/K/Z jump; J/X attack; L/Shift/C dodge; I/V ability; H/F heal; backtick = debug.
+- **Touch:** stick on the left (push **up = jump**, **down = crouch**); ATK, JUMP, DODGE, ABIL, HEAL on the right. DODGE = roll; **down + DODGE = slide** (fits under low gaps). Triple-tap the top-left corner for the debug overlay.
+- **Keyboard:** arrows/WASD move (up also jumps, down crouches); Space/K/Z jump; J/X attack; L/Shift/C dodge (with down = slide); I/V ability; H/F heal; backtick = debug.
 - **Gamepad:** left stick/d-pad; A jump, X attack, B dodge, Y ability, RB heal.
 
 ## Project rules

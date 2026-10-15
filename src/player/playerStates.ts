@@ -3,9 +3,30 @@ import type { PlayerTimers } from './PlayerTimers';
 import type { PlayerTuning } from './tuning';
 import { approach, horizontalVelocity } from './movement';
 import type { AttackRunner } from '../combat/AttackRunner';
-import { AIR_STARTER, GROUND_STARTER } from '../combat/attackData';
+import { AIR_STARTER, CROUCH_STARTER, GROUND_STARTER } from '../combat/attackData';
 
-export type PlayerStateKey = 'idle' | 'run' | 'jump' | 'fall' | 'dodge' | 'hardLand' | 'attack' | 'airAttack' | 'hurt';
+export type PlayerStateKey =
+  | 'idle'
+  | 'run'
+  | 'jump'
+  | 'fall'
+  | 'dodge'
+  | 'hardLand'
+  | 'attack'
+  | 'airAttack'
+  | 'hurt'
+  | 'crouch'
+  | 'slide'
+  | 'crouchAttack';
+
+/** Body posture for each state; the Player resizes its body to match. */
+export type Posture = 'stand' | 'roll' | 'low';
+
+export function postureFor(state: PlayerStateKey): Posture {
+  if (state === 'dodge') return 'roll';
+  if (state === 'crouch' || state === 'slide' || state === 'crouchAttack') return 'low';
+  return 'stand';
+}
 
 /** What the player states can see and change. Implemented by Player (Phaser) and by fakes in tests. */
 export interface PlayerContext {
@@ -17,6 +38,10 @@ export interface PlayerContext {
   readonly jumpHeld: boolean;
   readonly dodgePressed: boolean;
   readonly attackPressed: boolean;
+  /** Stick/keys held down past the crouch threshold. */
+  readonly crouchHeld: boolean;
+  /** False when a ceiling is too low to stand up here. */
+  readonly canStand: boolean;
   /** Pixels fallen since the highest point of the current airborne stretch. */
   readonly fallDistance: number;
   vx: number;
@@ -47,15 +72,23 @@ function canDodge(ctx: PlayerContext): boolean {
 function groundUpdate(ctx: PlayerContext, dtMs: number): PlayerStateKey {
   faceInput(ctx);
   ctx.vx = horizontalVelocity(ctx.vx, ctx.moveX, dtMs, false, ctx.tuning);
-  if (ctx.timers.canJump) return 'jump';
+  if (ctx.timers.canJump && ctx.canStand) return 'jump';
   if (!ctx.onGround) return 'fall';
+  if (ctx.crouchHeld || !ctx.canStand) return 'crouch';
   if (ctx.attackPressed) return 'attack';
   if (canDodge(ctx)) return 'dodge';
   return ctx.moveX !== 0 || ctx.vx !== 0 ? 'run' : 'idle';
 }
 
+/** Where a low state goes when it ends: stay low if still crouching or under a ceiling. */
+function afterLow(ctx: PlayerContext): PlayerStateKey {
+  if (ctx.crouchHeld || !ctx.canStand) return 'crouch';
+  return ctx.moveX !== 0 ? 'run' : 'idle';
+}
+
 function landingState(ctx: PlayerContext): PlayerStateKey {
   if (ctx.fallDistance >= ctx.tuning.hardLandingMinFall) return 'hardLand';
+  if (ctx.crouchHeld) return 'crouch';
   return ctx.moveX !== 0 ? 'run' : 'idle';
 }
 
@@ -101,7 +134,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     update(ctx, _dtMs, stateMs) {
       ctx.vx = ctx.facing * ctx.tuning.dodgeSpeed;
       if (!ctx.onGround) return 'fall';
-      if (stateMs >= ctx.tuning.dodgeDurationMs) return ctx.moveX !== 0 ? 'run' : 'idle';
+      if (stateMs >= ctx.tuning.dodgeDurationMs) return afterLow(ctx);
       return undefined;
     },
     exit(ctx) {
@@ -172,6 +205,61 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       if (ctx.onGround && ctx.vy >= 0) brake(ctx, dtMs);
       if (stateMs >= ctx.tuning.hurtStunMs) return ctx.onGround ? 'idle' : 'fall';
       return undefined;
+    },
+  },
+
+  crouch: {
+    update(ctx, dtMs) {
+      faceInput(ctx);
+      // Normally you stay put while crouched; crawling is only allowed when there is no room to stand,
+      // so a slide that ends under a low ceiling can never trap the player.
+      const crawl = ctx.canStand ? 0 : ctx.moveX * ctx.tuning.crawlSpeed;
+      ctx.vx = approach(ctx.vx, crawl, (ctx.tuning.groundDecel * dtMs) / 1000);
+      if (!ctx.onGround) return 'fall';
+      if (ctx.timers.canJump && ctx.canStand) return 'jump';
+      if (ctx.dodgePressed && ctx.timers.dodgeCooldown === 0) return 'slide';
+      if (ctx.attackPressed) return 'crouchAttack';
+      if (!ctx.crouchHeld && ctx.canStand) return ctx.moveX !== 0 ? 'run' : 'idle';
+      return undefined;
+    },
+  },
+
+  slide: {
+    enter(ctx) {
+      faceInput(ctx);
+      ctx.vx = ctx.facing * ctx.tuning.slideSpeed;
+      ctx.timers.invulnerable = Math.max(ctx.timers.invulnerable, ctx.tuning.slideInvulnerableMs);
+    },
+    update(ctx, _dtMs, stateMs) {
+      // Speed eases from slideSpeed down to slideEndSpeed over the slide.
+      const t = Math.min(1, stateMs / ctx.tuning.slideDurationMs);
+      const speed = ctx.tuning.slideSpeed + (ctx.tuning.slideEndSpeed - ctx.tuning.slideSpeed) * t;
+      ctx.vx = ctx.facing * speed;
+      if (!ctx.onGround) return 'fall';
+      if (stateMs >= ctx.tuning.slideDurationMs) return afterLow(ctx);
+      return undefined;
+    },
+    exit(ctx) {
+      ctx.timers.dodgeCooldown = ctx.tuning.dodgeCooldownMs;
+      ctx.vx = Math.sign(ctx.vx) * Math.min(Math.abs(ctx.vx), ctx.tuning.runSpeed);
+    },
+  },
+
+  crouchAttack: {
+    enter(ctx) {
+      faceInput(ctx);
+      ctx.combat.begin(CROUCH_STARTER);
+    },
+    update(ctx, dtMs) {
+      const phase = ctx.combat.tick(dtMs);
+      brake(ctx, dtMs);
+      if (!ctx.onGround) return 'fall';
+      if (ctx.dodgePressed && ctx.combat.canDodgeCancel && ctx.timers.dodgeCooldown === 0) return 'slide';
+      if (phase === 'done') return afterLow(ctx);
+      return undefined;
+    },
+    exit(ctx) {
+      ctx.combat.stop();
     },
   },
 };

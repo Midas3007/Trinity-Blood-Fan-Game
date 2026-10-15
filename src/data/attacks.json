@@ -24,6 +24,13 @@
       "stepSpeed": 90, "cancelIntoDodge": true,
       "hitbox": { "x": 19, "y": -2, "w": 32, "h": 22 }
     },
+    "crouch": {
+      "startupMs": 90, "activeMs": 90, "recoveryMs": 220,
+      "damage": 9, "knockbackX": 80, "knockbackY": 0,
+      "hitstopMs": 50, "shakeMs": 0, "shakeIntensity": 0,
+      "stepSpeed": 0, "cancelIntoDodge": true,
+      "hitbox": { "x": 18, "y": 2, "w": 26, "h": 12 }
+    },
     "air": {
       "startupMs": 80, "activeMs": 120, "recoveryMs": 160,
       "damage": 10, "knockbackX": 80, "knockbackY": 0,
@@ -33,5 +40,6 @@
     }
   },
   "groundStarter": "priest1",
-  "airStarter": "air"
+  "airStarter": "air",
+  "crouchStarter": "crouch"
 }

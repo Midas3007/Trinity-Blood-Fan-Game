@@ -5,13 +5,13 @@ const KC = Phaser.Input.Keyboard.KeyCodes;
 
 const BINDINGS: Record<Action, number[]> = {
   attack: [KC.J, KC.X],
-  jump: [KC.SPACE, KC.K, KC.Z],
+  jump: [KC.SPACE, KC.K, KC.Z, KC.UP, KC.W],
   dodge: [KC.L, KC.SHIFT, KC.C],
   ability: [KC.I, KC.V],
   heal: [KC.H, KC.F],
 };
 
-/** Desktop test controls: arrows/WASD to move, see BINDINGS for actions. */
+/** Desktop test controls: arrows/WASD to move (up also jumps, down crouches), see BINDINGS for actions. */
 export class KeyboardSource {
   private readonly keys: Record<string, Phaser.Input.Keyboard.Key>;
 
