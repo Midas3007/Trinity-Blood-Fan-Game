@@ -139,7 +139,7 @@ height, feet on one ground line:
 
 Iterate until approved by the owner. Save as `art/source/reference/abel_priest_turnaround.png`.
 
-**Crusnik form turnaround** (after the priest form is approved, using it as the only reference): same design, upright posture, silver hair loosened and lifted, coat torn into wing-like tatters, glowing crimson eyes, a dark-red double-bladed scythe *(verify the scythe design against our own creative direction, not anime frames)*, faint pale-blue energy outline. Save as `abel_crusnik_turnaround.png`.
+**Crusnik form turnaround** (after the priest form is approved, using it as the only reference): same design, upright posture, long silver hair loose and wild, glowing red eyes, large black feathered wings, a long white sash flowing from the waist, and a huge crimson organic scythe: segmented like a spine or centipede, lined with small hooked spikes, with red spiked tendrils coiling around the arms. Save as `abel_crusnik_turnaround.png`.
 
 ### 3.4 Step 2 — pose sets
 
@@ -231,12 +231,20 @@ Weapons are **drawn into the attack poses** (the spec's recommended route). Sepa
 
 ### 4.3 CLI
 ```bash
-python3 -I -m tools.spritegen preview  --input art/source/approved/abel/idle/f1.png --heights 36,40,44 --methods area,nearest
-python3 -I -m tools.spritegen convert  --input <png> --entity abel --animation idle
-python3 -I -m tools.spritegen build    --config tools/spritegen/pipeline.yaml [--all --clean]
-python3 -I -m tools.spritegen validate public/assets/sprites --palette art/palette/requiem48.hex
+npm run sprites:palette                       # write art/palette/requiem48.hex, requiem16.hex, swatch
+npm run sprites:preview -- --input <raw.png> --figure 2 --open-px 2 --gammas 1.0,0.7
+npm run sprites:approve -- --input <raw.png> --entity abel --animation idle --figures 0,1 --open-px 2
+npm run sprites:build                         # every entity/animation with approved sources
+npm run sprites:validate                      # palette, alpha, cells, pivots, clipping
+npm run sprites:test                          # pipeline unit tests (unittest)
 ```
-npm shortcuts will be added: `npm run sprites:preview`, `sprites:build`, `sprites:validate`.
+These run `python3 -E -s -m tools.spritegen …` from the repo root. `-I` can't be used because it hides the repo's own `tools` package; `-E -s` still ignores environment variables and user site-packages. The tool never executes anything from source images.
+
+**Implemented differences from the plan (2026-10-15):**
+- `approve` (new) keys, splits and shrinks a raw sheet to 8× sprite size, so the committed inputs are ~30 KB each. Raw 2K files are gitignored; the sidecar `.txt` keeps the Higgsfield job ids.
+- `tone.gamma` (new, per entity) lifts near-black sources before quantizing. Abel's coat needed 0.7.
+- `alpha --open-px` removes thin drawn ground lines that AI models sometimes add.
+- Cleanup runs before the outline, so the outline wraps the cleaned shape. Staircase straightening is not implemented yet; hand fixes go in `art/overrides/`.
 
 ### 4.4 Config (`tools/spritegen/pipeline.yaml`)
 ```yaml

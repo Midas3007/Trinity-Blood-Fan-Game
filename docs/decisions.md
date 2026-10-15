@@ -81,3 +81,13 @@
 | Prompts never name the franchise or attach official art | Keeps designs original (CLAUDE.md Part 6) | — |
 | No dynamic lighting / normal maps | Phone performance; lighting painted via palette + additive glow sprites | Phaser Light2D |
 | Pending owner: Requiem 48 palette, 96×96 Crusnik cell, build tools now vs M6, credits, GitHub Actions | Changes to approved direction or cost | — |
+
+## 2026-10-15 — Sprite pipeline built; first generation round; owner references
+
+| Decision | Reason | Alternatives considered |
+|---|---|---|
+| Owner approved all recommendations: Requiem 48, 96×96 Crusnik cell, build tools now, Higgsfield credits in small owner-approved rounds, GitHub Actions CI | Owner reply | — |
+| Credit budget: 104 credits; Nano Banana Pro = 2 credits per image at 2K (1K costs the same, so always 2K) | Measured with cost preflight | — |
+| Owner's official reference images are read-only notes: never attached to AI tools, never committed | CLAUDE.md Part 6; avoids copying official art | Using them as image references |
+| Abel's coat is charcoal with white piping (from the references) | Matches the character and fixes 40 px readability (near-black coat vanished in preview) | Pure black + heavy shadow lift |
+| Committed sprite inputs are small approved crops; raw 2K generations are gitignored with job-id sidecars | "Never commit large binaries" (CLAUDE.md Part 2) | Git LFS |

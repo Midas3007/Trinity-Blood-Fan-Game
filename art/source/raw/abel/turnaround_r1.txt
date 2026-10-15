@@ -1,0 +1,7 @@
+Round 1 — Abel priest-form turnaround — 2026-10-15
+Tool: Higgsfield, model requested nano_banana_pro (job reports nano_banana_2), 2k, 16:9, count 2. Cost: 4 credits.
+Jobs:
+  3f2b9774-79f5-45da-a71b-9a2a4e5ac8e6  -> turnaround_r1_3f2b9774.png (variant A: brown coat, revolver in hand — rejected)
+  6a776d6b-a221-4ff3-baf7-ad44cd8fc273  -> turnaround_r1_6a776d6b.png (variant B: closest; face reads older; drew a ground line)
+Prompt: docs/sprite-pipeline.md §3.3 template + §3.2 technical constraints, verbatim.
+Pipeline notes: needs --open-px 2 (ground line) and gamma 0.7 (near-black coat).

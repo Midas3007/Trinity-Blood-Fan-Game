@@ -1,0 +1,42 @@
+# Batch build config (docs/sprite-pipeline.md §4.4). Run: npm run sprites:build
+defaults:
+  palette: art/palette/requiem48.hex
+  method: area
+  outline: selective
+  dither: false
+  min_feature: 2
+  gamma: 1.0
+
+entities:
+  abel:
+    cell: [64, 64]
+    sprite_height: 40
+    gamma: 0.7            # lifts the near-black coat so folds survive (preview 2026-10-15)
+    source_dir: art/source/approved/abel/
+    output_dir: public/assets/sprites/abel/
+    animations:
+      reference: { loop: false, durations_ms: 200 }   # turnaround figures, for checking only
+      idle:      { loop: true,  durations_ms: 150 }
+      run:       { loop: true,  durations_ms: 90 }
+      priest1:   { loop: false, attack: priest1 }
+
+  abel_crusnik:
+    cell: [96, 96]
+    sprite_height: 42
+    source_dir: art/source/approved/abel_crusnik/
+    output_dir: public/assets/sprites/abel_crusnik/
+    animations: {}
+
+  enemy_thrall:
+    cell: [64, 64]
+    sprite_height: 30
+    source_dir: art/source/approved/enemies/thrall/
+    output_dir: public/assets/sprites/enemies/thrall/
+    animations: {}
+
+  boss_marchesa:
+    cell: [128, 128]
+    sprite_height: 96
+    source_dir: art/source/approved/bosses/marchesa/
+    output_dir: public/assets/sprites/bosses/marchesa/
+    animations: {}

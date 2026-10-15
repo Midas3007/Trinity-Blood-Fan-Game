@@ -10,7 +10,13 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "icons": "python3 -I scripts/make-icons.py"
+    "icons": "python3 -I scripts/make-icons.py",
+    "sprites:palette": "python3 -E -s -m tools.spritegen palette",
+    "sprites:preview": "python3 -E -s -m tools.spritegen preview",
+    "sprites:approve": "python3 -E -s -m tools.spritegen approve",
+    "sprites:build": "python3 -E -s -m tools.spritegen build",
+    "sprites:validate": "python3 -E -s -m tools.spritegen validate",
+    "sprites:test": "python3 -E -s -m unittest discover -s tools/spritegen/tests -t ."
   },
   "dependencies": {
     "phaser": "3.90.0"

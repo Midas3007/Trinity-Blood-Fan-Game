@@ -1,0 +1,5 @@
+# Dev-only tool; versions pinned to what the project was built and tested with.
+pillow==12.3.0
+numpy==2.5.3
+pyyaml==6.0.1
+click==8.5.0

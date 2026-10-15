@@ -8,3 +8,9 @@ dev-dist/
 .env*
 *.log
 .DS_Store
+
+# Sprite pipeline: raw 2K generations stay in the owner's Higgsfield library (sidecars with job ids are committed)
+art/source/raw/**/*.png
+art/source/raw/**/*.jpg
+art/preview/
+__pycache__/
