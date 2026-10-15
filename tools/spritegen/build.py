@@ -21,7 +21,7 @@ def load_config(path: Path) -> dict:
 
 
 def frame_from_crop(crop_img: np.ndarray, pal: Palette, opts: dict, cell: tuple[int, int]) -> tuple[np.ndarray, dict]:
-    small = downscale.scale(crop_img, 1 / approve.WORK_SCALE, opts["method"])
+    small = downscale.scale(crop_img, 1 / approve.WORK_SCALE, opts["method"], squeeze=float(opts.get("squeeze", 1.0)))
     small = tone.gamma(small, float(opts.get("gamma", 1.0)))
     small = quantize.quantize(small, pal, dither=bool(opts.get("dither", False)))
     small = cleanup.cleanup(small, int(opts.get("min_feature", 2)))

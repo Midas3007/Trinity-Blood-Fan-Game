@@ -24,9 +24,11 @@ def _box(img: np.ndarray, size: tuple[int, int]) -> np.ndarray:
     return out
 
 
-def scale(img: np.ndarray, factor: float, method: str = "area", sharpen: bool = True) -> np.ndarray:
+def scale(img: np.ndarray, factor: float, method: str = "area", sharpen: bool = True, squeeze: float = 1.0) -> np.ndarray:
+    """`squeeze` < 1 narrows the figure before pixelation (e.g. 0.9 = lankier). It only changes the painted source;
+    finished pixel art is never stretched (CLAUDE.md Part 6)."""
     h, w = img.shape[:2]
-    size = (max(1, round(w * factor)), max(1, round(h * factor)))
+    size = (max(1, round(w * factor * squeeze)), max(1, round(h * factor)))
     if method == "nearest":
         out = np.array(Image.fromarray(img, "RGBA").resize(size, Image.NEAREST))
         out[..., 3] = np.where(out[..., 3] > 127, 255, 0)

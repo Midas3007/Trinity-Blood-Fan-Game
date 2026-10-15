@@ -6,6 +6,8 @@ import numpy as np
 
 
 def gamma(img: np.ndarray, g: float = 1.0) -> np.ndarray:
+    """g < 1 lifts shadows (near-black sources); g > 1 darkens mid-tones while pure whites stay white
+    (a dark coat with bright piping)."""
     if g == 1.0:
         return img
     out = img.copy()

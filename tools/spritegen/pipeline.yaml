@@ -11,7 +11,8 @@ entities:
   abel:
     cell: [64, 64]
     sprite_height: 40
-    gamma: 1.0            # round-2 design (charcoal coat, white piping) reads without a shadow lift
+    gamma: 1.5            # darkens the charcoal coat to near-black while white piping stays bright (owner pick, round 3)
+    squeeze: 0.88         # narrows the painted source before pixelation for a lankier build (owner pick)
     open_px: 0
     source_dir: art/source/approved/abel/
     output_dir: public/assets/sprites/abel/

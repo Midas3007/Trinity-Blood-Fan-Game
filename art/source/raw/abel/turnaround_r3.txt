@@ -1,0 +1,7 @@
+Round 3 — Abel priest-form turnaround — 2026-10-15
+Tool: Higgsfield nano_banana_pro (job reports nano_banana_2), 2k, 16:9, 1 image. Cost: 2 credits. Balance after: 96.25.
+Job: d2348a6e-610a-42e3-824a-8a2cd2c5cfba -> turnaround_r3_d2348a6e.png
+Image references (our own outputs only): round 1 variant B (6a776d6b...), round 2 (d32cf590...).
+Owner wanted: round 1's lanky body, flaring tails and dark coat with light highlights + round 2's long hair.
+Result: kept round-2 hair/costume, added flaring tails; coat stayed grey, build stayed average.
+Fix applied in the pipeline instead of more credits: gamma 1.5 (dark coat, bright piping) + squeeze 0.88 (lankier).

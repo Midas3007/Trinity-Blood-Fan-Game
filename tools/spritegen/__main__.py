@@ -39,14 +39,16 @@ def palette_cmd(out: Path) -> None:
 @click.option("--zoom", default=4)
 @click.option("--open-px", default=0, help="Remove thin lines (e.g. a drawn ground line) thinner than 2n+1 px.")
 @click.option("--dither", is_flag=True)
-@click.option("--gammas", default="1.0", help="Shadow-lift gammas to compare, e.g. 1.0,0.7,0.5.")
-def preview(src, out, pal_path, heights, methods, outlines, figure, cell, zoom, open_px, dither, gammas) -> None:
+@click.option("--gammas", default="1.0", help="Tone gammas to compare: <1 lifts shadows, >1 darkens mid-tones.")
+@click.option("--squeezes", default="1.0", help="Width factors to compare before pixelation, e.g. 1.0,0.9.")
+def preview(src, out, pal_path, heights, methods, outlines, figure, cell, zoom, open_px, dither, gammas, squeezes) -> None:
     """Contact sheet of one figure at several sizes/methods/outlines (the tuning tool)."""
     from .preview import contact_sheet
 
     pal = Palette.from_hex(pal_path)
     sheet = contact_sheet(src, pal, [int(h) for h in heights.split(",")], methods.split(","), outlines.split(","),
-                          figure, zoom, cell, open_px, dither, [float(g) for g in gammas.split(",")])
+                          figure, zoom, cell, open_px, dither, [float(g) for g in gammas.split(",")],
+                          [float(q) for q in squeezes.split(",")])
     out = out or Path("art/preview") / f"{src.stem}_fig{figure}_preview.png"
     out.parent.mkdir(parents=True, exist_ok=True)
     sheet.save(out)
