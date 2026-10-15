@@ -49,6 +49,8 @@ export default defineConfig({
   ],
   test: {
     include: ['tests/**/*.test.ts'],
+    // The file-system module cache misses new files matched by import.meta.glob (rooms, sprite manifests).
+    fsModuleCache: false,
     environment: 'node',
   },
 });

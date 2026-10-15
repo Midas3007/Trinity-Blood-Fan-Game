@@ -245,7 +245,28 @@ export class Player implements PlayerContext, PlayerCombatant {
     return true;
   }
 
-  /** Puts the player back at a spawn point with full health (placeholder for checkpoints). */
+  /** Crouched on the ground (prays at an altar). */
+  get kneeling(): boolean {
+    return this.fsm.current === 'crouch';
+  }
+
+  /** Sets health directly (carried between rooms). */
+  setHealth(hp: number): void {
+    this.health.reset();
+    this.health.damage(this.health.max - hp);
+  }
+
+  /** Moves the player without changing health (e.g. back to safe ground after spikes). */
+  placeAt(x: number, feetY: number): void {
+    this.applyPosture('stand');
+    const y = feetY - this.height / 2;
+    this.sprite.setPosition(x, y);
+    this.body.reset(x, y);
+    this.airTopY = y;
+    this.fsm.transition('idle');
+  }
+
+  /** Puts the player back at a spawn point with full health. */
   respawn(x: number, y: number): void {
     this.applyPosture('stand');
     this.sprite.setPosition(x, y);

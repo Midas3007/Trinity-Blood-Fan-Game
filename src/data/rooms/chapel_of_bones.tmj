@@ -1,0 +1,219 @@
+{
+ "type": "map",
+ "version": "1.10",
+ "tiledversion": "1.10.2",
+ "orientation": "orthogonal",
+ "renderorder": "right-down",
+ "infinite": false,
+ "width": 40,
+ "height": 17,
+ "tilewidth": 16,
+ "tileheight": 16,
+ "nextlayerid": 6,
+ "nextobjectid": 9,
+ "tilesets": [],
+ "layers": [
+  {
+   "id": 1,
+   "name": "solids",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": [
+    {
+     "id": 1,
+     "name": "",
+     "type": "",
+     "x": 0,
+     "y": 240,
+     "rotation": 0,
+     "visible": true,
+     "width": 640,
+     "height": 32
+    },
+    {
+     "id": 2,
+     "name": "",
+     "type": "",
+     "x": 0,
+     "y": 0,
+     "rotation": 0,
+     "visible": true,
+     "width": 640,
+     "height": 16
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "hazards",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": []
+  },
+  {
+   "id": 3,
+   "name": "gates",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": []
+  },
+  {
+   "id": 4,
+   "name": "exits",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": [
+    {
+     "id": 3,
+     "name": "",
+     "type": "",
+     "x": 0,
+     "y": 160,
+     "rotation": 0,
+     "visible": true,
+     "width": 16,
+     "height": 80,
+     "properties": [
+      {
+       "name": "to",
+       "type": "string",
+       "value": "sewer_passage"
+      },
+      {
+       "name": "entry",
+       "type": "string",
+       "value": "east"
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "",
+     "type": "",
+     "x": 624,
+     "y": 160,
+     "rotation": 0,
+     "visible": true,
+     "width": 16,
+     "height": 80,
+     "properties": [
+      {
+       "name": "to",
+       "type": "string",
+       "value": "marchesa_arena"
+      },
+      {
+       "name": "entry",
+       "type": "string",
+       "value": "west"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "name": "markers",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": [
+    {
+     "id": 5,
+     "name": "west",
+     "type": "entry",
+     "x": 40,
+     "y": 240,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "width": 0,
+     "height": 0,
+     "properties": [
+      {
+       "name": "facing",
+       "type": "int",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "id": 6,
+     "name": "east",
+     "type": "entry",
+     "x": 600,
+     "y": 240,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "width": 0,
+     "height": 0,
+     "properties": [
+      {
+       "name": "facing",
+       "type": "int",
+       "value": -1
+      }
+     ]
+    },
+    {
+     "id": 7,
+     "name": "chapel_altar",
+     "type": "checkpoint",
+     "x": 320,
+     "y": 240,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "width": 0,
+     "height": 0
+    },
+    {
+     "id": 8,
+     "name": "",
+     "type": "lore",
+     "x": 480,
+     "y": 240,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "width": 0,
+     "height": 0,
+     "properties": [
+      {
+       "name": "lore",
+       "type": "string",
+       "value": "marchesa_portrait"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "properties": [
+  {
+   "name": "title",
+   "type": "string",
+   "value": "Catacombs \u2014 Chapel of Bones"
+  }
+ ]
+}

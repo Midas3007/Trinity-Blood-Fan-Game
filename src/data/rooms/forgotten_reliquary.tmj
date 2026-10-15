@@ -1,0 +1,176 @@
+{
+ "type": "map",
+ "version": "1.10",
+ "tiledversion": "1.10.2",
+ "orientation": "orthogonal",
+ "renderorder": "right-down",
+ "infinite": false,
+ "width": 20,
+ "height": 17,
+ "tilewidth": 16,
+ "tileheight": 16,
+ "nextlayerid": 6,
+ "nextobjectid": 7,
+ "tilesets": [],
+ "layers": [
+  {
+   "id": 1,
+   "name": "solids",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": [
+    {
+     "id": 1,
+     "name": "",
+     "type": "",
+     "x": 0,
+     "y": 240,
+     "rotation": 0,
+     "visible": true,
+     "width": 320,
+     "height": 32
+    },
+    {
+     "id": 2,
+     "name": "",
+     "type": "",
+     "x": 0,
+     "y": 0,
+     "rotation": 0,
+     "visible": true,
+     "width": 64,
+     "height": 216
+    },
+    {
+     "id": 3,
+     "name": "",
+     "type": "",
+     "x": 64,
+     "y": 0,
+     "rotation": 0,
+     "visible": true,
+     "width": 256,
+     "height": 16
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "hazards",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": []
+  },
+  {
+   "id": 3,
+   "name": "gates",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": []
+  },
+  {
+   "id": 4,
+   "name": "exits",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": [
+    {
+     "id": 4,
+     "name": "",
+     "type": "",
+     "x": 0,
+     "y": 216,
+     "rotation": 0,
+     "visible": true,
+     "width": 16,
+     "height": 24,
+     "properties": [
+      {
+       "name": "to",
+       "type": "string",
+       "value": "catacomb_stair"
+      },
+      {
+       "name": "entry",
+       "type": "string",
+       "value": "reliquary"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "name": "markers",
+   "type": "objectgroup",
+   "draworder": "topdown",
+   "opacity": 1,
+   "visible": true,
+   "x": 0,
+   "y": 0,
+   "objects": [
+    {
+     "id": 5,
+     "name": "west",
+     "type": "entry",
+     "x": 80,
+     "y": 240,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "width": 0,
+     "height": 0,
+     "properties": [
+      {
+       "name": "facing",
+       "type": "int",
+       "value": 1
+      }
+     ]
+    },
+    {
+     "id": 6,
+     "name": "",
+     "type": "lore",
+     "x": 220,
+     "y": 240,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "width": 0,
+     "height": 0,
+     "properties": [
+      {
+       "name": "lore",
+       "type": "string",
+       "value": "crusnik_legend"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "properties": [
+  {
+   "name": "title",
+   "type": "string",
+   "value": "Catacombs \u2014 Forgotten Reliquary (secret)"
+  }
+ ]
+}
