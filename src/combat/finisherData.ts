@@ -13,6 +13,8 @@ export interface FinisherDef {
   shakeMs: number;
   shakeIntensity: number;
   heal: number;
+  /** Only with this priest weapon in hand (absent = any). */
+  weapon?: string;
   buff?: { damageMultiplier: number; durationMs: number };
 }
 
@@ -57,6 +59,7 @@ const MAX_HEIGHT_GAP = 16;
  */
 export function chooseFinisher(
   form: AbelForm,
+  weapon: string,
   px: number,
   py: number,
   facing: 1 | -1,
@@ -68,6 +71,7 @@ export function chooseFinisher(
   if (dx !== 0 && Math.sign(dx) !== facing) return null;
   for (const def of Object.values(table)) {
     if (def.form !== form) continue;
+    if (def.weapon !== undefined && def.weapon !== weapon) continue;
     if (def.targets === 'drainable' && !t.drainable) continue;
     if (Math.abs(dx) <= def.range) return def;
   }

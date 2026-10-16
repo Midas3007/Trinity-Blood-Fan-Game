@@ -1,4 +1,5 @@
 import raw from '../data/attacks.json';
+import weaponsRaw from '../data/weapons.json';
 import type { AttackDef } from './types';
 
 export type AttackTable = Record<string, AttackDef>;
@@ -68,3 +69,30 @@ export const STARTERS: Record<'priest' | 'crusnik', Starters> = {
   priest: { ground: file.groundStarter, air: file.airStarter, crouch: file.crouchStarter, ranged: null },
   crusnik: { ...file.crusnikStarters },
 };
+
+/** A priest weapon: the attacks each press starts and its finisher (src/data/weapons.json). */
+export interface WeaponDef {
+  id: string;
+  name: string;
+  ground: string;
+  air: string;
+  crouch: string;
+  finisher: string;
+  /** Flag that gives it; null = always carried. */
+  item: string | null;
+}
+
+export const weapons: Record<string, WeaponDef> = Object.fromEntries(
+  Object.entries((weaponsRaw as unknown as { weapons: Record<string, Omit<WeaponDef, 'id'>> }).weapons).map(([id, w]) => {
+    for (const a of [w.ground, w.air, w.crouch]) if (!(a in attackTable)) throw new Error(`weapon "${id}": attack "${a}" does not exist`);
+    return [id, { ...w, id }];
+  }),
+);
+export const DEFAULT_WEAPON = 'fists';
+
+/** The starters for a form; the priest's depend on the weapon in hand (the Crusnik always uses the scythe). */
+export function startersFor(form: 'priest' | 'crusnik', weapon: string = DEFAULT_WEAPON): Starters {
+  if (form === 'crusnik') return STARTERS.crusnik;
+  const w = weapons[weapon] ?? weapons[DEFAULT_WEAPON]!;
+  return { ground: w.ground, air: w.air, crouch: w.crouch, ranged: null };
+}

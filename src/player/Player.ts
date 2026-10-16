@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { DEFAULT_WEAPON } from '../combat/attackData';
 import { COLORS } from '../core/constants';
 import type { ActionState } from '../systems/input/ActionState';
 import { AttackRunner } from '../combat/AttackRunner';
@@ -57,6 +58,8 @@ export class Player implements PlayerContext, PlayerCombatant {
   readonly view: PlayerView;
   /** Which Abel this is (the Crusnik form comes from ABIL when the blood meter is full). */
   form: AbelForm = 'priest';
+  /** The priest's weapon in hand (src/data/weapons.json). */
+  weapon = DEFAULT_WEAPON;
   readonly crusnik = new CrusnikMeter();
   /** Called when the form changes (flash and HUD live in the scene). */
   onFormChange: ((form: AbelForm) => void) | null = null;
@@ -300,7 +303,7 @@ export class Player implements PlayerContext, PlayerCombatant {
   private findFinisher(): { def: FinisherDef; target: FinisherTarget } | null {
     let best: { def: FinisherDef; target: FinisherTarget } | null = null;
     for (const t of this.finisherTargets()) {
-      const def = chooseFinisher(this.form, this.x, this.y, this.facing, t);
+      const def = chooseFinisher(this.form, this.weapon, this.x, this.y, this.facing, t);
       if (def && (!best || Math.abs(t.x - this.x) < Math.abs(best.target.x - this.x))) best = { def, target: t };
     }
     return best;
@@ -532,6 +535,6 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   private syncView(): void {
     this.facingMark.setPosition(this.sprite.x + this.facing * (this.tuning.width / 2 - 2), this.sprite.y - this.height / 2 + 7);
-    this.view.update(this.visualKey(), this.combat.current?.id ?? this.finishing.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha, this.form, this.winged);
+    this.view.update(this.visualKey(), this.combat.current?.id ?? this.finishing.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha, this.form, this.winged, this.weapon);
   }
 }

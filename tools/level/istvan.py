@@ -82,6 +82,7 @@ def old_town():
     r.mark("enemy", 68, feet(GY - 4, 0), enemy="thrall")
     r.mark("enemy", 94, feet(GY, 1), enemy="thrall")
     r.mark("enemy", 28, feet(GY, 4), enemy="deathHunter")     # on the tall house's roof
+    r.mark("item", 31, feet(GY, 4), item="chalice1")             # on the tall house's roof
     return r
 
 
@@ -105,6 +106,7 @@ def clock_alley():
     r.mark("label", 23, GY - 4, text="an old well, grated shut")
     r.mark("enemy", 30, GY - 1, enemy="thrall")
     r.mark("enemy", 36, GY - 21, enemy="methuselah")
+    r.mark("item", 6, feet(GY, 4), item="tea1")                  # up the bellmaker's ladder, on the roof
     return r
 
 
@@ -133,6 +135,7 @@ def square():
     r.mark("enemy", 90, GY - 1, enemy="thrall")
     r.mark("enemy", 104, feet(GY, 2), enemy="methuselah")
     r.mark("enemy", 12, feet(GY, 3), enemy="deathHunter")
+    r.mark("item", 34, feet(GY, 2), item="tea2")                 # on the tavern roof
     return r
 
 

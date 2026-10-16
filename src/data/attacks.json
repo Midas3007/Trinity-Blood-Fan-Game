@@ -1,5 +1,5 @@
 {
-  "_note": "Player attacks. Times in ms, distances in px, speeds in px/s. Hitbox is relative to the player's centre, x measured forward in the facing direction. Add a new attack by adding an entry; link combos with 'next'. Values are design choices (see docs/feel-spec.md). Crusnik form uses crusnikStarters (scythe for every melee press, 'ranged' = the chain lash on ABIL).",
+  "_note": "Player attacks. Times in ms, distances in px, speeds in px/s. Hitbox is relative to the player's centre, x measured forward in the facing direction. Add a new attack by adding an entry; link combos with 'next'. Values are design choices (see docs/feel-spec.md). Crusnik form uses crusnikStarters (scythe for every melee press, 'ranged' = the chain lash on ABIL). Weapons (src/data/weapons.json) pick the priest's starters; the sword's attacks are the sword_* entries.",
   "attacks": {
     "priest1": {
       "startupMs": 110,
@@ -134,6 +134,103 @@
         "y": -6,
         "w": 96,
         "h": 10
+      }
+    },
+    "sword_sword1": {
+      "startupMs": 120,
+      "activeMs": 90,
+      "recoveryMs": 230,
+      "damage": 14,
+      "knockbackX": 110,
+      "knockbackY": 0,
+      "hitstopMs": 60,
+      "shakeMs": 0,
+      "shakeIntensity": 0,
+      "stepSpeed": 0,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 24,
+        "y": -4,
+        "w": 34,
+        "h": 22
+      },
+      "next": "sword_sword2"
+    },
+    "sword_sword2": {
+      "startupMs": 120,
+      "activeMs": 90,
+      "recoveryMs": 260,
+      "damage": 16,
+      "knockbackX": 120,
+      "knockbackY": 0,
+      "hitstopMs": 60,
+      "shakeMs": 0,
+      "shakeIntensity": 0,
+      "stepSpeed": 40,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 26,
+        "y": -2,
+        "w": 38,
+        "h": 20
+      },
+      "next": "sword_sword3"
+    },
+    "sword_sword3": {
+      "startupMs": 200,
+      "activeMs": 110,
+      "recoveryMs": 400,
+      "damage": 28,
+      "knockbackX": 180,
+      "knockbackY": 0,
+      "hitstopMs": 90,
+      "shakeMs": 90,
+      "shakeIntensity": 0.004,
+      "stepSpeed": 60,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 24,
+        "y": -6,
+        "w": 36,
+        "h": 30
+      }
+    },
+    "sword_air": {
+      "startupMs": 90,
+      "activeMs": 120,
+      "recoveryMs": 170,
+      "damage": 14,
+      "knockbackX": 90,
+      "knockbackY": 0,
+      "hitstopMs": 60,
+      "shakeMs": 0,
+      "shakeIntensity": 0,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 22,
+        "y": 2,
+        "w": 36,
+        "h": 26
+      }
+    },
+    "sword_low": {
+      "startupMs": 100,
+      "activeMs": 90,
+      "recoveryMs": 230,
+      "damage": 12,
+      "knockbackX": 100,
+      "knockbackY": 0,
+      "hitstopMs": 60,
+      "shakeMs": 0,
+      "shakeIntensity": 0,
+      "stepSpeed": 0,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 24,
+        "y": 8,
+        "w": 36,
+        "h": 12
       }
     }
   },

@@ -32,28 +32,28 @@ describe('finisher choice', () => {
   const revolver = finisherTable.revolver!;
 
   it('priest Abel shoots a staggered enemy in front of him and in range', () => {
-    expect(chooseFinisher('priest', 0, 0, 1, new FakeTarget(20))?.id).toBe('revolver');
-    expect(chooseFinisher('priest', 0, 0, 1, new FakeTarget(revolver.range + 1))).toBeNull();
+    expect(chooseFinisher('priest', 'fists', 0, 0, 1, new FakeTarget(20))?.id).toBe('revolver');
+    expect(chooseFinisher('priest', 'fists', 0, 0, 1, new FakeTarget(revolver.range + 1))).toBeNull();
   });
 
   it('needs the enemy staggered, alive, in front, and on the same level', () => {
     const t = new FakeTarget(20);
     t.staggered = false;
-    expect(chooseFinisher('priest', 0, 0, 1, t)).toBeNull();
-    expect(chooseFinisher('priest', 0, 0, -1, new FakeTarget(20))).toBeNull(); // behind
-    expect(chooseFinisher('priest', 0, 0, 1, new FakeTarget(20, -40))).toBeNull(); // on a ledge above
+    expect(chooseFinisher('priest', 'fists', 0, 0, 1, t)).toBeNull();
+    expect(chooseFinisher('priest', 'fists', 0, 0, -1, new FakeTarget(20))).toBeNull(); // behind
+    expect(chooseFinisher('priest', 'fists', 0, 0, 1, new FakeTarget(20, -40))).toBeNull(); // on a ledge above
     const dead = new FakeTarget(20);
     dead.alive = false;
-    expect(chooseFinisher('priest', 0, 0, 1, dead)).toBeNull();
+    expect(chooseFinisher('priest', 'fists', 0, 0, 1, dead)).toBeNull();
   });
 
   it('Crusnik Abel drains only Methuselah (drainable) and does not use the gun', () => {
     const human = new FakeTarget(10);
-    expect(chooseFinisher('crusnik', 0, 0, 1, human)).toBeNull();
+    expect(chooseFinisher('crusnik', 'fists', 0, 0, 1, human)).toBeNull();
     const methuselah = new FakeTarget(10);
     methuselah.drainable = true;
-    expect(chooseFinisher('crusnik', 0, 0, 1, methuselah)?.id).toBe('bloodDrain');
-    expect(chooseFinisher('priest', 0, 0, 1, methuselah)?.id).toBe('revolver');
+    expect(chooseFinisher('crusnik', 'fists', 0, 0, 1, methuselah)?.id).toBe('bloodDrain');
+    expect(chooseFinisher('priest', 'fists', 0, 0, 1, methuselah)?.id).toBe('revolver');
   });
 
   it('rejects bad finisher data', () => {

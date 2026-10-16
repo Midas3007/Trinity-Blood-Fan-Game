@@ -1,0 +1,21 @@
+{
+  "_note": "The priest's weapons (owner, 2026-10-16). Each names the attacks a ground, air and low press start (src/data/attacks.json) and its finisher (src/data/finishers.json). 'item' is the flag that gives it (null = always carried). Adding a weapon = an entry here, its attacks, its sprites.",
+  "weapons": {
+    "fists": {
+      "name": "Bare hands",
+      "ground": "priest1",
+      "air": "air",
+      "crouch": "crouch",
+      "finisher": "revolver",
+      "item": null
+    },
+    "sword": {
+      "name": "The Atoner's Blade",
+      "ground": "sword_sword1",
+      "air": "sword_air",
+      "crouch": "sword_low",
+      "finisher": "sword_execution",
+      "item": "item:sword"
+    }
+  }
+}

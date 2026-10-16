@@ -57,6 +57,42 @@ entities:
       slide:     { loop: true,  durations_ms: 200, anchor: centre }   # lying pose: centre on the body, not the forward feet
       crouch:    { loop: true,  durations_ms: 400 }
 
+  # The sword (owner, 2026-10-16): base Abel's blade, combo, air and low slashes, and the sword finisher (sheet f681b345,
+  # figures split apart first because the blades cross: scratchpad swordcut*.py). Wider cell: the blade reaches far.
+  abel_sword:
+    cell: [112, 64]
+    sprite_height: 40
+    gamma: 1.3
+    squeeze: 0.88
+    open_px: 0
+    keep_largest: true
+    source_dir: art/source/approved/abel_sword/
+    output_dir: public/assets/sprites/abel_sword/
+    animations:
+      sword1:
+        attack: sword_sword1
+        sequence: [0, 1, 1]
+        durations_ms: [120, 90, 230]
+        events: [{ frame: 1, type: hitbox_on }, { frame: 2, type: hitbox_off }]
+      sword2:
+        attack: sword_sword2
+        sequence: [0, 1, 1]
+        durations_ms: [120, 90, 260]
+        events: [{ frame: 1, type: hitbox_on }, { frame: 2, type: hitbox_off }]
+      sword3:
+        attack: sword_sword3
+        sequence: [0, 1, 1]
+        durations_ms: [200, 110, 400]
+        events: [{ frame: 1, type: hitbox_on }, { frame: 2, type: hitbox_off }]
+      air:  { loop: false, durations_ms: 300 }
+      low:  { loop: false, durations_ms: 300 }
+      # Sword finisher: raise the blade, then drive it through (strike at strikeAtMs in finishers.json).
+      execution:
+        finisher: sword_execution
+        sequence: [0, 1, 1]
+        durations_ms: [420, 200, 380]
+        events: [{ frame: 2, type: strike }]
+
   abel_crusnik:
     cell: [96, 96]
     sprite_height: 54

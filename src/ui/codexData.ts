@@ -1,8 +1,9 @@
 import bestiary from '../data/bestiary.json';
 import lore from '../data/lore.json';
+import { itemFlag, items } from '../systems/items';
 
 /** Pure data for the Codex (Bestiary and Lore book); no Phaser, so it can be tested. */
-export type CodexTab = 'bestiary' | 'lore';
+export type CodexTab = 'bestiary' | 'lore' | 'items';
 
 export interface BeastEntry {
   name: string;
@@ -30,6 +31,7 @@ export function beastFlag(id: string): string {
 /** Every entry of a tab, in book order; locked ones keep their place but hide their title. */
 export function codexItems(tab: CodexTab, has: (flag: string) => boolean): CodexItem[] {
   if (tab === 'bestiary') return Object.entries(beasts).map(([id, b]) => ({ id, title: b.name, unlocked: has(beastFlag(id)) }));
+  if (tab === 'items') return Object.entries(items).map(([id, it]) => ({ id, title: it.name, unlocked: has(itemFlag(id)) }));
   return Object.entries(loreEntries).map(([id, l]) => ({ id, title: l.title, unlocked: has(`lore:${id}`) }));
 }
 

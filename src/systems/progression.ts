@@ -1,5 +1,6 @@
 import raw from '../data/relics.json';
 import { playerTuning } from '../player/tuning';
+import { itemBonus } from './items';
 
 export interface Relic {
   flag: string;
@@ -21,7 +22,7 @@ export interface PlayerStats {
   damage: number;
 }
 
-/** Abel's stats from the relics he has earned (flags). Pure. */
+/** Abel's stats from the relics he has earned and the items he has found (flags). Pure. */
 export function playerStats(has: (flag: string) => boolean): PlayerStats {
   const s: PlayerStats = { maxHealth: playerTuning.maxHealth, flasks: playerTuning.flasks, damage: 1 };
   for (const r of Object.values(relics)) {
@@ -30,6 +31,11 @@ export function playerStats(has: (flag: string) => boolean): PlayerStats {
     s.flasks += r.flasks ?? 0;
     s.damage += r.damage ?? 0;
   }
+  // Hidden items: Sacred Hearts, Silver Chalices, the tea set.
+  const b = itemBonus(has);
+  s.maxHealth += b.maxHealth;
+  s.flasks += b.flasks;
+  s.damage += b.damage;
   return s;
 }
 

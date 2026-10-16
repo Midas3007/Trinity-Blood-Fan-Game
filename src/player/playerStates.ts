@@ -3,7 +3,7 @@ import type { PlayerTimers } from './PlayerTimers';
 import type { PlayerTuning } from './tuning';
 import { approach, horizontalVelocity } from './movement';
 import type { AttackRunner } from '../combat/AttackRunner';
-import { STARTERS } from '../combat/attackData';
+import { STARTERS, startersFor } from '../combat/attackData';
 import type { AbelForm } from '../combat/finisherData';
 import { crusnikConfig } from './CrusnikMeter';
 
@@ -86,6 +86,8 @@ export interface PlayerContext {
   endFinisher(): void;
   /** Priest or Crusnik: picks the attacks and (via tuning) the leap and run speed. */
   readonly form: AbelForm;
+  /** The priest's weapon (src/data/weapons.json). */
+  readonly weapon: string;
   /** PARRY pressed this frame. */
   readonly parryPressed: boolean;
   /** Set by the parry state: a hit arriving now is deflected. */
@@ -118,7 +120,7 @@ function brake(ctx: PlayerContext, dtMs: number): void {
 function abilityState(ctx: PlayerContext): PlayerStateKey | null {
   if (!ctx.abilityPressed) return null;
   if (ctx.form === 'priest' && ctx.transformReady && ctx.onGround) return 'transform';
-  if (STARTERS[ctx.form].ranged) return 'lash';
+  if (startersFor(ctx.form, ctx.weapon).ranged) return 'lash';
   return null;
 }
 
@@ -185,7 +187,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
         ctx.jumpCut = true;
       }
       if (ctx.attackPressed) return 'airAttack';
-      if (ctx.abilityPressed && STARTERS[ctx.form].ranged) return 'lash';
+      if (ctx.abilityPressed && startersFor(ctx.form, ctx.weapon).ranged) return 'lash';
       if (ctx.vy >= 0) return 'fall';
       return undefined;
     },
@@ -198,7 +200,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       if (ctx.timers.canJump) return 'jump'; // coyote jump after walking off a ledge
       if (ctx.onGround) return landingState(ctx);
       if (ctx.attackPressed) return 'airAttack';
-      if (ctx.abilityPressed && STARTERS[ctx.form].ranged) return 'lash';
+      if (ctx.abilityPressed && startersFor(ctx.form, ctx.weapon).ranged) return 'lash';
       return undefined;
     },
   },
@@ -236,7 +238,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
   attack: {
     enter(ctx) {
       faceInput(ctx);
-      ctx.combat.begin(STARTERS[ctx.form].ground);
+      ctx.combat.begin(startersFor(ctx.form, ctx.weapon).ground);
     },
     update(ctx, dtMs) {
       if (ctx.attackPressed) ctx.combat.pressAttack();
@@ -262,7 +264,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
 
   airAttack: {
     enter(ctx) {
-      ctx.combat.begin(STARTERS[ctx.form].air);
+      ctx.combat.begin(startersFor(ctx.form, ctx.weapon).air);
     },
     update(ctx, dtMs) {
       // Steering continues, but facing is locked for the swing.
@@ -402,7 +404,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
   lash: {
     enter(ctx) {
       faceInput(ctx);
-      ctx.combat.begin(STARTERS[ctx.form].ranged ?? STARTERS.crusnik.ranged!);
+      ctx.combat.begin(startersFor(ctx.form, ctx.weapon).ranged ?? STARTERS.crusnik.ranged!);
     },
     update(ctx, dtMs) {
       const phase = ctx.combat.tick(dtMs);
@@ -440,7 +442,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
   crouchAttack: {
     enter(ctx) {
       faceInput(ctx);
-      ctx.combat.begin(STARTERS[ctx.form].crouch);
+      ctx.combat.begin(startersFor(ctx.form, ctx.weapon).crouch);
     },
     update(ctx, dtMs) {
       const phase = ctx.combat.tick(dtMs);

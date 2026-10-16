@@ -1,10 +1,11 @@
 import lore from '../data/lore.json';
+import itemsData from '../data/items.json';
 import { rooms } from '../world/rooms';
 import type { SaveData } from './save/saveFormat';
 
 /**
  * How far a save has gone, 0..1, for the title screen (owner request). Story fights weigh most, then the map
- * explored, then lore found. Fights not built yet still count, so the bar never reads 100% before the end.
+ * explored, then hidden items and lore found. Fights not built yet still count, so the bar never reads 100% before the end.
  */
 export const STORY_FLAGS = [
   'paula_defeated',
@@ -15,7 +16,7 @@ export const STORY_FLAGS = [
   'gyula_defeated', // final battle (planned)
 ] as const;
 
-const WEIGHTS = { story: 0.7, map: 0.2, lore: 0.1 };
+const WEIGHTS = { story: 0.65, map: 0.15, items: 0.1, lore: 0.1 };
 
 export function gameProgress(save: Pick<SaveData, 'flags' | 'visited'> | null): number {
   if (!save) return 0;
@@ -25,5 +26,7 @@ export function gameProgress(save: Pick<SaveData, 'flags' | 'visited'> | null): 
   const map = allRooms.length ? save.visited.filter((r) => allRooms.includes(r)).length / allRooms.length : 0;
   const loreIds = Object.keys((lore as { entries: Record<string, unknown> }).entries);
   const found = loreIds.filter((id) => flags.has(`lore:${id}`)).length / Math.max(1, loreIds.length);
-  return Math.min(1, story * WEIGHTS.story + map * WEIGHTS.map + found * WEIGHTS.lore);
+  const itemIds = Object.keys((itemsData as { items: Record<string, unknown> }).items);
+  const items = itemIds.filter((id) => flags.has(`item:${id}`)).length / Math.max(1, itemIds.length);
+  return Math.min(1, story * WEIGHTS.story + map * WEIGHTS.map + items * WEIGHTS.items + found * WEIGHTS.lore);
 }

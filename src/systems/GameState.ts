@@ -32,6 +32,10 @@ export class GameState {
     this.flags.add(flag);
   }
 
+  clearFlag(flag: string): void {
+    this.flags.delete(flag);
+  }
+
   visit(room: string): void {
     this.visited.add(room);
   }

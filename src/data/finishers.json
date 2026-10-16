@@ -1,5 +1,5 @@
 {
-  "_note": "Finishers: when an enemy staggers (health at or below its staggerBelowFraction, see enemies.json), pressing ATK within 'range' px in front of it plays a finisher. Times in ms. The strike lands at strikeAtMs and kills the target. 'form' is which Abel can use it; 'targets' is 'any' or 'drainable' (Methuselah). 'buff' multiplies outgoing damage for durationMs; 'heal' restores health. The player is invulnerable for the whole finisher.",
+  "_note": "Finishers: when an enemy staggers (health at or below its staggerBelowFraction, see enemies.json), pressing ATK within 'range' px in front of it plays a finisher. Times in ms. The strike lands at strikeAtMs and kills the target. 'form' is which Abel can use it; 'targets' is 'any' or 'drainable' (Methuselah). 'buff' multiplies outgoing damage for durationMs; 'heal' restores health. The player is invulnerable for the whole finisher. 'weapon' (optional): only usable with that weapon in hand (src/data/weapons.json).",
   "finishers": {
     "revolver": {
       "form": "priest",
@@ -10,7 +10,8 @@
       "hitstopMs": 140,
       "shakeMs": 220,
       "shakeIntensity": 0.012,
-      "heal": 0
+      "heal": 0,
+      "weapon": "fists"
     },
     "bloodDrain": {
       "form": "crusnik",
@@ -22,7 +23,22 @@
       "shakeMs": 160,
       "shakeIntensity": 0.006,
       "heal": 20,
-      "buff": { "damageMultiplier": 1.5, "durationMs": 12000 }
+      "buff": {
+        "damageMultiplier": 1.5,
+        "durationMs": 12000
+      }
+    },
+    "sword_execution": {
+      "form": "priest",
+      "weapon": "sword",
+      "targets": "any",
+      "range": 38,
+      "durationMs": 1000,
+      "strikeAtMs": 620,
+      "hitstopMs": 160,
+      "shakeMs": 240,
+      "shakeIntensity": 0.014,
+      "heal": 15
     }
   }
 }

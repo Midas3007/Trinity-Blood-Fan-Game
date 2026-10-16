@@ -38,6 +38,8 @@ def crypt():
     r.mark("enemy", 60, 14, enemy="boneRat")
     r.mark("enemy", 96, 14, enemy="boneRat")
     r.mark("enemy", 78, 8, enemy="bat")
+    r.mark("item", 116, 14, item="sword")                        # the far end of the crypt
+    r.mark("item", 68, 9, item="heart3")                         # the high ledge (a Crusnik leap)
     return r
 
 
@@ -70,6 +72,7 @@ def ossuary():
     r.mark("enemy", 34, 12, enemy="fairy")
     r.mark("enemy", 72, 20, enemy="fairy")
     r.mark("enemy", 50, 31, enemy="boneRat")
+    r.mark("item", 11, 9, item="tea4")                           # the ledge beside the lever
     return r
 
 
@@ -103,6 +106,7 @@ def water_tunnels():
     # Mini boss 1: Sister Paula holds the flat middle stretch between the two cisterns.
     r.mark("boss", 60, 14, boss="paula", arenaLeft=36 * 16, arenaRight=66 * 16, defeatFlag="paula_defeated",
            intro="paula_intro", outro="paula_outro")
+    r.mark("item", 51, 9, item="tea5")                           # the high ledge over the arena
     return r
 
 
@@ -122,6 +126,7 @@ def long_stair():
     r.mark("enemy", 13, 22, enemy="methuselah")
     r.mark("enemy", 15, 20, enemy="fairy")
     r.mark("enemy", 12, 36, enemy="bat")
+    r.mark("item", 12, 18, item="tea6")                          # off the stair, on the west ledge
     return r
 
 
@@ -142,6 +147,7 @@ def drowned():
     r.mark("enemy", 20, 10, enemy="fairy")
     r.mark("enemy", 70, 10, enemy="fairy")
     r.mark("enemy", 45, 26, enemy="bat")
+    r.mark("item", 56, 22, item="heart4")                        # the tallest pillar over the spikes
     return r
 
 

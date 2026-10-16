@@ -113,6 +113,8 @@ export interface RoomData {
   levers: { flag: string; x: number; y: number }[];
   labels: { x: number; y: number; text: string }[];
   lore: { id: string; x: number; y: number }[];
+  /** Hidden items (src/data/items.json), feet position. */
+  items: { id: string; x: number; y: number }[];
   /** Props drawn in code: lamp, lantern, crate, barrel, banner, chain. */
   decor: { item: string; x: number; y: number; h: number }[];
   /** Open sky behind the room (false underground). */
@@ -192,6 +194,7 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
     levers: [],
     labels: [],
     lore: [],
+    items: [],
     decor: [],
     outdoor: String(mp.sky ?? 'open') !== 'none',
     horizon: Number(mp.horizon ?? rows * map.tileheight),
@@ -236,6 +239,10 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
           ...(p.intro ? { intro: String(p.intro) } : {}),
           ...(p.outro ? { outro: String(p.outro) } : {}),
         };
+        break;
+      case 'item':
+        if (!p.item) fail(`item marker ${o.id} needs an 'item' property`);
+        room.items.push({ id: String(p.item), x: o.x, y: o.y });
         break;
       case 'lore':
         if (!p.lore) fail(`lore marker ${o.id} needs a 'lore' property`);

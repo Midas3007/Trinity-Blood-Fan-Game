@@ -154,5 +154,13 @@
   "hurt": {
    "anim": "abel_crusnik80_hover"
   }
+ },
+ "swordStates": {
+  "airAttack": {
+   "anim": "abel_sword_air"
+  },
+  "crouchAttack": {
+   "anim": "abel_sword_low"
+  }
  }
 }

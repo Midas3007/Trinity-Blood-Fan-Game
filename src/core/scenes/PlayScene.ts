@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { ItemPickups } from '../../world/ItemPickups';
+import { currentWeapon, itemFlag, itemSets, items, ownedWeapons, setComplete } from '../../systems/items';
 import { Codex } from '../../ui/Codex';
 import { beastFlag } from '../../ui/codexData';
 import { audio } from '../../systems/audio/AudioManager';
@@ -108,6 +110,7 @@ export class PlayScene extends Phaser.Scene {
   /** Must stand up once before praying again (no loop when spawning at an altar while holding down). */
   private prayArmed = false;
   private lorePanel!: LorePanel;
+  private pickups!: ItemPickups;
   private tiles!: RoomTiles;
   private backdrop!: Backdrop;
   private map!: MapOverlay;
@@ -204,6 +207,7 @@ export class PlayScene extends Phaser.Scene {
     }
 
     this.runtime = new RoomRuntime(this, r, gameState, solids, solidRects, timeLook(gameState.time).lampGlow);
+    this.pickups = new ItemPickups(this, r.items, (id) => gameState.hasFlag(itemFlag(id)));
     const at = this.spawnPoint();
     this.player = new Player(this, at.x, at.y - 20, this.actions, physics.gravityY, solidRects);
     this.player.placeAt(at.x, at.y);
@@ -276,6 +280,7 @@ export class PlayScene extends Phaser.Scene {
     // Relics from beaten bosses: more health, flasks and damage.
     const stats = playerStats((f) => gameState.hasFlag(f));
     this.player.applyStats(stats);
+    this.player.weapon = currentWeapon((f) => gameState.hasFlag(f));
     if (gameState.hp !== null) this.player.setHealth(Math.min(gameState.hp, stats.maxHealth));
     this.player.flasks = gameState.flasks ?? stats.flasks;
     this.hud = new Hud(this, stats.flasks);
@@ -500,6 +505,9 @@ export class PlayScene extends Phaser.Scene {
     if (this.crossEdge()) return;
     const lore = p.onGround ? this.runtime.loreAt(p.x) : null;
     this.lorePanel.show(lore);
+    this.pickups.update(this.game.loop.delta);
+    const found = this.pickups.take(p.x, p.y);
+    if (found) this.collect(found);
     if (lore) {
       gameState.setFlag(`lore:${lore}`);
       const unlock = loreEntry(lore)?.unlocks;
@@ -612,6 +620,38 @@ export class PlayScene extends Phaser.Scene {
 
   /** The boss fell and her last words are done: open the way on and save. */
   /** A boss fell (or yielded) and the outro played: open the way, grant the relic, show the Latin card, save. */
+  /** A hidden item picked up: its gift (health, a flask, a weapon), its card, the tea set, and a save. */
+  private collect(id: string): void {
+    const def = items[id];
+    if (!def) return;
+    gameState.setFlag(itemFlag(id));
+    const before = this.player.health.max;
+    const stats = playerStats((f) => gameState.hasFlag(f));
+    this.player.applyStats(stats);
+    this.player.health.heal(this.player.health.max - before);
+    this.player.flasks = Math.min(stats.flasks, this.player.flasks + (def.flasks ?? 0));
+    if (def.weapon) {
+      for (const w of ownedWeapons((f) => gameState.hasFlag(f))) gameState.clearFlag(`weapon:${w}`);
+      gameState.setFlag(`weapon:${def.weapon}`);
+      this.player.weapon = def.weapon;
+    }
+    this.hud.setMaxFlasks(stats.flasks);
+    this.hud.setFlasks(this.player.flasks);
+    this.hud.setHealth(this.player.health.fraction);
+    this.banner.show(def.name.toUpperCase(), def.text + (def.weapon ? '\nPause to switch weapons.' : ''), 3400);
+    audio.sfx('card');
+    if (def.set && setComplete(def.set, (f) => gameState.hasFlag(f))) {
+      const set = itemSets[def.set];
+      if (set) {
+        const bonus = playerStats((f) => gameState.hasFlag(f));
+        this.player.flasks = Math.min(bonus.flasks, this.player.flasks + (set.flasks ?? 0));
+        this.hud.setFlasks(this.player.flasks);
+        this.time.delayedCall(3600, () => this.banner.show(set.name.toUpperCase(), set.text, 3600));
+      }
+    }
+    saveStore.save(gameState.toSave(Date.now()));
+  }
+
   private bossDefeated(flag: string, relicId: string): void {
     if (this.roomData.boss) gameState.setFlag(beastFlag(this.roomData.boss.id));
     this.runtime.open(flag);
@@ -708,7 +748,7 @@ export class PlayScene extends Phaser.Scene {
     this.pauseMenu.hide();
     this.codex.hide();
     if (what === 'codex') this.codex.show();
-    if (what === 'map') this.map.show(allRooms, (id) => gameState.hasVisited(id), (room, id) => gameState.altarUsed(room, id), this.roomData, this.player.x, this.player.y);
+    if (what === 'map') this.map.show(allRooms, (id) => gameState.hasVisited(id), (room, id) => gameState.altarUsed(room, id), this.roomData, this.player.x, this.player.y, (rm) => (gameState.hasVisited(rm.id) ? rm.items.filter((i) => !gameState.hasFlag(itemFlag(i.id))).length : 0));
     if (what === 'pause') this.pauseMenu.show();
     if (what) {
       this.physics.world.pause();
@@ -764,6 +804,7 @@ export class PlayScene extends Phaser.Scene {
         winged: p.winged,
         maxHp: p.health.max,
         flasks: p.flasks,
+        weapon: p.weapon,
         strength: p.damageMultiplier,
         // For playtest bots: is there no floor a short way ahead (a pit or hole)?
         gapAhead: !this.roomData.solids.concat(this.roomData.oneways).some((g) => {
@@ -773,6 +814,7 @@ export class PlayScene extends Phaser.Scene {
       },
       music: audio.current,
       cutscene: this.cutsceneId,
+      items: this.pickups.remaining,
       enemies: this.enemies.active.map((e) => ({ type: e.cfg.type, state: e.state, view: e.viewLabel, x: e.x, y: e.y, hp: e.health.hp })),
       dummies: this.dummies.map((d) => ({ x: d.x, hp: d.health.hp, alive: d.alive })),
       boss: this.arena

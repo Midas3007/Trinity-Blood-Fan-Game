@@ -29,12 +29,14 @@ export class MapOverlay {
     current: RoomData,
     px: number,
     py: number,
+    /** Items still hidden in a room (shown on rooms you have visited, as in Blasphemous' map). */
+    hidden: (r: RoomData) => number = () => 0,
   ): void {
     this.container.removeAll(true);
     const s = this.scene;
     const bg = s.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0b0a10, 0.92).setOrigin(0);
     const title = s.add.text(GAME_WIDTH / 2, 8, 'ISTVAN', { fontFamily: 'serif', fontSize: '12px', color: COLORS.text }).setOrigin(0.5, 0);
-    const hint = s.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 10, 'tap MAP to close', { fontFamily: 'monospace', fontSize: '8px', color: COLORS.textDim }).setOrigin(0.5, 1);
+    const hint = s.add.text(GAME_WIDTH / 2, GAME_HEIGHT - 10, 'tap MAP to close   ·   ◆ something is still hidden here', { fontFamily: 'monospace', fontSize: '8px', color: COLORS.textDim }).setOrigin(0.5, 1);
     this.container.add([bg, title, hint]);
     const shown = Object.values(rooms).filter((r) => visited(r.id) || r.id === current.id);
     const gx0 = Math.min(...shown.map((r) => r.gridX));
@@ -68,6 +70,12 @@ export class MapOverlay {
         this.container.add(s.add.rectangle(ax, ay, 4, 9, 0x0b0a10).setOrigin(0.5)); // dark backing so it reads on any room
         this.container.add(s.add.rectangle(ax, ay, 2, 7, 0xe8c86a).setOrigin(0.5));
         this.container.add(s.add.rectangle(ax, ay - 1, 6, 2, 0xe8c86a).setOrigin(0.5));
+      }
+      if (hidden(r) > 0) {
+        const hx = x + w - 6;
+        const hy = y + 5;
+        this.container.add(s.add.rectangle(hx, hy, 6, 6, 0x0b0a10).setOrigin(0.5).setAngle(45));
+        this.container.add(s.add.rectangle(hx, hy, 4, 4, 0xe8c86a).setOrigin(0.5).setAngle(45));
       }
       if (here) {
         this.dot = s.add.rectangle(x + (px / r.width) * w, y + (py / r.height) * h, 3, 3, 0xd4283e);

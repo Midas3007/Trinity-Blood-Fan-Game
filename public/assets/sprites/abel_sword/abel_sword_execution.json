@@ -1,0 +1,36 @@
+{
+  "animations": {
+    "execution": {
+      "durations_ms": [
+        420,
+        200,
+        380
+      ],
+      "events": [
+        {
+          "frame": 2,
+          "type": "strike"
+        }
+      ],
+      "finisher": "sword_execution",
+      "frames": [
+        0,
+        1,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 112,
+  "columns": 2,
+  "entity": "abel_sword",
+  "palette": "requiem48.hex",
+  "pivot_x": 56,
+  "pivot_y": 64,
+  "sheet": "abel_sword_execution.png",
+  "source_hashes": [
+    "sha256:36fb89a35760501c8ea57af429f516a2e7b34f761b7466aadeeb822b7544ad9f",
+    "sha256:19243ac0d968ec5d510edece2c107c8e661b60fb26df994890ee690a8e8d53f8"
+  ]
+}

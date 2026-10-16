@@ -82,7 +82,7 @@ export class SimPlayer implements PlayerContext {
   strikes = 0;
   private findFinisher() {
     for (const t of this.finisherTargets) {
-      const def = chooseFinisher('priest', this.x, this.y, this.facing, t);
+      const def = chooseFinisher('priest', this.weapon, this.x, this.y, this.facing, t);
       if (def) return { def, target: t };
     }
     return null;
@@ -121,6 +121,7 @@ export class SimPlayer implements PlayerContext {
     return true;
   }
   form: AbelForm = 'priest';
+  weapon = 'fists';
   abilityPressed = false;
   readonly crusnik = new CrusnikMeter();
   get transformReady(): boolean {

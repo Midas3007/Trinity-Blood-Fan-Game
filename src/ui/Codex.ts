@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { GOTHIC, GothicButton } from './GothicButton';
 import { BLOOD_LABEL, beasts, codexCount, codexItems, loreText, page, pageCount, type CodexItem, type CodexTab } from './codexData';
+import { items } from '../systems/items';
 
 const DEPTH = 1600;
 const ROWS = 9;
@@ -54,7 +55,7 @@ export class Codex {
     g.lineStyle(2, GOTHIC.gold, 1).strokeRect(L + 1, T + 1, R - L - 2, B - T - 2);
     g.lineStyle(1, GOTHIC.goldDark, 1).strokeRect(L + 5.5, T + 5.5, R - L - 11, B - T - 11);
     g.lineStyle(1, GOTHIC.goldDark, 1).lineBetween(DIVIDER_X, LIST_Y - 6, DIVIDER_X, B - 14);
-    this.count = scene.add.text(L + 214, 26, '', { ...BODY, color: DIM }).setOrigin(0, 0.5);
+    this.count = scene.add.text(L + 256, 26, '', { ...BODY, color: DIM }).setOrigin(0, 0.5);
     this.pageLabel = scene.add.text(LIST_X + 64, B - 22, '', { ...BODY, color: DIM }).setOrigin(0.5);
     for (const o of [dim, g, this.count, this.pageLabel] as Fixed[]) this.fix(o, this.frame);
     for (let i = 0; i < ROWS; i++) {
@@ -68,8 +69,9 @@ export class Codex {
     }
     const d = DEPTH + 2;
     this.buttons.push(
-      new GothicButton(scene, L + 62, 26, 'Bestiary', () => this.setTab('bestiary'), 84, 16, d),
-      new GothicButton(scene, L + 156, 26, 'Lore book', () => this.setTab('lore'), 84, 16, d),
+      new GothicButton(scene, L + 52, 26, 'Bestiary', () => this.setTab('bestiary'), 70, 16, d),
+      new GothicButton(scene, L + 132, 26, 'Lore book', () => this.setTab('lore'), 70, 16, d),
+      new GothicButton(scene, L + 212, 26, 'Items', () => this.setTab('items'), 70, 16, d),
       new GothicButton(scene, R - 44, B - 22, 'Close', () => this.close(), 52, 14, d),
       new GothicButton(scene, LIST_X + 14, B - 22, '<', () => this.turn(-1), 18, 14, d),
       new GothicButton(scene, LIST_X + 114, B - 22, '>', () => this.turn(1), 18, 14, d),
@@ -116,11 +118,11 @@ export class Codex {
     this.pageIndex = 0;
     this.items = codexItems(tab, this.has);
     const c = codexCount(tab, this.has);
-    this.count.setText(`${tab === 'bestiary' ? 'Beasts' : 'Pages'} ${c.found} / ${c.total}`);
+    this.count.setText(`${tab === 'bestiary' ? 'Beasts' : tab === 'items' ? 'Found' : 'Pages'} ${c.found} / ${c.total}`);
     const first = this.items.find((i) => i.unlocked);
     this.renderList();
     if (first) this.select(first.id);
-    else this.showText(tab === 'bestiary' ? 'Nothing beaten yet.' : 'Nothing read yet.', 'Entries appear here as you find them.');
+    else this.showText(tab === 'bestiary' ? 'Nothing beaten yet.' : tab === 'items' ? 'Nothing found yet.' : 'Nothing read yet.', tab === 'items' ? 'Hidden things lie off the main path: on roofs, high ledges, over spikes, at the end of side passages.' : 'Entries appear here as you find them.');
   }
 
   private turn(dir: number): void {
@@ -150,6 +152,11 @@ export class Codex {
     const it = this.items.find((i) => i.id === id);
     if (!it?.unlocked) {
       this.showText(LOCKED, this.tab === 'bestiary' ? 'Not yet beaten.' : 'Not yet found.');
+      return;
+    }
+    if (this.tab === 'items') {
+      const it = items[id];
+      if (it) this.showText(it.name, it.text);
       return;
     }
     if (this.tab === 'lore') {

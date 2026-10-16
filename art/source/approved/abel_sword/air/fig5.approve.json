@@ -1,0 +1,14 @@
+{
+  "source": "fig5.png",
+  "source_hash": "sha256:2e608238ebd6e78659a4f5aa070a4fe1049b0095565959f28961ab69a3f7f94d",
+  "figures": [
+    0
+  ],
+  "standing_px": 354,
+  "factor": 0.903955,
+  "open_px": 0,
+  "expected": 1,
+  "outputs": [
+    "d1.png"
+  ]
+}

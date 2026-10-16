@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "air": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 112,
+  "columns": 1,
+  "entity": "abel_sword",
+  "palette": "requiem48.hex",
+  "pivot_x": 56,
+  "pivot_y": 64,
+  "sheet": "abel_sword_air.png",
+  "source_hashes": [
+    "sha256:0173f9cefa193ca20f5d9418bbff813e076353c568962c2ad9a2e01ccaac0989"
+  ]
+}

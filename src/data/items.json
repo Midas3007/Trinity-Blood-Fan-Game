@@ -1,0 +1,22 @@
+{
+  "_note": "Hidden items (owner, 2026-10-16: 'some reason for exploration'). Placed in rooms by 'item' markers (tools/level/*.py). Picking one up sets the flag 'item:<id>'. Effects: maxHealth, flasks, weapon (gives that weapon, src/data/weapons.json). A 'set' gives its bonus when every item of the set is found. Descriptions are original.",
+  "items": {
+    "sword": { "name": "The Atoner's Blade", "kind": "weapon", "weapon": "sword",
+      "text": "A plain, heavy blade left at the end of the crypt, wrapped in an old stole. It is lighter in his hand than it should be." },
+    "heart1": { "name": "Sacred Heart", "kind": "heart", "maxHealth": 10, "text": "A silver heart pierced with thorns. It beats faintly. More life." },
+    "heart2": { "name": "Sacred Heart", "kind": "heart", "maxHealth": 10, "text": "A silver heart pierced with thorns. It beats faintly. More life." },
+    "heart3": { "name": "Sacred Heart", "kind": "heart", "maxHealth": 10, "text": "A silver heart pierced with thorns. It beats faintly. More life." },
+    "heart4": { "name": "Sacred Heart", "kind": "heart", "maxHealth": 10, "text": "A silver heart pierced with thorns. It beats faintly. More life." },
+    "chalice1": { "name": "Silver Chalice", "kind": "chalice", "flasks": 1, "text": "A chapel's chalice, hidden from the Count's men. One more flask of holy water." },
+    "chalice2": { "name": "Silver Chalice", "kind": "chalice", "flasks": 1, "text": "A chapel's chalice, hidden from the Count's men. One more flask of holy water." },
+    "tea1": { "name": "Tin of Tea", "kind": "tea", "set": "tea", "text": "Real leaves, not the sawdust the Vatican canteen serves. Abel is moved." },
+    "tea2": { "name": "Tin of Tea", "kind": "tea", "set": "tea", "text": "Real leaves, not the sawdust the Vatican canteen serves. Abel is moved." },
+    "tea3": { "name": "Tin of Tea", "kind": "tea", "set": "tea", "text": "Real leaves, not the sawdust the Vatican canteen serves. Abel is moved." },
+    "tea4": { "name": "Tin of Tea", "kind": "tea", "set": "tea", "text": "Real leaves, not the sawdust the Vatican canteen serves. Abel is moved." },
+    "tea5": { "name": "Tin of Tea", "kind": "tea", "set": "tea", "text": "Real leaves, not the sawdust the Vatican canteen serves. Abel is moved." },
+    "tea6": { "name": "Tin of Tea", "kind": "tea", "set": "tea", "text": "Real leaves, not the sawdust the Vatican canteen serves. Abel is moved." }
+  },
+  "sets": {
+    "tea": { "name": "A Proper Pot of Tea", "flasks": 1, "damage": 0.1, "text": "All six tins. Abel brews a proper pot, and feels like himself again: one more flask, and harder blows." }
+  }
+}

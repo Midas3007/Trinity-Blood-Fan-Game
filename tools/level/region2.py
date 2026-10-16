@@ -42,6 +42,7 @@ def nave():
            intro="dietrich_intro", outro="dietrich_outro")
     # behind the organ: the way into the bell tower
     r.carve(r.W - 1, F - 5, r.W, F)
+    r.mark("item", 78, 13, item="tea3")                          # end of the clerestory walk
     return r
 
 
@@ -62,6 +63,7 @@ def bell_tower():
     r.mark("lore", 20, 7, lore="bell_ringer")
     r.mark("enemy", 15, 16, enemy="bat")
     r.mark("enemy", 12, 10, enemy="fairy")
+    r.mark("item", 24, 7, item="heart1")                         # the top of the tower
     return r
 
 
@@ -91,6 +93,7 @@ def castle_gate():
     r.mark("enemy", 54, D - 7, enemy="inquisitor")
     r.mark("enemy", 78, D - 7, enemy="deathHunter")
     r.mark("enemy", 70, D - 15, enemy="bat")
+    r.mark("item", 70, D - 13, item="heart2")                    # over the gate tower
     return r
 
 
@@ -117,6 +120,7 @@ def great_hall():
     r.mark("enemy", 42, F - 1, enemy="methuselah")
     r.mark("enemy", 30, 11, enemy="inquisitor")
     r.mark("enemy", 60, 8, enemy="fairy")
+    r.mark("item", 70, 11, item="chalice2")                      # end of the east balcony
     return r
 
 
