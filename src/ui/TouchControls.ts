@@ -30,6 +30,8 @@ export class TouchControls {
   private stickY = 0;
   private parts: Phaser.GameObjects.GameObject[] = [];
   private shown = true;
+  /** Test mode only (trailer footage): stay hidden whatever the menus do. */
+  forceHidden = false;
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -93,6 +95,7 @@ export class TouchControls {
 
   /** Hidden while the layout editor shows its own copies. */
   setVisible(on: boolean): void {
+    if (this.forceHidden) on = false;
     this.shown = on;
     for (const p of this.parts) (p as unknown as Phaser.GameObjects.Components.Visible).setVisible(on);
   }

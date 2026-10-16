@@ -33,9 +33,9 @@ if (testHookEnabled()) {
   };
   w.__tbRec = {
     /** Starts the video and/or the audio recorder; returns the start time (ms) so the two can be lined up. */
-    start: (kinds: string[] = ['video', 'audio']): number => {
+    start: (kinds: string[] = ['video', 'audio'], videoBits = 1_500_000): number => {
       const canvas = document.querySelector('canvas');
-      if (kinds.includes('video') && canvas) recs.push(record('video', canvas.captureStream(30), 'video/webm;codecs=vp8', 1_500_000));
+      if (kinds.includes('video') && canvas) recs.push(record('video', canvas.captureStream(30), 'video/webm;codecs=vp8', videoBits));
       const sound = kinds.includes('audio') ? audio.capture() : null;
       if (sound) recs.push(record('audio', sound, 'audio/webm;codecs=opus', 128_000));
       for (const r of recs) if (r.state === 'inactive') r.start(1000);

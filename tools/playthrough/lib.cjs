@@ -25,8 +25,8 @@ class Bot {
     await this.page.waitForTimeout(900);
   }
   /** Starts recording ('video', 'audio' or both); the start times line the two up in the final cut. */
-  async startRec(kinds = ['video', 'audio']) {
-    const t = await this.page.evaluate((k) => window.__tbRec.start(k), kinds);
+  async startRec(kinds = ['video', 'audio'], bits = 1500000) {
+    const t = await this.page.evaluate(([k, bb]) => window.__tbRec.start(k, bb), [kinds, bits]);
     this.times = this.times || {};
     for (const k of kinds) this.times[k] = t;
   }

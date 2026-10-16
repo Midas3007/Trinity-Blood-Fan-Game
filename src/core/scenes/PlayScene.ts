@@ -379,6 +379,22 @@ export class PlayScene extends Phaser.Scene {
       },
     );
     new CornerButtons(this, () => this.setPaused(this.map.open ? null : 'map'), () => this.setPaused(this.pauseMenu.open ? null : 'pause'));
+    // Test mode only: ?test&trailer hides the HUD, touch controls and corner buttons (clean footage for the montage);
+    // ?test&zoom=2 frames the action closer (integer zoom keeps the pixels square).
+    if (testHookEnabled()) {
+      const q = new URLSearchParams(location.search);
+      if (q.has('trailer')) this.time.delayedCall(0, () => {
+        this.touch.forceHidden = true;
+        this.touch.setVisible(false);
+        for (const o of this.children.list) {
+          const any = o as unknown as { scrollFactorX?: number; depth?: number; setVisible?: (v: boolean) => void };
+          const d = any.depth ?? 0;
+          if (any.scrollFactorX === 0 && ((d >= 900 && d < 1050) || d >= 1600)) any.setVisible?.(false);
+        }
+      });
+      const zoom = Number(q.get('zoom'));
+      if (Number.isInteger(zoom) && zoom > 1) this.cameras.main.setZoom(zoom);
+    }
     this.input.keyboard?.on('keydown-M', () => this.setPaused(this.map.open ? null : 'map'));
     this.input.keyboard?.on('keydown-ESC', () => {
       if (this.layoutEditor.open) return;

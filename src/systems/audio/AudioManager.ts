@@ -170,6 +170,9 @@ class AudioManager {
 
   /** Switch the music to `key` (crossfade). The same key keeps playing without a restart. */
   music(key: string): void {
+    // Test mode only: ?test&music=<key> plays that piece everywhere (a steady bed for recorded footage).
+    const forced = typeof location !== 'undefined' && /[?&]test\b/.test(location.search) ? new URLSearchParams(location.search).get('music') : null;
+    if (forced) key = forced;
     if (this.wanted === key) return;
     this.wanted = key;
     if (this.ctx && this.on) this.startMusic(key);
