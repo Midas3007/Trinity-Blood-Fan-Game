@@ -184,6 +184,11 @@ export class RoomRuntime {
     }
   }
 
+  /** The altar the player is standing at (same level), if any. */
+  altarAt(x: number, feetY: number): string | null {
+    return this.room.checkpoints.find((c) => Math.abs(c.x - x) <= ALTAR_REACH && Math.abs(c.y - feetY) <= 20)?.id ?? null;
+  }
+
   /** Lore stone the player is standing at, if any. */
   loreAt(x: number): string | null {
     return this.room.lore.find((l) => Math.abs(l.x - x) <= LORE_REACH)?.id ?? null;

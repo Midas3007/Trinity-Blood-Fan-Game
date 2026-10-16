@@ -11,5 +11,58 @@
     "marchesa_defeated",
     "paula_defeated",
     "petros_defeated"
-  ]
+  ],
+  "fastTravel": {
+    "_note": "Fast travel between altars (owner, 2026-10-16). An altar is a destination once you have prayed at it and the boss beyond its area is beaten (the area's flag). Stand at an unlocked altar and push up to travel.",
+    "areas": {
+      "town": "paula_defeated",
+      "undercity": "petros_defeated",
+      "cathedral": "dietrich_defeated",
+      "fortress": "gyula_defeated"
+    },
+    "altars": [
+      {
+        "room": "market_square",
+        "id": "fountain_altar",
+        "area": "town",
+        "name": "Market Square — the fountain"
+      },
+      {
+        "room": "market_square",
+        "id": "tavern_altar",
+        "area": "town",
+        "name": "Market Square — the tavern"
+      },
+      {
+        "room": "chapel_of_bones",
+        "id": "chapel_altar",
+        "area": "undercity",
+        "name": "Chapel of Bones"
+      },
+      {
+        "room": "cathedral_nave",
+        "id": "nave_altar",
+        "area": "cathedral",
+        "name": "The Cathedral Nave"
+      },
+      {
+        "room": "bell_tower",
+        "id": "tower_altar",
+        "area": "cathedral",
+        "name": "The Bell Tower"
+      },
+      {
+        "room": "castle_gate",
+        "id": "castle_altar",
+        "area": "fortress",
+        "name": "The Castle Gate"
+      },
+      {
+        "room": "great_hall",
+        "id": "hall_altar",
+        "area": "fortress",
+        "name": "The Great Hall"
+      }
+    ]
+  }
 }

@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { TravelMenu } from '../../ui/TravelMenu';
+import { destinations } from '../../world/fastTravel';
 import { OptionsMenu } from '../../ui/OptionsMenu';
 import { TouchLayoutEditor } from '../../ui/TouchLayoutEditor';
 import { settings, touchLayoutFrom } from '../../systems/settings';
@@ -123,6 +125,9 @@ export class PlayScene extends Phaser.Scene {
   private praying: { ms: number; checkpoint: string } | null = null;
   private pauseMenu!: PauseMenu;
   private codex!: Codex;
+  private travel!: TravelMenu;
+  /** Up must be let go between travels (so closing the menu does not reopen it). */
+  private travelReady = true;
   private options!: OptionsMenu;
   private layoutEditor!: TouchLayoutEditor;
   private shotFlash!: ShotFlash;
@@ -348,6 +353,16 @@ export class PlayScene extends Phaser.Scene {
       weaponLabel,
     });
     this.codex = new Codex(this, (f) => gameState.hasFlag(f), () => this.setPaused('pause'));
+    this.travel = new TravelMenu(
+      this,
+      (a) => {
+        this.setPaused(null);
+        audio.sfx('pray');
+        fx.flash(this.cameras.main, 300, 246, 227, 163);
+        this.goTo({ room: a.room, checkpoint: a.id, keepHealth: true });
+      },
+      () => this.setPaused(null),
+    );
     this.options = new OptionsMenu(this, () => this.setPaused('pause'), () => this.setPaused('touch'));
     this.layoutEditor = new TouchLayoutEditor(
       this,
@@ -367,6 +382,7 @@ export class PlayScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-M', () => this.setPaused(this.map.open ? null : 'map'));
     this.input.keyboard?.on('keydown-ESC', () => {
       if (this.layoutEditor.open) return;
+      if (this.travel.open) return this.setPaused(null);
       if (this.options.open) this.options.escape();
       else if (this.codex.open) this.codex.close();
       else this.setPaused(this.pauseMenu.open || this.map.open ? null : 'pause');
@@ -462,7 +478,7 @@ export class PlayScene extends Phaser.Scene {
     const dt = Math.min(deltaMs, MAX_FRAME_MS);
     audio.music(musicFor({ room: this.roomData.id, boss: this.arena?.active ? this.roomData.boss?.id : null, cutscene: this.cutsceneId }));
     if (this.cutsceneOn) return;
-    if (this.map.open || this.pauseMenu.open || this.codex.open || this.options.open || this.layoutEditor.open) {
+    if (this.map.open || this.pauseMenu.open || this.codex.open || this.options.open || this.layoutEditor.open || this.travel.open) {
       this.map.update(dt);
       return;
     }
@@ -549,6 +565,22 @@ export class PlayScene extends Phaser.Scene {
       if (unlock && !gameState.hasFlag(unlock)) this.unlock(unlock);
     }
     this.doorHint.setVisible(false);
+    // Fast travel: at an altar of an open area, with somewhere to go, push up.
+    const altar = p.onGround && !p.kneeling ? this.runtime.altarAt(p.x, p.feetY) : null;
+    if (altar) {
+      const dest = destinations(this.roomData.id, altar, (f) => gameState.hasFlag(f));
+      if (dest.length && gameState.altarUsed(this.roomData.id, altar)) {
+        const c = this.roomData.checkpoints.find((cp) => cp.id === altar)!;
+        this.doorHint.setText('travel ▲').setPosition(c.x, c.y - 44).setVisible(true);
+        if (this.actions.moveY < -0.5 && this.travelReady) {
+          this.travelReady = false;
+          this.setPaused('travel');
+          this.travel.show(dest);
+          return;
+        }
+      }
+    }
+    if (this.actions.moveY > -0.3) this.travelReady = true;
     const ev = this.runtime.update(p);
     if (!ev) return;
     if (ev.type === 'exit') {
@@ -778,7 +810,8 @@ export class PlayScene extends Phaser.Scene {
   }
 
   /** Open the map, the pause menu or the Codex (gameplay and physics stop), or close them all (null). */
-  private setPaused(what: 'map' | 'pause' | 'codex' | 'options' | 'touch' | null): void {
+  private setPaused(what: 'map' | 'pause' | 'codex' | 'options' | 'touch' | 'travel' | null): void {
+    if (what !== 'travel') this.travel.hide();
     this.map.hide();
     this.pauseMenu.hide();
     this.codex.hide();
@@ -824,7 +857,7 @@ export class PlayScene extends Phaser.Scene {
       fps: this.game.loop.actualFps,
       room: this.roomData.id,
       flags: gameState.toSave(0).flags,
-      paused: this.pauseMenu.open ? "pause" : this.map.open ? "map" : this.codex.open ? "codex" : this.options.open ? "options" : this.layoutEditor.open ? "touch" : null,
+      paused: this.pauseMenu.open ? "pause" : this.map.open ? "map" : this.codex.open ? "codex" : this.options.open ? "options" : this.layoutEditor.open ? "touch" : this.travel.open ? "travel" : null,
       checkpoint: gameState.checkpoint,
       player: {
         state: p.state,
