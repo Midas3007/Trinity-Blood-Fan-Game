@@ -81,3 +81,31 @@ describe('SaveStore', () => {
     expect(store.hasSave()).toBe(false);
   });
 });
+
+describe('save slots', () => {
+  const fake = (): KeyValueStorage & { m: Map<string, string> } => {
+    const m = new Map<string, string>();
+    return { m, getItem: (k) => m.get(k) ?? null, setItem: (k, v) => void m.set(k, v), removeItem: (k) => void m.delete(k) };
+  };
+  const data = (room: string): SaveData => ({ version: SAVE_VERSION, checkpoint: { room, id: 'a' }, flags: [], visited: [room], time: 'night', savedAt: 1 });
+  it('slot 1 keeps the original key, so old saves carry over; slots are independent', () => {
+    const st = fake();
+    st.setItem('trinity-blood.save', JSON.stringify(data('old')));
+    const store = new SaveStore(st);
+    expect(store.load(1)?.checkpoint?.room).toBe('old');
+    expect(store.load(2)).toBeNull();
+    store.save(data('two'), 2);
+    expect(store.load(2)?.checkpoint?.room).toBe('two');
+    expect(store.load(1)?.checkpoint?.room).toBe('old');
+    store.clear(1);
+    expect(store.load(1)).toBeNull();
+    expect(store.anySave()).toBe(true);
+  });
+  it('remembers the last slot played', () => {
+    const st = fake();
+    new SaveStore(st).useSlot(3);
+    expect(new SaveStore(st).slot).toBe(3);
+    new SaveStore(st).useSlot(9);
+    expect(new SaveStore(st).slot).toBe(3);
+  });
+});

@@ -3,13 +3,15 @@ import { audio } from '../../systems/audio/AudioManager';
 import { music } from '../../systems/audio/music';
 import { COLORS, FAN_NOTICE, GAME_HEIGHT, GAME_WIDTH, SCENES, TITLE_ART_KEY } from '../constants';
 import { gameState } from '../../systems/GameState';
-import { saveStore } from '../../systems/save/SaveStore';
+import { saveStore, SLOTS } from '../../systems/save/SaveStore';
+import { rooms } from '../../world/rooms';
 import { GothicButton } from '../../ui/GothicButton';
 import { gameProgress } from '../../systems/gameProgress';
 
 /** Title block sits in the painting's empty left third. */
 const TITLE_X_WITH_ART = GAME_WIDTH * 0.26;
 const TITLE_STROKE = 3;
+const ROMAN = ['I', 'II', 'III'];
 
 export class MenuScene extends Phaser.Scene {
   constructor() {
@@ -48,8 +50,7 @@ export class MenuScene extends Phaser.Scene {
       })
       .setOrigin(0.5, 1);
 
-    const save = saveStore.load();
-    const begin = (fresh: boolean): void => {
+    const begin = (slot: number, fresh: boolean): void => {
       // Fullscreen needs a user gesture; ignore failures (e.g. iOS Safari does not support it).
       if (!this.scale.isFullscreen && this.sys.game.device.fullscreen.available) {
         try {
@@ -58,8 +59,9 @@ export class MenuScene extends Phaser.Scene {
           /* not allowed on this browser */
         }
       }
-      if (fresh) saveStore.clear();
-      gameState.load(fresh ? null : save);
+      saveStore.useSlot(slot);
+      if (fresh) saveStore.clear(slot);
+      gameState.load(fresh ? null : saveStore.load(slot));
       const cp = gameState.checkpoint;
       // No checkpoint: PlayScene starts at the beginning of the game (or the ?test room). Always pass data: Phaser
       // keeps the previous start data when given none, which put a new game back where the last one left off.
@@ -67,29 +69,67 @@ export class MenuScene extends Phaser.Scene {
     };
 
     const itemStyle = { fontFamily: 'serif', fontSize: '12px', color: COLORS.text, ...stroke };
-    if (!save) {
+    if (!saveStore.anySave()) {
       const prompt = this.add.text(cx, GAME_HEIGHT * 0.6, 'Tap to begin', { ...itemStyle, fontFamily: 'monospace', fontSize: '10px' }).setOrigin(0.5);
       this.tweens.add({ targets: prompt, alpha: 0.3, duration: 900, yoyo: true, repeat: -1 });
-      this.input.once(Phaser.Input.Events.POINTER_UP, () => begin(true));
-      this.input.keyboard?.once('keydown', () => begin(true));
+      this.input.once(Phaser.Input.Events.POINTER_UP, () => begin(1, true));
+      this.input.keyboard?.once('keydown', () => begin(1, true));
       return;
     }
-    // A save exists: Continue (with how far it has gone), or New game (tap twice, so a stray tap never wipes progress).
-    const pct = Math.round(gameProgress(save) * 100);
-    new GothicButton(this, cx, GAME_HEIGHT * 0.6, `Continue  ·  ${pct}%`, () => begin(false), 120, 22);
-    const barW = 104;
-    const barY = GAME_HEIGHT * 0.6 + 14;
-    this.add.rectangle(cx - barW / 2, barY, barW, 3, 0x0b0a10).setOrigin(0, 0.5).setStrokeStyle(1, 0x6e5222);
-    this.add.rectangle(cx - barW / 2, barY, Math.max(1, (barW * pct) / 100), 3, 0xc4a04a).setOrigin(0, 0.5);
-    let armed = false;
-    const fresh: GothicButton = new GothicButton(this, cx, GAME_HEIGHT * 0.6 + 34, 'New game', () => {
-      if (armed) return begin(true);
-      armed = true;
-      fresh.setText('Tap again to erase');
-    }, 120, 22);
+    // Save slots (owner): each shows how far it has gone and where; an empty slot starts a new game. Erase asks twice.
+    let erasing = false;
+    let armed = 0;
+    const slotButtons: GothicButton[] = [];
+    const label = (i: number): string => {
+      const d = saveStore.load(i);
+      if (!d) return `${ROMAN[i - 1]}  ·  new game`;
+      const place = d.checkpoint ? (rooms[d.checkpoint.room]?.title ?? '') : 'Istvan';
+      return `${ROMAN[i - 1]}  ·  ${Math.round(gameProgress(d) * 100)}%  ·  ${place}`;
+    };
+    const refresh = (): void => {
+      for (let i = 1; i <= SLOTS; i++) {
+        const b = slotButtons[i - 1];
+        if (!b) continue;
+        b.setText(erasing && saveStore.load(i) ? (armed === i ? 'Tap again to erase' : `Erase ${label(i)}`) : label(i));
+      }
+    };
+    const top = GAME_HEIGHT * 0.53;
+    for (let i = 1; i <= SLOTS; i++) {
+      const y = top + (i - 1) * 27;
+      const b = new GothicButton(this, cx, y, label(i), () => {
+        const has = saveStore.load(i) !== null;
+        if (!erasing) return begin(i, !has);
+        if (!has) return;
+        if (armed !== i) {
+          armed = i;
+          return refresh();
+        }
+        saveStore.clear(i);
+        erasing = false;
+        armed = 0;
+        this.scene.restart();
+      }, 176, 18);
+      slotButtons.push(b);
+      const d = saveStore.load(i);
+      if (d && !erasing) {
+        const barW = 120;
+        const pct = gameProgress(d);
+        this.add.rectangle(cx - barW / 2, y + 11, barW, 2, 0x0b0a10).setOrigin(0, 0.5);
+        this.add.rectangle(cx - barW / 2, y + 11, Math.max(1, barW * pct), 2, 0xc4a04a).setOrigin(0, 0.5);
+      }
+    }
+    const eraseBtn: GothicButton = new GothicButton(this, cx, top + SLOTS * 27 + 2, 'Erase a save', () => {
+      erasing = !erasing;
+      armed = 0;
+      eraseBtn.setText(erasing ? 'Cancel' : 'Erase a save');
+      refresh();
+    }, 110, 15);
     this.input.keyboard?.on('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Enter' || e.key === ' ') begin(false);
-      if (e.key.toLowerCase() === 'n') begin(true);
+      if (e.key === 'Enter' || e.key === ' ') begin(saveStore.slot, !saveStore.load(saveStore.slot));
+      if (/^[1-3]$/.test(e.key)) {
+        const i = Number(e.key);
+        begin(i, !saveStore.load(i));
+      }
     });
   }
 }
