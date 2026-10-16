@@ -297,7 +297,7 @@ export class PlayScene extends Phaser.Scene {
     // Relics from beaten bosses: more health, flasks and damage.
     const stats = playerStats((f) => gameState.hasFlag(f));
     this.player.applyStats(stats);
-    this.player.weapon = currentWeapon((f) => gameState.hasFlag(f));
+    this.player.weapon = currentWeapon((f) => gameState.hasFlag(f) || (cheat.on && f === weapons['sword']?.item));
     if (gameState.hp !== null) this.player.setHealth(Math.min(gameState.hp, stats.maxHealth));
     this.player.flasks = gameState.flasks ?? stats.flasks;
     this.hud = new Hud(this, stats.flasks);
@@ -337,7 +337,8 @@ export class PlayScene extends Phaser.Scene {
       }
     };
     this.map = new MapOverlay(this);
-    const has = (f: string): boolean => gameState.hasFlag(f);
+    // The cheat also lends the sword (not saved).
+    const has = (f: string): boolean => gameState.hasFlag(f) || (cheat.on && f === weapons['sword']?.item);
     const weaponLabel = (): string | null => (ownedWeapons(has).length > 1 ? `Weapon: ${weapons[this.player.weapon]?.short ?? this.player.weapon}` : null);
     this.pauseMenu = new PauseMenu(this, {
       resume: () => this.setPaused(null),
@@ -578,7 +579,8 @@ export class PlayScene extends Phaser.Scene {
     const a = this.actions;
     if (this.cheatCode.frame(this.time.now, a.moveX, a.moveY, a.justPressed('attack'), a.justPressed('dodge'))) {
       cheat.on = !cheat.on;
-      this.banner.show(cheat.on ? 'BLESSED' : 'MORTAL', cheat.on ? 'Cheat on: no damage, endless holy water, ABIL for the eighty percent form.' : 'Cheat off.', 1800);
+      this.player.weapon = cheat.on ? 'sword' : currentWeapon((f) => gameState.hasFlag(f));
+      this.banner.show(cheat.on ? 'BLESSED' : 'MORTAL', cheat.on ? 'Cheat on: no damage, endless holy water, the sword, ABIL for the eighty percent form.' : 'Cheat off.', 1800);
       audio.sfx('card');
     }
     const p = this.player;
