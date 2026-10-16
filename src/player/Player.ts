@@ -295,8 +295,11 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.body.setVelocityY(v);
   }
 
+  /** The owner's cheat switch (src/systems/cheatCode.ts): no damage, endless holy water. */
+  godMode = false;
+
   get invulnerable(): boolean {
-    return this.timers.invulnerable > 0 || this.fsm.current === 'finisher' || this.fsm.current === 'transform';
+    return this.godMode || this.timers.invulnerable > 0 || this.fsm.current === 'finisher' || this.fsm.current === 'transform';
   }
 
   get damageMultiplier(): number {
@@ -385,7 +388,7 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   drinkFlask(): void {
     if (this.flasks <= 0) return;
-    this.flasks--;
+    if (!this.godMode) this.flasks--;
     this.health.heal(this.tuning.flaskHeal);
     this.onHealed?.();
   }

@@ -26,6 +26,12 @@ Last updated: 2026-10-16 (night)
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
+## Owner fixes — the block enemy, the transform, a cheat (2026-10-16, night)
+- **"Enemy showing as a block":** that was a Methuselah whose art didn't download on the phone (a dropped request). The game now asks again for any sprite sheet that failed, before the title screen. If one is still missing, the enemy shows another of its own poses instead of a block. Tested by blocking the download once in the browser: the art came through on the retry.
+- **Transform (owner rule):** the 40% Crusnik is now available as soon as the blood meter wakes (after Sister Paula). Before, it waited for the Magus fight. The Magus fight still plays its scripted change, and the 80% form stays for the final battle. A meter at 95% or more now counts as full (a 98% bar looks full on a phone), and ABIL transforms in mid-air too. Note: the Chapel of Bones doorway that needs the Crusnik leap, and so the Marchesa, can now be reached before the Magus.
+- **Cheat:** enter ↑ ↓ ← → ATK DODGE (on the stick and buttons) to turn it on; the same moves turn it off. While on: no damage, holy water never runs out, the blood meter stays full and ABIL takes the **80% winged form**. It isn't saved: closing the game turns it off.
+- Verified: 219/219 tests. The bot entered the code, got 80% wings from ABIL, then turned the cheat off.
+
 ## Fix — the unseen attacker on Castle Hill Street (2026-10-16, night)
 - The owner was hit by something they couldn't see. It was a low-level Methuselah patrolling inside the ground floor of the house on the street's middle terrace. The painted house front hid it, and it walked out of the doorway to attack.
 - Fix, for every room: a building's front now fades (the same see-through as walking inside) whenever an enemy inside it is within 14 tiles of Abel. Two new altars that stood inside houses (Old Town Lane, Castle Hill) were moved out onto the open street. Verified with a screenshot, plus a unit test and 215/215 tests.

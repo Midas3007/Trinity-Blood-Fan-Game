@@ -80,6 +80,28 @@ describe('Crusnik form (player states)', () => {
     expect(p.state).toBe('idle');
   });
 
+  it('a nearly full meter counts as full (a 98% bar looks full)', () => {
+    const m = new CrusnikMeter();
+    m.awake = true;
+    m.unlocked = true;
+    m.gain(cfg.meterMax * cfg.fullSnap - 1);
+    expect(m.ready).toBe(false);
+    m.gain(1);
+    expect(m.ready).toBe(true);
+    expect(m.fraction).toBe(1);
+  });
+
+  it('ABIL works in mid-air too (owner: pressed it and nothing happened)', () => {
+    const p = readySim();
+    p.run(5);
+    p.run(6, { jump: true });
+    expect(['jump', 'fall']).toContain(p.state);
+    p.step({ jump: true, ability: true });
+    expect(p.state).toBe('transform');
+    p.run(framesFor(cfg.transformMs) + 60);
+    expect(p.form).toBe('crusnik');
+  });
+
   it('ABIL with a full meter plays the change, then Abel is the Crusnik', () => {
     const p = readySim();
     p.step({ ability: true });

@@ -40,6 +40,7 @@ import { room as getRoom, START } from '../../world/rooms';
 import { RoomRuntime } from '../../world/RoomRuntime';
 import { RoomTiles } from '../../world/RoomTiles';
 import { revealedInteriors } from '../../world/seeThrough';
+import { cheat, CheatCode } from '../../systems/cheatCode';
 import { Backdrop, timeLook, type TimeOfDay } from '../../world/Backdrop';
 import { landsOnTop } from '../../world/oneWay';
 import { roomAtPixel } from '../../world/roomGraph';
@@ -518,6 +519,7 @@ export class PlayScene extends Phaser.Scene {
     const frames = [this.touch.read(), this.gamepad.read()];
     if (this.keyboard) frames.push(this.keyboard.read());
     this.actions.update(mergeFrames(frames));
+    this.updateCheat();
 
     this.backdrop.update(dt);
     this.senseLadders();
@@ -564,6 +566,40 @@ export class PlayScene extends Phaser.Scene {
       input: `${this.actions.moveX.toFixed(2)} ${this.actions.heldSummary()}`,
       hp: `${this.player.health.hp}/${this.player.health.max}`,
     });
+  }
+
+  private readonly cheatCode = new CheatCode();
+  /** Wings given by the cheat (not the final battle's), taken back when it is switched off. */
+  private cheatWings = false;
+
+  /** ↑ ↓ ← → ATK DODGE toggles the owner's cheat: no damage, endless holy water, a full blood meter, and ABIL
+   * takes the 80% winged form. */
+  private updateCheat(): void {
+    const a = this.actions;
+    if (this.cheatCode.frame(this.time.now, a.moveX, a.moveY, a.justPressed('attack'), a.justPressed('dodge'))) {
+      cheat.on = !cheat.on;
+      this.banner.show(cheat.on ? 'BLESSED' : 'MORTAL', cheat.on ? 'Cheat on: no damage, endless holy water, ABIL for the eighty percent form.' : 'Cheat off.', 1800);
+      audio.sfx('card');
+    }
+    const p = this.player;
+    const cm = p.crusnik;
+    p.godMode = cheat.on;
+    if (cheat.on) {
+      cm.awake = true;
+      cm.unlocked = true;
+      cm.fill();
+      if (p.form === 'crusnik' && !p.winged) {
+        p.winged = true;
+        this.cheatWings = true;
+      }
+      return;
+    }
+    if (this.cheatWings) {
+      p.winged = false;
+      this.cheatWings = false;
+    }
+    cm.awake = gameState.hasFlag(crusnikConfig.meterFlag);
+    cm.unlocked = cm.unlocked && (gameState.hasFlag(crusnikConfig.unlockFlag) || p.winged);
   }
 
   /** Exits, spikes and altars. */
@@ -755,9 +791,11 @@ export class PlayScene extends Phaser.Scene {
     this.banner.show(r.card, r.gift);
     audio.sfx('card');
     if (flag === crusnikConfig.meterFlag && !this.player.crusnik.awake) {
-      // After the first mini boss: the blood meter wakes (the form itself comes later, in the Kampfer fight).
+      // After the first mini boss: the blood meter wakes, and with it the forty percent form (owner rule).
+      gameState.setFlag(flag);
       this.player.crusnik.awake = true;
-      this.time.delayedCall(3400, () => this.banner.show('SANGUIS', 'The bar under your health is blood.\nOnly Methuselah blood fills it — the living more than the reanimated.', 3200));
+      this.player.crusnik.unlocked = gameState.hasFlag(crusnikConfig.unlockFlag);
+      this.time.delayedCall(3400, () => this.banner.show('SANGUIS', 'The bar under your health is blood. Only Methuselah blood fills it.\nWhen it is full and glows, press ABIL to become the Crusnik.', 3200));
     }
     if (flag === 'gyula_defeated') {
       // The end: the ending scene, the credits, then the teaser for the next arc.
@@ -896,6 +934,7 @@ export class PlayScene extends Phaser.Scene {
         crusnik: p.crusnik.fraction,
         crusnikReady: p.crusnik.ready,
         winged: p.winged,
+        cheat: cheat.on,
         maxHp: p.health.max,
         flasks: p.flasks,
         weapon: p.weapon,

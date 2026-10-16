@@ -1,8 +1,9 @@
 {
-  "_note": "Crusnik 40% form. The blood meter appears once 'meterFlag' is set (Sister Paula, the first mini boss) and fills only with Methuselah blood: per-enemy 'blood' in enemies.json (hit, kill), and 'bossBlood' here for Methuselah bosses. Transforming needs 'unlockFlag' (Abel's first transformation, in the Kampfer fight). When full, ABIL transforms him; while transformed the meter drains; at zero he returns to the priest form. In Crusnik form ABIL throws the chain lash. Times in ms, speeds px/s.",
-  "unlockFlag": "crusnik",
+  "_note": "Crusnik 40% form. The blood meter appears once 'meterFlag' is set (Sister Paula, the first mini boss) and fills only with Methuselah blood: per-enemy 'blood' in enemies.json (hit, kill), and 'bossBlood' here for Methuselah bosses. Transforming needs 'unlockFlag': owner rule (2026-10-16) — the 40% form is available as soon as the meter wakes (after Paula); only the 80% form waits for the final battle. The Kampfer fight still plays the scripted change. When full, ABIL transforms him; while transformed the meter drains; at zero he returns to the priest form. In Crusnik form ABIL throws the chain lash. Times in ms, speeds px/s.",
+  "unlockFlag": "paula_defeated",
   "meterFlag": "paula_defeated",
   "meterMax": 100,
+  "fullSnap": 0.95,
   "gainPerDrain": 35,
   "drainPerSecond": 7,
   "transformMs": 650,

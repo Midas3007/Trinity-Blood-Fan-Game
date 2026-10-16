@@ -6,6 +6,8 @@ export interface CrusnikConfig {
   /** The meter appears (and starts filling) once this flag is set. */
   meterFlag: string;
   meterMax: number;
+  /** A meter this close to full (fraction) counts as full: a 98% bar looks full on a phone. */
+  fullSnap: number;
   gainPerDrain: number;
   drainPerSecond: number;
   transformMs: number;
@@ -60,13 +62,18 @@ export class CrusnikMeter {
   /** Methuselah blood from landing hits and kills (priest form only: the form cannot feed itself). */
   gain(amount: number): void {
     if (!this.shown || this.active) return;
-    this.value = Math.min(this.cfg.meterMax, this.value + amount);
+    this.add(amount);
   }
 
   /** Blood drained from a Methuselah: also tops up an active form. */
   feed(amount: number): void {
     if (!this.shown) return;
+    this.add(amount);
+  }
+
+  private add(amount: number): void {
     this.value = Math.min(this.cfg.meterMax, this.value + amount);
+    if (this.value >= this.cfg.meterMax * this.cfg.fullSnap) this.value = this.cfg.meterMax;
   }
 
   fill(): void {

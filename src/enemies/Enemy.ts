@@ -285,7 +285,9 @@ export class Enemy implements EnemyContext, Damageable, FinisherTarget {
     // Death: the string is cut and the body fades as it collapses.
     const fade = state === 'dead' && !this.cfg.knockout ? this.dyingMs / this.cfg.deathMs : 1;
     const look = this.blockMs > 0 && state !== 'dead' ? 'block' : state;
-    const shown = this.view.show(enemyVisualFor(this.cfg.type, look) ?? enemyVisualFor(this.cfg.type, state), this.x, feet, this.facing, fade);
+    // First look whose art exists; if one sheet is missing, a standing pose beats a placeholder block.
+    const looks = [look, state, 'idle', 'patrol'] as const;
+    const shown = looks.some((k) => this.view.show(enemyVisualFor(this.cfg.type, k), this.x, feet, this.facing, fade));
     if (shown && this.view.sprite) {
       if (this.flashMs > 0) this.view.sprite.setTintFill(COLORS.flash);
       else if (telegraph) this.view.sprite.setTint(this.cfg.telegraphColor);

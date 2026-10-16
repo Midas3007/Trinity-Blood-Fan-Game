@@ -130,7 +130,7 @@ function brake(ctx: PlayerContext, dtMs: number): void {
 /** ABIL: take the Crusnik form when it is ready, or (in Crusnik form) throw the chain lash. */
 function abilityState(ctx: PlayerContext): PlayerStateKey | null {
   if (!ctx.abilityPressed) return null;
-  if (ctx.form === 'priest' && ctx.transformReady && ctx.onGround) return 'transform';
+  if (ctx.form === 'priest' && ctx.transformReady) return 'transform'; // in the air too (owner: ABIL must just work)
   if (startersFor(ctx.form, ctx.weapon).ranged) return 'lash';
   return null;
 }
@@ -198,7 +198,8 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
         ctx.jumpCut = true;
       }
       if (ctx.attackPressed) return 'airAttack';
-      if (ctx.abilityPressed && startersFor(ctx.form, ctx.weapon).ranged) return 'lash';
+      const ability = abilityState(ctx);
+      if (ability) return ability;
       if (ctx.vy >= 0) return 'fall';
       return undefined;
     },
@@ -212,7 +213,8 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       if (ctx.onGround) return landingState(ctx);
       if (ctx.ledgeAhead) return 'ledgeHang';
       if (ctx.attackPressed) return 'airAttack';
-      if (ctx.abilityPressed && startersFor(ctx.form, ctx.weapon).ranged) return 'lash';
+      const ability = abilityState(ctx);
+      if (ability) return ability;
       return undefined;
     },
   },

@@ -33,6 +33,19 @@ export class BootScene extends Phaser.Scene {
   create(): void {
     if (this.textures.exists('dove')) this.anims.create({ key: 'dove_fly', frames: this.anims.generateFrameNumbers('dove', { start: 0, end: 1 }), frameRate: 8, repeat: -1 });
     const index = this.cache.json.get(INDEX_KEY) as SpriteIndex | undefined;
+    // A sheet that failed to download (a dropped request on a phone) would leave that sprite a plain block for the
+    // whole session: ask for the missing ones once more, past the offline cache, before starting.
+    const missing = index ? sheetLoads(index).filter((s) => !this.textures.exists(s.key)) : [];
+    if (missing.length > 0) {
+      for (const s of missing) this.load.spritesheet(s.key, `${s.url}?retry=${Date.now()}`, { frameWidth: s.frameWidth, frameHeight: s.frameHeight });
+      this.load.once(Phaser.Loader.Events.COMPLETE, () => this.finish(index));
+      this.load.start();
+      return;
+    }
+    this.finish(index);
+  }
+
+  private finish(index: SpriteIndex | undefined): void {
     if (index) {
       for (const a of animDefs(index)) {
         if (!this.textures.exists(a.texture) || this.anims.exists(a.key)) continue;
