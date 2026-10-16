@@ -3,6 +3,7 @@ import { TILE, type RoomData } from './tiled';
 import { easeAlpha, ROOF_ALPHA, upOnFront } from './seeThrough';
 
 export const TILESET_KEY = 'tiles_istvan';
+const NONE: ReadonlySet<number> = new Set();
 const DEPTH = { back: 1, terrain: 3, facade: 15, shade: 16 } as const;
 /** Painted fronts sit behind the player (10) but above terrain and props. */
 const DEPTH_FACADE_IMAGE = 9;
@@ -71,10 +72,11 @@ export class RoomTiles {
     return this.room.interior[r * this.room.cols + c] ?? -1;
   }
 
-  update(dtMs: number, px: number, py: number, feetY: number): void {
+  /** `revealed`: buildings to see into because an enemy inside is near (see revealedInteriors). */
+  update(dtMs: number, px: number, py: number, feetY: number, revealed: ReadonlySet<number> = NONE): void {
     this.inside = this.interiorAt(px, py);
     for (let id = 0; id < this.alpha.length; id++) {
-      const target = id === this.inside ? INSIDE_ALPHA : 1;
+      const target = id === this.inside || revealed.has(id) ? INSIDE_ALPHA : 1;
       const a = this.alpha[id]!;
       if (a === target) continue;
       const next = easeAlpha(a, target, FADE_PER_S, dtMs);
@@ -84,7 +86,7 @@ export class RoomTiles {
     for (const f of this.facadeImages) {
       const i = f.img;
       const front = { x: i.x, y: i.y - i.height, w: i.width, h: i.height };
-      const target = f.component >= 0 && f.component === this.inside ? INSIDE_ALPHA : upOnFront(front, px, feetY) ? ROOF_ALPHA : 1;
+      const target = f.component >= 0 && (f.component === this.inside || revealed.has(f.component)) ? INSIDE_ALPHA : upOnFront(front, px, feetY) ? ROOF_ALPHA : 1;
       if (f.alpha === target) continue;
       f.alpha = easeAlpha(f.alpha, target, FADE_PER_S, dtMs);
       i.setAlpha(f.alpha);

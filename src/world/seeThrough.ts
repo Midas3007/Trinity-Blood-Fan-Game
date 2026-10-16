@@ -18,3 +18,23 @@ export function easeAlpha(a: number, target: number, perS: number, dtMs: number)
   const step = (perS * dtMs) / 1000;
   return a < target ? Math.min(target, a + step) : Math.max(target, a - step);
 }
+
+/** A building front also fades while an enemy inside it is this close to the player (px), so nothing attacks unseen. */
+export const ENEMY_REVEAL_PX = TILE * 14;
+
+/** Buildings (interior ids) holding an enemy within `reach` of the player. Pure. */
+export function revealedInteriors(
+  enemies: readonly { x: number; y: number }[],
+  px: number,
+  py: number,
+  interiorAt: (x: number, y: number) => number,
+  reach = ENEMY_REVEAL_PX,
+): Set<number> {
+  const out = new Set<number>();
+  for (const e of enemies) {
+    if (Math.abs(e.x - px) > reach || Math.abs(e.y - py) > reach) continue;
+    const id = interiorAt(e.x, e.y);
+    if (id >= 0) out.add(id);
+  }
+  return out;
+}

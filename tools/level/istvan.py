@@ -78,7 +78,7 @@ def old_town():
     r.street_props(0, 56, GY)
     r.street_props(84, 120, GY, lamp_offset=24)
     r.mark("lore", 110, GY - 1, lore="star_graffiti")
-    r.mark("checkpoint", 46, GY - 1, "lane_altar")
+    r.mark("checkpoint", 39, GY - 1, "lane_altar")
     r.mark("lore", 66, feet(GY - 4, 1), lore="worshipper_note")
     r.mark("enemy", 36, GY - 1, enemy="thrall")
     r.mark("enemy", 68, feet(GY - 4, 0), enemy="thrall")
@@ -199,7 +199,7 @@ def hill_street():
     r.street_props(0, 18, GY)
     r.street_props(70, 90, GY - 6, every=10)
     r.mark("enemy", 34, GY - 4, enemy="methuselah")
-    r.mark("checkpoint", 28, GY - 4, "hill_altar")
+    r.mark("checkpoint", 10, GY - 1, "hill_altar")
     r.mark("enemy", 78, GY - 7, enemy="deathHunter")
     return r
 

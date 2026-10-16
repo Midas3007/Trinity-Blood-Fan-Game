@@ -39,6 +39,7 @@ import physics from '../../data/physics.json';
 import { room as getRoom, START } from '../../world/rooms';
 import { RoomRuntime } from '../../world/RoomRuntime';
 import { RoomTiles } from '../../world/RoomTiles';
+import { revealedInteriors } from '../../world/seeThrough';
 import { Backdrop, timeLook, type TimeOfDay } from '../../world/Backdrop';
 import { landsOnTop } from '../../world/oneWay';
 import { roomAtPixel } from '../../world/roomGraph';
@@ -569,7 +570,8 @@ export class PlayScene extends Phaser.Scene {
   private updateRoom(): void {
     const p = this.player;
     if (!p.kneeling) this.prayArmed = true;
-    this.tiles.update(this.game.loop.delta, p.x, p.y, p.feetY);
+    const lurking = revealedInteriors(this.enemies.alive, p.x, p.y, (x, y) => this.tiles.interiorAt(x, y));
+    this.tiles.update(this.game.loop.delta, p.x, p.y, p.feetY, lurking);
     this.runtime.updateLandmarks(this.game.loop.delta, p.x, p.feetY);
     p.onOneway = p.onGround && this.standingOnOneway();
     if (this.crossEdge()) return;

@@ -26,6 +26,10 @@ Last updated: 2026-10-16 (night)
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
+## Fix — the unseen attacker on Castle Hill Street (2026-10-16, night)
+- The owner was hit by something they couldn't see. It was a low-level Methuselah patrolling inside the ground floor of the house on the street's middle terrace. The painted house front hid it, and it walked out of the doorway to attack.
+- Fix, for every room: a building's front now fades (the same see-through as walking inside) whenever an enemy inside it is within 14 tiles of Abel. Two new altars that stood inside houses (Old Town Lane, Castle Hill) were moved out onto the open street. Verified with a screenshot, plus a unit test and 215/215 tests.
+
 ## Done (latest) — ledge grab, more altars, smoother motion (2026-10-16, night)
 - **Ledge grab:** jump at a wall whose top is just out of reach and keep pushing toward it: Abel catches the edge and hangs. JUMP or stick up pulls him up; keep pushing toward the wall and he pulls up on his own; stick down or away lets go. The Crusnik can do it too. Reach is data (`src/data/player.json`, `ledge*`). The priest still can't reach the Crusnik-leap wall in the Chapel of Bones (a test checks it). For now the pose reuses the ladder-climb art.
 - **Altars:** 14 new ones, so there's one about every 80–110 tiles of walking, plus one just before every boss: Paula (Water Tunnels), Kämpfer (Ossuary, by the Reliquary gate), the Marchesa (Ballroom), Petros (Cellars), Dietrich (Nave, as before) and Gyula (Great Hall, as before). All of them are fast-travel stops under the same rules. 21 altars in total.
