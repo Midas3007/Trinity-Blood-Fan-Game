@@ -170,7 +170,7 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 - **Music downloads blocked:** archive.org search now works, but its files are served from `*.archive.org` storage hosts (e.g. dn711007.ca.archive.org, ia800300.us.archive.org), which are still denied. Add `*.archive.org` (or `.archive.org`) to Allowed domains. Tracks are already chosen (see docs/audio-plan.md). Other sites (opengameart.org, incompetech.com, freepd.com, pixabay.com, freesound.org) are still denied. To allow them: in the session's cloud environment menu (title bar) → Edit → Network access → add those domains under Allowed domains (keep "Allow package managers" ticked). Steps: https://code.claude.com/docs/en/cloud-environments#network-access. Until then the game plays its own original pieces. Higgsfield: about 2 credits left (enough for one more image).
 
 ## Owner must test (on phone) — ledges, altars, smoothness
-1. Bellmakers' Alley, just east of the start of the alley: find a wall about 4 tiles high and jump at it while holding toward it. Expected: if your jump falls short, Abel grabs the edge, hangs, then pulls up.
+1. Find a wall about 4 tiles high (for example on the rooftops in Bellmakers' Alley) and jump at it while holding toward it. Expected: if your jump falls short, Abel grabs the edge, hangs, then pulls up.
 2. While hanging, let go of the stick. Expected: he keeps hanging. JUMP pulls him up; stick down drops him.
 3. Chapel of Bones: try to reach the high doorway as the priest. Expected: it still can't be grabbed. As the Crusnik it works.
 4. Walk from Istvan Station to the Castle Gate. Expected: an altar every short stretch. Pray at each one.
