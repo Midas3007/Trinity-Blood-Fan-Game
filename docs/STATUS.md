@@ -20,9 +20,26 @@ Last updated: 2026-10-16
 | 12 | Region 2 + final battle | **done:** Cathedral Nave + Bell Tower (portal opens after Petros), Castle Gate, Great Hall, Star of Sorrow chamber (bridge gate opens after Dietrich); bosses Dietrich (Grand Marionette → Dietrich) and Gyula (final, 80% wings phase) |
 | 14 | Start-menu progress bar | **done:** Continue shows a percentage and a gold bar (fights 70%, map 20%, lore 10%) |
 | 15 | Owner fixes 2026-10-16 | **done:** Midas3007 in the credits; see-through building fronts + cathedral ledge guides; New game really restarts; sewer-shaft hole fixed (grate + ladder); spikes/water send you to the last altar; blood meter from the first mini boss, filled only by Methuselah (new low-born Methuselah enemy; Death Hunters give less) |
-| 13 | Full recorded playthrough | planned (owner): a bot plays the finished game start to end and the run is recorded as a video |
+| 13 | Full recorded playthrough | **done:** a bot plays the game in 10 chapters (title → teaser), recorded with the game's own music, effects and voices; 15¾ min video sent to the owner; scripts in `tools/playthrough/` |
+| 16 | Bestiary and Lore book | **done:** pause → *Bestiary & Lore*: 14 creature/boss pages (portrait, original text, blood, tip) unlocked on first defeat; every lore page you've read |
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
+
+## Done (latest) — Codex and the recorded playthrough (2026-10-16)
+- **Bestiary & Lore book** in the pause menu. The Bestiary has a page for every creature and boss (14): animated portrait, an original description, how much blood it gives, and a fighting tip. Pages unlock the first time you beat that kind. The Lore book collects every lore stone you've read. Locked pages show as "? ? ?".
+- **Recorded playthrough:** ten chapters, played by a bot and recorded with the game's own audio:
+  1. The title (with progress bar), a new game, the voiced opening and the streets.
+  2. Down the sewer grate.
+  3. Sister Paula.
+  4. The priest's moves (combo, crouch and air attacks, roll, parry, holy water, revolver finisher), Methuselah blood filling the meter, and the Codex.
+  5. The Magus and the first transformation.
+  6. The Crusnik's moves (transform, scythe, chain lash, high leap, slide, blood drain).
+  7. The Marchesa.
+  8. Brother Petros.
+  9. The cathedral portal, the nave and Dietrich.
+  10. Gyula, the 80% wings, the ending, credits and teaser.
+- Honest notes on the run: each chapter starts in its own room with the story so far (not one unbroken walk), and bosses start part-way down so fights fit the film.
+- Verified: 186/186 tests, build, every chapter's bot run ended in victory (flags checked), no page errors.
 
 ## Done (latest) — audio, voices, owner fixes (2026-10-16)
 - **Music:** every area, every fight and each cutscene mood has its own original piece, composed in code (no samples, no downloads): title *Nocturne for the Atoner*, streets, undercity, ballroom waltz, cathedral choir, fortress, the Star; six boss themes; sad, tense, awakening, dawn and teaser pieces. Crossfades between them. A real recording replaces any piece by adding a `file` in `src/data/music.json`.
@@ -108,7 +125,7 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 - Verified: 171/171 tests (Dietrich and Gyula fight 2 minutes without getting stuck, the Star beam marks then strikes once, Dietrich changes body at phase 2, all 22 rooms connect — doors included), 123 sprite sheets valid, build passes. Bot runs: Dietrich (both phases + scenes) → relic; Gyula (wings scene) → ending → credits → teaser → title, no errors.
 
 ## In progress
-- M13: the recorded bot playthrough of the whole game.
+- Nothing open. Waiting on your phone feedback.
 
 ## Blockers
 - **Music downloads blocked:** archive.org search now works, but its files are served from `*.archive.org` storage hosts (e.g. dn711007.ca.archive.org, ia800300.us.archive.org), which are still denied. Add `*.archive.org` (or `.archive.org`) to Allowed domains. Tracks are already chosen (see docs/audio-plan.md). Other sites (opengameart.org, incompetech.com, freepd.com, pixabay.com, freesound.org) are still denied. To allow them: in the session's cloud environment menu (title bar) → Edit → Network access → add those domains under Allowed domains (keep "Allow package managers" ticked). Steps: https://code.claude.com/docs/en/cloud-environments#network-access. Until then the game plays its own original pieces. Higgsfield: about 2 credits left (enough for one more image).
@@ -183,7 +200,7 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 4. Pray at an altar: kneel, light beam, dove over his head, health and flasks refilled.
 
 ## Next step
-- M13: record a bot playthrough of the whole game and share the video.
+- Your feedback on the playthrough and the phone tests decides the next round (difficulty, art, more of the Empire arc).
 - When the slice is finished: a bot plays the whole game start to end and the run is recorded as a video for the owner (owner request).
 - Optional (owner's call): redraw characters taller (about 56 px, Blasphemous scale) for real detail; costs Higgsfield credits and changes his size against doors.
 - After your boss feedback: the first cutscene (Abel arrives in Istvan, code-animated manga panels) and Region 2.

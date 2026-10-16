@@ -14,3 +14,4 @@ art/source/raw/**/*.png
 art/source/raw/**/*.jpg
 art/preview/
 __pycache__/
+tools/playthrough/out/
