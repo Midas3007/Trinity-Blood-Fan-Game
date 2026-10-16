@@ -285,3 +285,6 @@
 | Settings separate from saves (`trinity-blood.settings`), parsed field by field, defaults on anything bad | Device preferences, not progress; corrupt storage never breaks the game | Inside each save |
 | Difficulty = damage taken ×0.5/1/1.5 only | Simple and fair; boss patterns unchanged | Enemy health/speed scaling |
 | Save slot 1 keeps the original key | Existing saves carry over with no migration | Migrate into a new key |
+| Physics 240 steps/s (was 60) | At 60 the run moved 2 px then 4 px on alternate frames (judder/flicker on phones); 240 makes each frame's step even. Cost is small (few bodies) | Camera lerp smoothing (would make the sprite wobble ±1 px against pixel-art backgrounds) |
+| Ledge grab: solid walls only, hands reach the head top (0 px above), catch while falling and pushing toward the wall | Fixes "can obviously hold it" walls without breaking the Crusnik-leap gate (priest's highest grab 94 px < 96 px wall, tested); one-way platforms excluded so Crusnik-only item ledges stay Crusnik-only | Grab one-way platform ends too; larger reach |
+| Altars every ~80–110 tiles + one before every boss (21 total), all in fast travel | Owner request: less walking back | Only before bosses |

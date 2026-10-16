@@ -46,6 +46,7 @@ def station():
     house(r, 70, 14, GY, floors=3, doors=("left", "right"), balconies=(1, 2), lit=0.5)
     r.street_props(50, 88, GY)
     r.mark("entry", 10, GY - 1, "start", facing=1)
+    r.mark("checkpoint", 40, GY - 1, "station_altar")              # altars about every 80-110 tiles (owner)
     r.mark("lore", 14, GY - 1, lore="ax_orders")
     r.mark("dummy", 24, GY - 1, maxHealth=60, contactDamage=0)
     r.mark("dummy", 30, GY - 1, maxHealth=60, contactDamage=0)
@@ -77,6 +78,7 @@ def old_town():
     r.street_props(0, 56, GY)
     r.street_props(84, 120, GY, lamp_offset=24)
     r.mark("lore", 110, GY - 1, lore="star_graffiti")
+    r.mark("checkpoint", 46, GY - 1, "lane_altar")
     r.mark("lore", 66, feet(GY - 4, 1), lore="worshipper_note")
     r.mark("enemy", 36, GY - 1, enemy="thrall")
     r.mark("enemy", 68, feet(GY - 4, 0), enemy="thrall")
@@ -104,6 +106,7 @@ def clock_alley():
     r.ladder(23, GY + 1, r.H); r.put("terrain", 23, GY, "plank")  # plank over the shaft, like a trapdoor
     r.gate(22, GY, 25, GY + 1, "well_open")
     r.mark("label", 23, GY - 4, text="an old well, grated shut")
+    r.mark("checkpoint", 36, GY - 1, "alley_altar")
     r.mark("enemy", 30, GY - 1, enemy="thrall")
     r.mark("enemy", 36, GY - 21, enemy="methuselah")
     r.mark("item", 6, feet(GY, 4), item="tea1")                  # up the bellmaker's ladder, on the roof
@@ -164,6 +167,7 @@ def cathedral_square():
     for x in (44, 94):
         r.mark("decor", x, T - 1, item="lamp")
     r.mark("lore", 66, T - 1, lore="cathedral_sealed")
+    r.mark("checkpoint", 50, T - 1, "square_altar")
     # The portal: sealed until the Inquisition is gone (Brother Petros); then into the nave (Region 2).
     r.door(67, T - 5, 72, T, "cathedral_nave", "portal", requires="petros_defeated")
     r.mark("entry", 69, T - 1, name="nave_door")
@@ -195,6 +199,7 @@ def hill_street():
     r.street_props(0, 18, GY)
     r.street_props(70, 90, GY - 6, every=10)
     r.mark("enemy", 34, GY - 4, enemy="methuselah")
+    r.mark("checkpoint", 28, GY - 4, "hill_altar")
     r.mark("enemy", 78, GY - 7, enemy="deathHunter")
     return r
 
@@ -217,6 +222,7 @@ def bridge():
     r.gate(112, D - 5, 114, D, "dietrich_defeated")
     r.street_props(2, 110, D, every=14)
     r.mark("lore", 106, D - 1, lore="castle_gate_barred")
+    r.mark("checkpoint", 46, D - 1, "bridge_altar")
     r.mark("enemy", 60, D - 1, enemy="deathHunter")
     r.mark("enemy", 24, D - 1, enemy="thrall")
     r.mark("enemy", 96, D - 1, enemy="methuselah")

@@ -13,7 +13,7 @@
     "petros_defeated"
   ],
   "fastTravel": {
-    "_note": "Fast travel between altars (owner, 2026-10-16). An altar is a destination once you have prayed at it and the boss beyond its area is beaten (the area's flag). Stand at an unlocked altar and push up to travel.",
+    "_note": "Fast travel between altars (owner, 2026-10-16). An altar is a destination once you have prayed at it and the boss beyond its area is beaten (the area's flag). Stand at an unlocked altar and push up to travel. Altars sit about every 80-110 tiles of walking, with one just before every boss (owner, 2026-10-16).",
     "areas": {
       "town": "paula_defeated",
       "undercity": "petros_defeated",
@@ -21,6 +21,24 @@
       "fortress": "gyula_defeated"
     },
     "altars": [
+      {
+        "room": "istvan_station",
+        "id": "station_altar",
+        "area": "town",
+        "name": "Istvan Station"
+      },
+      {
+        "room": "old_town_lane",
+        "id": "lane_altar",
+        "area": "town",
+        "name": "Old Town Lane"
+      },
+      {
+        "room": "clock_alley",
+        "id": "alley_altar",
+        "area": "town",
+        "name": "Bellmakers' Alley"
+      },
       {
         "room": "market_square",
         "id": "fountain_altar",
@@ -34,10 +52,70 @@
         "name": "Market Square — the tavern"
       },
       {
+        "room": "cathedral_square",
+        "id": "square_altar",
+        "area": "town",
+        "name": "Cathedral Square — the terrace"
+      },
+      {
+        "room": "hill_street",
+        "id": "hill_altar",
+        "area": "town",
+        "name": "Castle Hill Street"
+      },
+      {
+        "room": "danube_bridge",
+        "id": "bridge_altar",
+        "area": "town",
+        "name": "The Danube Bridge"
+      },
+      {
+        "room": "ossuary",
+        "id": "ossuary_altar",
+        "area": "undercity",
+        "name": "The Ossuary — by the Reliquary"
+      },
+      {
+        "room": "hunters_crypt",
+        "id": "crypt_altar",
+        "area": "undercity",
+        "name": "Hunter's Crypt"
+      },
+      {
+        "room": "water_tunnels",
+        "id": "tunnels_altar",
+        "area": "undercity",
+        "name": "The Water Tunnels"
+      },
+      {
+        "room": "drowned_crypt",
+        "id": "drowned_altar",
+        "area": "undercity",
+        "name": "The Drowned Crypt"
+      },
+      {
         "room": "chapel_of_bones",
         "id": "chapel_altar",
         "area": "undercity",
         "name": "Chapel of Bones"
+      },
+      {
+        "room": "marchesa_ballroom",
+        "id": "ballroom_altar",
+        "area": "undercity",
+        "name": "The Ballroom"
+      },
+      {
+        "room": "count_cellars",
+        "id": "cellars_altar",
+        "area": "undercity",
+        "name": "The Count's Cellars"
+      },
+      {
+        "room": "cathedral_nave",
+        "id": "aisle_altar",
+        "area": "cathedral",
+        "name": "The Nave — the aisle"
       },
       {
         "room": "cathedral_nave",
@@ -56,6 +134,12 @@
         "id": "castle_altar",
         "area": "fortress",
         "name": "The Castle Gate"
+      },
+      {
+        "room": "great_hall",
+        "id": "hall_door_altar",
+        "area": "fortress",
+        "name": "The Great Hall — the doors"
       },
       {
         "room": "great_hall",

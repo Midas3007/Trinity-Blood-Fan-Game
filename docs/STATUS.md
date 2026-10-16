@@ -1,6 +1,6 @@
 # STATUS
 
-Last updated: 2026-10-16 (evening)
+Last updated: 2026-10-16 (night)
 
 ## Milestone tracker (CLAUDE.md Part 10)
 | # | Milestone | State |
@@ -26,7 +26,13 @@ Last updated: 2026-10-16 (evening)
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — the sword, travel, options, slots, hidden items (2026-10-16)
+## Done (latest) — ledge grab, more altars, smoother motion (2026-10-16, night)
+- **Ledge grab:** jump at a wall whose top is just out of reach and keep pushing toward it: Abel catches the edge and hangs. JUMP or stick up pulls him up; keep pushing toward the wall and he pulls up on his own; stick down or away lets go. The Crusnik can do it too. Reach is data (`src/data/player.json`, `ledge*`). The priest still can't reach the Crusnik-leap wall in the Chapel of Bones (a test checks it). For now the pose reuses the ladder-climb art.
+- **Altars:** 14 new ones, so there's one about every 80–110 tiles of walking, plus one just before every boss: Paula (Water Tunnels), Kämpfer (Ossuary, by the Reliquary gate), the Marchesa (Ballroom), Petros (Cellars), Dietrich (Nave, as before) and Gyula (Great Hall, as before). All of them are fast-travel stops under the same rules. 21 altars in total.
+- **Smoother motion and less flicker:** physics now runs at 240 steps a second instead of 60. Before, Abel moved 2 px one frame and 4 px the next while running, which made him and the scenery judder. Now each frame's step is even. The bot found no one-frame animation flips while running through 4 town rooms.
+- Verified: 214/214 tests, type-check, build. The bot saw a ledge grab and pull-up in Bellmakers' Alley. Bot boss runs still win: Paula and Kämpfer, no errors.
+
+## Done (earlier) — the sword, travel, options, slots, hidden items (2026-10-16)
 - **The Atoner's Blade:** a sword hidden at the far end of the Hunter's Crypt. It changes base Abel's moves:
   - a three-cut combo, an air slash and a low slash;
   - a new finisher, the sword execution (raise the blade, drive it through; heals a little).
@@ -162,6 +168,14 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 
 ## Blockers
 - **Music downloads blocked:** archive.org search now works, but its files are served from `*.archive.org` storage hosts (e.g. dn711007.ca.archive.org, ia800300.us.archive.org), which are still denied. Add `*.archive.org` (or `.archive.org`) to Allowed domains. Tracks are already chosen (see docs/audio-plan.md). Other sites (opengameart.org, incompetech.com, freepd.com, pixabay.com, freesound.org) are still denied. To allow them: in the session's cloud environment menu (title bar) → Edit → Network access → add those domains under Allowed domains (keep "Allow package managers" ticked). Steps: https://code.claude.com/docs/en/cloud-environments#network-access. Until then the game plays its own original pieces. Higgsfield: about 2 credits left (enough for one more image).
+
+## Owner must test (on phone) — ledges, altars, smoothness
+1. Bellmakers' Alley, just east of the start of the alley: find a wall about 4 tiles high and jump at it while holding toward it. Expected: if your jump falls short, Abel grabs the edge, hangs, then pulls up.
+2. While hanging, let go of the stick. Expected: he keeps hanging. JUMP pulls him up; stick down drops him.
+3. Chapel of Bones: try to reach the high doorway as the priest. Expected: it still can't be grabbed. As the Crusnik it works.
+4. Walk from Istvan Station to the Castle Gate. Expected: an altar every short stretch. Pray at each one.
+5. Before each boss (Paula, Kämpfer, the Marchesa, Petros), check that an altar sits just outside the arena. Die once, and you should come back right there.
+6. Run left and right in the town. Expected: Abel and the backgrounds slide evenly, with no stutter or flicker. Tell me anywhere that still flickers, with the room name.
 
 ## Owner must test (on phone) — sword, travel, options, slots
 1. Title: three slots. Your old game is slot I. Start a new game in slot II and check slot I is untouched.

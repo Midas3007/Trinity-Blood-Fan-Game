@@ -137,6 +137,12 @@ describe('Crusnik leap gate (Chapel of Bones -> Ballroom)', () => {
     expect(jumpHeight(crusnikTuning(playerTuning))).toBeGreaterThan(rise + 8);
   });
 
+  it('the priest cannot catch the top of the wall as a ledge either', () => {
+    // Highest ledge top the hands reach: head top at the jump's peak, plus the reach above the head.
+    const highestGrab = jumpHeight(playerTuning) + playerTuning.height + playerTuning.ledgeReachAbove;
+    expect(highestGrab).toBeLessThan(rise);
+  });
+
   it('nothing else in the chapel is a stepping stone up to it', () => {
     const oneways = chapel.oneways.filter((o) => o.y < floor && o.y > ledgeTop - TILE);
     expect(oneways).toEqual([]);

@@ -1,5 +1,5 @@
 {
- "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's or finisher's id (priest1/priest2/priest3, revolver), so each plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built. Extra visual keys (not player states): walk (slow run), pray (at an altar), climbStill (on a ladder, not moving). crusnikStates: the same keys for the Crusnik 40% form. Priest parry: the attack wind-up frame stands in for a guard pose. wingedStates: the 80% form's wings (final battle only) override these air states.",
+ "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's or finisher's id (priest1/priest2/priest3, revolver), so each plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built. Extra visual keys (not player states): walk (slow run), pray (at an altar), climbStill (on a ladder, not moving). crusnikStates: the same keys for the Crusnik 40% form. Priest parry: the attack wind-up frame stands in for a guard pose. wingedStates: the 80% form's wings (final battle only) override these air states. ledgeHang/ledgeClimb (hanging from and pulling up onto a ledge) reuse the ladder climb art until a dedicated pose exists.",
  "entity": "abel",
  "states": {
   "idle": {
@@ -69,6 +69,13 @@
   "parry": {
    "anim": "abel_priest2",
    "frame": 0
+  },
+  "ledgeHang": {
+   "anim": "abel_climb",
+   "frame": 0
+  },
+  "ledgeClimb": {
+   "anim": "abel_climb"
   }
  },
  "crusnikStates": {
@@ -136,6 +143,13 @@
   },
   "parry": {
    "anim": "abel_crusnik40_guard"
+  },
+  "ledgeHang": {
+   "anim": "abel_crusnik40_climb",
+   "frame": 0
+  },
+  "ledgeClimb": {
+   "anim": "abel_crusnik40_climb"
   }
  },
  "wingedStates": {

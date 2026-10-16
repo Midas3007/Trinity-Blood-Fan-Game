@@ -72,6 +72,36 @@ export class SimPlayer implements PlayerContext {
     this.climbing = false;
     this.vy = 0;
   }
+  /** A ledge top (y, negative is up) in reach while pushing toward it, or null. */
+  ledgeTop: number | null = null;
+  hanging = false;
+  pullUps = 0;
+  private regrabMs = 0;
+  /** Height of the floor (0 at the start; the ledge top after a pull-up). */
+  private floorY = 0;
+  get ledgeAhead(): boolean {
+    return this.ledgeTop !== null && this.moveX !== 0 && this.regrabMs === 0 && !this.onGround;
+  }
+  grabLedge(): void {
+    if (this.ledgeTop === null) return;
+    this.hanging = true;
+    this.climbing = true;
+    this.y = this.ledgeTop + this.tuning.height - this.tuning.ledgeHeadAbove;
+    this.vx = 0;
+    this.vy = 0;
+  }
+  pullUpLedge(): void {
+    if (this.ledgeTop === null) return;
+    this.hanging = false;
+    this.pullUps++;
+    this.floorY = this.ledgeTop;
+    this.y = this.ledgeTop;
+  }
+  releaseLedge(): void {
+    this.climbing = false;
+    if (this.hanging) this.regrabMs = this.tuning.ledgeRegrabMs;
+    this.hanging = false;
+  }
   drops = 0;
   dropThrough(): void {
     this.drops++;
@@ -135,7 +165,7 @@ export class SimPlayer implements PlayerContext {
   }
   /** Floor height under x: 0 before the ledge, far below after it. */
   private floorAt(x: number): number {
-    return x <= this.ledgeX ? 0 : 10_000;
+    return x <= this.ledgeX ? this.floorY : 10_000;
   }
   private airTopY = 0;
   private jumpPressedThisFrame = false;
@@ -175,6 +205,7 @@ export class SimPlayer implements PlayerContext {
     this.fallDistance = this.y - this.airTopY;
     this.timers.tick({ dtMs: DT, jumpPressed: this.jumpPressedThisFrame, onGround: this.onGround, velocityY: this.vy });
     this.fsm.update(DT);
+    this.regrabMs = Math.max(0, this.regrabMs - DT);
     if (this.crusnik.tick(DT)) this.form = 'priest';
     if (this.onGround) this.airTopY = this.y;
 

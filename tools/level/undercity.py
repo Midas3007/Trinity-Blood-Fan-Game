@@ -26,6 +26,7 @@ def crypt():
     r.ladder(23, 0, 15)
     r.mark("lever", 27, 14, flag="well_open")
     r.mark("lore", 20, 14, lore="well_rope")
+    r.mark("checkpoint", 40, 14, "crypt_altar")
     r.fill("terrain", 53, 14, 56, 15, "spikes")
     r.platform(64, 72, 10)
     r.prop("coffin", 40, 14, 22)
@@ -66,6 +67,7 @@ def ossuary():
     r.prop("bones", 30, 23, 16)
     r.prop("statue_saint", 84, 31, 48)
     r.mark("lore", 70, 14, lore="ossuary_epitaph")
+    r.mark("checkpoint", 8, 31, "ossuary_altar")                # just before the Forgotten Reliquary (Kampfer)
     r.mark("enemy", 50, 14, enemy="thrall")
     r.mark("enemy", 34, 23, enemy="thrall")
     r.mark("enemy", 54, 31, enemy="methuselah")
@@ -100,6 +102,7 @@ def water_tunnels():
     r.prop("column", 20, 14, 64)
     r.prop("column", 96, 14, 64)
     r.mark("enemy", 22, 14, enemy="thrall")
+    r.mark("checkpoint", 12, 14, "tunnels_altar")               # just before Sister Paula
     r.mark("enemy", 86, 14, enemy="methuselah")
     r.mark("enemy", 82, 8, enemy="bat")
     r.mark("enemy", 100, 14, enemy="boneRat")
@@ -143,6 +146,7 @@ def drowned():
     r.prop("coffin", 82, 19, 22)
     r.prop("statue_saint", 10, 14, 48)
     r.mark("lore", 84, 19, lore="drowned_ledger")
+    r.mark("checkpoint", 14, 14, "drowned_altar")
     r.mark("enemy", 80, 19, enemy="deathHunter")
     r.mark("enemy", 20, 10, enemy="fairy")
     r.mark("enemy", 70, 10, enemy="fairy")
@@ -180,6 +184,7 @@ def ballroom():
     r.platform(r.W - 18, r.W - 8, 9, "balcony")
     r.prop("chandelier", 45, 1, -72)
     r.mark("lore", 82, 14, lore="ballroom_invitation")
+    r.mark("checkpoint", 70, 14, "ballroom_altar")              # just before the Marchesa
     # The duel: the middle screen is the arena (walls rise when Abel steps in). Her defeat opens the west gate.
     r.mark("boss", 45, 14, boss="marchesa", arenaLeft=30 * 16, arenaRight=60 * 16, defeatFlag="marchesa_defeated",
            intro="marchesa_intro", outro="marchesa_outro")
@@ -194,6 +199,7 @@ def cellars():
     for x in (20, 24, 50, 54):
         r.mark("decor", x, 14, item="barrel")
     r.mark("lore", 10, 14, lore="cellar_crest")
+    r.mark("checkpoint", 85, 14, "cellars_altar")               # just before Brother Petros
     r.mark("enemy", 30, 14, enemy="boneRat")
     r.mark("enemy", 40, 14, enemy="boneRat")
     # Mini boss 3: Brother Petros, sent to take "the vampire priest" back to Rome in chains.

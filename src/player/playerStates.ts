@@ -23,6 +23,8 @@ export type PlayerStateKey =
   | 'crouchAttack'
   | 'finisher'
   | 'climb'
+  | 'ledgeHang'
+  | 'ledgeClimb'
   | 'heal'
   | 'transform'
   | 'lash'
@@ -67,6 +69,14 @@ export interface PlayerContext {
   setClimbing(on: boolean): void;
   /** Step off the top of the ladder onto the floor it leads to. */
   finishClimbAtTop(): void;
+  /** In the air, pushing toward a wall whose top is within the hands' reach (see src/player/ledge.ts). */
+  readonly ledgeAhead: boolean;
+  /** Catch that ledge: hang from it (no gravity, snapped to the wall). */
+  grabLedge(): void;
+  /** Finish the pull-up: stand on top of the ledge. */
+  pullUpLedge(): void;
+  /** Gravity back on; if still hanging, let go (a short wait before the next grab). */
+  releaseLedge(): void;
   /** Standing on a platform you can drop through. */
   readonly onOneway: boolean;
   /** Fall through the platform underfoot. */
@@ -200,6 +210,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       if (climbUp(ctx)) return 'climb'; // grab a ladder in mid-air
       if (ctx.timers.canJump) return 'jump'; // coyote jump after walking off a ledge
       if (ctx.onGround) return landingState(ctx);
+      if (ctx.ledgeAhead) return 'ledgeHang';
       if (ctx.attackPressed) return 'airAttack';
       if (ctx.abilityPressed && startersFor(ctx.form, ctx.weapon).ranged) return 'lash';
       return undefined;
@@ -384,6 +395,48 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     },
     exit(ctx) {
       ctx.setClimbing(false);
+    },
+  },
+
+  // Hanging from a ledge that was just out of reach. JUMP or stick up pulls up; keep holding toward it
+  // and Abel pulls up on his own; stick down or away lets go.
+  ledgeHang: {
+    enter(ctx) {
+      ctx.grabLedge();
+      ctx.timers.consumeJump();
+    },
+    update(ctx, _dtMs, stateMs) {
+      ctx.vx = 0;
+      ctx.vy = 0;
+      const t = ctx.tuning;
+      const away = ctx.moveX !== 0 && Math.sign(ctx.moveX) !== ctx.facing;
+      if (ctx.moveY >= t.crouchStickThreshold || away || ctx.dodgePressed) return 'fall';
+      if (ctx.timers.jumpBuffer > 0 || ctx.moveY <= -t.crouchStickThreshold) {
+        ctx.timers.consumeJump();
+        return 'ledgeClimb';
+      }
+      const toward = Math.sign(ctx.moveX) === ctx.facing;
+      if (toward && stateMs >= t.ledgeAutoPullMs) return 'ledgeClimb';
+      return undefined;
+    },
+    exit(ctx) {
+      ctx.releaseLedge();
+    },
+  },
+
+  ledgeClimb: {
+    enter(ctx) {
+      ctx.grabLedge();
+    },
+    update(ctx, _dtMs, stateMs) {
+      ctx.vx = 0;
+      ctx.vy = 0;
+      if (stateMs < ctx.tuning.ledgePullMs) return undefined;
+      ctx.pullUpLedge();
+      return ctx.moveX !== 0 ? 'run' : 'idle';
+    },
+    exit(ctx) {
+      ctx.releaseLedge();
     },
   },
 

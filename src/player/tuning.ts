@@ -32,6 +32,17 @@ export interface PlayerTuning {
   crawlSpeed: number;
   /** Ladder climbing speed (px/s). */
   climbSpeed: number;
+  /** Ledge grab: how far above/below the head a ledge top is caught, the gap allowed to the wall (px). */
+  ledgeReachAbove: number;
+  ledgeReachBelow: number;
+  ledgeReachGap: number;
+  /** Hanging: how far the head sits above the ledge top (px). */
+  ledgeHeadAbove: number;
+  /** Still holding toward the ledge after this long pulls up on its own; the pull-up takes ledgePullMs;
+   * after letting go, no new grab for ledgeRegrabMs (ms). */
+  ledgeAutoPullMs: number;
+  ledgePullMs: number;
+  ledgeRegrabMs: number;
   /** Holy water flasks: how many, health each restores, how long drinking takes and when the health arrives (ms). */
   flasks: number;
   flaskHeal: number;

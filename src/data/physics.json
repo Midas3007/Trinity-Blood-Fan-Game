@@ -1,5 +1,5 @@
 {
-  "_note": "World gravity applies to everything; the player adds its own rising/falling gravity on top (src/data/player.json).",
+  "_note": "World gravity applies to everything; the player adds its own rising/falling gravity on top (src/data/player.json). stepsPerSecond 240 (was 60): the fixed physics step divides evenly into 60, 120 and 240 Hz displays and is fine-grained at 90/144 Hz, so moving sprites no longer judder between one and two steps a frame.",
   "gravityY": 900,
-  "stepsPerSecond": 60
+  "stepsPerSecond": 240
 }

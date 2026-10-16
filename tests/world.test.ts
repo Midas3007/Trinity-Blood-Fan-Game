@@ -10,6 +10,24 @@ import { loreEntry } from '../src/ui/LorePanel';
 import world from '../src/data/world.json';
 
 describe('rooms (Tiled maps)', () => {
+  it('every altar stands on solid ground, clear of walls; every boss has an altar in its room or the room before', () => {
+    for (const r of Object.values(rooms)) {
+      for (const c of r.checkpoints) {
+        const ground = [...r.solids, ...r.oneways].some((s) => c.x > s.x && c.x < s.x + s.w && Math.abs(s.y - c.y) <= 1);
+        const inWall = r.solids.some((s) => c.x > s.x && c.x < s.x + s.w && c.y - 8 > s.y && c.y - 8 < s.y + s.h);
+        expect(ground && !inWall, `${r.id}: ${c.id}`).toBe(true);
+      }
+    }
+    // Owner: an altar just before every boss.
+    const before: Record<string, string> = { forgotten_reliquary: 'ossuary', star_chamber: 'great_hall' };
+    for (const r of Object.values(rooms)) {
+      if (!r.boss) continue;
+      const own = r.checkpoints.some((c) => c.x < r.boss!.arenaLeft || c.x > r.boss!.arenaRight);
+      const prev = before[r.id] ? rooms[before[r.id]!]!.checkpoints.length > 0 : false;
+      expect(own || prev, r.id).toBe(true);
+    }
+  });
+
   it('loads every room in src/data/rooms', () => {
     expect(Object.keys(rooms).length).toBeGreaterThanOrEqual(5);
     expect(rooms[START.room]).toBeDefined();

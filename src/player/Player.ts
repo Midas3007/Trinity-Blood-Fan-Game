@@ -16,6 +16,7 @@ import { gravityFor } from './movement';
 import { playerStates, postureFor, type PlayerContext, type PlayerStateKey, type Posture } from './playerStates';
 import { playerTuning, type PlayerTuning } from './tuning';
 import { PlayerView, type VisualKey } from './PlayerView';
+import { findLedge, hangCentre, standCentre, type Ledge } from './ledge';
 import { FinisherRunner } from '../combat/FinisherRunner';
 import { StrengthBuff } from '../combat/StrengthBuff';
 import { chooseFinisher, type AbelForm, type FinisherDef, type FinisherTarget } from '../combat/finisherData';
@@ -33,6 +34,8 @@ const DROP_NUDGE = 60;
 /** The floor at a ladder's top is one tile above the ladder's first tile; climbing down starts this far under it (px). */
 const LADDER_TOP_OFFSET = 16;
 const LADDER_STEP_DOWN = 6;
+/** After a pull-up, stand this far in from the ledge edge (px). */
+const LEDGE_STEP_IN = 2;
 /** Below this fraction of run speed the walk animation plays instead of the run. */
 const WALK_LOOK_FRACTION = 0.6;
 /** Blink period while invulnerable after being hurt (ms). */
@@ -439,6 +442,56 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.vy = 0;
   }
 
+  /** The ledge being held (kept from the grab through the pull-up). */
+  private ledge: Ledge | null = null;
+  /** ms before another ledge can be caught (after letting go). */
+  private ledgeRegrabMs = 0;
+
+  private ledgeToward(dir: 1 | -1): Ledge | null {
+    if (this.height < this.tuning.height) return null;
+    const w = this.tuning.width;
+    return findLedge(this.x, this.sprite.y - this.height / 2, w, this.height, dir, this.solids, this.tuning);
+  }
+
+  get ledgeAhead(): boolean {
+    if (this.ledgeRegrabMs > 0 || this.moveX === 0 || this.winged) return false;
+    return this.ledgeToward(this.moveX > 0 ? 1 : -1) !== null;
+  }
+
+  grabLedge(): void {
+    if (this.moveX !== 0) this.ledge = this.ledgeToward(this.moveX > 0 ? 1 : -1) ?? this.ledge;
+    const l = this.ledge;
+    if (!l) return;
+    this.facing = l.dir;
+    this.body.setAllowGravity(false);
+    const at = hangCentre(l, this.tuning.width, this.height, this.tuning.ledgeHeadAbove);
+    this.moveBodyTo(at.x, at.y);
+  }
+
+  pullUpLedge(): void {
+    const l = this.ledge;
+    if (!l) return;
+    this.ledge = null;
+    const at = standCentre(l, this.tuning.width, this.height, LEDGE_STEP_IN);
+    this.moveBodyTo(at.x, at.y);
+    this.airTopY = at.y;
+  }
+
+  releaseLedge(): void {
+    this.body.setAllowGravity(true);
+    if (this.ledge) this.ledgeRegrabMs = this.tuning.ledgeRegrabMs;
+  }
+
+  /** Snap the body somewhere without Arcade dragging it back (same trick as setClimbing). */
+  private moveBodyTo(x: number, y: number): void {
+    this.sprite.setPosition(x, y);
+    this.body.updateFromGameObject();
+    this.body.prev.copy(this.body.position);
+    this.body.prevFrame.copy(this.body.position);
+    this.vx = 0;
+    this.vy = 0;
+  }
+
   /** Walking into a low ledge (a stair step): lift onto it if there is room. */
   private stepUp(): void {
     if (!this.onGround || this.moveX === 0) return;
@@ -516,6 +569,7 @@ export class Player implements PlayerContext, PlayerCombatant {
     if (!this.winged && this.crusnik.tick(dtMs)) this.setForm('priest');
     if (this.fsm.current === 'run' || this.fsm.current === 'idle') this.stepUp();
     this.dropMs = Math.max(0, this.dropMs - dtMs);
+    this.ledgeRegrabMs = Math.max(0, this.ledgeRegrabMs - dtMs);
     this.blinkMs = Math.max(0, this.blinkMs - dtMs);
     const blinkOff = this.blinkMs > 0 && Math.floor(this.blinkMs / BLINK_MS) % 2 === 0;
     this.alpha = blinkOff ? 0.2 : this.invulnerable ? INVULNERABLE_ALPHA : 1;

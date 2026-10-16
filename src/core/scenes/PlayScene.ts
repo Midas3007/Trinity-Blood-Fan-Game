@@ -155,6 +155,9 @@ export class PlayScene extends Phaser.Scene {
   /** Feet position for the player at the start of this room. */
   private spawnPoint(): { x: number; y: number; facing: 1 | -1; vx?: number; vy?: number } {
     const r = this.roomData;
+    // Test mode only: ?test&at=x,feetY starts at that spot (mechanics playtests).
+    const at = testHookEnabled() ? new URLSearchParams(location.search).get('at')?.split(',').map(Number) : undefined;
+    if (at && at.length === 2 && at.every(Number.isFinite)) return { x: at[0]!, y: at[1]!, facing: 1 };
     const w = this.start.world;
     if (w) {
       // Same world position as when we left the last room, nudged inside this one; feet = centre + half height.

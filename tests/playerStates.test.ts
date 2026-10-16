@@ -316,6 +316,66 @@ describe('ladders', () => {
   });
 });
 
+describe('ledges', () => {
+  /** Jump toward a wall whose top is just out of reach; it comes into the hands on the way down. */
+  function toLedge(p: SimPlayer): void {
+    p.run(5);
+    p.step({ moveX: 1, jump: true });
+    for (let i = 0; i < 120 && p.state !== 'fall'; i++) p.step({ moveX: 1, jump: true });
+    p.ledgeTop = p.y - 10;
+    p.step({ moveX: 1, jump: true });
+  }
+
+  it('falling past a ledge while pushing toward it catches it and hangs still', () => {
+    const p = new SimPlayer();
+    toLedge(p);
+    expect(p.state).toBe('ledgeHang');
+    expect(p.climbing).toBe(true); // no gravity while hanging
+    const y = p.y;
+    p.run(5, { moveX: 0 });
+    expect(p.state).toBe('ledgeHang');
+    expect(p.y).toBe(y);
+  });
+
+  it('JUMP pulls up onto the ledge after the pull-up time', () => {
+    const p = new SimPlayer();
+    toLedge(p);
+    p.step({});
+    p.step({ jump: true });
+    expect(p.state).toBe('ledgeClimb');
+    p.run(framesFor(p.tuning.ledgePullMs) + 1);
+    expect(p.pullUps).toBe(1);
+    expect(p.state).toBe('idle');
+    expect(p.climbing).toBe(false);
+    expect(p.y).toBe(p.ledgeTop);
+  });
+
+  it('holding toward the ledge pulls up on its own', () => {
+    const p = new SimPlayer();
+    toLedge(p);
+    p.run(framesFor(p.tuning.ledgeAutoPullMs + p.tuning.ledgePullMs) + 2, { moveX: 1 });
+    expect(p.pullUps).toBe(1);
+  });
+
+  it('stick down lets go: falls, and cannot re-grab at once', () => {
+    const p = new SimPlayer();
+    toLedge(p);
+    p.step({ moveY: 1 });
+    expect(p.state).toBe('fall');
+    expect(p.climbing).toBe(false);
+    p.step({ moveX: 1 });
+    expect(p.state).toBe('fall');
+  });
+
+  it('no ledge in reach: the jump just falls back down', () => {
+    const p = new SimPlayer();
+    p.run(5);
+    p.run(60, { moveX: 1, jump: true });
+    expect(p.pullUps).toBe(0);
+    expect(['run', 'idle', 'fall', 'jump']).toContain(p.state);
+  });
+});
+
 describe('holy water', () => {
   it('HEAL drinks one flask: stands still, health arrives part-way, then back to idle', () => {
     const p = new SimPlayer();
