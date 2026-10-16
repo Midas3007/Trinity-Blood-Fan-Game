@@ -93,6 +93,7 @@ class AudioManager {
   private voiceEl: HTMLAudioElement | null = null;
   private on = true;
   private installed = false;
+  private out: AudioNode | null = null;
 
   constructor() {
     try {
@@ -141,6 +142,7 @@ class AudioManager {
         return g;
       };
       this.ctx = ctx;
+      this.out = comp;
       this.musicBus = bus(LEVELS.music);
       this.sfxBus = bus(LEVELS.sfx);
       this.voiceBus = bus(LEVELS.voice);
@@ -179,6 +181,14 @@ class AudioManager {
     if (this.player?.key === key) return;
     this.player?.stop();
     this.player = new MusicPlayer(this.ctx, this.musicBus, key, def);
+  }
+
+  /** Test mode only: everything the game plays, as a stream (the recorded playthrough captures it). */
+  capture(): MediaStream | null {
+    if (!this.ctx || !this.out) return null;
+    const dest = this.ctx.createMediaStreamDestination();
+    this.out.connect(dest);
+    return dest.stream;
   }
 
   sfx(name: SfxName): void {

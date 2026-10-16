@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { Codex } from '../../ui/Codex';
+import { beastFlag } from '../../ui/codexData';
 import { audio } from '../../systems/audio/AudioManager';
 import { musicFor } from '../../systems/audio/music';
 import { COLORS, GAME_HEIGHT, GAME_WIDTH, SCENES } from '../constants';
@@ -112,6 +114,7 @@ export class PlayScene extends Phaser.Scene {
   /** The prayer ceremony at an altar (ms elapsed and which altar), or null. */
   private praying: { ms: number; checkpoint: string } | null = null;
   private pauseMenu!: PauseMenu;
+  private codex!: Codex;
   private shotFlash!: ShotFlash;
   private banner!: Banner;
   private boltFx!: Phaser.GameObjects.Graphics;
@@ -164,6 +167,8 @@ export class PlayScene extends Phaser.Scene {
 
   create(): void {
     this.roomData = getRoom(this.start.room);
+    // Test mode only: ?test&flags=a,b starts with story flags set (recorded playthrough chapters).
+    if (testHookEnabled()) for (const f of (new URLSearchParams(location.search).get('flags') ?? '').split(',')) if (f) gameState.setFlag(f);
     gameState.visit(this.roomData.id);
     const r = this.roomData;
     const { width, height } = r;
@@ -241,6 +246,12 @@ export class PlayScene extends Phaser.Scene {
       gameState.setFlag('seen:opening');
       this.time.delayedCall(50, () => this.playCutscene('opening', () => undefined));
     }
+    // Test mode only: ?test&scene=<id> plays a cutscene when the room starts (once per page).
+    const testScene = testHookEnabled() ? new URLSearchParams(location.search).get('scene') : null;
+    if (testScene && !gameState.hasFlag(`seen:${testScene}`)) {
+      gameState.setFlag(`seen:${testScene}`);
+      this.time.delayedCall(50, () => this.playCutscene(testScene, () => undefined));
+    }
     if (r.boss && !gameState.hasFlag(r.boss.defeatFlag)) {
       this.arena = new BossArena(this, r, solids, solidRects, this.flyers, {
         playCutscene: (id, done) => this.playCutscene(id, done),
@@ -311,10 +322,15 @@ export class PlayScene extends Phaser.Scene {
         saveStore.save(gameState.toSave(Date.now()));
         this.scene.start(SCENES.menu);
       },
+      () => this.setPaused('codex'),
     );
+    this.codex = new Codex(this, (f) => gameState.hasFlag(f), () => this.setPaused('pause'));
     new CornerButtons(this, () => this.setPaused(this.map.open ? null : 'map'), () => this.setPaused(this.pauseMenu.open ? null : 'pause'));
     this.input.keyboard?.on('keydown-M', () => this.setPaused(this.map.open ? null : 'map'));
-    this.input.keyboard?.on('keydown-ESC', () => this.setPaused(this.pauseMenu.open || this.map.open ? null : 'pause'));
+    this.input.keyboard?.on('keydown-ESC', () => {
+      if (this.codex.open) this.codex.close();
+      else this.setPaused(this.pauseMenu.open || this.map.open ? null : 'pause');
+    });
     this.lorePanel = new LorePanel(this);
     this.cameras.main.fadeIn(FADE_MS);
     const title = this.add
@@ -361,6 +377,9 @@ export class PlayScene extends Phaser.Scene {
     });
     this.bus.on('enemy:died', ({ id }) => {
       this.player.crusnik.gain(this.bloodOf(id)?.kill ?? 0);
+      // The Bestiary: the first kill of a kind writes its page.
+      const type = this.enemies.active.find((en) => en.id === id)?.cfg.type ?? this.flyers.typeOf(id);
+      if (type) gameState.setFlag(beastFlag(type));
       audio.sfx('death');
     });
     this.bus.on('combat:parry', ({ x, y }) => {
@@ -403,7 +422,7 @@ export class PlayScene extends Phaser.Scene {
     const dt = Math.min(deltaMs, MAX_FRAME_MS);
     audio.music(musicFor({ room: this.roomData.id, boss: this.arena?.active ? this.roomData.boss?.id : null, cutscene: this.cutsceneId }));
     if (this.cutsceneOn) return;
-    if (this.map.open || this.pauseMenu.open) {
+    if (this.map.open || this.pauseMenu.open || this.codex.open) {
       this.map.update(dt);
       return;
     }
@@ -594,6 +613,7 @@ export class PlayScene extends Phaser.Scene {
   /** The boss fell and her last words are done: open the way on and save. */
   /** A boss fell (or yielded) and the outro played: open the way, grant the relic, show the Latin card, save. */
   private bossDefeated(flag: string, relicId: string): void {
+    if (this.roomData.boss) gameState.setFlag(beastFlag(this.roomData.boss.id));
     this.runtime.open(flag);
     this.arena = null;
     const r = relic(relicId);
@@ -682,10 +702,12 @@ export class PlayScene extends Phaser.Scene {
     saveStore.save(gameState.toSave(Date.now()));
   }
 
-  /** Open the map or pause menu (gameplay and physics stop), or close both (null). */
-  private setPaused(what: 'map' | 'pause' | null): void {
+  /** Open the map, the pause menu or the Codex (gameplay and physics stop), or close them all (null). */
+  private setPaused(what: 'map' | 'pause' | 'codex' | null): void {
     this.map.hide();
     this.pauseMenu.hide();
+    this.codex.hide();
+    if (what === 'codex') this.codex.show();
     if (what === 'map') this.map.show(allRooms, (id) => gameState.hasVisited(id), (room, id) => gameState.altarUsed(room, id), this.roomData, this.player.x, this.player.y);
     if (what === 'pause') this.pauseMenu.show();
     if (what) {
@@ -722,7 +744,7 @@ export class PlayScene extends Phaser.Scene {
       fps: this.game.loop.actualFps,
       room: this.roomData.id,
       flags: gameState.toSave(0).flags,
-      paused: this.pauseMenu.open ? "pause" : this.map.open ? "map" : null,
+      paused: this.pauseMenu.open ? "pause" : this.map.open ? "map" : this.codex.open ? "codex" : null,
       checkpoint: gameState.checkpoint,
       player: {
         state: p.state,
@@ -738,6 +760,10 @@ export class PlayScene extends Phaser.Scene {
         form: p.form,
         parry: p.parryOpen,
         crusnik: p.crusnik.fraction,
+        crusnikReady: p.crusnik.ready,
+        winged: p.winged,
+        maxHp: p.health.max,
+        flasks: p.flasks,
         strength: p.damageMultiplier,
         // For playtest bots: is there no floor a short way ahead (a pit or hole)?
         gapAhead: !this.roomData.solids.concat(this.roomData.oneways).some((g) => {
@@ -746,6 +772,7 @@ export class PlayScene extends Phaser.Scene {
         }),
       },
       music: audio.current,
+      cutscene: this.cutsceneId,
       enemies: this.enemies.active.map((e) => ({ type: e.cfg.type, state: e.state, view: e.viewLabel, x: e.x, y: e.y, hp: e.health.hp })),
       dummies: this.dummies.map((d) => ({ x: d.x, hp: d.health.hp, alive: d.alive })),
       boss: this.arena

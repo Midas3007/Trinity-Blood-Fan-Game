@@ -163,6 +163,11 @@ export class FlyerManager {
     if (cfg) this.flyers.push(new Flyer(this.scene, new FlyerBrain(cfg, x, y)));
   }
 
+  /** The kind of creature with this id (for the Bestiary), if it is one of ours. */
+  typeOf(id: number): string | null {
+    return this.flyers.find((f) => f.id === id)?.brain.cfg.type ?? null;
+  }
+
   get targets(): Damageable[] {
     return this.flyers.filter((f) => f.alive);
   }

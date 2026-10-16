@@ -5,20 +5,20 @@ import { audio } from '../systems/audio/AudioManager';
 
 const DEPTH = 1500;
 const PANEL_W = 190;
-const PANEL_H = 158;
+const PANEL_H = 188;
 const CY = GAME_HEIGHT / 2;
 
 function soundLabel(): string {
   return `Sound: ${audio.enabled ? 'on' : 'off'}`;
 }
 
-/** Pause panel: an ornate gothic frame with Resume, the sound switch (saved) and Return to title. */
+/** Pause panel: an ornate gothic frame with Resume, the Codex (bestiary and lore), the sound switch (saved) and Return to title. */
 export class PauseMenu {
   private readonly parts: Phaser.GameObjects.GameObject[] = [];
   private readonly buttons: GothicButton[];
   private shown = false;
 
-  constructor(scene: Phaser.Scene, onResume: () => void, onTitle: () => void) {
+  constructor(scene: Phaser.Scene, onResume: () => void, onTitle: () => void, onCodex: () => void) {
     const cx = GAME_WIDTH / 2;
     // Dim the game; the dimmer also swallows taps so nothing reaches the controls underneath.
     const dim = scene.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0b0a10, 0.72).setOrigin(0).setInteractive();
@@ -50,11 +50,12 @@ export class PauseMenu {
     }
     this.buttons = [
       new GothicButton(scene, cx, t + 66, 'Resume', onResume, 140, 22, DEPTH + 1),
-      new GothicButton(scene, cx, t + 96, soundLabel(), () => {
+      new GothicButton(scene, cx, t + 96, 'Bestiary & Lore', onCodex, 140, 22, DEPTH + 1),
+      new GothicButton(scene, cx, t + 126, soundLabel(), () => {
         audio.setEnabled(!audio.enabled);
-        this.buttons[1]?.setText(soundLabel());
+        this.buttons[2]?.setText(soundLabel());
       }, 140, 22, DEPTH + 1),
-      new GothicButton(scene, cx, t + 126, 'Return to title', onTitle, 140, 22, DEPTH + 1),
+      new GothicButton(scene, cx, t + 156, 'Return to title', onTitle, 140, 22, DEPTH + 1),
     ];
     this.hide();
   }
