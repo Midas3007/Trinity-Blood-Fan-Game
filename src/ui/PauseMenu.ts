@@ -1,13 +1,18 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { GOTHIC, GothicButton } from './GothicButton';
+import { audio } from '../systems/audio/AudioManager';
 
 const DEPTH = 1500;
 const PANEL_W = 190;
-const PANEL_H = 128;
+const PANEL_H = 158;
 const CY = GAME_HEIGHT / 2;
 
-/** Pause panel: an ornate gothic frame with Resume and Return to title. */
+function soundLabel(): string {
+  return `Sound: ${audio.enabled ? 'on' : 'off'}`;
+}
+
+/** Pause panel: an ornate gothic frame with Resume, the sound switch (saved) and Return to title. */
 export class PauseMenu {
   private readonly parts: Phaser.GameObjects.GameObject[] = [];
   private readonly buttons: GothicButton[];
@@ -45,7 +50,11 @@ export class PauseMenu {
     }
     this.buttons = [
       new GothicButton(scene, cx, t + 66, 'Resume', onResume, 140, 22, DEPTH + 1),
-      new GothicButton(scene, cx, t + 96, 'Return to title', onTitle, 140, 22, DEPTH + 1),
+      new GothicButton(scene, cx, t + 96, soundLabel(), () => {
+        audio.setEnabled(!audio.enabled);
+        this.buttons[1]?.setText(soundLabel());
+      }, 140, 22, DEPTH + 1),
+      new GothicButton(scene, cx, t + 126, 'Return to title', onTitle, 140, 22, DEPTH + 1),
     ];
     this.hide();
   }

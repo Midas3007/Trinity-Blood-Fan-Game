@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { audio } from '../../systems/audio/AudioManager';
+import { musicFor } from '../../systems/audio/music';
 import { GAME_HEIGHT, GAME_WIDTH, SCENES } from '../constants';
 import { DialogueBox } from '../../ui/DialogueBox';
 import { cutscene, cutsceneImages, type CutsceneActor, type CutsceneData, type CutscenePanel, type PanelLayout } from '../cutscenes';
@@ -76,6 +78,8 @@ export class CutsceneScene extends Phaser.Scene {
   create(): void {
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x050408).setOrigin(0);
     this.dialogue = new DialogueBox(this);
+    this.dialogue.onLine = (line) => audio.voice(line.voice);
+    audio.music(musicFor({ cutscene: this.id }));
     this.caption = this.add
       .text(GAME_WIDTH / 2, 10, '', { fontFamily: 'serif', fontSize: '10px', color: '#0b0a10', backgroundColor: '#eadfc4', padding: { x: 6, y: 3 } })
       .setOrigin(0.5, 0)
@@ -180,6 +184,7 @@ export class CutsceneScene extends Phaser.Scene {
   private finish(): void {
     if (this.ending) return;
     this.ending = true;
+    audio.stopVoice();
     this.cameras.main.fadeOut(300, 0, 0, 0);
     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
       this.game.events.emit(`cutscene-done:${this.id}`);

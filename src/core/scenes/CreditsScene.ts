@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { audio } from '../../systems/audio/AudioManager';
+import { music } from '../../systems/audio/music';
 import credits from '../../data/credits.json';
 import { GAME_HEIGHT, GAME_WIDTH, SCENES } from '../constants';
 import { cutscene } from '../cutscenes';
@@ -17,6 +19,7 @@ export class CreditsScene extends Phaser.Scene {
   }
 
   create(): void {
+    audio.music(music.credits);
     this.done = false;
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x050408).setOrigin(0);
     const lines = (credits as { lines: string[] }).lines;

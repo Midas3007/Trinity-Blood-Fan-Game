@@ -1,0 +1,47 @@
+{
+  "_note": "Which piece plays where (owner: different songs for scenes, fights and environments). Every track is an original procedural piece played by src/systems/audio (composer.ts). A track with a 'file' (public/assets/audio/music/<file>) plays that recording instead, once it exists; sources and licences: docs/audio-plan.md. Degrees are 0-based scale steps; scales: minor, harmonic, phrygian, dorian.",
+  "tracks": {
+    "title":      { "name": "Nocturne for the Atoner",     "root": 50, "scale": "minor",    "bpm": 58,  "beats": 4, "progression": [0, 5, 3, 4],       "voice": "organ",       "arp": false, "melody": true,  "drums": false, "seed": 11, "gain": 0.5 },
+    "streets":    { "name": "Rain on Istvan",              "root": 57, "scale": "minor",    "bpm": 84,  "beats": 4, "progression": [0, 5, 2, 6],       "voice": "harpsichord", "arp": true,  "melody": true,  "drums": false, "seed": 21, "gain": 0.42 },
+    "undercity":  { "name": "Beneath the Pavements",       "root": 49, "scale": "phrygian", "bpm": 52,  "beats": 4, "progression": [0, 1, 0, 6],       "voice": "choir",       "arp": false, "melody": false, "drums": false, "seed": 31, "gain": 0.45, "bells": true },
+    "ballroom":   { "name": "Valse for an Empty Ballroom", "root": 55, "scale": "minor",    "bpm": 108, "beats": 3, "progression": [0, 3, 4, 0, 5, 3, 4, 4], "voice": "strings", "arp": true, "melody": true, "drums": false, "seed": 41, "gain": 0.42 },
+    "cathedral":  { "name": "Kyrie of the Nave",           "root": 52, "scale": "dorian",   "bpm": 50,  "beats": 4, "progression": [0, 3, 6, 0],       "voice": "choir",       "arp": false, "melody": true,  "drums": false, "seed": 51, "gain": 0.45 },
+    "fortress":   { "name": "The Count's Ramparts",        "root": 47, "scale": "harmonic", "bpm": 72,  "beats": 4, "progression": [0, 5, 3, 4],       "voice": "organ",       "arp": true,  "melody": false, "drums": true,  "seed": 61, "gain": 0.45 },
+    "star":       { "name": "The Star of Sorrow",          "root": 54, "scale": "harmonic", "bpm": 60,  "beats": 4, "progression": [0, 5, 1, 4],       "voice": "choir",       "arp": false, "melody": true,  "drums": false, "seed": 71, "gain": 0.45, "bells": true },
+    "fight_paula":    { "name": "Sister of the Quiet Knife", "root": 48, "scale": "harmonic", "bpm": 132, "beats": 4, "progression": [0, 0, 5, 4],     "voice": "harpsichord", "arp": true,  "melody": true,  "drums": true,  "seed": 81, "gain": 0.45 },
+    "fight_kampfer":  { "name": "Dies Sanguinis",            "root": 50, "scale": "minor",    "bpm": 140, "beats": 4, "progression": [0, 6, 5, 4],     "voice": "organ",       "arp": true,  "melody": true,  "drums": true,  "seed": 91, "gain": 0.48 },
+    "fight_marchesa": { "name": "Danse of the Masked Lady",  "root": 57, "scale": "harmonic", "bpm": 168, "beats": 3, "progression": [0, 3, 4, 0, 5, 1, 4, 4], "voice": "strings", "arp": true, "melody": true, "drums": true, "seed": 101, "gain": 0.45 },
+    "fight_petros":   { "name": "The Cross-Knight",          "root": 52, "scale": "phrygian", "bpm": 138, "beats": 4, "progression": [0, 1, 0, 6],     "voice": "organ",       "arp": true,  "melody": true,  "drums": true,  "seed": 111, "gain": 0.48 },
+    "fight_dietrich": { "name": "Marionette Waltz",          "root": 53, "scale": "minor",    "bpm": 126, "beats": 3, "progression": [0, 4, 5, 4],     "voice": "bells",       "arp": true,  "melody": true,  "drums": true,  "seed": 121, "gain": 0.42 },
+    "fight_gyula":    { "name": "Eighty Percent",            "root": 49, "scale": "harmonic", "bpm": 116, "beats": 4, "progression": [0, 5, 3, 4, 0, 1, 6, 4], "voice": "organ", "arp": true, "melody": true, "drums": true, "seed": 131, "gain": 0.5, "choir": true },
+    "scene_sad":      { "name": "Requiem for the Fallen",    "root": 46, "scale": "minor",    "bpm": 56,  "beats": 4, "progression": [0, 3, 5, 4],     "voice": "strings",     "arp": false, "melody": true,  "drums": false, "seed": 141, "gain": 0.42 },
+    "scene_tense":    { "name": "Whispers in the Vestry",    "root": 43, "scale": "phrygian", "bpm": 70,  "beats": 4, "progression": [0, 1, 0, 1],     "voice": "organ",       "arp": false, "melody": false, "drums": true,  "seed": 151, "gain": 0.42 },
+    "scene_awaken":   { "name": "Nanomachine",               "root": 50, "scale": "harmonic", "bpm": 96,  "beats": 4, "progression": [0, 1, 0, 4],     "voice": "choir",       "arp": true,  "melody": false, "drums": true,  "seed": 161, "gain": 0.48 },
+    "scene_dawn":     { "name": "Dawn over the Danube",      "root": 50, "scale": "dorian",   "bpm": 60,  "beats": 4, "progression": [0, 3, 6, 4],     "voice": "choir",       "arp": true,  "melody": true,  "drums": false, "seed": 171, "gain": 0.45 },
+    "scene_teaser":   { "name": "A Rose in Shadow",          "root": 54, "scale": "phrygian", "bpm": 48,  "beats": 4, "progression": [0, 1, 6, 0],     "voice": "bells",       "arp": false, "melody": true,  "drums": false, "seed": 181, "gain": 0.42 }
+  },
+  "menu": "title",
+  "credits": "scene_dawn",
+  "rooms": {
+    "istvan_station": "streets", "hill_street": "streets", "market_square": "streets", "old_town_lane": "streets",
+    "clock_alley": "streets", "cathedral_square": "streets", "danube_bridge": "streets", "long_stair": "streets",
+    "sewer_shaft": "undercity", "water_tunnels": "undercity", "ossuary": "undercity", "drowned_crypt": "undercity",
+    "hunters_crypt": "undercity", "chapel_of_bones": "undercity", "forgotten_reliquary": "undercity", "count_cellars": "undercity",
+    "marchesa_ballroom": "ballroom",
+    "cathedral_nave": "cathedral", "bell_tower": "cathedral",
+    "castle_gate": "fortress", "great_hall": "fortress",
+    "star_chamber": "star"
+  },
+  "defaultRoom": "streets",
+  "bosses": { "paula": "fight_paula", "kampfer": "fight_kampfer", "marchesa": "fight_marchesa", "petros": "fight_petros", "dietrich": "fight_dietrich", "gyula": "fight_gyula" },
+  "cutscenes": {
+    "opening": "streets",
+    "paula_intro": "scene_tense", "paula_outro": "scene_sad",
+    "kampfer_intro": "scene_tense", "kampfer_awakening": "scene_awaken", "kampfer_outro": "scene_sad",
+    "marchesa_intro": "ballroom", "marchesa_outro": "scene_sad",
+    "petros_intro": "scene_tense", "petros_outro": "scene_tense",
+    "dietrich_intro": "scene_tense", "dietrich_unmasked": "scene_awaken", "dietrich_outro": "scene_sad",
+    "gyula_intro": "star", "gyula_wings": "scene_awaken", "gyula_outro": "scene_sad",
+    "ending": "scene_dawn", "teaser": "scene_teaser"
+  }
+}

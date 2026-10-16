@@ -24,6 +24,9 @@ export class DialogueBox {
   private ms = 0;
   private onDone: (() => void) | null = null;
 
+  /** Called as each line appears (cutscenes play its recorded voice). */
+  onLine: ((line: DialogueLine) => void) | null = null;
+
   constructor(scene: Phaser.Scene) {
     const y = GAME_HEIGHT - BOX_H - 8;
     this.bg = scene.add.rectangle(16, y, GAME_WIDTH - 32, BOX_H, 0x0b0a10, 0.9).setOrigin(0).setStrokeStyle(1, 0xc4a04a);
@@ -46,6 +49,7 @@ export class DialogueBox {
     this.ms = 0;
     this.onDone = onDone;
     for (const o of [this.bg, this.speaker, this.body, this.hint]) o.setVisible(true);
+    this.started();
     this.render();
   }
 
@@ -67,7 +71,13 @@ export class DialogueBox {
       done?.();
       return;
     }
+    this.started();
     this.render();
+  }
+
+  private started(): void {
+    const line = this.lines[this.index];
+    if (line) this.onLine?.(line);
   }
 
   update(dtMs: number): void {

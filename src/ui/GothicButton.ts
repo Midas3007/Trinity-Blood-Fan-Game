@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { audio } from '../systems/audio/AudioManager';
 
 /** Colours shared by the gothic menu pieces (title, pause). */
 export const GOTHIC = {
@@ -60,7 +61,10 @@ export class GothicButton {
       const was = this.down;
       this.down = false;
       this.draw(GOTHIC.plate);
-      if (was && this.zone.visible) onPress();
+      if (was && this.zone.visible) {
+        audio.sfx('ui');
+        onPress();
+      }
     });
   }
 

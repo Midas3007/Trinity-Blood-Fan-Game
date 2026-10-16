@@ -44,6 +44,14 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,svg,png,json,webmanifest}'],
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         cleanupOutdatedCaches: true,
+        // Music and voices are not precached (size); each file is cached the first time it plays, for offline play.
+        runtimeCaching: [
+          {
+            urlPattern: /\/assets\/audio\/.*\.mp3$/,
+            handler: 'CacheFirst',
+            options: { cacheName: 'audio', expiration: { maxEntries: 80 }, cacheableResponse: { statuses: [200] }, rangeRequests: true },
+          },
+        ],
       },
     }),
   ],

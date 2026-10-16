@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { audio } from '../../systems/audio/AudioManager';
+import { music } from '../../systems/audio/music';
 import { COLORS, FAN_NOTICE, GAME_HEIGHT, GAME_WIDTH, SCENES, TITLE_ART_KEY } from '../constants';
 import { gameState } from '../../systems/GameState';
 import { saveStore } from '../../systems/save/SaveStore';
@@ -15,6 +17,7 @@ export class MenuScene extends Phaser.Scene {
   }
 
   create(): void {
+    audio.music(music.menu);
     const hasArt = this.textures.exists(TITLE_ART_KEY);
     if (hasArt) this.add.image(0, 0, TITLE_ART_KEY).setOrigin(0, 0);
     const cx = hasArt ? TITLE_X_WITH_ART : GAME_WIDTH / 2;

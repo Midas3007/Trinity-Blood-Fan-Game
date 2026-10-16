@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import { audio } from '../../systems/audio/AudioManager';
+import { musicFor } from '../../systems/audio/music';
 import { COLORS, GAME_HEIGHT, GAME_WIDTH, SCENES } from '../constants';
 import { Player } from '../../player/Player';
 import { ActionState } from '../../systems/input/ActionState';
@@ -269,6 +271,7 @@ export class PlayScene extends Phaser.Scene {
     this.hud.setHealth(this.player.health.fraction);
     this.hud.setFlasks(this.player.flasks);
     this.player.onHealed = () => {
+      audio.sfx('heal');
       this.hud.setHealth(this.player.health.fraction);
       this.hud.setFlasks(this.player.flasks);
     };
@@ -292,6 +295,7 @@ export class PlayScene extends Phaser.Scene {
       .setVisible(false);
     this.player.onFormChange = (form) => {
       if (form === 'crusnik') {
+        audio.sfx('transform');
         this.cameras.main.flash(220, 212, 40, 62);
         if (effects.screenShake) this.cameras.main.shake(200, 0.008);
       } else {
@@ -345,16 +349,21 @@ export class PlayScene extends Phaser.Scene {
       // Blood for the Crusnik meter: real targets only (not levers).
       if (byPlayer && !this.runtime.levers.some((l) => l.id === targetId)) this.player.crusnik.gain(crusnikConfig.gainPerHit);
     });
-    this.bus.on('enemy:died', () => this.player.crusnik.gain(crusnikConfig.gainPerKill));
+    this.bus.on('enemy:died', () => {
+      this.player.crusnik.gain(crusnikConfig.gainPerKill);
+      audio.sfx('death');
+    });
     this.bus.on('combat:parry', ({ x, y }) => {
       // Steel on steel: a sharp freeze, white sparks, a short shake.
+      audio.sfx('parry');
       this.hitStop.trigger(effects.parryHitstopMs);
       if (this.hitStop.active) this.physics.world.pause();
       if (effects.sparks) this.sparks.burst(x, y, effects.sparksPerHit * 2, this.player.facing);
       if (effects.screenShake) this.cameras.main.shake(90, 0.004);
       this.cameras.main.flash(60, 255, 245, 220);
     });
-    this.bus.on('combat:hit', ({ x, y, hit }) => {
+    this.bus.on('combat:hit', ({ x, y, hit, byPlayer }) => {
+      audio.sfx(byPlayer ? 'hit' : 'hurt');
       this.hitStop.trigger(hit.hitstopMs);
       // Pause now: physics steps before the next scene update, so waiting would let one frame of knockback through.
       if (this.hitStop.active) this.physics.world.pause();
@@ -365,6 +374,7 @@ export class PlayScene extends Phaser.Scene {
       this.hitStop.trigger(f.hitstopMs);
       if (this.hitStop.active) this.physics.world.pause();
       if (effects.screenShake && f.shakeMs > 0) this.cameras.main.shake(f.shakeMs, f.shakeIntensity);
+      audio.sfx(f.finisher === 'revolver' ? 'gunshot' : 'hit');
       if (f.finisher === 'revolver') this.shotFlash.fire(f.fromX, f.fromY, f.x, f.y);
       if (f.finisher === 'bloodDrain') this.player.crusnik.feed(crusnikConfig.gainPerDrain);
       if (effects.sparks) this.sparks.burst(f.x, f.y, effects.shotSparks, f.direction);
@@ -381,6 +391,7 @@ export class PlayScene extends Phaser.Scene {
 
   update(_time: number, deltaMs: number): void {
     const dt = Math.min(deltaMs, MAX_FRAME_MS);
+    audio.music(musicFor({ room: this.roomData.id, boss: this.arena?.active ? this.roomData.boss?.id : null, cutscene: this.cutsceneId }));
     if (this.cutsceneOn) return;
     if (this.map.open || this.pauseMenu.open) {
       this.map.update(dt);
@@ -406,6 +417,7 @@ export class PlayScene extends Phaser.Scene {
     this.backdrop.update(dt);
     this.senseLadders();
     this.player.update(dt);
+    this.listen();
     if (this.leaving) return;
     this.updateRoom();
     for (const d of this.dummies) d.update(dt);
@@ -476,6 +488,7 @@ export class PlayScene extends Phaser.Scene {
       } else if (ex.door && this.actions.moveY > -0.5) {
         this.doorHint.setText('▲').setPosition(ex.x + ex.w / 2, ex.y - 4).setVisible(true);
       } else {
+        if (ex.door) audio.sfx('door');
         this.goTo({ room: ex.to, entry: ex.entry });
       }
       return;
@@ -525,10 +538,23 @@ export class PlayScene extends Phaser.Scene {
     return true;
   }
 
+  /** Sounds driven by state changes: a new swing, a dodge or slide, a crossbow bolt loosed. */
+  private listen(): void {
+    const p = this.player;
+    const h = this.heard;
+    const attack = p.combat.current;
+    if (attack && attack !== h.attack) audio.sfx('swing');
+    if (p.state !== h.state && (p.state === 'dodge' || p.state === 'slide')) audio.sfx('dodge');
+    const bolts = this.enemies.bolts.length;
+    if (bolts > h.bolts) audio.sfx('bolt');
+    this.heard = { state: p.state, attack, bolts };
+  }
+
   /** Kneel at an altar: a beam of light, the dove of the Holy Spirit descends over Abel, then rest. */
   private startPrayer(checkpoint: string): void {
     const p = this.player;
     this.praying = { ms: 0, checkpoint };
+    audio.sfx('pray');
     p.body.setVelocity(0, 0);
     p.praying = true;
     const head = p.feetY - playerTuning.lowHeight - 6;
@@ -569,6 +595,7 @@ export class PlayScene extends Phaser.Scene {
     this.hud.setFlasks(this.player.flasks);
     this.hud.setHealth(this.player.health.fraction);
     this.banner.show(r.card, r.gift);
+    audio.sfx('card');
     if (flag === 'gyula_defeated') {
       // The end: the ending scene, the credits, then the teaser for the next arc.
       saveStore.save(gameState.toSave(Date.now()));
@@ -583,6 +610,9 @@ export class PlayScene extends Phaser.Scene {
   }
 
   private cutsceneOn = false;
+  private cutsceneId: string | null = null;
+  /** Last seen player state, attack and bolt count: their changes trigger sounds. */
+  private heard: { state: string; attack: unknown; bolts: number } = { state: '', attack: null, bolts: 0 };
 
   /** Plays a cutscene over the game; gameplay waits until it ends. */
   private playCutscene(id: string, done: () => void): void {
@@ -591,10 +621,12 @@ export class PlayScene extends Phaser.Scene {
       return;
     }
     this.cutsceneOn = true;
+    this.cutsceneId = id;
     this.touch.releaseAll();
     this.physics.world.pause();
     this.game.events.once(`cutscene-done:${id}`, () => {
       this.cutsceneOn = false;
+      this.cutsceneId = null;
       this.physics.world.resume();
       done();
     });
@@ -697,6 +729,7 @@ export class PlayScene extends Phaser.Scene {
           return ax >= g.x && ax <= g.x + g.w && p.feetY + 2 >= g.y && p.feetY + 2 <= g.y + g.h;
         }),
       },
+      music: audio.current,
       enemies: this.enemies.active.map((e) => ({ type: e.cfg.type, state: e.state, view: e.viewLabel, x: e.x, y: e.y, hp: e.health.hp })),
       dummies: this.dummies.map((d) => ({ x: d.x, hp: d.health.hp, alive: d.alive })),
       boss: this.arena
