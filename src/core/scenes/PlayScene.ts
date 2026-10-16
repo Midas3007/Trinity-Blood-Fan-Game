@@ -316,6 +316,8 @@ export class PlayScene extends Phaser.Scene {
     if (testCrusnik) gameState.setFlag(crusnikConfig.unlockFlag);
     cm.unlocked = gameState.hasFlag(crusnikConfig.unlockFlag);
     cm.awake = gameState.hasFlag(crusnikConfig.meterFlag);
+    // The cheat's form carries between rooms too (restore needs the form unlocked).
+    if (cheat.on) cm.unlocked = cm.awake = true;
     if (gameState.crusnik) cm.restore(gameState.crusnik);
     if (testCrusnik) cm.fill();
 

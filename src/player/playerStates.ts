@@ -59,6 +59,9 @@ export interface PlayerContext {
   drinkFlask(): void;
   /** Stick vertical (-1 up .. 1 down). */
   readonly moveY: number;
+  /** The cheat: ABIL as the Crusnik changes back to the priest (instead of the chain). */
+  readonly abilityReverts: boolean;
+  revertForm(): void;
   /** The cheat: JUMP in the air beats upward again (flight). */
   readonly canFly: boolean;
   /** A ladder overlaps the body (stick up grabs it). */
@@ -142,6 +145,10 @@ function brake(ctx: PlayerContext, dtMs: number): void {
 function abilityState(ctx: PlayerContext): PlayerStateKey | null {
   if (!ctx.abilityPressed) return null;
   if (ctx.form === 'priest' && ctx.transformReady) return 'transform'; // in the air too (owner: ABIL must just work)
+  if (ctx.form === 'crusnik' && ctx.abilityReverts) {
+    ctx.revertForm();
+    return null;
+  }
   if (startersFor(ctx.form, ctx.weapon).ranged) return 'lash';
   return null;
 }

@@ -62,6 +62,10 @@ export class SimPlayer implements PlayerContext {
   }
   moveY = 0;
   canFly = false;
+  abilityReverts = false;
+  revertForm(): void {
+    this.form = 'priest';
+  }
   ladderHere = false;
   ladderBelow = false;
   climbing = false;

@@ -304,7 +304,17 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   /** Flight for the cheat: each JUMP in the air is a wing beat. */
   get canFly(): boolean {
+    return this.godMode && this.form === 'crusnik'; // owner: never as the priest
+  }
+
+  /** The cheat: ABIL as the Crusnik changes back (the meter never runs out, so this is the way home). */
+  get abilityReverts(): boolean {
     return this.godMode;
+  }
+
+  revertForm(): void {
+    this.winged = false;
+    this.endCrusnik();
   }
 
   /** Real invulnerability (after a hit, rolls, finishers, the change); shown as see-through. */
