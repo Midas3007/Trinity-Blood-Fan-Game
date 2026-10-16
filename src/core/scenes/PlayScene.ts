@@ -392,15 +392,20 @@ export class PlayScene extends Phaser.Scene {
     // ?test&zoom=2 frames the action closer (integer zoom keeps the pixels square).
     if (testHookEnabled()) {
       const q = new URLSearchParams(location.search);
-      if (q.has('trailer')) this.time.delayedCall(0, () => {
-        this.touch.forceHidden = true;
-        this.touch.setVisible(false);
-        for (const o of this.children.list) {
-          const any = o as unknown as { scrollFactorX?: number; depth?: number; setVisible?: (v: boolean) => void };
-          const d = any.depth ?? 0;
-          if (any.scrollFactorX === 0 && ((d >= 900 && d < 1050) || d >= 1600)) any.setVisible?.(false);
-        }
-      });
+      if (q.has('trailer')) {
+        // Every frame: the HUD shows parts again as they change (the blood meter, the flasks).
+        const hide = (): void => {
+          this.touch.forceHidden = true;
+          this.touch.setVisible(false);
+          for (const o of this.children.list) {
+            const any = o as unknown as { scrollFactorX?: number; depth?: number; setVisible?: (v: boolean) => void };
+            const d = any.depth ?? 0;
+            if (any.scrollFactorX === 0 && ((d >= 900 && d < 1050) || d >= 1600)) any.setVisible?.(false);
+          }
+        };
+        this.events.on(Phaser.Scenes.Events.POST_UPDATE, hide);
+        this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.events.off(Phaser.Scenes.Events.POST_UPDATE, hide));
+      }
       const zoom = Number(q.get('zoom'));
       if (Number.isInteger(zoom) && zoom > 1) this.cameras.main.setZoom(zoom);
     }

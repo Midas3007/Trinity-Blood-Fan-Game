@@ -14,7 +14,7 @@ class Bot {
   constructor(name) { this.name = name; this.log = []; this.errors = []; }
   async open(query) {
     const b = await getBrowser();
-    this.ctx = await b.newContext({ viewport: { width: 960, height: 540 } });
+    this.ctx = await b.newContext({ viewport: { width: +(process.env.VW || 960), height: +(process.env.VH || 540) } });
     this.page = await this.ctx.newPage();
     this.files = { video: `${OUT}/${this.name}.video.webm`, audio: `${OUT}/${this.name}.audio.webm` };
     for (const f of Object.values(this.files)) fs.writeFileSync(f, Buffer.alloc(0));
