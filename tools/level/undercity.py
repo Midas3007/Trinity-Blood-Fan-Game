@@ -66,7 +66,7 @@ def ossuary():
     r.mark("lore", 70, 14, lore="ossuary_epitaph")
     r.mark("enemy", 50, 14, enemy="thrall")
     r.mark("enemy", 34, 23, enemy="thrall")
-    r.mark("enemy", 54, 31, enemy="thrall")
+    r.mark("enemy", 54, 31, enemy="methuselah")
     r.mark("enemy", 34, 12, enemy="fairy")
     r.mark("enemy", 72, 20, enemy="fairy")
     r.mark("enemy", 50, 31, enemy="boneRat")
@@ -97,7 +97,7 @@ def water_tunnels():
     r.prop("column", 20, 14, 64)
     r.prop("column", 96, 14, 64)
     r.mark("enemy", 22, 14, enemy="thrall")
-    r.mark("enemy", 86, 14, enemy="thrall")
+    r.mark("enemy", 86, 14, enemy="methuselah")
     r.mark("enemy", 82, 8, enemy="bat")
     r.mark("enemy", 100, 14, enemy="boneRat")
     # Mini boss 1: Sister Paula holds the flat middle stretch between the two cisterns.
@@ -119,7 +119,7 @@ def long_stair():
         x0 = 10 if i % 2 == 0 else 16
         r.platform(x0, x0 + 6, y)
     r.prop("cage", 22, 1, -48)
-    r.mark("enemy", 13, 22, enemy="thrall")
+    r.mark("enemy", 13, 22, enemy="methuselah")
     r.mark("enemy", 15, 20, enemy="fairy")
     r.mark("enemy", 12, 36, enemy="bat")
     return r

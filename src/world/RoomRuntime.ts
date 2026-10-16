@@ -5,6 +5,12 @@ import type { Rect } from '../combat/types';
 import type { GameState } from '../systems/GameState';
 import { Lever } from './Lever';
 import type { Exit, RoomData } from './tiled';
+import { easeAlpha, ROOF_ALPHA, upOnFront } from './seeThrough';
+
+/** Ledge guides over a painted landmark: faint from the ground, clear while you are up on it. */
+const GUIDE_ALPHA = { far: 0.45, near: 1 } as const;
+const GUIDE_FADE_PER_S = 4;
+const DEPTH_GUIDE = 9.6;
 
 const SPIKE_W = 8;
 const DEPTH_DECOR = 2;
@@ -13,8 +19,6 @@ const ALTAR_W = 20;
 const ALTAR_H = 10;
 const ALTAR_REACH = 14;
 const GATE_OPEN_MS = 500;
-/** Ground this close to spikes is not a safe return point (px). */
-const SAFE_MARGIN = 24;
 const LORE_REACH = 16;
 const STONE_W = 10;
 const STONE_H = 14;
@@ -41,6 +45,8 @@ export interface RoomPlayer {
 export class RoomRuntime {
   readonly levers: Lever[] = [];
   private readonly gates = new Map<string, Phaser.GameObjects.Rectangle[]>();
+  /** Painted landmarks (the cathedral front) with the ledge guides drawn over them. */
+  private readonly landmarks: { img: Phaser.GameObjects.Image; guides: Phaser.GameObjects.Graphics; up: number }[] = [];
 
   constructor(
     private readonly scene: Phaser.Scene,
@@ -96,7 +102,17 @@ export class RoomRuntime {
     if (item.startsWith('img:')) {
       // a painted landmark, standing on its marker (bottom centre)
       const key = item.slice(4);
-      if (s.textures.exists(key)) s.add.image(x, y, key).setOrigin(0.5, 1).setDepth(DEPTH_DECOR);
+      if (!s.textures.exists(key)) return;
+      const img = s.add.image(x, y, key).setOrigin(0.5, 1).setDepth(DEPTH_DECOR);
+      // Its ledges are invisible tiles on the painting: draw a thin gold line along each so you can see where to stand.
+      const box = img.getBounds();
+      const guides = s.add.graphics().setDepth(DEPTH_GUIDE).setAlpha(GUIDE_ALPHA.far);
+      for (const o of this.room.oneways) {
+        if (o.x + o.w < box.x || o.x > box.right || o.y < box.y || o.y > box.bottom) continue;
+        guides.fillStyle(0xe8c86a, 1).fillRect(o.x, o.y, o.w, 2);
+        guides.fillStyle(0x0b0a10, 0.6).fillRect(o.x, o.y + 2, o.w, 1);
+      }
+      this.landmarks.push({ img, guides, up: 0 });
       return;
     }
     switch (item) {
@@ -154,9 +170,18 @@ export class RoomRuntime {
     this.gates.delete(flag);
   }
 
-  /** True when x is far enough from every hazard to put the player back there. */
-  safeAt(x: number): boolean {
-    return this.room.hazards.every((h) => x < h.x - SAFE_MARGIN || x > h.x + h.w + SAFE_MARGIN);
+
+  /** Up on a landmark: it half-fades and its ledge guides brighten; on the ground they stay faint. */
+  updateLandmarks(dtMs: number, px: number, feetY: number): void {
+    for (const l of this.landmarks) {
+      const i = l.img;
+      const front = { x: i.x - i.width / 2, y: i.y - i.height, w: i.width, h: i.height };
+      const target = upOnFront(front, px, feetY) ? 1 : 0;
+      if (l.up === target) continue;
+      l.up = easeAlpha(l.up, target, GUIDE_FADE_PER_S, dtMs);
+      i.setAlpha(1 - (1 - ROOF_ALPHA) * l.up);
+      l.guides.setAlpha(GUIDE_ALPHA.far + (GUIDE_ALPHA.near - GUIDE_ALPHA.far) * l.up);
+    }
   }
 
   /** Lore stone the player is standing at, if any. */

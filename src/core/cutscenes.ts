@@ -25,6 +25,8 @@ export interface CutscenePanel {
   tint?: string;
   actors?: CutsceneActor[];
   caption?: string;
+  /** The narrator reading the caption aloud (public/assets/audio/voice/<id>.mp3); used on panels without lines. */
+  captionVoice?: string;
   lines?: DialogueLine[];
   fx?: 'flash' | 'redflash' | 'shake' | 'speedlines' | 'none';
   /** Start a fresh page before this panel. */

@@ -15,6 +15,8 @@ const GUTTER = 6;
 const BORDER = 0xeadfc4;
 const ACTOR_DEPTH = 5;
 const PANEL_ENTER_MS = 420;
+/** A caption the narrator reads stays up long enough to hear it. */
+const CAPTION_VOICED_MS = 3200;
 const TEXT_AREA = 74; // the dialogue box covers the bottom; panels stop above it
 
 function rectFor(layout: PanelLayout): Phaser.Geom.Rectangle {
@@ -103,7 +105,8 @@ export class CutsceneScene extends Phaser.Scene {
     if (p.lines && p.lines.length) {
       this.dialogue.play(p.lines, () => this.next());
     } else {
-      this.time.delayedCall(1800, () => this.next());
+      audio.voice(p.captionVoice);
+      this.time.delayedCall(p.captionVoice ? CAPTION_VOICED_MS : 1800, () => this.next());
     }
   }
 

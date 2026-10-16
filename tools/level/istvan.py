@@ -104,7 +104,7 @@ def clock_alley():
     r.gate(22, GY, 25, GY + 1, "well_open")
     r.mark("label", 23, GY - 4, text="an old well, grated shut")
     r.mark("enemy", 30, GY - 1, enemy="thrall")
-    r.mark("enemy", 36, GY - 21, enemy="thrall")
+    r.mark("enemy", 36, GY - 21, enemy="methuselah")
     return r
 
 
@@ -118,6 +118,8 @@ def square():
     r.wall(54, GY - 4, 56, GY - 2, "stone")
     r.wall(76, GY - 1, 86, GY, "stone")                     # fountain rim
     r.fill("terrain", 64, GY, 68, r.H, None)                # sewer grate, wide open
+    r.platform(64, 68, GY)                                  # an iron grate you can stand on; press down at the ladder to go below
+    r.ladder(65, GY + 1, r.H)                               # the ladder continues in the sewer shaft
     house(r, 96, 20, GY, floors=4, doors=("left", "right"), balconies=(2,), chimneys=1, lit=0.3)
     for x in (6, 12, 18):
         r.mark("decor", x, feet(GY, 3) - 3, item="banner")
@@ -129,7 +131,7 @@ def square():
     r.mark("lore", 40, feet(GY, 1), lore="music_score")
     r.mark("label", 66, GY - 5, text="a sewer grate, wide open...")
     r.mark("enemy", 90, GY - 1, enemy="thrall")
-    r.mark("enemy", 104, feet(GY, 2), enemy="thrall")
+    r.mark("enemy", 104, feet(GY, 2), enemy="methuselah")
     r.mark("enemy", 12, feet(GY, 3), enemy="deathHunter")
     return r
 
@@ -189,7 +191,7 @@ def hill_street():
     r.wall(r.W - 1, GY - 6, r.W, r.H)
     r.street_props(0, 18, GY)
     r.street_props(70, 90, GY - 6, every=10)
-    r.mark("enemy", 34, GY - 4, enemy="thrall")
+    r.mark("enemy", 34, GY - 4, enemy="methuselah")
     r.mark("enemy", 78, GY - 7, enemy="deathHunter")
     return r
 
@@ -214,23 +216,23 @@ def bridge():
     r.mark("lore", 106, D - 1, lore="castle_gate_barred")
     r.mark("enemy", 60, D - 1, enemy="deathHunter")
     r.mark("enemy", 24, D - 1, enemy="thrall")
-    r.mark("enemy", 96, D - 1, enemy="thrall")
+    r.mark("enemy", 96, D - 1, enemy="methuselah")
     return r
 
 
 def sewer_shaft():
     r = Room("sewer_shaft", "Sewer Shaft", 11, 2, 1, 2, seed=15, sky=False)
     r.wall(0, 0, r.W, r.H)
-    r.fill("terrain", 4, 0, 8, 3, None)                     # the grate opening above
-    r.fill("terrain", 3, 3, 26, r.H - 2, None)              # the shaft
+    r.fill("terrain", 4, 0, 8, 2, None)                     # the grate opening above
+    r.fill("terrain", 3, 2, 26, r.H - 2, None)              # the shaft (open right up to the grate: no low ceiling to get wedged under)
+    r.ladder(5, 0, 15)                                      # from the market grate down to the crypt door ledge (and back up)
     r.carve(0, 10, 3, 15)                                   # west, up high: the Hunter's Crypt
     r.platform(3, 14, 15)
     r.ladder(12, 16, r.H - 2)                               # up from the floor (east of the spikes) to the crypt door ledge
     r.carve(26, 27, 30, 32)                                 # east, at the bottom: the Water Tunnels
-    for i, y in enumerate(range(r.H - 6, 3, -4)):
+    for i, y in enumerate(range(r.H - 6, 7, -4)):
         x0 = 6 if i % 2 == 0 else 14
         r.platform(x0, x0 + 8, y)
-    r.platform(3, 9, 3)
     r.fill("terrain", 6, r.H - 3, 11, r.H - 2, "spikes")
     r.backwall(["wall_roman"], 3, r.H - 2, 3, 26)
     r.mark("enemy", 18, 10, enemy="bat")

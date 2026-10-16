@@ -87,6 +87,7 @@ def castle_gate():
     r.mark("checkpoint", 10, D - 1, "castle_altar")
     r.mark("lore", 20, D - 1, lore="castle_gate")
     r.mark("enemy", 30, D - 1, enemy="ironChoir")
+    r.mark("enemy", 36, D - 1, enemy="methuselah")
     r.mark("enemy", 54, D - 7, enemy="inquisitor")
     r.mark("enemy", 78, D - 7, enemy="deathHunter")
     r.mark("enemy", 70, D - 15, enemy="bat")
@@ -113,6 +114,7 @@ def great_hall():
     r.mark("checkpoint", 86, F - 1, "hall_altar")
     r.mark("enemy", 28, F - 1, enemy="deathHunter")
     r.mark("enemy", 56, F - 1, enemy="ironChoir")
+    r.mark("enemy", 42, F - 1, enemy="methuselah")
     r.mark("enemy", 30, 11, enemy="inquisitor")
     r.mark("enemy", 60, 8, enemy="fairy")
     return r

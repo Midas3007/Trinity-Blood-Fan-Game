@@ -264,3 +264,13 @@
 | Star of Sorrow = a 'beam' move: floor mark, then a column strike; barrages in phase 2 | Readable telegraph, forces movement, fits the weapon | Projectiles |
 | 80% Crusnik only in the final phase (scripted): wings visuals in the air, higher leap, no drain, ×1.3 damage | A climax without designing flight levels | Playable flight everywhere |
 | Iron Choir: frontal shield (`frontGuard` 0.2); hunters: crossbow `bolt` + `knockout` (humans are never killed) | Variety that rewards parry/positioning; the mercy theme | More melee clones |
+
+## 2026-10-16 — audio, blood, owner fixes
+| Decision | Reason | Alternatives |
+|---|---|---|
+| Music = original procedural pieces (WebAudio composer: seeded bars, organ/choir/strings/harpsichord/bells voices); a track with `file` plays a recording instead | Free-music hosts are blocked; the game still gets distinct songs per area, fight and scene, tiny download, no licences | Silence until downloads work |
+| Voices only for 26 key lines (Higgsfield seed_audio presets, owner-chosen Landon/Gideon/Elodie), 48 kbps mono MP3, cached at runtime not precached | Credit budget; PWA install stays small | Voice every line |
+| Spikes/water → last altar, health/flasks kept | Owner's rule; keeps the sting without a free refill | Back to last safe ledge (old behaviour) |
+| Blood meter: shown from `paula_defeated`, transform still needs the Kämpfer awakening; blood only from Methuselah (`blood` per enemy, `bossBlood` per boss) | Owner's rule; keeps the story order of the first transformation | Every hit fills it (old behaviour) |
+| See-through fronts: painted fronts fade to 45% while the player stands above their bottom tile and a half; landmark ledges drawn as gold guide lines | Owner could not see roof/ledge platforms; cheap, no new art | Remove painted fronts |
+| Menu always passes start data to PlayScene | Phaser keeps the previous `settings.data` when `start()` gets none, which resumed a new game at the old position | — |

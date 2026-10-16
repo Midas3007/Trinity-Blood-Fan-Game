@@ -1,5 +1,5 @@
 {
-  "_note": "Enemy types. Times in ms, distances in px, speeds in px/s. 'attacks' use the same format as src/data/attacks.json. Values are design choices for a slow, telegraphed melee enemy (see docs/feel-spec.md). Once per life, a hit that leaves health at or below staggerBelowFraction staggers the enemy for staggerMs: ATK in front of it then plays a finisher (src/data/finishers.json). 'drainable' = a Methuselah the Crusnik can drain. Optional: 'frontGuard' (shield: damage from the front is multiplied by it), 'bolt' (the attack fires a crossbow bolt; its blade hitbox is placed out of reach), 'knockout' (human: knocked out instead of killed, stays down).",
+  "_note": "Enemy types. Times in ms, distances in px, speeds in px/s. 'attacks' use the same format as src/data/attacks.json. Values are design choices for a slow, telegraphed melee enemy (see docs/feel-spec.md). Once per life, a hit that leaves health at or below staggerBelowFraction staggers the enemy for staggerMs: ATK in front of it then plays a finisher (src/data/finishers.json). 'drainable' = a Methuselah the Crusnik can drain. Optional: 'frontGuard' (shield: damage from the front is multiplied by it), 'bolt' (the attack fires a crossbow bolt; its blade hitbox is placed out of reach), 'knockout' (human: knocked out instead of killed, stays down). 'blood' (hit, kill): Methuselah blood for the Crusnik meter; only Methuselah have it (reanimated Death Hunters less than living ones).",
   "types": {
     "thrall": {
       "label": "String-bound thrall",
@@ -101,7 +101,11 @@
           }
         }
       },
-      "puppetString": false
+      "puppetString": false,
+      "blood": {
+        "hit": 3,
+        "kill": 10
+      }
     },
     "boneRat": {
       "label": "Bone-rat",
@@ -262,6 +266,61 @@
         "lifeMs": 1400
       },
       "knockout": true
+    },
+    "methuselah": {
+      "label": "Methuselah (low-born)",
+      "width": 16,
+      "height": 34,
+      "color": "0xb8b0c8",
+      "telegraphColor": "0xd9963a",
+      "maxHealth": 60,
+      "walkSpeed": 46,
+      "chaseSpeed": 120,
+      "brakeDecel": 700,
+      "patrolDistance": 64,
+      "idleMs": 700,
+      "detectRange": 150,
+      "detectRear": 40,
+      "detectHeight": 40,
+      "loseRange": 240,
+      "reactionMs": 200,
+      "attackRange": 30,
+      "attackCooldownMs": 800,
+      "giveUpMs": 3000,
+      "attack": "methuselah_claw",
+      "hurtStunMs": 220,
+      "staggerBelowFraction": 0.4,
+      "staggerMs": 1800,
+      "drainable": true,
+      "knockbackTaken": 0.7,
+      "interruptibleDuringActive": false,
+      "deathMs": 700,
+      "attacks": {
+        "methuselah_claw": {
+          "startupMs": 420,
+          "activeMs": 110,
+          "recoveryMs": 480,
+          "damage": 25,
+          "knockbackX": 200,
+          "knockbackY": 160,
+          "hitstopMs": 100,
+          "shakeMs": 140,
+          "shakeIntensity": 0.006,
+          "stepSpeed": 120,
+          "cancelIntoDodge": false,
+          "hitbox": {
+            "x": 20,
+            "y": 2,
+            "w": 30,
+            "h": 28
+          }
+        }
+      },
+      "puppetString": false,
+      "blood": {
+        "hit": 8,
+        "kill": 30
+      }
     }
   }
 }

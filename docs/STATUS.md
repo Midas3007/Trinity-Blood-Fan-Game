@@ -1,6 +1,6 @@
 # STATUS
 
-Last updated: 2026-10-15
+Last updated: 2026-10-16
 
 ## Milestone tracker (CLAUDE.md Part 10)
 | # | Milestone | State |
@@ -16,14 +16,27 @@ Last updated: 2026-10-15
 | 8 | Mini bosses from the series (owner, 2026-10-15) | **done:** Sister Paula (Water Tunnels → +1 flask), Isaak Kämpfer the Magus (Forgotten Reliquary → **Abel's first Crusnik transformation**), Brother Petros (Count's Cellars → +25 health); the Marchesa now gives +15% damage; **Latin victory cards** |
 | 9 | Creatures and villains in the maps | **done:** fairies (code-drawn flapping wings), bats, bone-rats, **Iron Choir** (shield: hit from behind or parry), **Inquisition hunters** (crossbow bolts; knocked out, not killed); Death Hunters are the puppeted Methuselah |
 | 10 | Cutscenes and story | **done:** 18 scenes — opening, every fight's intro/outro, first transformation, Dietrich unmasked, the 80% wings, ending, credits, **teaser for the next arc** (the Empire) |
-| 11 | Audio | planned: **voices** for cutscene lines, **copyright-free gothic music** (per region, boss themes), SFX; audio unlock on first touch. Blocked: the sandbox network denies free-music sites (see Blockers) |
+| 11 | Audio | **done (original music):** 18 original procedural pieces (organ, choir, strings, harpsichord, bells): one per area, one per fight, cutscene moods; procedural SFX; **26 voiced lines** (Landon = Abel, Gideon = narrator, Elodie = Marchesa, Isla = Esther, Vlad = Gyula, Julian = Dietrich, Desmond = the Magus, Knox = Petros, Vera = Paula, Helena = Caterina, Sterling = envoy); Sound on/off in pause. Recorded public-domain music still blocked (see Blockers); it drops in via `src/data/music.json` |
 | 12 | Region 2 + final battle | **done:** Cathedral Nave + Bell Tower (portal opens after Petros), Castle Gate, Great Hall, Star of Sorrow chamber (bridge gate opens after Dietrich); bosses Dietrich (Grand Marionette → Dietrich) and Gyula (final, 80% wings phase) |
 | 14 | Start-menu progress bar | **done:** Continue shows a percentage and a gold bar (fights 70%, map 20%, lore 10%) |
+| 15 | Owner fixes 2026-10-16 | **done:** Midas3007 in the credits; see-through building fronts + cathedral ledge guides; New game really restarts; sewer-shaft hole fixed (grate + ladder); spikes/water send you to the last altar; blood meter from the first mini boss, filled only by Methuselah (new low-born Methuselah enemy; Death Hunters give less) |
 | 13 | Full recorded playthrough | planned (owner): a bot plays the finished game start to end and the run is recorded as a video |
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest)
+## Done (latest) — audio, voices, owner fixes (2026-10-16)
+- **Music:** every area, every fight and each cutscene mood has its own original piece, composed in code (no samples, no downloads): title *Nocturne for the Atoner*, streets, undercity, ballroom waltz, cathedral choir, fortress, the Star; six boss themes; sad, tense, awakening, dawn and teaser pieces. Crossfades between them. A real recording replaces any piece by adding a `file` in `src/data/music.json`.
+- **Sound effects:** swings, hits, hurt, parry clang, deaths, revolver, crossbow bolts, healing, prayer bell, transformation, doors, victory card, menu taps. **Sound on/off** in the pause menu (saved).
+- **Voices:** 26 key cutscene lines voiced (opening, every mini boss, the awakening, the 80% wings, the ending, the teaser). Music ducks under speech.
+- **Credits:** "Created and directed by Midas3007".
+- **Rooftops:** painted house fronts turn see-through while you stand on their balconies or roofs; the cathedral front shows gold lines on every ledge (faint from the street, bright when you're up on it).
+- **Fixed:** Return to title → New game started you where you'd left off (Phaser kept the old start data). A new game now always begins at the station.
+- **Fixed:** the sewer-shaft hole. The grate dropped you under a one-tile ceiling. The shaft is now open to the grate, the cramped ledges are gone, an iron grate covers the hole in Market Square, and a ladder runs from it down to the crypt ledge (push down on the grate to go below, up to come back).
+- **Spikes and water** send you back to the last altar you prayed at (your damage stays), not to the nearest ledge.
+- **Blood meter:** appears after Sister Paula (first mini boss) and fills **only with Methuselah blood**: the new **low-born Methuselah** (red frock coat, claws; 9 placed across the town, undercity and fortress) give the most, **Death Hunters** (reanimated) less, the Marchesa and Gyula a little per hit; humans, puppets and beasts none. Transforming still first happens in the Kämpfer fight. The Crusnik can drain Methuselah.
+- Verified: 183/183 tests, build, bot runs (grate ladder down and back up; spikes → altar with damage kept; Methuselah spawn, attack and sprites; music changes per room). Higgsfield: about 2.25 credits left.
+
+## Done (earlier)
 - **The Undercity (9 new rooms; 17 rooms in all, most several screens wide):** Hunter's Crypt, The Ossuary (3 levels), Forgotten Reliquary (secret), Water Tunnels, The Long Stair, The Drowned Crypt, Chapel of Bones (altar), The Marchesa's Ballroom (sealed until the boss), the Count's Cellars. Painted underground walls (crypt, ossuary, roman sewer, ballroom), coffins, bones, cages, saint statues, chandelier. 4 new lore texts.
 - **Shortcut:** a lever in Hunter's Crypt opens the well grate in Bellmakers' Alley; climb the well ladder straight up into the town.
 - **Puzzle:** the Ossuary reliquary gate; its lever sits on a high ledge reached by a ladder.
@@ -95,10 +108,20 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 - Verified: 171/171 tests (Dietrich and Gyula fight 2 minutes without getting stuck, the Star beam marks then strikes once, Dietrich changes body at phase 2, all 22 rooms connect — doors included), 123 sprite sheets valid, build passes. Bot runs: Dietrich (both phases + scenes) → relic; Gyula (wings scene) → ending → credits → teaser → title, no errors.
 
 ## In progress
-- the Crusnik form + leap gate, then the Marchesa boss.
+- M13: the recorded bot playthrough of the whole game.
 
 ## Blockers
-- **Music downloads blocked:** archive.org search now works, but its files are served from `*.archive.org` storage hosts (e.g. dn711007.ca.archive.org, ia800300.us.archive.org), which are still denied. Add `*.archive.org` (or `.archive.org`) to Allowed domains. Tracks are already chosen (see docs/audio-plan.md). Other sites (opengameart.org, incompetech.com, freepd.com, pixabay.com, freesound.org) are still denied. To allow them: in the session's cloud environment menu (title bar) → Edit → Network access → add those domains under Allowed domains (keep "Allow package managers" ticked). Steps: https://code.claude.com/docs/en/cloud-environments#network-access. Until then the audio system is built and waits for the tracks. Higgsfield: about 44 credits left.
+- **Music downloads blocked:** archive.org search now works, but its files are served from `*.archive.org` storage hosts (e.g. dn711007.ca.archive.org, ia800300.us.archive.org), which are still denied. Add `*.archive.org` (or `.archive.org`) to Allowed domains. Tracks are already chosen (see docs/audio-plan.md). Other sites (opengameart.org, incompetech.com, freepd.com, pixabay.com, freesound.org) are still denied. To allow them: in the session's cloud environment menu (title bar) → Edit → Network access → add those domains under Allowed domains (keep "Allow package managers" ticked). Steps: https://code.claude.com/docs/en/cloud-environments#network-access. Until then the game plays its own original pieces. Higgsfield: about 2 credits left (enough for one more image).
+
+## Owner must test (on phone) — sound, voices and your fixes
+1. Tap the title: organ music starts. Walk into the undercity, the ballroom, the cathedral: the music changes. Each boss fight has its own theme.
+2. New game: the opening is voiced (Abel = Landon, the orders read by Gideon). Pause → Sound: off silences everything and stays off after a reload.
+3. Pause → Return to title → New game (tap twice): you start at the station.
+4. Market Square: stand on the grate, push down → climb into the sewer; climb back up the same ladder. No more getting stuck.
+5. Walk into spikes or water: you go back to your last altar with your damage kept.
+6. Climb onto a house balcony or the cathedral: the front fades and the cathedral shows gold ledge lines.
+7. Before Sister Paula there's no blood bar. After her, killing Methuselah (red coats) fills it fast, Death Hunters slowly, other enemies not at all.
+8. Credits: your name.
 
 ## Owner must test (on phone) — Region 2 and the ending
 1. After beating Petros: Cathedral Square, stand at the portal, push the stick up → the nave.
@@ -160,6 +183,7 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 4. Pray at an altar: kneel, light beam, dove over his head, health and flasks refilled.
 
 ## Next step
+- M13: record a bot playthrough of the whole game and share the video.
 - When the slice is finished: a bot plays the whole game start to end and the run is recorded as a video for the owner (owner request).
 - Optional (owner's call): redraw characters taller (about 56 px, Blasphemous scale) for real detail; costs Higgsfield credits and changes his size against doors.
 - After your boss feedback: the first cutscene (Abel arrives in Istvan, code-animated manga panels) and Region 2.

@@ -61,8 +61,9 @@ export class MenuScene extends Phaser.Scene {
       if (fresh) saveStore.clear();
       gameState.load(fresh ? null : save);
       const cp = gameState.checkpoint;
-      // No checkpoint: PlayScene starts at the beginning of the game (or the ?test room).
-      this.scene.start(SCENES.play, cp ? { room: cp.room, checkpoint: cp.id } : undefined);
+      // No checkpoint: PlayScene starts at the beginning of the game (or the ?test room). Always pass data: Phaser
+      // keeps the previous start data when given none, which put a new game back where the last one left off.
+      this.scene.start(SCENES.play, cp ? { room: cp.room, checkpoint: cp.id } : {});
     };
 
     const itemStyle = { fontFamily: 'serif', fontSize: '12px', color: COLORS.text, ...stroke };

@@ -3,18 +3,26 @@ import type { PlayerTuning } from './tuning';
 
 export interface CrusnikConfig {
   unlockFlag: string;
+  /** The meter appears (and starts filling) once this flag is set. */
+  meterFlag: string;
   meterMax: number;
-  gainPerHit: number;
-  gainPerKill: number;
   gainPerDrain: number;
   drainPerSecond: number;
   transformMs: number;
   damageMultiplier: number;
   jumpVelocity: number;
   runSpeed: number;
+  /** Methuselah bosses' blood, by boss id. */
+  bossBlood: Record<string, { hit: number; kill: number } | string>;
 }
 
-export const crusnikConfig: CrusnikConfig = raw;
+export const crusnikConfig: CrusnikConfig = raw as unknown as CrusnikConfig;
+
+/** Blood a hit or kill on a Methuselah boss gives (none for human bosses). */
+export function bossBlood(bossId: string, cfg: CrusnikConfig = crusnikConfig): { hit: number; kill: number } | null {
+  const b = cfg.bossBlood[bossId];
+  return b && typeof b !== 'string' ? b : null;
+}
 
 /** The Crusnik leaps higher and runs faster; everything else is the priest's tuning. */
 export function crusnikTuning(t: PlayerTuning, cfg: CrusnikConfig = crusnikConfig): PlayerTuning {
@@ -26,7 +34,10 @@ export function crusnikTuning(t: PlayerTuning, cfg: CrusnikConfig = crusnikConfi
  * Fills from combat while in priest form; when full, the form can be taken; while active it drains to zero.
  */
 export class CrusnikMeter {
+  /** The form can be taken (after Abel's first transformation). */
   unlocked = false;
+  /** The meter is shown and fills (after the first mini boss), before the form itself is unlocked. */
+  awake = false;
   active = false;
   private value = 0;
 
@@ -41,20 +52,25 @@ export class CrusnikMeter {
     return this.unlocked && !this.active && this.value >= this.cfg.meterMax;
   }
 
-  /** Blood from landing hits and kills (priest form only: the form cannot feed itself). */
+  /** Shown in the HUD and filling. */
+  get shown(): boolean {
+    return this.awake || this.unlocked;
+  }
+
+  /** Methuselah blood from landing hits and kills (priest form only: the form cannot feed itself). */
   gain(amount: number): void {
-    if (!this.unlocked || this.active) return;
+    if (!this.shown || this.active) return;
     this.value = Math.min(this.cfg.meterMax, this.value + amount);
   }
 
   /** Blood drained from a Methuselah: also tops up an active form. */
   feed(amount: number): void {
-    if (!this.unlocked) return;
+    if (!this.shown) return;
     this.value = Math.min(this.cfg.meterMax, this.value + amount);
   }
 
   fill(): void {
-    if (this.unlocked) this.value = this.cfg.meterMax;
+    if (this.shown) this.value = this.cfg.meterMax;
   }
 
   /** Take the form if ready. */

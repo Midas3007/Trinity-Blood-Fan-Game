@@ -40,6 +40,8 @@ export interface EnemyConfig {
   bolt?: { speed: number; damage: number; lifeMs: number };
   /** Human: knocked out instead of killed; stays down and never respawns in this visit. */
   knockout?: boolean;
+  /** Methuselah blood for the Crusnik meter: per landed hit and per kill. Absent = none (humans, puppets, beasts). */
+  blood?: { hit: number; kill: number };
 }
 
 type RawEnemy = Omit<EnemyConfig, 'type' | 'color' | 'telegraphColor' | 'attacks'> & {

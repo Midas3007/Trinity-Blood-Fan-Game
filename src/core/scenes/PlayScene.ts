@@ -41,7 +41,7 @@ import { CornerButtons } from '../../ui/CornerButtons';
 import type { RoomData } from '../../world/tiled';
 import { gameState } from '../../systems/GameState';
 import { saveStore } from '../../systems/save/SaveStore';
-import { crusnikConfig } from '../../player/CrusnikMeter';
+import { bossBlood, crusnikConfig } from '../../player/CrusnikMeter';
 import { Banner } from '../../ui/Banner';
 import { ChainLashView } from '../../combat/ChainLashView';
 import { loreEntry } from '../../ui/LorePanel';
@@ -69,6 +69,8 @@ export interface RoomStart {
   room: string;
   entry?: string;
   checkpoint?: string;
+  /** Sent back to the altar by a fall into spikes or water: health, flasks and the blood meter stay as they were. */
+  keepHealth?: boolean;
   /** Crossing from a neighbouring room: world position (body centre) and velocity to keep. */
   world?: { x: number; y: number; vx: number; vy: number; facing: 1 | -1; climbing?: boolean };
 }
@@ -103,7 +105,6 @@ export class PlayScene extends Phaser.Scene {
   private leaving = false;
   /** Must stand up once before praying again (no loop when spawning at an altar while holding down). */
   private prayArmed = false;
-  private safe = { x: 0, y: 0 };
   private lorePanel!: LorePanel;
   private tiles!: RoomTiles;
   private backdrop!: Backdrop;
@@ -203,7 +204,6 @@ export class PlayScene extends Phaser.Scene {
     this.player.placeAt(at.x, at.y);
     this.player.facing = at.facing;
     if (gameState.hp !== null) this.player.setHealth(gameState.hp);
-    this.safe = { x: at.x, y: at.y };
     this.physics.add.collider(this.player.sprite, solids);
     this.player.stepSolids = solidRects;
     this.physics.add.collider(this.player.sprite, oneways, undefined, (_p, o) =>
@@ -281,6 +281,7 @@ export class PlayScene extends Phaser.Scene {
     const testCrusnik = testHookEnabled() && new URLSearchParams(location.search).has('crusnik') && !gameState.hasFlag(crusnikConfig.unlockFlag);
     if (testCrusnik) gameState.setFlag(crusnikConfig.unlockFlag);
     cm.unlocked = gameState.hasFlag(crusnikConfig.unlockFlag);
+    cm.awake = gameState.hasFlag(crusnikConfig.meterFlag);
     if (gameState.crusnik) cm.restore(gameState.crusnik);
     if (testCrusnik) cm.fill();
 
@@ -343,14 +344,23 @@ export class PlayScene extends Phaser.Scene {
     });
   }
 
+  /** Methuselah blood a target gives (an enemy's 'blood', or a Methuselah boss's), or null for humans and puppets. */
+  private bloodOf(id: number): { hit: number; kill: number } | null {
+    const e = this.enemies.active.find((en) => en.id === id);
+    if (e) return e.cfg.blood ?? null;
+    const boss = this.roomData.boss;
+    if (boss && this.arena?.fighter.id === id) return bossBlood(boss.id);
+    return null;
+  }
+
   /** Hit feedback listens to events; combat code never calls effects directly. */
   private wireFeedback(): void {
     this.bus.on('combat:hit', ({ targetId, byPlayer }) => {
-      // Blood for the Crusnik meter: real targets only (not levers).
-      if (byPlayer && !this.runtime.levers.some((l) => l.id === targetId)) this.player.crusnik.gain(crusnikConfig.gainPerHit);
+      // Blood for the Crusnik meter: only Methuselah bleed it (owner's rule).
+      if (byPlayer) this.player.crusnik.gain(this.bloodOf(targetId)?.hit ?? 0);
     });
-    this.bus.on('enemy:died', () => {
-      this.player.crusnik.gain(crusnikConfig.gainPerKill);
+    this.bus.on('enemy:died', ({ id }) => {
+      this.player.crusnik.gain(this.bloodOf(id)?.kill ?? 0);
       audio.sfx('death');
     });
     this.bus.on('combat:parry', ({ x, y }) => {
@@ -442,7 +452,7 @@ export class PlayScene extends Phaser.Scene {
       this.boltFx.fillStyle(0xddd7e6, 1).fillRect(b.x - 1, b.y - 1, 2, 2);
     }
     const p = this.player;
-    this.hud.setCrusnik(p.crusnik.fraction, p.crusnik.unlocked, p.crusnik.ready);
+    this.hud.setCrusnik(p.crusnik.fraction, p.crusnik.shown, p.crusnik.ready);
     this.chain.update(p.state === 'lash' ? activeHitbox(p.combat, p.x, p.y, p.facing) : null, p.x + p.facing * 8, p.y - 4, p.facing);
 
     const boxes: Rect[] = [];
@@ -465,7 +475,8 @@ export class PlayScene extends Phaser.Scene {
   private updateRoom(): void {
     const p = this.player;
     if (!p.kneeling) this.prayArmed = true;
-    this.tiles.update(this.game.loop.delta, p.x, p.y);
+    this.tiles.update(this.game.loop.delta, p.x, p.y, p.feetY);
+    this.runtime.updateLandmarks(this.game.loop.delta, p.x, p.feetY);
     p.onOneway = p.onGround && this.standingOnOneway();
     if (this.crossEdge()) return;
     const lore = p.onGround ? this.runtime.loreAt(p.x) : null;
@@ -477,10 +488,7 @@ export class PlayScene extends Phaser.Scene {
     }
     this.doorHint.setVisible(false);
     const ev = this.runtime.update(p);
-    if (!ev) {
-      if (p.onGround && this.runtime.safeAt(p.x)) this.safe = { x: p.x, y: p.feetY };
-      return;
-    }
+    if (!ev) return;
     if (ev.type === 'exit') {
       const ex = ev.exit;
       if (ex.requires && !gameState.hasFlag(ex.requires)) {
@@ -493,7 +501,7 @@ export class PlayScene extends Phaser.Scene {
       }
       return;
     } else if (ev.type === 'hazard') {
-      // Spikes hurt, then put you back on the last solid ground.
+      // Spikes and water hurt, then send you back to the last altar you prayed at (owner's rule).
       if (!p.invulnerable) {
         p.takeHit({ damage: ev.damage, knockbackX: 0, knockbackY: 0, hitstopMs: 0, shakeMs: 120, shakeIntensity: 0.006 });
         this.bus.emit('player:hurt', { hp: p.health.hp, max: p.health.max });
@@ -502,7 +510,9 @@ export class PlayScene extends Phaser.Scene {
           return;
         }
       }
-      p.placeAt(this.safe.x, this.safe.y);
+      const cp = gameState.checkpoint;
+      audio.sfx('hurt');
+      this.goTo(cp ? { room: cp.room, checkpoint: cp.id, keepHealth: true } : { room: START.room, entry: START.entry, keepHealth: true });
     } else if (ev.type === 'pray' && this.prayArmed) {
       this.startPrayer(ev.checkpoint);
     }
@@ -596,6 +606,11 @@ export class PlayScene extends Phaser.Scene {
     this.hud.setHealth(this.player.health.fraction);
     this.banner.show(r.card, r.gift);
     audio.sfx('card');
+    if (flag === crusnikConfig.meterFlag && !this.player.crusnik.awake) {
+      // After the first mini boss: the blood meter wakes (the form itself comes later, in the Kampfer fight).
+      this.player.crusnik.awake = true;
+      this.time.delayedCall(3400, () => this.banner.show('SANGUIS', 'The bar under your health is blood.\nOnly Methuselah blood fills it — the living more than the reanimated.', 3200));
+    }
     if (flag === 'gyula_defeated') {
       // The end: the ending scene, the credits, then the teaser for the next arc.
       saveStore.save(gameState.toSave(Date.now()));
@@ -685,13 +700,14 @@ export class PlayScene extends Phaser.Scene {
   private goTo(next: RoomStart): void {
     if (this.leaving) return;
     this.leaving = true;
-    // Walking between rooms keeps your health; praying or dying refills it.
-    gameState.hp = next.checkpoint === undefined && !this.player.health.dead ? this.player.health.hp : null;
-    // Flasks carry over between rooms; praying and dying refill them.
-    gameState.flasks = next.checkpoint === undefined && !this.player.health.dead ? this.player.flasks : null;
+    // Walking between rooms (or a fall back to the altar) keeps your health; praying or dying refills it.
+    const carry = (next.checkpoint === undefined || next.keepHealth === true) && !this.player.health.dead;
+    gameState.hp = carry ? this.player.health.hp : null;
+    // Flasks carry over too; praying and dying refill them.
+    gameState.flasks = carry ? this.player.flasks : null;
     // The blood meter carries over; praying or dying ends the form (the blood stays).
     const blood = this.player.crusnik.snapshot();
-    gameState.crusnik = next.checkpoint === undefined && !this.player.health.dead ? blood : { value: blood.value, active: false };
+    gameState.crusnik = carry ? blood : { value: blood.value, active: false };
     // Autosave on every room change and prayer (a loaded game resumes at the last altar).
     saveStore.save(gameState.toSave(Date.now()));
     this.physics.world.pause();

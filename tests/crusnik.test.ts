@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { framesFor, SimPlayer } from './playerSim';
-import { CrusnikMeter, crusnikConfig as cfg, crusnikTuning } from '../src/player/CrusnikMeter';
+import { bossBlood, CrusnikMeter, crusnikConfig as cfg, crusnikTuning } from '../src/player/CrusnikMeter';
+import { enemyConfigs } from '../src/enemies/enemyConfig';
 import { jumpHeight } from '../src/player/movement';
 import { playerTuning } from '../src/player/tuning';
 import { playerStates, type PlayerStateKey } from '../src/player/playerStates';
@@ -26,13 +27,27 @@ function transformed(): SimPlayer {
 }
 
 describe('Crusnik blood meter', () => {
-  it('ignores blood until the form is awakened, then fills to ready', () => {
+  it('ignores blood until the meter wakes, then fills; transforming waits for the form', () => {
     const m = new CrusnikMeter();
     m.gain(500);
     expect(m.fraction).toBe(0);
+    m.awake = true;
+    for (let i = 0; i < 20; i++) m.gain(10);
+    expect(m.fraction).toBe(1);
+    expect(m.ready).toBe(false);
     m.unlocked = true;
-    for (let i = 0; i < Math.ceil(cfg.meterMax / cfg.gainPerHit); i++) m.gain(cfg.gainPerHit);
     expect(m.ready).toBe(true);
+  });
+
+  it('only Methuselah bleed: living ones more than reanimated Death Hunters; humans and puppets none', () => {
+    const t = enemyConfigs;
+    const living = t.methuselah?.blood;
+    const dead = t.deathHunter?.blood;
+    expect(living && dead && living.kill > dead.kill && living.hit > dead.hit).toBe(true);
+    for (const k of ['thrall', 'ironChoir', 'inquisitor', 'boneRat']) expect(t[k]?.blood, k).toBeUndefined();
+    expect(bossBlood('marchesa')).not.toBeNull();
+    expect(bossBlood('petros')).toBeNull();
+    expect(cfg.meterFlag).toBe('paula_defeated');
   });
 
   it('drains while active and ends at zero; combat does not refill it, a drain does', () => {

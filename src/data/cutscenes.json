@@ -21,11 +21,13 @@
      "lines": [
       {
        "speaker": "Abel",
-       "text": "Istvan... prettier than the reports said. Colder, too."
+       "text": "Istvan... prettier than the reports said. Colder, too.",
+       "voice": "opening_0_0"
       },
       {
        "speaker": "Sealed orders",
-       "text": "Its people vanish by night into the old water tunnels. Go below. Learn who takes them, and why. Trust no one. — C."
+       "text": "Its people vanish by night into the old water tunnels. Go below. Learn who takes them, and why. Trust no one. — C.",
+       "voice": "opening_0_1"
       }
      ]
     },
@@ -46,7 +48,8 @@
      "lines": [
       {
        "speaker": "Abel",
-       "text": "Down into the dark, then. On an empty stomach. Splendid."
+       "text": "Down into the dark, then. On an empty stomach. Splendid.",
+       "voice": "opening_1_0"
       }
      ]
     },
@@ -108,7 +111,8 @@
      "lines": [
       {
        "speaker": "Sister Paula",
-       "text": "Halt. By order of the Holy Inquisition, you will kneel."
+       "text": "Halt. By order of the Holy Inquisition, you will kneel.",
+       "voice": "paula_intro_0_0"
       },
       {
        "speaker": "Abel",
@@ -368,7 +372,8 @@
      "lines": [
       {
        "speaker": "A young voice, far off",
-       "text": "Father Abel? Father — are you down there?"
+       "text": "Father Abel? Father — are you down there?",
+       "voice": "kampfer_awakening_1_0"
       }
      ]
     },
@@ -394,7 +399,8 @@
       },
       {
        "speaker": "Abel",
-       "text": "Crusnik. Forty percent. ...Release."
+       "text": "Crusnik. Forty percent. ...Release.",
+       "voice": "kampfer_awakening_2_1"
       }
      ]
     },
@@ -426,7 +432,8 @@
      "lines": [
       {
        "speaker": "The Magus",
-       "text": "There it is. Oh, magnificent."
+       "text": "There it is. Oh, magnificent.",
+       "voice": "kampfer_awakening_3_0"
       }
      ]
     }
@@ -484,7 +491,8 @@
        "flip": false,
        "enter": "fade"
       }
-     ]
+     ],
+     "captionVoice": "kampfer_outro_1_c"
     },
     {
      "layout": "right",
@@ -507,7 +515,8 @@
       },
       {
        "speaker": "Esther",
-       "text": "An angel... with a scythe... no. I was dreaming. Father, what happened?"
+       "text": "An angel... with a scythe... no. I was dreaming. Father, what happened?",
+       "voice": "kampfer_outro_2_1"
       },
       {
        "speaker": "Abel",
@@ -540,7 +549,8 @@
       },
       {
        "speaker": "The Marchesa",
-       "text": "Please... when the music starts, run. I cannot stop my hands."
+       "text": "Please... when the music starts, run. I cannot stop my hands.",
+       "voice": "marchesa_intro_0_1"
       }
      ]
     },
@@ -602,7 +612,8 @@
      "lines": [
       {
        "speaker": "The Marchesa",
-       "text": "...The strings. They are gone. How strange, to feel my own hands again."
+       "text": "...The strings. They are gone. How strange, to feel my own hands again.",
+       "voice": "marchesa_outro_0_0"
       },
       {
        "speaker": "Abel",
@@ -651,7 +662,8 @@
       },
       {
        "speaker": "Abel",
-       "text": "I won't. Requiescat in pace."
+       "text": "I won't. Requiescat in pace.",
+       "voice": "marchesa_outro_2_1"
       }
      ]
     }
@@ -730,7 +742,8 @@
      "lines": [
       {
        "speaker": "Brother Petros",
-       "text": "Then I will cut his strings after I have cut yours. Stand and be judged!"
+       "text": "Then I will cut his strings after I have cut yours. Stand and be judged!",
+       "voice": "petros_intro_2_0"
       }
      ]
     }
@@ -853,7 +866,8 @@
       },
       {
        "speaker": "Dietrich",
-       "text": "Tonight the whole city dances for the Count. And you, Crusnik, will play the first movement."
+       "text": "Tonight the whole city dances for the Count. And you, Crusnik, will play the first movement.",
+       "voice": "dietrich_intro_1_1"
       }
      ]
     },
@@ -1035,7 +1049,8 @@
      "lines": [
       {
        "speaker": "Gyula",
-       "text": "They burned her. My wife. A human, who loved them. They called her a vampire's whore and they burned her in the square."
+       "text": "They burned her. My wife. A human, who loved them. They called her a vampire's whore and they burned her in the square.",
+       "voice": "gyula_intro_1_0"
       }
      ]
     },
@@ -1102,7 +1117,8 @@
      "lines": [
       {
        "speaker": "Esther",
-       "text": "Father! Get up! You said you'd bring us home!"
+       "text": "Father! Get up! You said you'd bring us home!",
+       "voice": "gyula_wings_1_0"
       }
      ]
     },
@@ -1123,7 +1139,8 @@
      "lines": [
       {
        "speaker": "Abel",
-       "text": "...Eighty percent."
+       "text": "...Eighty percent.",
+       "voice": "gyula_wings_2_0"
       },
       {
        "speaker": "Abel",
@@ -1158,7 +1175,8 @@
      "lines": [
       {
        "speaker": "Gyula",
-       "text": "Black wings... What are you?"
+       "text": "Black wings... What are you?",
+       "voice": "gyula_wings_3_0"
       }
      ]
     }
@@ -1199,7 +1217,8 @@
       },
       {
        "speaker": "Gyula",
-       "text": "She would have stopped it too. She would have told me... that they were only afraid."
+       "text": "She would have stopped it too. She would have told me... that they were only afraid.",
+       "voice": "gyula_outro_0_2"
       }
      ]
     },
@@ -1220,7 +1239,8 @@
      "lines": [
       {
        "speaker": "Abel",
-       "text": "Go to her, then. Requiescat in pace."
+       "text": "Go to her, then. Requiescat in pace.",
+       "voice": "gyula_outro_1_0"
       }
      ]
     }
@@ -1254,7 +1274,8 @@
      "lines": [
       {
        "speaker": "Esther",
-       "text": "Last night, in the castle... I saw an angel. With black wings, and a scythe. It saved me."
+       "text": "Last night, in the castle... I saw an angel. With black wings, and a scythe. It saved me.",
+       "voice": "ending_0_0"
       },
       {
        "speaker": "Abel",
@@ -1283,7 +1304,8 @@
       },
       {
        "speaker": "Abel",
-       "text": "Then don't be. Not of that one."
+       "text": "Then don't be. Not of that one.",
+       "voice": "ending_1_1"
       }
      ]
     },
@@ -1308,7 +1330,8 @@
       },
       {
        "speaker": "Esther",
-       "text": "...I'm coming with you, Father. Someone has to keep you from starving."
+       "text": "...I'm coming with you, Father. Someone has to keep you from starving.",
+       "voice": "ending_2_1"
       }
      ]
     },
@@ -1346,7 +1369,8 @@
      "lines": [
       {
        "speaker": "Envoy",
-       "text": "A letter from Byzantium, Eminence. From the Empress herself."
+       "text": "A letter from Byzantium, Eminence. From the Empress herself.",
+       "voice": "teaser_0_0"
       },
       {
        "speaker": "Cardinal",
@@ -1370,7 +1394,8 @@
      "lines": [
       {
        "speaker": "Envoy",
-       "text": "Only one of your priests. The one they call... the Atoner."
+       "text": "Only one of your priests. The one they call... the Atoner.",
+       "voice": "teaser_1_0"
       }
      ]
     },
@@ -1390,7 +1415,8 @@
      "lines": [
       {
        "speaker": "Cardinal",
-       "text": "...Send for Father Nightroad."
+       "text": "...Send for Father Nightroad.",
+       "voice": "teaser_2_0"
       }
      ]
     },

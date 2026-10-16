@@ -142,5 +142,32 @@
     "dead": {
       "anim": "enemy_inquisitor_down"
     }
+  },
+  "methuselah": {
+    "idle": {
+      "anim": "enemy_methuselah_idle"
+    },
+    "patrol": {
+      "anim": "enemy_methuselah_walk"
+    },
+    "alert": {
+      "anim": "enemy_methuselah_idle"
+    },
+    "pursue": {
+      "anim": "enemy_methuselah_walk",
+      "timeScale": 1.6
+    },
+    "attack": {
+      "anim": "enemy_methuselah_claw"
+    },
+    "hurt": {
+      "anim": "enemy_methuselah_hurt"
+    },
+    "staggered": {
+      "anim": "enemy_methuselah_hurt"
+    },
+    "dead": {
+      "anim": "enemy_methuselah_collapse"
+    }
   }
 }

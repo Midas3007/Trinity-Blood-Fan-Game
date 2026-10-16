@@ -2690,6 +2690,137 @@
         "sha256:fced6c4761ea946f0897b4e939fa30d236fd925ecba71fcc574718b6f5dcae7d"
       ]
     },
+    "enemies/methuselah/enemy_methuselah_claw.png": {
+      "animations": {
+        "claw": {
+          "durations_ms": [
+            420,
+            140
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 2,
+      "entity": "enemy_methuselah",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "enemy_methuselah_claw.png",
+      "source_hashes": [
+        "sha256:19e61c33083a532e9cf076838134abe7eb275693d41e73837f7d3bc73ea01a3f",
+        "sha256:d1cb5386346324193aaefd5ccee7db02002096020ce839b928b29f01e686d9f0"
+      ]
+    },
+    "enemies/methuselah/enemy_methuselah_collapse.png": {
+      "animations": {
+        "collapse": {
+          "durations_ms": [
+            700
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "enemy_methuselah",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "enemy_methuselah_collapse.png",
+      "source_hashes": [
+        "sha256:43679b173bbabfc5f64f71d0f3a3750a6fc34980a5f4b97bd7d22a735efa1c9e"
+      ]
+    },
+    "enemies/methuselah/enemy_methuselah_hurt.png": {
+      "animations": {
+        "hurt": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "enemy_methuselah",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "enemy_methuselah_hurt.png",
+      "source_hashes": [
+        "sha256:6c244ae73789f50f8514e81a1d4e4ab2c0d3437429a88005f50e031ff443157d"
+      ]
+    },
+    "enemies/methuselah/enemy_methuselah_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "enemy_methuselah",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "enemy_methuselah_idle.png",
+      "source_hashes": [
+        "sha256:38dbd55f2596afb1e85106db13600b23b3f2ef82449415b06c1263a707d5a6e6"
+      ]
+    },
+    "enemies/methuselah/enemy_methuselah_walk.png": {
+      "animations": {
+        "walk": {
+          "durations_ms": [
+            240,
+            240
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 2,
+      "entity": "enemy_methuselah",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "enemy_methuselah_walk.png",
+      "source_hashes": [
+        "sha256:fbe5695513dbfc51c8d450d5014dd569fe5cf4758069df52df2892f6fa96d624",
+        "sha256:30e71d75be5ceefb4321ecffa2c8e471440f0ba0ef41e0a94fac016964087e91"
+      ]
+    },
     "enemies/thrall/enemy_thrall_claw.png": {
       "animations": {
         "claw": {

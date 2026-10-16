@@ -1,0 +1,28 @@
+{
+  "animations": {
+    "claw": {
+      "durations_ms": [
+        420,
+        140
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 96,
+  "columns": 2,
+  "entity": "enemy_methuselah",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 64,
+  "sheet": "enemy_methuselah_claw.png",
+  "source_hashes": [
+    "sha256:19e61c33083a532e9cf076838134abe7eb275693d41e73837f7d3bc73ea01a3f",
+    "sha256:d1cb5386346324193aaefd5ccee7db02002096020ce839b928b29f01e686d9f0"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "animations": {
+    "hurt": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 96,
+  "columns": 1,
+  "entity": "enemy_methuselah",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 64,
+  "sheet": "enemy_methuselah_hurt.png",
+  "source_hashes": [
+    "sha256:6c244ae73789f50f8514e81a1d4e4ab2c0d3437429a88005f50e031ff443157d"
+  ]
+}

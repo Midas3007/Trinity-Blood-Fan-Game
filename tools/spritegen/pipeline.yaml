@@ -264,6 +264,20 @@ entities:
       hurt: { loop: false, durations_ms: 300 }
       down: { loop: false, durations_ms: 600 }
 
+  # Low-born Methuselah (owner, 2026-10-16: blood for the Crusnik meter). Sheet ad588146.
+  enemy_methuselah:
+    cell: [96, 64]
+    sprite_height: 36
+    source_dir: art/source/approved/enemies/methuselah/
+    output_dir: public/assets/sprites/enemies/methuselah/
+    keep_largest: true
+    animations:
+      idle:     { loop: true,  durations_ms: 600 }
+      walk:     { loop: true,  durations_ms: [240, 240] }
+      claw:     { loop: false, durations_ms: [420, 140] }
+      hurt:     { loop: false, durations_ms: 300 }
+      collapse: { loop: false, durations_ms: 700 }
+
   # Region 2 (sheets 7c4e0f0c marionette, 11c6a7bd Gyula, 09faf2b7 Caterina + envoy).
   boss_marionette:
     cell: [224, 176]

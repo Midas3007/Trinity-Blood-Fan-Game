@@ -1,0 +1,14 @@
+{
+  "source": "methuselah_ad588146_m.png",
+  "source_hash": "sha256:254dc27aa2a0beb433707082c99ddff88a3856162539e86c9d5f85a7a13bad96",
+  "figures": [
+    0
+  ],
+  "standing_px": 830,
+  "factor": 0.346988,
+  "open_px": 0,
+  "expected": 7,
+  "outputs": [
+    "methuselah_ad588146_m_f0.png"
+  ]
+}
