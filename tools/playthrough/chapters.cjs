@@ -19,8 +19,8 @@ const chapters = {
     await b.page.mouse.click(60, 60); await b.wait(400); // a tap on empty space starts the sound
     await b.startRec(['audio']);
     await b.wait(6000);
-    await b.page.mouse.click(246, 392); await b.wait(700);
-    await b.page.mouse.click(246, 392); await b.wait(2500);
+    // The slots: I holds a game in progress; start a new game in slot II.
+    await b.page.mouse.click(250, 340); await b.wait(2500);
     await b.watchCutscene();
     await b.wait(800);
     await b.explore(1, { maxMs: 70000, until: (s) => s.room === 'market_square' && s.player.x > 300 });
@@ -137,6 +137,70 @@ const chapters = {
       await b.wait(1000);
     }
     await b.wait(5000);
+  },
+  // 2b. The Atoner's Blade: through the Hunter's Crypt to the sword, then its combo, air and low slashes.
+  async c02s(b) {
+    await b.open('room=hunters_crypt');
+    await b.click(); await b.wait(400); await b.startRec(); await b.wait(500);
+    for (let k = 0; k < 12; k++) {
+      const s = await b.snap();
+      if (s.flags.includes('item:sword')) break;
+      const near = s.enemies.some((e) => e.hp > 0 && Math.abs(e.x - s.player.x) < 120 && Math.abs(e.y - s.player.y) < 60);
+      if (near) await b.brawl({ maxMs: 12000, until: (t) => !t.enemies.some((e) => e.hp > 0 && Math.abs(e.x - t.player.x) < 140 && Math.abs(e.y - t.player.y) < 60) });
+      else await b.walkTo(Math.min(1864, s.player.x + 200), 6, 4000);
+    }
+    await b.walkTo(1864, 6, 20000);
+    await b.wait(4500); // the card
+    // A few swings with the new blade: the three-cut combo, an air slash, a low slash.
+    for (let i = 0; i < 3; i++) { await b.press('x'); await b.wait(200); }
+    await b.wait(700);
+    await b.press('Space', 140); await b.wait(120); await b.press('x'); await b.wait(900);
+    await b.key('ArrowDown', true); await b.wait(100); await b.press('x'); await b.wait(500); await b.key('ArrowDown', false); await b.wait(800);
+    const used = await b.brawl({ maxMs: 30000, arts: true, until: (t) => t.room !== 'hunters_crypt' || !t.enemies.some((e) => e.hp > 0 && Math.abs(e.x - t.player.x) < 400 && Math.abs(e.y - t.player.y) < 60) });
+    const s = await b.snap();
+    b.note('sword ' + s.player.weapon + ' arts ' + used.join(','));
+    await b.wait(1500);
+  },
+  // 4b. The blade's arts in the Great Hall, ending in the sword execution.
+  async c04s(b) {
+    await b.open('room=great_hall&' + flags('paula') + ',item:sword');
+    await b.click(); await b.wait(400); await b.startRec(); await b.wait(800);
+    const used = new Set();
+    for (let round = 0; round < 8; round++) {
+      const s = await b.snap();
+      if (!s.enemies.some((e) => e.hp > 0 && Math.abs(e.y - s.player.y) < 60)) break;
+      (await b.brawl({ maxMs: 30000, arts: true })).forEach((u) => used.add(u));
+    }
+    b.note('blade arts ' + [...used].join(', '));
+    await b.wait(1200);
+  },
+  // 8b. Rest and travel: the map (hidden items marked), Options (difficulty, accessibility, keys, touch layout),
+  // the Codex's items, then fast travel from the fountain altar to the Chapel of Bones.
+  async c08t(b) {
+    await b.open('room=market_square&peaceful&' + flags('paula', 'kampfer', 'marchesa', 'petros') + ',item:sword,item:heart1,item:tea1,altar:market_square:fountain_altar,altar:market_square:tavern_altar,altar:chapel_of_bones:chapel_altar');
+    await b.click(); await b.wait(400); await b.startRec(); await b.wait(800);
+    const g = (x, y) => b.page.mouse.click(2 * x, 2 * y);
+    await b.press('m'); await b.wait(3500); await b.press('m'); await b.wait(600);
+    await b.press('Escape'); await b.wait(1500);
+    await g(240, 28 + 90); await b.wait(1200); // weapon switch: fists
+    await g(240, 28 + 90); await b.wait(1200); // and back to the sword
+    await g(240, 28 + 142); await b.wait(2500); // Options
+    await g(240, 46); await b.wait(900); await g(240, 46); await b.wait(900); await g(240, 46); await b.wait(900); // difficulty round
+    await g(240, 46 + 21); await b.wait(900); await g(240, 46 + 21); await b.wait(700); // parry assist on/off
+    await g(240, 46 + 6 * 21); await b.wait(2500); await g(240, 46 + 7 * 21); await b.wait(900); // keys page, back
+    await g(240, 46 + 7 * 21); await b.wait(1500); // touch layout
+    await b.page.mouse.move(2 * 384, 2 * 210.6); await b.page.mouse.down(); await b.page.mouse.move(2 * 340, 2 * 200, { steps: 15 }); await b.page.mouse.up(); await b.wait(600);
+    await g(240 + 66, 135 - 16); await b.wait(500); await g(240 + 66, 135 - 16); await b.wait(900);
+    await g(240 - 66, 135 + 10); await b.wait(1200); // reset (back to defaults for the rest of the film)
+    await g(240, 46 + 8 * 21); await b.wait(800); // back to pause
+    await g(240, 28 + 116); await b.wait(1500); // Codex
+    await g(212 + 16, 26); await b.wait(2500); // Items tab
+    await g(420, 240); await b.wait(700); // close
+    await g(240, 28 + 64); await b.wait(800); // resume
+    await b.walkTo(1304, 4, 30000); await b.wait(800);
+    await b.key('ArrowUp', true); await b.wait(300); await b.key('ArrowUp', false); await b.wait(2200);
+    await b.page.mouse.click(480, 2 * (72 + 42 + 1 * 22)); await b.wait(3000);
+    b.note('travel ' + (await b.snap()).room);
   },
 };
 

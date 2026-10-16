@@ -1,6 +1,6 @@
 # STATUS
 
-Last updated: 2026-10-16
+Last updated: 2026-10-16 (evening)
 
 ## Milestone tracker (CLAUDE.md Part 10)
 | # | Milestone | State |
@@ -20,12 +20,45 @@ Last updated: 2026-10-16
 | 12 | Region 2 + final battle | **done:** Cathedral Nave + Bell Tower (portal opens after Petros), Castle Gate, Great Hall, Star of Sorrow chamber (bridge gate opens after Dietrich); bosses Dietrich (Grand Marionette → Dietrich) and Gyula (final, 80% wings phase) |
 | 14 | Start-menu progress bar | **done:** Continue shows a percentage and a gold bar (fights 70%, map 20%, lore 10%) |
 | 15 | Owner fixes 2026-10-16 | **done:** Midas3007 in the credits; see-through building fronts + cathedral ledge guides; New game really restarts; sewer-shaft hole fixed (grate + ladder); spikes/water send you to the last altar; blood meter from the first mini boss, filled only by Methuselah (new low-born Methuselah enemy; Death Hunters give less) |
+| 17 | Owner round 2026-10-16 (b) | **done:** the sword (The Atoner's Blade: combo, air, low, sword execution finisher); fast travel between altars; Options (difficulty, parry assist, shake, flashes, low effects, sound, key rebinding, touch layout editor); 3 save slots; 13 hidden items (reasons to explore) |
 | 13 | Full recorded playthrough | **done:** a bot plays the game in 10 chapters (title → teaser), recorded with the game's own music, effects and voices; 15¾ min video sent to the owner; scripts in `tools/playthrough/` |
 | 16 | Bestiary and Lore book | **done:** pause → *Bestiary & Lore*: 14 creature/boss pages (portrait, original text, blood, tip) unlocked on first defeat; every lore page you've read |
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — Codex and the recorded playthrough (2026-10-16)
+## Done (latest) — the sword, travel, options, slots, hidden items (2026-10-16)
+- **The Atoner's Blade:** a sword hidden at the far end of the Hunter's Crypt. It changes base Abel's moves:
+  - a three-cut combo, an air slash and a low slash;
+  - a new finisher, the sword execution (raise the blade, drive it through; heals a little).
+  - The bare hands and the revolver finisher stay. Switch weapons in the pause menu (Weapon: Sword / Fists).
+  - New sprite sheet made with the last Higgsfield credits. Weapons are now data (`src/data/weapons.json`), so another weapon is a data entry plus sprites.
+- **Hidden items** (reasons to explore), 13 in all:
+  - the sword;
+  - 4 Sacred Hearts (+10 health each);
+  - 2 Silver Chalices (+1 flask each);
+  - 6 Tins of Tea (all six: one more flask and harder blows).
+  - They sit on roofs, high ledges, a pillar over spikes, and the ends of side passages. Some need the Crusnik's leap, so you come back later.
+  - The map marks rooms you've visited that still hide something (gold ◆). The Codex has an Items tab. The title-screen progress counts items.
+- **Fast travel:** stand at an altar you've prayed at and push up (a "travel ▲" hint shows). It works once the boss beyond that area is beaten:
+  - the market altars after Sister Paula;
+  - the Chapel of Bones after Petros;
+  - the nave and bell tower after Dietrich;
+  - the fortress altars after Gyula.
+- **Options** (pause → Options), saved on the phone:
+  - difficulty: Story (half damage taken), Normal, Hard (×1.5);
+  - parry assist (a wider parry window), screen shake on/off, flashes on/off;
+  - low effects (no shake, no sparks);
+  - sound;
+  - keys: tap an action, press its new key;
+  - touch layout: drag any button or the stick, Smaller / Bigger, Reset, Done.
+- **Three save slots** on the title screen. Each shows its progress and where you are; an empty slot starts a new game; erasing asks twice. Your old save is slot I.
+- Verified: 201/201 tests, build, bot runs:
+  - the sword pickup and every sword animation, including the execution;
+  - fast travel from the fountain to the Chapel of Bones;
+  - Options: difficulty, low effects, rebinding Attack to Q, moving and resizing ATK (saved, and the new layout used in play);
+  - slot II new game while slot I keeps its save.
+
+## Done (earlier) — Codex and the recorded playthrough (2026-10-16)
 - **Bestiary & Lore book** in the pause menu. The Bestiary has a page for every creature and boss (14): animated portrait, an original description, how much blood it gives, and a fighting tip. Pages unlock the first time you beat that kind. The Lore book collects every lore stone you've read. Locked pages show as "? ? ?".
 - **Recorded playthrough:** ten chapters, played by a bot and recorded with the game's own audio:
   1. The title (with progress bar), a new game, the voiced opening and the streets.
@@ -129,6 +162,13 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
 
 ## Blockers
 - **Music downloads blocked:** archive.org search now works, but its files are served from `*.archive.org` storage hosts (e.g. dn711007.ca.archive.org, ia800300.us.archive.org), which are still denied. Add `*.archive.org` (or `.archive.org`) to Allowed domains. Tracks are already chosen (see docs/audio-plan.md). Other sites (opengameart.org, incompetech.com, freepd.com, pixabay.com, freesound.org) are still denied. To allow them: in the session's cloud environment menu (title bar) → Edit → Network access → add those domains under Allowed domains (keep "Allow package managers" ticked). Steps: https://code.claude.com/docs/en/cloud-environments#network-access. Until then the game plays its own original pieces. Higgsfield: about 2 credits left (enough for one more image).
+
+## Owner must test (on phone) — sword, travel, options, slots
+1. Title: three slots. Your old game is slot I. Start a new game in slot II and check slot I is untouched.
+2. Hunter's Crypt (west from the sewer ledge), far east end: the sword. Try the combo, a jump slash, a low slash, and the finisher on a staggered enemy. Pause → Weapon switches back to fists.
+3. Pause → Options: try Story difficulty, parry assist, Low effects, then Touch layout: drag ATK somewhere comfortable, make it bigger, Done. Does it stay after a reload?
+4. Open the map: gold ◆ on rooms that still hide something. Look on roofs and high ledges.
+5. After beating Sister Paula, pray at both market altars, then stand at one and push up: travel.
 
 ## Owner must test (on phone) — sound, voices and your fixes
 1. Tap the title: organ music starts. Walk into the undercity, the ballroom, the cathedral: the music changes. Each boss fight has its own theme.

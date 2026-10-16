@@ -5,16 +5,19 @@ OUT = Path("out")
 FONT = "/usr/share/fonts/truetype/dejavu/DejaVuSerif-Bold.ttf"
 FONT2 = "/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf"
 CH = [
-    ("c01", "I", "Arrival in Istvan", "the title, a new game, the opening, the streets"),
+    ("c01", "I", "Arrival in Istvan", "the title and its save slots, a new game, the opening, the streets"),
     ("c02", "II", "Beneath the Pavements", "down the market grate, through the sewer shaft"),
-    ("c03", "III", "Sister Paula", "first mini boss - the blood meter wakes"),
-    ("c04", "IV", "The Priest's Arts", "combo, crouch and air attacks, roll, parry, holy water, the revolver - Methuselah blood - the Codex"),
-    ("c05", "V", "The Magus", "Abel's first transformation: forty percent"),
-    ("c06", "VI", "The Crusnik's Arts", "transform, scythe, chain lash, high leap, slide, blood drain"),
-    ("c07", "VII", "The Marchesa", "the ballroom"),
-    ("c08", "VIII", "Brother Petros", "the Count's cellars"),
-    ("c09", "IX", "The Cathedral", "the portal, the nave - Dietrich and his Grand Marionette"),
-    ("c10", "X", "The Star of Sorrow", "Gyula - eighty percent - the ending, the credits, the next arc"),
+    ("c02s", "III", "The Atoner's Blade", "a hidden sword at the end of the Hunter's Crypt - its combo, air and low slashes"),
+    ("c03", "IV", "Sister Paula", "first mini boss - the blood meter wakes"),
+    ("c04", "V", "Bare Hands", "combo, crouch and air attacks, roll, parry, holy water, the revolver - Methuselah blood - the Codex"),
+    ("c04s", "VI", "The Blade's Arts", "the sword combo and the sword execution"),
+    ("c05", "VII", "The Magus", "Abel's first transformation: forty percent"),
+    ("c06", "VIII", "The Crusnik's Arts", "transform, scythe, chain lash, high leap, slide, blood drain"),
+    ("c07", "IX", "The Marchesa", "the ballroom"),
+    ("c08", "X", "Brother Petros", "the Count's cellars"),
+    ("c08t", "XI", "Rest and Travel", "the map's hidden items, weapons, options, keys, the touch layout - fast travel between altars"),
+    ("c09", "XII", "The Cathedral", "the portal, the nave - Dietrich and his Grand Marionette"),
+    ("c10", "XIII", "The Star of Sorrow", "Gyula - eighty percent - the ending, the credits, the next arc"),
 ]
 ENC = ["-c:v", "libx264", "-preset", "veryfast", "-crf", "22", "-pix_fmt", "yuv420p", "-r", "30", "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2"]
 

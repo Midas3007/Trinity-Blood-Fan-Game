@@ -274,3 +274,14 @@
 | Blood meter: shown from `paula_defeated`, transform still needs the Kämpfer awakening; blood only from Methuselah (`blood` per enemy, `bossBlood` per boss) | Owner's rule; keeps the story order of the first transformation | Every hit fills it (old behaviour) |
 | See-through fronts: painted fronts fade to 45% while the player stands above their bottom tile and a half; landmark ledges drawn as gold guide lines | Owner could not see roof/ledge platforms; cheap, no new art | Remove painted fronts |
 | Menu always passes start data to PlayScene | Phaser keeps the previous `settings.data` when `start()` gets none, which resumed a new game at the old position | — |
+
+## 2026-10-16 — sword, items, travel, options, slots
+| Decision | Reason | Alternatives |
+|---|---|---|
+| Weapons are data (`weapons.json`: starters + finisher per weapon; finishers can require a weapon) | A new weapon = data + sprites, no controller change (CLAUDE.md Part 7) | Hard-coded sword branch |
+| The sword is found (hidden item) and swappable in pause; fists + revolver stay | Gives exploration a big early reward; keeps the existing finisher | Sword from the start |
+| One Higgsfield image (last 1.55 credits, Nano Banana 2) for all sword poses; figures split by hand where blades crossed | Credits | Code-drawn sword overlay |
+| Fast travel unlocks per area after the boss beyond it, between altars already prayed at; push up at an altar | Owner's rule; Blasphemous-like | Travel from the map |
+| Settings separate from saves (`trinity-blood.settings`), parsed field by field, defaults on anything bad | Device preferences, not progress; corrupt storage never breaks the game | Inside each save |
+| Difficulty = damage taken ×0.5/1/1.5 only | Simple and fair; boss patterns unchanged | Enemy health/speed scaling |
+| Save slot 1 keeps the original key | Existing saves carry over with no migration | Migrate into a new key |
