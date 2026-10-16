@@ -1,24 +1,30 @@
 import Phaser from 'phaser';
 import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { GOTHIC, GothicButton } from './GothicButton';
-import { audio } from '../systems/audio/AudioManager';
 
 const DEPTH = 1500;
 const PANEL_W = 190;
-const PANEL_H = 188;
+const PANEL_H = 214;
 const CY = GAME_HEIGHT / 2;
 
-function soundLabel(): string {
-  return `Sound: ${audio.enabled ? 'on' : 'off'}`;
+export interface PauseActions {
+  resume: () => void;
+  title: () => void;
+  codex: () => void;
+  options: () => void;
+  /** Switch to the next weapon carried; returns the label to show (null = only one weapon, button hidden). */
+  weapon: () => string | null;
+  /** The weapon button's label now (null = only one weapon carried). */
+  weaponLabel: () => string | null;
 }
 
-/** Pause panel: an ornate gothic frame with Resume, the Codex (bestiary and lore), the sound switch (saved) and Return to title. */
+/** Pause panel: an ornate gothic frame with Resume, the weapon in hand, the Codex, Options and Return to title. */
 export class PauseMenu {
   private readonly parts: Phaser.GameObjects.GameObject[] = [];
   private readonly buttons: GothicButton[];
   private shown = false;
 
-  constructor(scene: Phaser.Scene, onResume: () => void, onTitle: () => void, onCodex: () => void) {
+  constructor(scene: Phaser.Scene, private readonly actions: PauseActions) {
     const cx = GAME_WIDTH / 2;
     // Dim the game; the dimmer also swallows taps so nothing reaches the controls underneath.
     const dim = scene.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x0b0a10, 0.72).setOrigin(0).setInteractive();
@@ -48,14 +54,16 @@ export class PauseMenu {
       (o as unknown as Phaser.GameObjects.Components.Depth).setDepth(DEPTH);
       this.parts.push(o);
     }
+    const a = actions;
     this.buttons = [
-      new GothicButton(scene, cx, t + 66, 'Resume', onResume, 140, 22, DEPTH + 1),
-      new GothicButton(scene, cx, t + 96, 'Bestiary & Lore', onCodex, 140, 22, DEPTH + 1),
-      new GothicButton(scene, cx, t + 126, soundLabel(), () => {
-        audio.setEnabled(!audio.enabled);
-        this.buttons[2]?.setText(soundLabel());
-      }, 140, 22, DEPTH + 1),
-      new GothicButton(scene, cx, t + 156, 'Return to title', onTitle, 140, 22, DEPTH + 1),
+      new GothicButton(scene, cx, t + 64, 'Resume', a.resume, 140, 20, DEPTH + 1),
+      new GothicButton(scene, cx, t + 90, 'Weapon', () => {
+        const label = a.weapon();
+        if (label) this.buttons[1]?.setText(label);
+      }, 140, 20, DEPTH + 1),
+      new GothicButton(scene, cx, t + 116, 'Bestiary & Lore', a.codex, 140, 20, DEPTH + 1),
+      new GothicButton(scene, cx, t + 142, 'Options', a.options, 140, 20, DEPTH + 1),
+      new GothicButton(scene, cx, t + 168, 'Return to title', a.title, 140, 20, DEPTH + 1),
     ];
     this.hide();
   }
@@ -79,5 +87,9 @@ export class PauseMenu {
       if (o.input) o.input.enabled = on;
     }
     for (const b of this.buttons) b.setVisible(on);
+    // The weapon button only when Abel carries more than one weapon.
+    const label = on ? this.actions.weaponLabel() : null;
+    this.buttons[1]?.setVisible(on && label !== null);
+    if (label) this.buttons[1]?.setText(label);
   }
 }

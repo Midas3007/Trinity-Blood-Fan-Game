@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { damageTaken } from '../systems/settings';
 import { DEFAULT_WEAPON } from '../combat/attackData';
 import { COLORS } from '../core/constants';
 import type { ActionState } from '../systems/input/ActionState';
@@ -361,7 +362,7 @@ export class Player implements PlayerContext, PlayerCombatant {
   /** Applies a hit unless invulnerable or dead. Returns true if it landed. */
   takeHit(hit: HitInfo): boolean {
     if (this.invulnerable || this.health.dead) return false;
-    this.health.damage(hit.damage);
+    this.health.damage(hit.damage > 0 ? damageTaken(hit.damage) : 0);
     this.timers.invulnerable = this.tuning.hurtInvulnerableMs;
     this.blinkMs = this.tuning.hurtInvulnerableMs;
     this.vx = hit.knockbackX;

@@ -1,4 +1,5 @@
 import type { State } from './StateMachine';
+import { parryWindow } from '../systems/settings';
 import type { PlayerTimers } from './PlayerTimers';
 import type { PlayerTuning } from './tuning';
 import { approach, horizontalVelocity } from './movement';
@@ -428,10 +429,10 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     },
     update(ctx, dtMs, stateMs) {
       brake(ctx, dtMs);
-      ctx.parryOpen = !ctx.parrySucceeded && stateMs < ctx.tuning.parryWindowMs;
+      ctx.parryOpen = !ctx.parrySucceeded && stateMs < parryWindow(ctx.tuning.parryWindowMs);
       if (ctx.parrySucceeded && ctx.attackPressed) return ctx.finisherReady ? 'finisher' : 'attack'; // riposte
       if (!ctx.onGround) return 'fall';
-      if (stateMs >= ctx.tuning.parryWindowMs + ctx.tuning.parryRecoveryMs) return ctx.moveX !== 0 ? 'run' : 'idle';
+      if (stateMs >= parryWindow(ctx.tuning.parryWindowMs) + ctx.tuning.parryRecoveryMs) return ctx.moveX !== 0 ? 'run' : 'idle';
       return undefined;
     },
     exit(ctx) {

@@ -1,4 +1,9 @@
 import Phaser from 'phaser';
+import { OptionsMenu } from '../../ui/OptionsMenu';
+import { TouchLayoutEditor } from '../../ui/TouchLayoutEditor';
+import { settings, touchLayoutFrom } from '../../systems/settings';
+import { weapons } from '../../combat/attackData';
+import { fx } from '../../systems/fx';
 import { ItemPickups } from '../../world/ItemPickups';
 import { currentWeapon, itemFlag, itemSets, items, ownedWeapons, setComplete } from '../../systems/items';
 import { Codex } from '../../ui/Codex';
@@ -118,6 +123,8 @@ export class PlayScene extends Phaser.Scene {
   private praying: { ms: number; checkpoint: string } | null = null;
   private pauseMenu!: PauseMenu;
   private codex!: Codex;
+  private options!: OptionsMenu;
+  private layoutEditor!: TouchLayoutEditor;
   private shotFlash!: ShotFlash;
   private banner!: Banner;
   private boltFx!: Phaser.GameObjects.Graphics;
@@ -313,27 +320,55 @@ export class PlayScene extends Phaser.Scene {
     this.player.onFormChange = (form) => {
       if (form === 'crusnik') {
         audio.sfx('transform');
-        this.cameras.main.flash(220, 212, 40, 62);
-        if (effects.screenShake) this.cameras.main.shake(200, 0.008);
+        fx.flash(this.cameras.main, 220, 212, 40, 62);
+        if (fx.shakeOn) fx.shake(this.cameras.main, 200, 0.008);
       } else {
-        this.cameras.main.flash(160, 120, 140, 170);
+        fx.flash(this.cameras.main, 160, 120, 140, 170);
       }
     };
     this.map = new MapOverlay(this);
-    this.pauseMenu = new PauseMenu(
-      this,
-      () => this.setPaused(null),
-      () => {
+    const has = (f: string): boolean => gameState.hasFlag(f);
+    const weaponLabel = (): string | null => (ownedWeapons(has).length > 1 ? `Weapon: ${weapons[this.player.weapon]?.short ?? this.player.weapon}` : null);
+    this.pauseMenu = new PauseMenu(this, {
+      resume: () => this.setPaused(null),
+      title: () => {
         saveStore.save(gameState.toSave(Date.now()));
         this.scene.start(SCENES.menu);
       },
-      () => this.setPaused('codex'),
-    );
+      codex: () => this.setPaused('codex'),
+      options: () => this.setPaused('options'),
+      weapon: () => {
+        const owned = ownedWeapons(has);
+        const next = owned[(owned.indexOf(this.player.weapon) + 1) % owned.length] ?? this.player.weapon;
+        for (const w of owned) gameState.clearFlag(`weapon:${w}`);
+        gameState.setFlag(`weapon:${next}`);
+        this.player.weapon = next;
+        return weaponLabel();
+      },
+      weaponLabel,
+    });
     this.codex = new Codex(this, (f) => gameState.hasFlag(f), () => this.setPaused('pause'));
+    this.options = new OptionsMenu(this, () => this.setPaused('pause'), () => this.setPaused('touch'));
+    this.layoutEditor = new TouchLayoutEditor(
+      this,
+      controls as TouchLayout,
+      (stick, buttons) => {
+        settings.change({ touch: { stick, buttons } });
+        this.touch.relayout(touchLayoutFrom(controls as TouchLayout, settings.current));
+        this.setPaused('options');
+      },
+      () => {
+        settings.change({ touch: { buttons: {} } });
+        this.touch.relayout(touchLayoutFrom(controls as TouchLayout, settings.current));
+        this.setPaused('options');
+      },
+    );
     new CornerButtons(this, () => this.setPaused(this.map.open ? null : 'map'), () => this.setPaused(this.pauseMenu.open ? null : 'pause'));
     this.input.keyboard?.on('keydown-M', () => this.setPaused(this.map.open ? null : 'map'));
     this.input.keyboard?.on('keydown-ESC', () => {
-      if (this.codex.open) this.codex.close();
+      if (this.layoutEditor.open) return;
+      if (this.options.open) this.options.escape();
+      else if (this.codex.open) this.codex.close();
       else this.setPaused(this.pauseMenu.open || this.map.open ? null : 'pause');
     });
     this.lorePanel = new LorePanel(this);
@@ -348,7 +383,7 @@ export class PlayScene extends Phaser.Scene {
       ? new KeyboardSource(this.input.keyboard, () => this.game.loop.time)
       : null;
     this.gamepad = new GamepadSource(this.input.gamepad);
-    this.touch = new TouchControls(this, controls as TouchLayout);
+    this.touch = new TouchControls(this, touchLayoutFrom(controls as TouchLayout, settings.current));
     this.debug = new DebugOverlay(this, controls.debugToggle);
 
     this.wireFeedback();
@@ -392,26 +427,26 @@ export class PlayScene extends Phaser.Scene {
       audio.sfx('parry');
       this.hitStop.trigger(effects.parryHitstopMs);
       if (this.hitStop.active) this.physics.world.pause();
-      if (effects.sparks) this.sparks.burst(x, y, effects.sparksPerHit * 2, this.player.facing);
-      if (effects.screenShake) this.cameras.main.shake(90, 0.004);
-      this.cameras.main.flash(60, 255, 245, 220);
+      if (fx.sparksOn) this.sparks.burst(x, y, effects.sparksPerHit * 2, this.player.facing);
+      if (fx.shakeOn) fx.shake(this.cameras.main, 90, 0.004);
+      fx.flash(this.cameras.main, 60, 255, 245, 220);
     });
     this.bus.on('combat:hit', ({ x, y, hit, byPlayer }) => {
       audio.sfx(byPlayer ? 'hit' : 'hurt');
       this.hitStop.trigger(hit.hitstopMs);
       // Pause now: physics steps before the next scene update, so waiting would let one frame of knockback through.
       if (this.hitStop.active) this.physics.world.pause();
-      if (effects.screenShake && hit.shakeMs > 0) this.cameras.main.shake(hit.shakeMs, hit.shakeIntensity);
-      if (effects.sparks) this.sparks.burst(x, y, effects.sparksPerHit, Math.sign(hit.knockbackX));
+      if (fx.shakeOn && hit.shakeMs > 0) fx.shake(this.cameras.main, hit.shakeMs, hit.shakeIntensity);
+      if (fx.sparksOn) this.sparks.burst(x, y, effects.sparksPerHit, Math.sign(hit.knockbackX));
     });
     this.bus.on('combat:finisher', (f) => {
       this.hitStop.trigger(f.hitstopMs);
       if (this.hitStop.active) this.physics.world.pause();
-      if (effects.screenShake && f.shakeMs > 0) this.cameras.main.shake(f.shakeMs, f.shakeIntensity);
+      if (fx.shakeOn && f.shakeMs > 0) fx.shake(this.cameras.main, f.shakeMs, f.shakeIntensity);
       audio.sfx(f.finisher === 'revolver' ? 'gunshot' : 'hit');
       if (f.finisher === 'revolver') this.shotFlash.fire(f.fromX, f.fromY, f.x, f.y);
       if (f.finisher === 'bloodDrain') this.player.crusnik.feed(crusnikConfig.gainPerDrain);
-      if (effects.sparks) this.sparks.burst(f.x, f.y, effects.shotSparks, f.direction);
+      if (fx.sparksOn) this.sparks.burst(f.x, f.y, effects.shotSparks, f.direction);
       this.hud.setHealth(this.player.health.fraction);
     });
     this.bus.on('player:hurt', ({ hp, max }) => this.hud.setHealth(hp / max));
@@ -427,7 +462,7 @@ export class PlayScene extends Phaser.Scene {
     const dt = Math.min(deltaMs, MAX_FRAME_MS);
     audio.music(musicFor({ room: this.roomData.id, boss: this.arena?.active ? this.roomData.boss?.id : null, cutscene: this.cutsceneId }));
     if (this.cutsceneOn) return;
-    if (this.map.open || this.pauseMenu.open || this.codex.open) {
+    if (this.map.open || this.pauseMenu.open || this.codex.open || this.options.open || this.layoutEditor.open) {
       this.map.update(dt);
       return;
     }
@@ -614,7 +649,7 @@ export class PlayScene extends Phaser.Scene {
     gameState.useAltar(this.roomData.id, pr.checkpoint);
     gameState.hp = null;
     gameState.flasks = null;
-    this.cameras.main.flash(250, 246, 227, 163);
+    fx.flash(this.cameras.main, 250, 246, 227, 163);
     this.goTo({ room: this.roomData.id, checkpoint: pr.checkpoint });
   }
 
@@ -736,18 +771,23 @@ export class PlayScene extends Phaser.Scene {
     const cm = this.player.crusnik;
     cm.unlocked = true;
     cm.fill(); // ready at once, so the first try happens here
-    this.cameras.main.flash(400, 140, 20, 40);
-    if (effects.screenShake) this.cameras.main.shake(350, 0.01);
+    fx.flash(this.cameras.main, 400, 140, 20, 40);
+    if (fx.shakeOn) fx.shake(this.cameras.main, 350, 0.01);
     this.banner.show('THE CRUSNIK STIRS', 'When the blue bar beneath your health glows, press ABIL to transform.\nAs the Crusnik: ATK scythe, ABIL chain lash, a far higher leap.');
     saveStore.save(gameState.toSave(Date.now()));
   }
 
   /** Open the map, the pause menu or the Codex (gameplay and physics stop), or close them all (null). */
-  private setPaused(what: 'map' | 'pause' | 'codex' | null): void {
+  private setPaused(what: 'map' | 'pause' | 'codex' | 'options' | 'touch' | null): void {
     this.map.hide();
     this.pauseMenu.hide();
     this.codex.hide();
+    this.options.hide();
+    this.layoutEditor.hide();
+    this.touch.setVisible(what !== 'touch');
     if (what === 'codex') this.codex.show();
+    if (what === 'options') this.options.show();
+    if (what === 'touch') this.layoutEditor.show(this.touch.currentLayout);
     if (what === 'map') this.map.show(allRooms, (id) => gameState.hasVisited(id), (room, id) => gameState.altarUsed(room, id), this.roomData, this.player.x, this.player.y, (rm) => (gameState.hasVisited(rm.id) ? rm.items.filter((i) => !gameState.hasFlag(itemFlag(i.id))).length : 0));
     if (what === 'pause') this.pauseMenu.show();
     if (what) {
@@ -784,7 +824,7 @@ export class PlayScene extends Phaser.Scene {
       fps: this.game.loop.actualFps,
       room: this.roomData.id,
       flags: gameState.toSave(0).flags,
-      paused: this.pauseMenu.open ? "pause" : this.map.open ? "map" : this.codex.open ? "codex" : null,
+      paused: this.pauseMenu.open ? "pause" : this.map.open ? "map" : this.codex.open ? "codex" : this.options.open ? "options" : this.layoutEditor.open ? "touch" : null,
       checkpoint: gameState.checkpoint,
       player: {
         state: p.state,

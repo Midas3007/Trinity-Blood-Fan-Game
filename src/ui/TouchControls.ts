@@ -24,20 +24,33 @@ export class TouchControls {
   private buttonPointers = new Map<number, Action>();
   /** Buttons pressed since the last read(), so a very quick tap is never lost between frames. */
   private tappedSinceRead = new Set<Action>();
-  private readonly knob: Phaser.GameObjects.Arc;
-  private readonly buttons: ButtonView[];
-  private readonly stickX: number;
-  private readonly stickY: number;
+  private knob!: Phaser.GameObjects.Arc;
+  private buttons: ButtonView[] = [];
+  private stickX = 0;
+  private stickY = 0;
+  private parts: Phaser.GameObjects.GameObject[] = [];
+  private shown = true;
 
   constructor(
     private readonly scene: Phaser.Scene,
-    private readonly layout: TouchLayout,
+    private layout: TouchLayout,
   ) {
-    const { stick } = layout;
+    this.build();
+    scene.input.on(Phaser.Input.Events.POINTER_DOWN, this.onDown, this);
+    scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMove, this);
+    scene.input.on(Phaser.Input.Events.POINTER_UP, this.onUp, this);
+    scene.input.on(Phaser.Input.Events.POINTER_UP_OUTSIDE, this.onUp, this);
+    scene.events.once(Phaser.Scenes.Events.SHUTDOWN, this.destroy, this);
+    this.adoptHeldPointers();
+  }
+
+  /** Draws the stick and buttons for the current layout. */
+  private build(): void {
+    const scene = this.scene;
+    const { stick } = this.layout;
     this.stickX = stick.x * GAME_WIDTH;
     this.stickY = stick.y * GAME_HEIGHT;
-
-    scene.add
+    const ring = scene.add
       .circle(this.stickX, this.stickY, stick.radius, COLORS.player, 0.12)
       .setStrokeStyle(1, COLORS.player, IDLE_ALPHA)
       .setScrollFactor(0)
@@ -46,8 +59,8 @@ export class TouchControls {
       .circle(this.stickX, this.stickY, stick.knobRadius, COLORS.player, IDLE_ALPHA)
       .setScrollFactor(0)
       .setDepth(UI_DEPTH + 1);
-
-    this.buttons = layout.buttons.map((b) => {
+    this.parts = [ring, this.knob];
+    this.buttons = this.layout.buttons.map((b) => {
       const x = b.x * GAME_WIDTH;
       const y = b.y * GAME_HEIGHT;
       const circle = scene.add
@@ -55,20 +68,33 @@ export class TouchControls {
         .setStrokeStyle(1, COLORS.player, IDLE_ALPHA)
         .setScrollFactor(0)
         .setDepth(UI_DEPTH);
-      scene.add
+      const label = scene.add
         .text(x, y, b.label, { fontFamily: 'monospace', fontSize: '8px', color: COLORS.text })
         .setOrigin(0.5)
         .setScrollFactor(0)
         .setDepth(UI_DEPTH + 1);
+      this.parts.push(circle, label);
       return { layout: b, circle };
     });
+    for (const p of this.parts) (p as unknown as Phaser.GameObjects.Components.Visible).setVisible(this.shown);
+  }
 
-    scene.input.on(Phaser.Input.Events.POINTER_DOWN, this.onDown, this);
-    scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMove, this);
-    scene.input.on(Phaser.Input.Events.POINTER_UP, this.onUp, this);
-    scene.input.on(Phaser.Input.Events.POINTER_UP_OUTSIDE, this.onUp, this);
-    scene.events.once(Phaser.Scenes.Events.SHUTDOWN, this.destroy, this);
-    this.adoptHeldPointers();
+  /** The player moved or resized the controls (Options → Touch layout): redraw them. */
+  relayout(layout: TouchLayout): void {
+    for (const p of this.parts) p.destroy();
+    this.layout = layout;
+    this.releaseAll();
+    this.build();
+  }
+
+  get currentLayout(): TouchLayout {
+    return this.layout;
+  }
+
+  /** Hidden while the layout editor shows its own copies. */
+  setVisible(on: boolean): void {
+    this.shown = on;
+    for (const p of this.parts) (p as unknown as Phaser.GameObjects.Components.Visible).setVisible(on);
   }
 
   read(): InputFrame {
@@ -98,7 +124,7 @@ export class TouchControls {
   private adoptHeldPointers(): void {
     for (const p of this.scene.input.manager.pointers) {
       if (!p.isDown) continue;
-      const inStickZone = p.x < GAME_WIDTH * STICK_ZONE_WIDTH && p.y > GAME_HEIGHT * STICK_ZONE_TOP;
+      const inStickZone = this.inStickZone(p.x, p.y);
       if (this.stickPointerId === null && inStickZone) {
         this.stickPointerId = p.id;
         this.updateStick(p);
@@ -110,8 +136,16 @@ export class TouchControls {
     this.refreshVisuals();
   }
 
+  /** The default left-hand zone, or anywhere near the stick if the player has moved it. */
+  private inStickZone(x: number, y: number): boolean {
+    if (buttonAt(this.layout.buttons, x, y, GAME_WIDTH, GAME_HEIGHT)) return false;
+    const near = Math.hypot(x - this.stickX, y - this.stickY) <= this.layout.stick.radius * 2.5;
+    return near || (x < GAME_WIDTH * STICK_ZONE_WIDTH && y > GAME_HEIGHT * STICK_ZONE_TOP);
+  }
+
   private onDown(p: Phaser.Input.Pointer): void {
-    const inStickZone = p.x < GAME_WIDTH * STICK_ZONE_WIDTH && p.y > GAME_HEIGHT * STICK_ZONE_TOP;
+    if (!this.shown) return;
+    const inStickZone = this.inStickZone(p.x, p.y);
     if (this.stickPointerId === null && inStickZone) {
       this.stickPointerId = p.id;
       this.updateStick(p);

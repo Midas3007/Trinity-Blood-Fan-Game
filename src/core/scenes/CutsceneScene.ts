@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { fx } from '../../systems/fx';
 import { audio } from '../../systems/audio/AudioManager';
 import { musicFor } from '../../systems/audio/music';
 import { GAME_HEIGHT, GAME_WIDTH, SCENES } from '../constants';
@@ -152,9 +153,9 @@ export class CutsceneScene extends Phaser.Scene {
     border.setAlpha(0);
     this.tweens.add({ targets: [container], alpha: 1, y: 0, duration: PANEL_ENTER_MS, ease: 'Cubic.easeOut' });
     this.tweens.add({ targets: border, alpha: 1, duration: PANEL_ENTER_MS });
-    if (p.fx === 'flash') this.cameras.main.flash(260, 255, 250, 235);
-    if (p.fx === 'redflash') this.cameras.main.flash(380, 212, 40, 62);
-    if (p.fx === 'shake') this.cameras.main.shake(320, 0.012);
+    if (p.fx === 'flash') fx.flash(this.cameras.main, 260, 255, 250, 235);
+    if (p.fx === 'redflash') fx.flash(this.cameras.main, 380, 212, 40, 62);
+    if (p.fx === 'shake') fx.shake(this.cameras.main, 320, 0.012);
   }
 
   private actor(a: CutsceneActor, r: Phaser.Geom.Rectangle): Phaser.GameObjects.Sprite | Phaser.GameObjects.Rectangle {

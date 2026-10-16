@@ -7,7 +7,8 @@
       "air": "air",
       "crouch": "crouch",
       "finisher": "revolver",
-      "item": null
+      "item": null,
+      "short": "Fists"
     },
     "sword": {
       "name": "The Atoner's Blade",
@@ -15,7 +16,8 @@
       "air": "sword_air",
       "crouch": "sword_low",
       "finisher": "sword_execution",
-      "item": "item:sword"
+      "item": "item:sword",
+      "short": "Sword"
     }
   }
 }

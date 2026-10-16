@@ -74,6 +74,8 @@ export const STARTERS: Record<'priest' | 'crusnik', Starters> = {
 export interface WeaponDef {
   id: string;
   name: string;
+  /** Short name for buttons. */
+  short: string;
   ground: string;
   air: string;
   crouch: string;
