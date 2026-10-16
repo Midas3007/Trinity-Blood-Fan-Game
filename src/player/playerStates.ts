@@ -59,6 +59,8 @@ export interface PlayerContext {
   drinkFlask(): void;
   /** Stick vertical (-1 up .. 1 down). */
   readonly moveY: number;
+  /** The cheat: JUMP in the air beats upward again (flight). */
+  readonly canFly: boolean;
   /** A ladder overlaps the body (stick up grabs it). */
   readonly ladderHere: boolean;
   /** A ladder starts just under the feet (stick down climbs onto it). */
@@ -121,6 +123,15 @@ function faceInput(ctx: PlayerContext): void {
 function airControl(ctx: PlayerContext, dtMs: number): void {
   faceInput(ctx);
   ctx.vx = horizontalVelocity(ctx.vx, ctx.moveX, dtMs, true, ctx.tuning);
+}
+
+/** Cheat flight: a JUMP press in the air is a wing beat. Returns true if one happened. */
+function flap(ctx: PlayerContext): boolean {
+  if (!ctx.canFly || ctx.timers.jumpBuffer <= 0) return false;
+  ctx.timers.consumeJump();
+  ctx.vy = -ctx.tuning.flyFlapVelocity;
+  ctx.jumpCut = true; // no variable-height cut on a wing beat
+  return true;
 }
 
 function brake(ctx: PlayerContext, dtMs: number): void {
@@ -192,6 +203,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     },
     update(ctx, dtMs) {
       airControl(ctx, dtMs);
+      flap(ctx);
       // Variable height: releasing the button while rising cuts the upward speed once.
       if (!ctx.jumpHeld && !ctx.jumpCut && ctx.vy < 0) {
         ctx.vy *= ctx.tuning.jumpCutMultiplier;
@@ -210,6 +222,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       airControl(ctx, dtMs);
       if (climbUp(ctx)) return 'climb'; // grab a ladder in mid-air
       if (ctx.timers.canJump) return 'jump'; // coyote jump after walking off a ledge
+      if (flap(ctx)) return 'jump';
       if (ctx.onGround) return landingState(ctx);
       if (ctx.ledgeAhead) return 'ledgeHang';
       if (ctx.attackPressed) return 'airAttack';

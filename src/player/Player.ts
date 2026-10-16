@@ -299,7 +299,17 @@ export class Player implements PlayerContext, PlayerCombatant {
   godMode = false;
 
   get invulnerable(): boolean {
-    return this.godMode || this.timers.invulnerable > 0 || this.fsm.current === 'finisher' || this.fsm.current === 'transform';
+    return this.godMode || this.iFrames;
+  }
+
+  /** Flight for the cheat: each JUMP in the air is a wing beat. */
+  get canFly(): boolean {
+    return this.godMode;
+  }
+
+  /** Real invulnerability (after a hit, rolls, finishers, the change); shown as see-through. */
+  private get iFrames(): boolean {
+    return this.timers.invulnerable > 0 || this.fsm.current === 'finisher' || this.fsm.current === 'transform';
   }
 
   get damageMultiplier(): number {
@@ -485,6 +495,14 @@ export class Player implements PlayerContext, PlayerCombatant {
     if (this.ledge) this.ledgeRegrabMs = this.tuning.ledgeRegrabMs;
   }
 
+  /** Keep the head at or below `topY` (cheat flight: no flying off the top of a room into nothing). */
+  holdBelow(topY: number): void {
+    if (this.sprite.y - this.height / 2 >= topY) return;
+    this.sprite.y = topY + this.height / 2;
+    this.body.updateFromGameObject();
+    if (this.vy < 0) this.vy = 0;
+  }
+
   /** Snap the body somewhere without Arcade dragging it back (same trick as setClimbing). */
   private moveBodyTo(x: number, y: number): void {
     this.sprite.setPosition(x, y);
@@ -575,7 +593,7 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.ledgeRegrabMs = Math.max(0, this.ledgeRegrabMs - dtMs);
     this.blinkMs = Math.max(0, this.blinkMs - dtMs);
     const blinkOff = this.blinkMs > 0 && Math.floor(this.blinkMs / BLINK_MS) % 2 === 0;
-    this.alpha = blinkOff ? 0.2 : this.invulnerable ? INVULNERABLE_ALPHA : 1;
+    this.alpha = blinkOff ? 0.2 : this.iFrames ? INVULNERABLE_ALPHA : 1;
     this.sprite.setAlpha(this.alpha);
   }
 

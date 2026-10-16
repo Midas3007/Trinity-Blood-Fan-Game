@@ -32,6 +32,8 @@ export interface PlayerTuning {
   crawlSpeed: number;
   /** Ladder climbing speed (px/s). */
   climbSpeed: number;
+  /** Cheat flight: upward speed of each wing beat (JUMP in the air), px/s. */
+  flyFlapVelocity: number;
   /** Ledge grab: how far above/below the head a ledge top is caught, the gap allowed to the wall (px). */
   ledgeReachAbove: number;
   ledgeReachBelow: number;

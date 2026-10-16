@@ -61,6 +61,7 @@ export class SimPlayer implements PlayerContext {
     this.flasksDrunk++;
   }
   moveY = 0;
+  canFly = false;
   ladderHere = false;
   ladderBelow = false;
   climbing = false;

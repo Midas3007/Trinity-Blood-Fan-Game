@@ -30,6 +30,7 @@
   "crouchStickThreshold": 0.6,
   "crawlSpeed": 40,
   "climbSpeed": 80,
+  "flyFlapVelocity": 300,
   "ledgeReachAbove": 0,
   "ledgeReachBelow": 14,
   "ledgeReachGap": 3,

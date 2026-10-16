@@ -159,7 +159,7 @@ export class PlayScene extends Phaser.Scene {
     const r = this.roomData;
     // Test mode only: ?test&at=x,feetY starts at that spot (mechanics playtests).
     const at = testHookEnabled() ? new URLSearchParams(location.search).get('at')?.split(',').map(Number) : undefined;
-    if (at && at.length === 2 && at.every(Number.isFinite)) return { x: at[0]!, y: at[1]!, facing: 1 };
+    if (at && at.length === 2 && at.every(Number.isFinite) && !this.start.world) return { x: at[0]!, y: at[1]!, facing: 1 }; // first room only
     const w = this.start.world;
     if (w) {
       // Same world position as when we left the last room, nudged inside this one; feet = centre + half height.
@@ -224,6 +224,7 @@ export class PlayScene extends Phaser.Scene {
     }
 
     this.runtime = new RoomRuntime(this, r, gameState, solids, solidRects, timeLook(gameState.time).lampGlow);
+    if (cheat.on) this.runtime.liftAll();
     this.pickups = new ItemPickups(this, r.items, (id) => gameState.hasFlag(itemFlag(id)));
     const at = this.spawnPoint();
     this.player = new Player(this, at.x, at.y - 20, this.actions, physics.gravityY, solidRects);
@@ -580,7 +581,8 @@ export class PlayScene extends Phaser.Scene {
     if (this.cheatCode.frame(this.time.now, a.moveX, a.moveY, a.justPressed('attack'), a.justPressed('dodge'))) {
       cheat.on = !cheat.on;
       this.player.weapon = cheat.on ? 'sword' : currentWeapon((f) => gameState.hasFlag(f));
-      this.banner.show(cheat.on ? 'BLESSED' : 'MORTAL', cheat.on ? 'Cheat on: no damage, endless holy water, the sword, ABIL for the eighty percent form.' : 'Cheat off.', 1800);
+      if (cheat.on) this.runtime.liftAll();
+      this.banner.show(cheat.on ? 'BLESSED' : 'MORTAL', cheat.on ? 'Cheat on: no damage, endless water, the sword, every gate and altar open.\nTap JUMP in the air to fly; ABIL for the eighty percent form.' : 'Cheat off.', 1800);
       audio.sfx('card');
     }
     const p = this.player;
@@ -590,6 +592,9 @@ export class PlayScene extends Phaser.Scene {
       cm.awake = true;
       cm.unlocked = true;
       cm.fill();
+      // Flight stops at the room's top unless another room lies above.
+      const r = this.roomData;
+      if (!roomAtPixel(allRooms, r.originX + p.x, r.originY - 1, TILE)) p.holdBelow(0);
       if (p.form === 'crusnik' && !p.winged) {
         p.winged = true;
         this.cheatWings = true;
@@ -627,8 +632,8 @@ export class PlayScene extends Phaser.Scene {
     // Fast travel: at an altar of an open area, with somewhere to go, push up.
     const altar = p.onGround && !p.kneeling ? this.runtime.altarAt(p.x, p.feetY) : null;
     if (altar) {
-      const dest = destinations(this.roomData.id, altar, (f) => gameState.hasFlag(f));
-      if (dest.length && gameState.altarUsed(this.roomData.id, altar)) {
+      const dest = destinations(this.roomData.id, altar, (f) => cheat.on || gameState.hasFlag(f)); // the cheat opens every altar
+      if (dest.length && (cheat.on || gameState.altarUsed(this.roomData.id, altar))) {
         const c = this.roomData.checkpoints.find((cp) => cp.id === altar)!;
         this.doorHint.setText('travel ▲').setPosition(c.x, c.y - 44).setVisible(true);
         if (this.actions.moveY < -0.5 && this.travelReady) {
@@ -644,7 +649,7 @@ export class PlayScene extends Phaser.Scene {
     if (!ev) return;
     if (ev.type === 'exit') {
       const ex = ev.exit;
-      if (ex.requires && !gameState.hasFlag(ex.requires)) {
+      if (ex.requires && !cheat.on && !gameState.hasFlag(ex.requires)) {
         this.doorHint.setText('sealed').setPosition(ex.x + ex.w / 2, ex.y - 4).setVisible(true);
       } else if (ex.door && this.actions.moveY > -0.5) {
         this.doorHint.setText('▲').setPosition(ex.x + ex.w / 2, ex.y - 4).setVisible(true);

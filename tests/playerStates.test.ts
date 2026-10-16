@@ -394,3 +394,23 @@ describe('holy water', () => {
   });
 });
 
+
+describe('cheat flight', () => {
+  it('with canFly, each JUMP press in the air beats upward; without it, nothing', () => {
+    const fly = new SimPlayer();
+    fly.canFly = true;
+    fly.run(5);
+    for (let i = 0; i < 12; i++) {
+      fly.run(8, { jump: true });
+      fly.run(4, {});
+    }
+    expect(-fly.y).toBeGreaterThan(jumpHeight(fly.tuning) * 2); // far above one jump
+    const walk = new SimPlayer();
+    walk.run(5);
+    for (let i = 0; i < 12; i++) {
+      walk.run(8, { jump: true });
+      walk.run(4, {});
+    }
+    expect(walk.maxHeight).toBeLessThan(jumpHeight(walk.tuning) + 2);
+  });
+});

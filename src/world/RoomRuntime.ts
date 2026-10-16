@@ -158,6 +158,15 @@ export class RoomRuntime {
   /** Sets the flag and raises every gate it opens (levers, and story events such as a boss's defeat). */
   open(flag: string): void {
     this.state.setFlag(flag);
+    this.lift(flag);
+  }
+
+  /** The cheat: every gate in the room up, without setting their flags (nothing is saved). */
+  liftAll(): void {
+    for (const flag of [...this.gates.keys()]) this.lift(flag);
+  }
+
+  private lift(flag: string): void {
     for (const r of this.gates.get(flag) ?? []) {
       const body = r.body as Phaser.Physics.Arcade.StaticBody;
       body.enable = false;
