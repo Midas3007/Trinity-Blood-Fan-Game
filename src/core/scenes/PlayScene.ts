@@ -159,7 +159,7 @@ export class PlayScene extends Phaser.Scene {
     const r = this.roomData;
     // Test mode only: ?test&at=x,feetY starts at that spot (mechanics playtests).
     const at = testHookEnabled() ? new URLSearchParams(location.search).get('at')?.split(',').map(Number) : undefined;
-    if (at && at.length === 2 && at.every(Number.isFinite) && !this.start.world) return { x: at[0]!, y: at[1]!, facing: 1 }; // first room only
+    if (at && at.length === 2 && at.every(Number.isFinite) && !this.start.world && !this.start.checkpoint && !this.start.entry) return { x: at[0]!, y: at[1]!, facing: 1 }; // first room only
     const w = this.start.world;
     if (w) {
       // Same world position as when we left the last room, nudged inside this one; feet = centre + half height.
@@ -661,6 +661,8 @@ export class PlayScene extends Phaser.Scene {
       }
       return;
     } else if (ev.type === 'hazard') {
+      // The cheat: spikes and water do nothing at all (owner).
+      if (cheat.on) return;
       // Spikes and water hurt, then send you back to the last altar you prayed at (owner's rule).
       if (!p.invulnerable) {
         p.takeHit({ damage: ev.damage, knockbackX: 0, knockbackY: 0, hitstopMs: 0, shakeMs: 120, shakeIntensity: 0.006 });
