@@ -16,6 +16,7 @@ import { gravityFor } from './movement';
 import { playerStates, postureFor, type PlayerContext, type PlayerStateKey, type Posture } from './playerStates';
 import { playerTuning, type PlayerTuning } from './tuning';
 import { PlayerView, type VisualKey } from './PlayerView';
+import { TapCounter, type Tap } from '../systems/input/doubleTap';
 import { findLedge, hangCentre, standCentre, type Ledge } from './ledge';
 import { FinisherRunner } from '../combat/FinisherRunner';
 import { StrengthBuff } from '../combat/StrengthBuff';
@@ -307,12 +308,14 @@ export class Player implements PlayerContext, PlayerCombatant {
     return this.godMode && this.form === 'crusnik'; // owner: never as the priest
   }
 
-  /** The cheat: ABIL as the Crusnik changes back (the meter never runs out, so this is the way home). */
-  get abilityReverts(): boolean {
-    return this.godMode;
-  }
+  private readonly abilityTaps = new TapCounter(playerTuning.doubleTapMs);
+  /** This frame's ABIL tap as the Crusnik (set in update). */
+  abilityTap: Tap = null;
 
+  /** A single ABIL tap as the Crusnik: back to the priest (the blood left stays). The final battle's scripted
+   * wings stay unless the cheat gave them. */
   revertForm(): void {
+    if (this.winged && !this.godMode) return;
     this.winged = false;
     this.endCrusnik();
   }
@@ -589,6 +592,11 @@ export class Player implements PlayerContext, PlayerCombatant {
       velocityY: this.vy,
     });
     this.canStand = this.height >= this.tuning.height || this.roomToStand();
+    if (this.form === 'crusnik') this.abilityTap = this.abilityTaps.update(this.input.justPressed('ability'), dtMs);
+    else {
+      this.abilityTaps.reset();
+      this.abilityTap = null;
+    }
     this.fsm.update(dtMs);
     this.applyPosture(postureFor(this.fsm.current));
 

@@ -112,11 +112,13 @@ describe('Crusnik form (player states)', () => {
     expect(p.state).toBe('idle');
   });
 
-  it('in Crusnik form: ATK swings the scythe, ABIL throws the chain lash, DODGE slides', () => {
+  it('in Crusnik form: ATK swings the scythe, ABIL double tap throws the chain lash, DODGE slides', () => {
     const p = transformed();
     p.step({ attack: true });
     expect(p.combat.current?.id).toBe('scythe');
     p.run(60);
+    p.step({ ability: true });
+    p.run(3);
     p.step({ ability: true });
     expect(p.state).toBe('lash');
     expect(p.combat.current?.id).toBe('lash');
@@ -125,8 +127,18 @@ describe('Crusnik form (player states)', () => {
     expect(p.state).toBe('slide');
   });
 
+  it('a single ABIL tap as the Crusnik changes back to the priest once the double-tap window has passed', () => {
+    const p = transformed();
+    p.step({ ability: true });
+    expect(p.form).toBe('crusnik');
+    p.run(framesFor(playerTuning.doubleTapMs) + 1);
+    expect(p.form).toBe('priest');
+    expect(p.state).not.toBe('lash');
+  });
+
   it('the chain lash reaches much further than any priest attack', () => {
     const p = transformed();
+    p.step({ ability: true });
     p.step({ ability: true });
     const lash = p.combat.current!;
     expect(lash.hitbox.x + lash.hitbox.w / 2).toBeGreaterThan(100);

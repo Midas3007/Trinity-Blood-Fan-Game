@@ -292,3 +292,4 @@
 | 40% Crusnik unlocks with the blood meter (after Paula); 80% stays scripted for the final battle | Owner rule | Keep the lock until the Magus |
 | Cheat ↑↓←→ ATK DODGE toggles god mode (no damage, endless flasks, full meter, ABIL = 80%), session only | Owner request; not saved so a save can't get stuck in it | A menu switch |
 | Missing sprite sheets are re-requested once at boot; enemies fall back to another of their poses | A dropped phone request left an enemy as a block all session | Placeholder only |
+| Crusnik ABIL: double tap = chain lash, single tap = revert (both modes) | Owner request; a single tap is confirmed after a 280 ms window, so reverting waits that long | Hold ABIL to revert |

@@ -804,7 +804,7 @@ export class PlayScene extends Phaser.Scene {
       gameState.setFlag(flag);
       this.player.crusnik.awake = true;
       this.player.crusnik.unlocked = gameState.hasFlag(crusnikConfig.unlockFlag);
-      this.time.delayedCall(3400, () => this.banner.show('SANGUIS', 'The bar under your health is blood. Only Methuselah blood fills it.\nWhen it is full and glows, press ABIL to become the Crusnik.', 3200));
+      this.time.delayedCall(3400, () => this.banner.show('SANGUIS', 'The bar under your health is blood. Only Methuselah blood fills it.\nFull and glowing: ABIL becomes the Crusnik. Then double-tap ABIL for the chain.', 3200));
     }
     if (flag === 'gyula_defeated') {
       // The end: the ending scene, the credits, then the teaser for the next arc.
@@ -861,7 +861,7 @@ export class PlayScene extends Phaser.Scene {
     cm.unlocked = true;
     cm.fill();
     this.player.forceTransform();
-    this.banner.show('NANOMACHINE CRUSNIK', 'Forty percent. ABIL throws the chain; the blue bar is his blood.', 2600);
+    this.banner.show('NANOMACHINE CRUSNIK', 'Forty percent. Double-tap ABIL for the chain, tap once to change back.', 2600);
   }
 
   /** A progression unlock from reading lore. Today only the Crusnik form. */
@@ -873,7 +873,7 @@ export class PlayScene extends Phaser.Scene {
     cm.fill(); // ready at once, so the first try happens here
     fx.flash(this.cameras.main, 400, 140, 20, 40);
     if (fx.shakeOn) fx.shake(this.cameras.main, 350, 0.01);
-    this.banner.show('THE CRUSNIK STIRS', 'When the blue bar beneath your health glows, press ABIL to transform.\nAs the Crusnik: ATK scythe, ABIL chain lash, a far higher leap.');
+    this.banner.show('THE CRUSNIK STIRS', 'When the blue bar beneath your health glows, press ABIL to transform.\nAs the Crusnik: ATK scythe, double-tap ABIL chain lash, one tap to change back.');
     saveStore.save(gameState.toSave(Date.now()));
   }
 

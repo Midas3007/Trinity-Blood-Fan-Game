@@ -113,7 +113,7 @@ class Bot {
       if (e.state === 'staggered' && dist < 40) { await this.hold(toward, 30); await this.press('x'); used.add('finisher'); await this.wait(900); continue; }
       if (p.gapAhead && dist > 30) { await this.press('Space', 200); }
       if (dist > 30) {
-        if (arts && p.form === 'crusnik' && dist < 150 && !used.has('lash')) { await this.hold(toward, 30); await this.press('v'); used.add('lash'); await this.wait(500); continue; }
+        if (arts && p.form === 'crusnik' && dist < 150 && !used.has('lash')) { await this.hold(toward, 30); await this.press('v'); await this.wait(60); await this.press('v'); used.add('lash'); await this.wait(500); continue; }
         await this.hold(toward, dist > 80 ? 160 : 60); continue;
       }
       if (e.state === 'attack' && i % 2 === 0) { await this.press('b'); used.add('parry'); await this.wait(200); await this.press('x'); continue; }
@@ -184,7 +184,7 @@ class Bot {
         else { await this.press('b'); await this.wait(120); await this.press('x'); }
         continue;
       }
-      if (lash && p.form === 'crusnik' && dist > 60 && dist < 160 && i % 4 === 0) { await this.press('v'); await this.wait(250); continue; }
+      if (lash && p.form === 'crusnik' && dist > 60 && dist < 160 && i % 4 === 0) { await this.press('v'); await this.wait(60); await this.press('v'); await this.wait(250); continue; }
       if (p.hp < p.maxHp * 0.3 && dist < 50) { await this.page.keyboard.down(away); await this.press('c'); await this.page.keyboard.up(away); continue; }
       if (dist > 34) { await this.hold(toward, dist > 80 ? 160 : 70); continue; }
       if (i % 7 === 0) { await this.press('Space'); await this.wait(150); await this.press('x'); await this.wait(250); continue; }

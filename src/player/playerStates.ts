@@ -1,6 +1,7 @@
 import type { State } from './StateMachine';
 import { parryWindow } from '../systems/settings';
 import type { PlayerTimers } from './PlayerTimers';
+import type { Tap } from '../systems/input/doubleTap';
 import type { PlayerTuning } from './tuning';
 import { approach, horizontalVelocity } from './movement';
 import type { AttackRunner } from '../combat/AttackRunner';
@@ -59,8 +60,8 @@ export interface PlayerContext {
   drinkFlask(): void;
   /** Stick vertical (-1 up .. 1 down). */
   readonly moveY: number;
-  /** The cheat: ABIL as the Crusnik changes back to the priest (instead of the chain). */
-  readonly abilityReverts: boolean;
+  /** ABIL as the Crusnik: double tap = chain lash, single tap = change back (owner, both modes). */
+  readonly abilityTap: Tap;
   revertForm(): void;
   /** The cheat: JUMP in the air beats upward again (flight). */
   readonly canFly: boolean;
@@ -141,14 +142,15 @@ function brake(ctx: PlayerContext, dtMs: number): void {
   ctx.vx = approach(ctx.vx, 0, (ctx.tuning.groundDecel * dtMs) / 1000);
 }
 
-/** ABIL: take the Crusnik form when it is ready, or (in Crusnik form) throw the chain lash. */
+/** ABIL: take the Crusnik form when it is ready; as the Crusnik, double tap = chain lash, single tap = change back. */
 function abilityState(ctx: PlayerContext): PlayerStateKey | null {
-  if (!ctx.abilityPressed) return null;
-  if (ctx.form === 'priest' && ctx.transformReady) return 'transform'; // in the air too (owner: ABIL must just work)
-  if (ctx.form === 'crusnik' && ctx.abilityReverts) {
-    ctx.revertForm();
+  if (ctx.form === 'crusnik') {
+    if (ctx.abilityTap === 'double') return 'lash';
+    if (ctx.abilityTap === 'single') ctx.revertForm();
     return null;
   }
+  if (!ctx.abilityPressed) return null;
+  if (ctx.transformReady) return 'transform'; // in the air too (owner: ABIL must just work)
   if (startersFor(ctx.form, ctx.weapon).ranged) return 'lash';
   return null;
 }

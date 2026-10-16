@@ -3,6 +3,7 @@ import { CrusnikMeter, crusnikTuning } from '../src/player/CrusnikMeter';
 import { StateMachine } from '../src/player/StateMachine';
 import { PlayerTimers } from '../src/player/PlayerTimers';
 import { gravityFor } from '../src/player/movement';
+import { TapCounter, type Tap } from '../src/systems/input/doubleTap';
 import { playerStates, type PlayerContext, type PlayerStateKey } from '../src/player/playerStates';
 import { playerTuning, type PlayerTuning } from '../src/player/tuning';
 import { AttackRunner } from '../src/combat/AttackRunner';
@@ -62,8 +63,10 @@ export class SimPlayer implements PlayerContext {
   }
   moveY = 0;
   canFly = false;
-  abilityReverts = false;
+  abilityTap: Tap = null;
+  private readonly taps = new TapCounter(playerTuning.doubleTapMs);
   revertForm(): void {
+    this.crusnik.end();
     this.form = 'priest';
   }
   ladderHere = false;
@@ -202,6 +205,7 @@ export class SimPlayer implements PlayerContext {
     this.dodgePressed = input.dodge ?? false;
     this.attackPressed = input.attack ?? false;
     this.abilityPressed = input.ability ?? false;
+    this.abilityTap = this.form === 'crusnik' ? this.taps.update(this.abilityPressed, DT) : null;
     this.parryPressed = input.parry ?? false;
     this.crouchHeld = input.down ?? false;
     this.moveY = input.moveY ?? (this.crouchHeld ? 1 : 0);

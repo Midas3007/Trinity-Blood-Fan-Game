@@ -31,6 +31,7 @@
   "crawlSpeed": 40,
   "climbSpeed": 80,
   "flyFlapVelocity": 300,
+  "doubleTapMs": 280,
   "ledgeReachAbove": 0,
   "ledgeReachBelow": 14,
   "ledgeReachGap": 3,

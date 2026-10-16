@@ -34,6 +34,8 @@ export interface PlayerTuning {
   climbSpeed: number;
   /** Cheat flight: upward speed of each wing beat (JUMP in the air), px/s. */
   flyFlapVelocity: number;
+  /** Crusnik ABIL: a second tap within this long is a double tap (chain lash); one tap changes back (ms). */
+  doubleTapMs: number;
   /** Ledge grab: how far above/below the head a ledge top is caught, the gap allowed to the wall (px). */
   ledgeReachAbove: number;
   ledgeReachBelow: number;
