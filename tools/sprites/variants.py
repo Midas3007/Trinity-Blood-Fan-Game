@@ -276,7 +276,14 @@ def janissary_map():
     return {"2e0811": "1c1826", "4a0f1b": "2f4a63", "6a1524": "4f7c9e", "8e1b2c": "c4a04a", "ad2a3a": "e8c86a"}
 
 
+def child_map():
+    """Sister Esther -> a Methuselah child of the cisterns: silver hair, pale skin, a grey ragged smock."""
+    return {"d4283e": "ddd7e6", "e85a5f": "efeaf2", "ad2a3a": "b8b1c4", "8e1b2c": "a59fb0", "6a1524": "8a8392", "4a0f1b": "6f6676",
+            "14111c": "3b3444", "1c1826": "4a4252", "251f30": "5c5464", "2e2836": "6f6676", "8a5a4c": "b8826b", "b8826b": "dcb39a", "f39a8f": "dcb39a"}
+
+
 FOLDERS = [
+    ("npcs/esther", "npc_esther", "npc_child", "npcs/child", child_map()),
     ("bosses/petros", "boss_petros", "boss_janissary", "bosses/janissary", janissary_map()),
     ("enemies/iron_choir", "enemy_iron_choir", "enemy_imperial_guard", "enemies/imperial_guard", guard_map()),
     ("enemies/inquisitor", "enemy_inquisitor", "enemy_zealot", "enemies/zealot", zealot_map()),

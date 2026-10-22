@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "run": {
+      "durations_ms": [
+        600
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 96,
+  "columns": 1,
+  "entity": "npc_child",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 64,
+  "sheet": "npc_child_run.png",
+  "source_hashes": [
+    "sha256:8cfbf14796f4ffcdec02eb1b7d766bf964025855926afe842c6aff1c370f14ee"
+  ],
+  "variant_of": "npcs/esther/npc_esther_run.png"
+}

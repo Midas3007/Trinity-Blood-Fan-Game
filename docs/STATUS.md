@@ -26,7 +26,30 @@ Last updated: 2026-10-22
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — Empire arc stage 3: the Janissary Captain (2026-10-22)
+## Done (latest) — Empire arc stage 4: the Cisterns under Byzantium (2026-10-22)
+- **3 new rooms under the city**, reached by a well shaft at the barracks' east end. Its lid opens once the Janissary Captain yields.
+  - **The Cisterns:** drowned columns, pools, blue lamps, and the **Cistern Shrine** altar (on fast travel).
+  - **The Outcasts' Hall:** poor Methuselah living away from the court. No fighting here.
+  - **The Lower Cistern:** the Magus's string puppets haunt it.
+- **Story scenes** (original lines):
+  - a hooded Methuselah child shows Abel the way (`cistern_child`);
+  - **Ion's trial by the outcasts**: he admits his family's cruelty and is forgiven (`undercity_ion`).
+- **The child** is a stand-in: Esther's sprite recoloured grey with silver hair, shown smaller.
+- **Secrets:**
+  - a **porcelain teapot** behind bars in the Outcasts' Hall (+10 life; phase-step through the bars);
+  - a **Sacred Heart** on a ledge in the Lower Cistern.
+  - Two lore entries.
+- Verified: 230/230 tests, all rooms connect. A bot in the real game took the barracks shaft into the cisterns, saw the child's scene, walked west into the Outcasts' Hall and saw Ion's scene; all rooms load with no errors.
+- **Note:** falling into water sends you back to your last altar with a little damage, the same as in the aqueduct. The cisterns' pools are 3 tiles wide.
+
+## Owner must test (on phone) — the Cisterns
+1. Beat the Janissary Captain. At the barracks' east end, stand on the well shaft and hold down.
+2. The child's scene plays. Pray at the Cistern Shrine.
+3. Walk west into the Outcasts' Hall: Ion's scene plays.
+4. At the hall's west end, phase-step (DODGE in the air) through the bars for the teapot.
+5. Take the ladder down in the middle of the hall to the Lower Cistern. Fight the puppets and find the heart on the high ledge.
+
+## Done (earlier) — Empire arc stage 3: the Janissary Captain (2026-10-22)
 - **New room: the Janissary Barracks**, east of the Grand Arcade along the street. It has a guardhouse altar just before the arena, and a dark barracks back row with lit windows.
 - **New boss: the Janissary Captain** (original). He is the Empress's guard and believes Abel killed his friend in the arcade.
   - Moves: sabre cuts (parry them), a short shield bash, and an unparryable charge from the arena edge (jump it). Phase 2 is faster.

@@ -198,7 +198,83 @@ def barracks():
     # Boss: the Janissary Captain, the Empress's guard. He thinks Abel killed his friend in the arcade.
     r.mark("boss", 60, ARCADE_GY - 1, boss="janissary", arenaLeft=24 * 16, arenaRight=84 * 16,
            defeatFlag="janissary_defeated", intro="janissary_intro", outro="janissary_outro")
-    r.mark("label", 80, ARCADE_GY - 12, text="the way down to the cisterns (still being built)")
+    # Beyond the arena: a well shaft down to the cisterns, its lid lifted once the Captain looks the other way.
+    r.carve(86, ARCADE_GY, 89, r.H)
+    r.gate(86, ARCADE_GY, 89, ARCADE_GY + 1, "janissary_defeated")
+    r.ladder(87, ARCADE_GY + 1, r.H)
+    r.mark("label", 87, ARCADE_GY - 4, text="a well shaft, down to the cisterns")
+    return r
+
+
+def cisterns():
+    """Stage 4: the Cisterns. A forest of drowned columns under the barracks, lit by the outcasts' blue lamps."""
+    r = Room("byz_cisterns", "The Cisterns", 56, 1, 3, 1, seed=70, sky=False)
+    r.wall(0, 0, r.W, r.H, "stone")
+    r.carve(0, 3, r.W - 1, 15)                                  # open to the west (the outcasts' hall)
+    r.carve(86, 0, 89, 3)
+    r.ladder(87, 0, 15)                                         # down the well shaft from the barracks
+    r.backwall(["wall_roman"], 3, 15, 0, r.W - 1)
+    for x0 in (16, 38, 60):
+        r.fill("terrain", x0, 14, x0 + 3, 15, "water")
+    for x in range(8, 84, 9):
+        r.prop("column", x, 14, 160)
+    for x in (12, 30, 50, 70, 82):
+        r.mark("decor", x, 14, item="bluelamp")
+    r.mark("scene", 78, 14, scene="cistern_child")              # a child of the outcasts shows the way
+    r.mark("checkpoint", 72, 14, "cistern_altar")               # a shrine of candles and blue glass
+    r.mark("lore", 26, 14, lore="cistern_prayers")
+    r.mark("enemy", 46, 4, enemy="bat")
+    return r
+
+
+def outcasts():
+    """The outcasts' hall: poor Methuselah living away from the court. No one fights here."""
+    r = Room("byz_outcasts", "The Outcasts' Hall", 53, 1, 3, 1, seed=71, sky=False)
+    r.wall(0, 0, r.W, r.H, "stone")
+    r.carve(1, 3, r.W, 15)                                      # open to the east (the cisterns)
+    r.backwall(["wall_crypt"], 3, 15, 1, r.W)
+    for x in (18, 34, 52, 70):
+        r.mark("decor", x, 3, item="rug")
+        r.mark("decor", x + 4, 14, item="urn")
+    for x in (24, 46, 64, 84):
+        r.mark("decor", x, 14, item="bluelamp")
+    r.mark("decor", 40, 14, item="fire", h=24)                  # a brazier the outcasts share
+    r.mark("scene", 44, 14, scene="undercity_ion")
+    # Down into the lower cistern, where something with strings has made its nest.
+    r.carve(28, 15, 31, r.H)
+    r.platform(28, 31, 15, "plank")
+    r.ladder(29, 16, r.H)
+    r.mark("label", 29, 11, text="a ladder down to the lower cistern")
+    # A walled niche behind iron bars: someone's treasure.
+    r.wall(1, 9, 9, 15, "stone")
+    r.carve(1, 10, 8, 15)
+    r.grille(8, 10, 9, 15)
+    r.mark("item", 4, 14, item="teapot")
+    r.mark("label", 5, 7, text="behind the bars, porcelain")
+    return r
+
+
+def lower_cistern():
+    """The lower cistern: the Magus's puppets haunt the dark water."""
+    r = Room("byz_lower_cistern", "The Lower Cistern", 53, 2, 3, 1, seed=72, sky=False)
+    r.wall(0, 0, r.W, r.H, "stone")
+    r.carve(1, 3, r.W - 1, 15)
+    r.carve(28, 0, 31, 3)
+    r.ladder(29, 0, 15)                                         # up to the outcasts' hall
+    r.backwall(["wall_roman"], 3, 15, 1, r.W - 1)
+    for x0 in (12, 44, 66):
+        r.fill("terrain", x0, 14, x0 + 3, 15, "water")
+    for x0, x1, y in ((36, 46, 10), (56, 64, 8), (70, 80, 11)):
+        r.platform(x0, x1, y, "stone")
+    for x in range(6, 88, 10):
+        r.prop("column", x, 14, 160)
+    r.mark("item", 60, 7, item="heart6")
+    r.mark("lore", 84, 14, lore="cistern_strings")
+    r.mark("label", 80, 8, text="the way up to the palace (still being built)")
+    r.mark("enemy", 22, 14, enemy="thrall")
+    r.mark("enemy", 52, 14, enemy="ironChoir")
+    r.mark("enemy", 74, 14, enemy="thrall")
+    r.mark("enemy", 40, 4, enemy="bat")
     return r
 
 
@@ -267,4 +343,4 @@ def warehouse():
 
 
 def rooms():
-    return [docks(), quay(), market(), spice_stairs(), arcade(), barracks(), rooftops(), aqueduct(), warehouse()]
+    return [docks(), quay(), market(), spice_stairs(), arcade(), barracks(), cisterns(), outcasts(), lower_cistern(), rooftops(), aqueduct(), warehouse()]

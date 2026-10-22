@@ -2105,6 +2105,148 @@
      ]
     }
    ]
+  },
+  "cistern_child": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "color:0x101820",
+     "caption": "The Cisterns, under Byzantium.",
+     "actors": [
+      {
+       "anim": "npc_child_stand",
+       "x": 0.62,
+       "y": 0.96,
+       "scale": 1.5,
+       "flip": true,
+       "enter": "right"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "A hooded child",
+       "text": "You're the priest from up there. The one they want to hang."
+      },
+      {
+       "speaker": "Abel",
+       "text": "That's me, I'm afraid. Are you lost?"
+      },
+      {
+       "speaker": "A hooded child",
+       "text": "I live here. Everyone down here is too poor to be noble. Come on. Grandmother wants to see the Terran."
+      }
+     ]
+    },
+    {
+     "layout": "wide",
+     "bg": "color:0x101820",
+     "actors": [
+      {
+       "anim": "npc_child_run",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 1.5,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "A hooded child",
+       "text": "Walk where I walk. The water bites."
+      }
+     ]
+    }
+   ]
+  },
+  "undercity_ion": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "color:0x14111c",
+     "caption": "The Outcasts' Hall.",
+     "actors": [
+      {
+       "anim": "npc_ion_stand",
+       "x": 0.35,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "left"
+      },
+      {
+       "anim": "npc_child_stand",
+       "x": 0.7,
+       "y": 0.96,
+       "scale": 1.5,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "An old outcast",
+       "text": "A Fortuna. Here. Your grandfather's men drove my family into this water."
+      },
+      {
+       "speaker": "Ion",
+       "text": "I know. I have read the ledgers. I used to think they were only numbers."
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "color:0x14111c",
+     "actors": [
+      {
+       "anim": "npc_ion_bow",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2.6,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Ion",
+       "text": "I cannot give you back the light. I can only say it was wrong, and stand here while you decide what I am."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "color:0x14111c",
+     "actors": [
+      {
+       "anim": "npc_child_stand",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "An old outcast",
+       "text": "...You are a fool, boy. But a fool who says sorry is rarer than a duke. Sit. Eat."
+      },
+      {
+       "speaker": "Abel",
+       "text": "Whoever stole your dagger came this way, Ion. The strings in the lower cistern... I've seen them before."
+      }
+     ]
+    }
+   ]
   }
  }
 }

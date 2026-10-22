@@ -46,14 +46,14 @@ someone has waited nine hundred years for Abel to come home.
 - Rooms: the lamp market (rooftops of awnings), the spice stairs (vertical), the grand arcade.
 - Enemies: guards, Rosenkreuz zealots (fire throwers; recoloured Inquisitor), bat swarms.
 
-### 3. The Janissary Captain (boss room)
+### 3. The Janissary Captain (boss room) ✅
 - **The Janissary Captain** *(original)*: the Empress's guard, honest and deadly; sabre combos, a shield bash, an
   unparryable charge. He believes Abel killed his friend.
   - Intro: "A priest of Rome, in the heart of the Empire, with blood on his sleeve. Draw."
   - Outro (non-lethal): "...You could have killed me. Then you are not the murderer. Go. I will look away."
 - Reward: **Fides** (relic: +1 flask).
 
-### 4. The Undercity of Byzantium (3 rooms) — the outcasts
+### 4. The Undercity of Byzantium (3 rooms) — the outcasts ✅
 - Old cisterns under the city where poor Methuselah live away from the court. Columns, water, lamps.
 - A Methuselah child shows Abel the way (no combat); the Magus's puppets haunt the lower cistern.
 - **Ion's trial by the outcasts** (`undercity_ion`): Ion admits his family's cruelty and is forgiven.

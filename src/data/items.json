@@ -9,6 +9,8 @@
     "heart4": { "name": "Sacred Heart", "kind": "heart", "maxHealth": 10, "text": "A silver heart pierced with thorns. It beats faintly. More life." },
     "heart5": { "name": "Sacred Heart", "kind": "heart", "maxHealth": 10, "text": "Found behind iron bars in a spice merchant's cellar, wrapped in a prayer from Rome. More life." },
     "chalice3": { "name": "Imperial Chalice", "kind": "chalice", "flasks": 1, "text": "Blue glass and gold, left on a rooftop shrine for no god Abel knows. One more flask of holy water." },
+    "heart6": { "name": "Sacred Heart", "kind": "heart", "maxHealth": 10, "text": "Set high on a cistern ledge by someone who still remembered Rome. More life." },
+    "teapot": { "name": "Porcelain Teapot", "kind": "tea", "maxHealth": 10, "text": "Blue and white, chipped at the spout, kept behind bars like a crown jewel. An old outcast's only treasure, and now Abel's. More life." },
     "chalice1": { "name": "Silver Chalice", "kind": "chalice", "flasks": 1, "text": "A chapel's chalice, hidden from the Count's men. One more flask of holy water." },
     "chalice2": { "name": "Silver Chalice", "kind": "chalice", "flasks": 1, "text": "A chapel's chalice, hidden from the Count's men. One more flask of holy water." },
     "tea1": { "name": "Tin of Tea", "kind": "tea", "set": "tea", "text": "Real leaves, not the sawdust the Vatican canteen serves. Abel is moved." },

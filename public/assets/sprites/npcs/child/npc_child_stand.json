@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "stand": {
+      "durations_ms": [
+        600
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 96,
+  "columns": 1,
+  "entity": "npc_child",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 64,
+  "sheet": "npc_child_stand.png",
+  "source_hashes": [
+    "sha256:e30253e759841a4e007edc2e98407c935e1bfb264a0cc1ed9ff326a9d4064b4e"
+  ],
+  "variant_of": "npcs/esther/npc_esther_stand.png"
+}

@@ -7,6 +7,7 @@
   "storyFlags": [
     "dietrich_defeated",
     "gyula_defeated",
+    "janissary_defeated",
     "kampfer_defeated",
     "marchesa_defeated",
     "paula_defeated",
@@ -192,6 +193,12 @@
         "name": "The Guardhouse"
       },
       {
+        "room": "byz_cisterns",
+        "id": "cistern_altar",
+        "area": "byzantium",
+        "name": "The Cistern Shrine"
+      },
+      {
         "room": "bazaar_warehouse",
         "id": "warehouse_altar",
         "area": "byzantium",
@@ -279,7 +286,10 @@
         "line": "#8cbcae",
         "rooms": [
           "empire_aqueduct",
-          "bazaar_warehouse"
+          "bazaar_warehouse",
+          "byz_cisterns",
+          "byz_outcasts",
+          "byz_lower_cistern"
         ]
       }
     },

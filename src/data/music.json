@@ -35,7 +35,7 @@
     "castle_gate": "fortress", "great_hall": "fortress",
     "star_chamber": "star",
     "imperial_spire": "star",
-    "empire_docks": "byzantium", "empire_quay": "byzantium", "bazaar_lamps": "byzantium", "bazaar_stairs": "byzantium", "bazaar_arcade": "byzantium", "empire_barracks": "byzantium",
+    "empire_docks": "byzantium", "empire_quay": "byzantium", "bazaar_lamps": "byzantium", "bazaar_stairs": "byzantium", "bazaar_arcade": "byzantium", "empire_barracks": "byzantium", "byz_cisterns": "undercity", "byz_outcasts": "undercity", "byz_lower_cistern": "undercity",
     "bazaar_rooftops": "byzantium", "empire_aqueduct": "undercity", "bazaar_warehouse": "undercity"
   },
   "defaultRoom": "streets",
@@ -50,6 +50,6 @@
     "gyula_intro": "star", "gyula_wings": "scene_awaken", "gyula_outro": "scene_sad",
     "ending": "scene_dawn", "teaser": "scene_teaser",
     "cain_intro": "scene_tense", "cain_ascension": "scene_awaken", "cain_outro": "scene_sad",
-    "empire_arrival": "byzantium", "ion_meeting": "byzantium", "bazaar_murder": "scene_tense", "phase_step": "scene_awaken", "janissary_intro": "scene_tense", "janissary_outro": "byzantium"
+    "empire_arrival": "byzantium", "ion_meeting": "byzantium", "bazaar_murder": "scene_tense", "phase_step": "scene_awaken", "janissary_intro": "scene_tense", "janissary_outro": "byzantium", "cistern_child": "scene_sad", "undercity_ion": "scene_sad"
   }
 }
