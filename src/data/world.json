@@ -192,5 +192,123 @@
         "name": "The Silk Warehouse"
       }
     ]
+  },
+  "map": {
+    "_note": "In-game map style (as the poster, tools/social/map.py): each room belongs to a region (colours: fill, rock, outline) and each region to an area; the map shows the area Abel is in. 'offset' moves a room on the map only (in screen cells), e.g. the cathedral, far above the town in the world, is drawn just above it.",
+    "regions": {
+      "town": {
+        "name": "The Old Town",
+        "fill": "#2c223e",
+        "rock": "#625478",
+        "line": "#c4b4d6",
+        "rooms": [
+          "istvan_station",
+          "old_town_lane",
+          "clock_alley",
+          "market_square",
+          "cathedral_square",
+          "hill_street",
+          "danube_bridge"
+        ]
+      },
+      "under": {
+        "name": "The Undercity",
+        "fill": "#182228",
+        "rock": "#465c62",
+        "line": "#96babe",
+        "rooms": [
+          "hunters_crypt",
+          "sewer_shaft",
+          "ossuary",
+          "forgotten_reliquary",
+          "water_tunnels",
+          "long_stair",
+          "drowned_crypt",
+          "chapel_of_bones",
+          "marchesa_ballroom",
+          "count_cellars"
+        ]
+      },
+      "cathedral": {
+        "name": "The Cathedral",
+        "fill": "#36121c",
+        "rock": "#80404c",
+        "line": "#e2a0a8",
+        "rooms": [
+          "cathedral_nave",
+          "bell_tower"
+        ]
+      },
+      "fortress": {
+        "name": "The Count's Fortress",
+        "fill": "#302416",
+        "rock": "#745c3a",
+        "line": "#e2c88c",
+        "rooms": [
+          "castle_gate",
+          "great_hall",
+          "star_chamber"
+        ]
+      },
+      "byzantium": {
+        "name": "Byzantium",
+        "fill": "#16263a",
+        "rock": "#3e5e7e",
+        "line": "#9cc8e2",
+        "rooms": [
+          "empire_docks",
+          "empire_quay",
+          "bazaar_lamps",
+          "bazaar_stairs",
+          "bazaar_arcade",
+          "bazaar_rooftops",
+          "imperial_spire"
+        ]
+      },
+      "cisterns": {
+        "name": "Under Byzantium",
+        "fill": "#14201e",
+        "rock": "#3c5a52",
+        "line": "#8cbcae",
+        "rooms": [
+          "empire_aqueduct",
+          "bazaar_warehouse"
+        ]
+      }
+    },
+    "areas": [
+      {
+        "id": "istvan",
+        "title": "Istvan",
+        "regions": [
+          "town",
+          "under",
+          "cathedral",
+          "fortress"
+        ]
+      },
+      {
+        "id": "byzantium",
+        "title": "Byzantium",
+        "regions": [
+          "byzantium",
+          "cisterns"
+        ]
+      }
+    ],
+    "offset": {
+      "cathedral_nave": {
+        "dx": 0,
+        "dy": 6
+      },
+      "bell_tower": {
+        "dx": 0,
+        "dy": 6
+      },
+      "imperial_spire": {
+        "dx": 23,
+        "dy": 2
+      }
+    }
   }
 }

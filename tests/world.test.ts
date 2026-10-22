@@ -113,3 +113,15 @@ describe('GameState', () => {
     expect(s.checkpoint).toBeNull();
   });
 });
+
+describe('map style', () => {
+  it('every room is in exactly one map region, and every region in an area', async () => {
+    const { mapRegions, mapAreas, regionOf, areaOf } = await import('../src/world/mapStyle');
+    for (const id of Object.keys(rooms)) {
+      expect(mapRegions.filter((r) => r.rooms.includes(id)).length, id).toBe(1);
+      expect(areaOf(id), id).not.toBeNull();
+      expect(regionOf(id)).not.toBeNull();
+    }
+    for (const r of mapRegions) expect(mapAreas.some((a) => a.regions.includes(r.id)), r.id).toBe(true);
+  });
+});

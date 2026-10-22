@@ -194,6 +194,8 @@ export class PlayScene extends Phaser.Scene {
     this.roomData = getRoom(this.start.room);
     // Test mode only: ?test&flags=a,b starts with story flags set (recorded playthrough chapters).
     if (testHookEnabled()) for (const f of (new URLSearchParams(location.search).get('flags') ?? '').split(',')) if (f) gameState.setFlag(f);
+    // Test mode only: ?test&visited=all marks every room visited (map screenshots).
+    if (testHookEnabled() && new URLSearchParams(location.search).get('visited') === 'all') for (const id of Object.keys(allRooms)) gameState.visit(id);
     gameState.visit(this.roomData.id);
     const r = this.roomData;
     const { width, height } = r;
@@ -942,7 +944,7 @@ export class PlayScene extends Phaser.Scene {
     if (what === 'codex') this.codex.show();
     if (what === 'options') this.options.show();
     if (what === 'touch') this.layoutEditor.show(this.touch.currentLayout);
-    if (what === 'map') this.map.show(allRooms, (id) => gameState.hasVisited(id), (room, id) => gameState.altarUsed(room, id), this.roomData, this.player.x, this.player.y, (rm) => (gameState.hasVisited(rm.id) ? rm.items.filter((i) => !gameState.hasFlag(itemFlag(i.id))).length : 0));
+    if (what === 'map') this.map.show(allRooms, (id) => gameState.hasVisited(id), (room, id) => gameState.altarUsed(room, id), this.roomData, this.player.x, this.player.y, (rm) => (gameState.hasVisited(rm.id) ? rm.items.filter((i) => !gameState.hasFlag(itemFlag(i.id))).length : 0), (flag) => gameState.hasFlag(flag));
     if (what === 'pause') this.pauseMenu.show();
     if (what) {
       this.physics.world.pause();
