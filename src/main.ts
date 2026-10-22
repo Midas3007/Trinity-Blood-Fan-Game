@@ -3,7 +3,7 @@ import { audio } from './systems/audio/AudioManager';
 import { testHookEnabled } from './systems/testHook';
 import { registerSW } from 'virtual:pwa-register';
 import { createGameConfig } from './core/gameConfig';
-import { TITLE_FONT } from './core/constants';
+import { NAME_FONT, TITLE_FONT } from './core/constants';
 import { preventBrowserGestures } from './systems/browserGuards';
 
 preventBrowserGestures();
@@ -79,6 +79,6 @@ function start(): void {
 }
 
 // The title lettering must be loaded before the first canvas text uses it (otherwise it falls back to plain serif).
-Promise.race([document.fonts.load(`24px ${TITLE_FONT}`), new Promise((r) => setTimeout(r, FONT_WAIT_MS))])
+Promise.race([Promise.all([document.fonts.load(`24px ${TITLE_FONT}`), document.fonts.load(`bold 24px ${NAME_FONT}`)]), new Promise((r) => setTimeout(r, FONT_WAIT_MS))])
   .catch(() => undefined)
   .then(start);

@@ -1,7 +1,7 @@
 """Colour/style variants of existing sprite sheets, kept inside the Requiem 48 palette (no new art needed).
 Usage: python3 -I tools/sprites/variants.py   (from the repo root; rewrites the variant sheets and index.json)
 
-  boss_cain       Cain, ground form: Abel's 80% look with white wings and coat, blond hair, a gold weapon.
+  boss_cain       Cain, ground form: Abel's 80% look with white wings and coat, blond hair; the scythe is replaced by a gold lance.
   boss_cainfull   Cain's full form (the sky): the same, radiant, with crimson edges.
   abel_crusnik100 Abel at 100%: black, with crimson membranes and a blazing red edge (bat wings are drawn in code).
 """
@@ -45,8 +45,106 @@ def abel100_map():
               "2e0811": "6a1524", "4a0f1b": "ad2a3a", "6a1524": "d4283e", "8e1b2c": "e85a5f", "ad2a3a": "f39a8f"})
     return m
 
-def recolor(src: Path, dst: Path, cmap: dict, edge: str | None):
+REDS = {hx(h) for h in ("2e0811", "4a0f1b", "6a1524", "8e1b2c", "ad2a3a", "d4283e", "e85a5f", "f39a8f")}
+
+
+def remove_scythe(im: Image.Image) -> list[list[tuple[int, int]]]:
+    """Takes the red scythe out of each cell (pixels inside the body take the body's colour; the rest go clear).
+    Returns the scythe's pixels per cell, so a lance can be laid along the same line."""
+    px = im.load(); w, h = im.size
+    cell = h  # sheets are one row of square cells
+    found = [[] for _ in range(w // cell)]
+    for y in range(h):
+        for x in range(w):
+            if px[x, y][3] and px[x, y][:3] in REDS:
+                found[x // cell].append((x, y))
+    for _ in range(3):
+        for pts in found:
+            for x, y in pts:
+                if px[x, y][3] == 0 or px[x, y][:3] not in REDS: continue
+                ns = [px[x + dx, y + dy] for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)) if 0 <= x + dx < w and 0 <= y + dy < h]
+                body = [n for n in ns if n[3] and n[:3] not in REDS]
+                if len(body) >= 3:
+                    px[x, y] = max(set(body), key=body.count)
+    for pts in found:
+        for x, y in pts:
+            if px[x, y][3] and px[x, y][:3] in REDS: px[x, y] = (0, 0, 0, 0)
+    peel_thin(im, {p for pts in found for p in pts})
+    keep_largest(im, cell)
+    return found
+
+
+def peel_thin(im: Image.Image, scythe: set) -> None:
+    """The blade's dark outline is a 1-px line hugging where the red was: near it, peel pixels with few neighbours."""
+    px = im.load(); w, h = im.size
+    near = {(x + dx, y + dy) for x, y in scythe for dx in range(-2, 3) for dy in range(-2, 3)}
+    for _ in range(4):
+        gone = []
+        for x, y in near:
+            if not (0 <= x < w and 0 <= y < h) or px[x, y][3] == 0: continue
+            n = sum(1 for dx in (-1, 0, 1) for dy in (-1, 0, 1) if (dx or dy) and 0 <= x + dx < w and 0 <= y + dy < h and px[x + dx, y + dy][3])
+            if n <= 3: gone.append((x, y))
+        for q in gone: px[q] = (0, 0, 0, 0)
+
+
+def keep_largest(im: Image.Image, cell: int) -> None:
+    """In each cell keep only the biggest connected shape (the body): the blade's outline left floating goes."""
+    px = im.load(); w, h = im.size
+    for c in range(w // cell):
+        seen = set(); parts = []
+        for y in range(h):
+            for x in range(c * cell, (c + 1) * cell):
+                if px[x, y][3] == 0 or (x, y) in seen: continue
+                stack = [(x, y)]; seen.add((x, y)); part = []
+                while stack:
+                    a, b = stack.pop(); part.append((a, b))
+                    for dx in (-1, 0, 1):
+                        for dy in (-1, 0, 1):
+                            n = (a + dx, b + dy)
+                            if c * cell <= n[0] < (c + 1) * cell and 0 <= n[1] < h and n not in seen and px[n][3]:
+                                seen.add(n); stack.append(n)
+                parts.append(part)
+        parts.sort(key=len)
+        for part in parts[:-1]:
+            for p in part: px[p] = (0, 0, 0, 0)
+
+
+def draw_lance(im: Image.Image, scythes: list[list[tuple[int, int]]], length=74):
+    """A gold lance along the line the scythe was held (its main axis), head toward the facing side (right)."""
+    from math import atan2, cos, sin
+    px = im.load(); h = im.size[1]
+    SHAFT, SHADE, HEAD, LINE = hx("e8c86a"), hx("9c7a2c"), hx("ffffff"), hx("3b3444")
+    for i, pts in enumerate(scythes):
+        if len(pts) < 6: continue
+        cx = sum(p[0] for p in pts) / len(pts); cy = sum(p[1] for p in pts) / len(pts)
+        sxx = sum((p[0] - cx) ** 2 for p in pts); syy = sum((p[1] - cy) ** 2 for p in pts)
+        sxy = sum((p[0] - cx) * (p[1] - cy) for p in pts)
+        a = 0.5 * atan2(2 * sxy, sxx - syy)
+        dx, dy = cos(a), sin(a)
+        if dx < 0: dx, dy = -dx, -dy
+        x0, x1 = i * h, (i + 1) * h
+        def put(x, y, c):
+            x, y = int(round(x)), int(round(y))
+            if x0 <= x < x1 and 0 <= y < h: px[x, y] = c + (255,)
+        for t in range(-length // 2, length // 2):
+            x, y = cx + dx * t, cy + dy * t
+            put(x, y + 1, LINE); put(x, y - 1, LINE)
+        for t in range(-length // 2, length // 2):
+            x, y = cx + dx * t, cy + dy * t
+            put(x, y, SHAFT if t % 6 else SHADE)
+        tx, ty = cx + dx * length / 2, cy + dy * length / 2  # the spearhead
+        nx, ny = -dy, dx
+        for k in range(8):
+            wdt = 3 - k * 3 / 8
+            for j in range(-int(wdt), int(wdt) + 1):
+                put(tx + dx * k + nx * j, ty + dy * k + ny * j, HEAD if abs(j) < wdt - 0.5 else LINE)
+        for j in (-3, -2, 2, 3):  # a small crossguard
+            put(tx + nx * j, ty + ny * j, SHAFT)
+
+
+def recolor(src: Path, dst: Path, cmap: dict, edge: str | None, lance: bool = False):
     im = Image.open(src).convert("RGBA")
+    scythes = remove_scythe(im) if lance else None
     px = im.load(); w, h = im.size
     lut = {hx(k): hx(v) for k, v in cmap.items()}
     out = im.copy(); po = out.load()
@@ -63,15 +161,16 @@ def recolor(src: Path, dst: Path, cmap: dict, edge: str | None):
                 if any(not (0 <= x + dx < w and 0 <= y + dy < h) or px[x + dx, y + dy][3] == 0
                        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
                     po[x, y] = e + (255,)
+    if scythes: draw_lance(out, scythes)
     dst.parent.mkdir(parents=True, exist_ok=True)
     out.save(dst)
 
-def variant(src_sheet: str, src_anim: str, entity: str, out_dir: str, anim: str, cmap: dict, edge: str | None):
+def variant(src_sheet: str, src_anim: str, entity: str, out_dir: str, anim: str, cmap: dict, edge: str | None, lance=False):
     src = SPR / src_sheet
     man = json.loads(src.with_suffix(".json").read_text())
     name = f"{entity}_{anim}"
     dst = SPR / out_dir / f"{name}.png"
-    recolor(src, dst, cmap, edge)
+    recolor(src, dst, cmap, edge, lance)
     man["entity"] = entity
     man["sheet"] = dst.name
     man["animations"] = {anim: man["animations"][src_anim]}
@@ -91,5 +190,5 @@ JOBS = [
 
 if __name__ == "__main__":
     for pose, entity, folder, anim, cmap, edge in JOBS:
-        print(variant(C80.format(pose), pose, entity, folder, anim, cmap, edge).relative_to(ROOT))
+        print(variant(C80.format(pose), pose, entity, folder, anim, cmap, edge, lance=entity.startswith("boss_cain")).relative_to(ROOT))
     print(write_index(SPR).relative_to(ROOT))

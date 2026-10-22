@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 TITLE_ART, SHOTS, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
 F = "/usr/share/fonts/truetype/freefont/"
 import os
-BLACKLETTER = os.environ.get("BLACKLETTER", "/home/user/Trinity-Blood-Fan-Game/public/assets/fonts/UnifrakturMaguntia-Book.ttf")
+BLACKLETTER = os.environ.get("BLACKLETTER", "/home/user/Trinity-Blood-Fan-Game/public/assets/fonts/UnifrakturCook-Bold.ttf")
 def font(n, s): return ImageFont.truetype(F + n, s)
 BG = (12, 10, 16)
 CREAM, ROSE, DIM = (242, 230, 218), (222, 164, 172), (150, 140, 160)
@@ -33,6 +33,27 @@ def shade(im, top=0.0, bottom=0.75, start=0.45):
 def text(d, xy, s, f, fill, anchor="ma", stroke=4):
     d.text(xy, s, font=f, fill=fill, anchor=anchor, stroke_width=stroke, stroke_fill=(8, 6, 12))
 
+def gothic_title(im, xy, s, f):
+    """The name in heavy textura: a dark outline, a blood-red drop shadow, then bone fading to crimson."""
+    d = ImageDraw.Draw(im)
+    x, y = xy
+    d.text((x, y + f.size * 0.05), s, font=f, fill=(46, 8, 17), anchor="ma", stroke_width=6, stroke_fill=(46, 8, 17))
+    d.text((x, y), s, font=f, fill=(8, 6, 12), anchor="ma", stroke_width=5, stroke_fill=(8, 6, 12))
+    mask = Image.new("L", im.size, 0)
+    ImageDraw.Draw(mask).text((x, y), s, font=f, fill=255, anchor="ma")
+    l, t, r, b = mask.getbbox()
+    grad = Image.new("RGB", im.size)
+    gd = ImageDraw.Draw(grad)
+    stops = [(0, (239, 234, 242)), (0.55, (221, 215, 230)), (0.8, (212, 40, 62)), (1, (106, 21, 36))]
+    for yy in range(t, b + 1):
+        k = (yy - t) / max(1, b - t)
+        for (a0, c0), (a1, c1) in zip(stops, stops[1:]):
+            if a0 <= k <= a1:
+                u = (k - a0) / (a1 - a0)
+                gd.line([(l, yy), (r, yy)], fill=tuple(int(c0[i] + (c1[i] - c0[i]) * u) for i in range(3)))
+                break
+    im.paste(grad, (0, 0), mask)
+
 # 1. Key art: 1600x900 (X / YouTube) and 1080x1350 (Instagram)
 art = Image.open(TITLE_ART).convert("RGB")
 for w, h, name in ((1600, 900, "keyart_16x9"), (1080, 1350, "keyart_4x5")):
@@ -40,7 +61,8 @@ for w, h, name in ((1600, 900, "keyart_16x9"), (1080, 1350, "keyart_4x5")):
     d = ImageDraw.Draw(im)
     big = ImageFont.truetype(BLACKLETTER, int(w * 0.105)); sub = font("FreeSerifItalic.ttf", int(w * 0.03)); small = font("FreeSerifItalic.ttf", int(w * 0.0165))
     y = h * (0.58 if h < w else 0.6)
-    text(d, (w / 2, y - big.size * 0.15), "Trinity Blood", big, CREAM)
+    gothic_title(im, (w / 2, y - big.size * 0.15), "Trinity Blood", big)
+    d = ImageDraw.Draw(im)
     text(d, (w / 2, y + big.size * 1.15), "a fan-made gothic Metroidvania  ·  playable in your browser", sub, ROSE, stroke=3)
     text(d, (w / 2, h - small.size * 2.4), NOTICE, small, DIM, stroke=2)
     im.save(f"{OUT}/{name}.png", optimize=True)

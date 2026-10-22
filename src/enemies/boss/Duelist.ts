@@ -15,9 +15,8 @@ const FLASH_MS = 90;
 /** Hover bob: period (ms per radian) and height (px). */
 const BOB_PERIOD = 260;
 const BOB_PX = 3;
-/** Lance: how far it reaches when not striking, and how far behind the hands the butt sits (px). */
-const LANCE_REST = 30;
-const LANCE_BACK = 14;
+/** Lance strike streak: starts this far in front of his centre (px). */
+const LANCE_FROM = 10;
 
 /** A one-off hazard (a spell bolt or a floor shockwave) that can't be parried. */
 class Blast implements ContactHazard {
@@ -181,21 +180,21 @@ export class Duelist implements ArenaFighter {
     this.drawWeapon(feetY);
   }
 
-  /** Cain's lance: a long shaft and a bright head, out to the far end of the attack's hitbox. */
+  /** Cain's lance strike (the lance itself is in his sprites): a bright streak out to the far end of the hitbox. */
   private drawWeapon(feetY: number): void {
     const w = this.brain.cfg.weaponFx;
     const b = this.brain;
-    if (!w || !b.visible || (b.state !== 'attack' && b.state !== 'dash' && b.state !== 'telegraph' && b.state !== 'dive')) return;
     const def = b.combat.current;
-    const reach = def ? def.hitbox.x + def.hitbox.w / 2 : LANCE_REST;
+    if (!w || !b.visible || !def || b.combat.phase !== 'active') return;
     const y = feetY - b.height * 0.55;
-    const back = b.x - b.facing * LANCE_BACK;
-    const tip = b.x + b.facing * reach;
+    const tip = b.x + b.facing * (def.hitbox.x + def.hitbox.w / 2);
+    const from = b.x + b.facing * LANCE_FROM;
     const g = this.fx;
-    g.lineStyle(2, Number(w.color.replace('#', '0x')), 1).lineBetween(back, y, tip, y);
-    g.fillStyle(Number(w.tip.replace('#', '0x')), 1).fillTriangle(tip + b.facing * 7, y, tip - b.facing * 2, y - 3, tip - b.facing * 2, y + 3);
-    if (b.state === 'dash' || b.combat.phase === 'active') g.fillStyle(Number(w.tip.replace('#', '0x')), 0.35).fillCircle(tip, y, 5);
+    g.lineStyle(3, Number(w.color.replace('#', '0x')), 0.35).lineBetween(from, y, tip, y);
+    g.lineStyle(1, Number(w.tip.replace('#', '0x')), 0.9).lineBetween(from, y, tip, y);
+    g.fillStyle(Number(w.tip.replace('#', '0x')), 0.5).fillCircle(tip, y, 4);
   }
+
 
   private draw(): void {
     const g = this.fx;

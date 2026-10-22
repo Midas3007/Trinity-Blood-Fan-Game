@@ -27,9 +27,9 @@ Last updated: 2026-10-22
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
 ## Done (latest) — Old English title, and the Empire arc's finale: Abel vs Cain (2026-10-22)
-- **Title** in Old English lettering (UnifrakturMaguntia, free OFL font, bundled and precached). Social key art uses it too.
+- **Title**: the name in heavy gothic textura (UnifrakturCook, OFL) fading from bone to blood-red with a dark-red shadow; the subtitle in Old English (UnifrakturMaguntia). Social key art matches.
 - **The Empire arc** is approved; its **finale is built first**: **The Imperial Spire**, high above the clouds. For now it's reached through a **sealed door at the east end of the Star of Sorrow chamber** (the cheat opens it; later the arc's road leads there). An altar sits just outside the arena.
-- **Cain** (boss, 900 HP): Abel's 80% look recoloured with **white wings and coat, blond hair**, a **code-drawn gold lance**. Phase 1 on the roof: lance combos with lunges, **red blasts** (aimed spread), an unparryable lance charge, a diving strike with shockwaves, a blink.
+- **Cain** (boss, 900 HP): Abel's 80% look recoloured with **white wings and coat, blond hair**, a **gold lance** (the scythe is taken out of his sprites and a lance drawn in along the same grip; a bright streak shows each thrust's reach). Phase 1 on the roof: lance combos with lunges, **red blasts** (aimed spread), an unparryable lance charge, a diving strike with shockwaves, a blink.
 - At half health the scene **"CENTUM"** plays: both rise into the sky. **Abel goes 100%**: recoloured black-and-crimson body with **bat wings drawn in code** (bones and a scalloped membrane, flapping), **flight** (tap JUMP), **ATK = a double-sided scythe** spun all the way round (hits both sides), **ABIL = lightning** straight ahead. **Cain's full form** hovers, swoops to Abel's height, fires 5-blast spreads, calls down red judgement columns and charges across the sky.
 - Win: the outro, the relic **Frater** (+25 max health), Abel comes back down as himself. Cain has a bestiary page; the fight has its own music, *Two Brothers, One Sky*.
 - No new AI art: all sprites are colour/style variants of existing sheets (`tools/sprites/variants.py`, inside the palette).

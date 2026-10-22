@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { audio } from '../../systems/audio/AudioManager';
 import { music } from '../../systems/audio/music';
-import { COLORS, FAN_NOTICE, GAME_HEIGHT, GAME_WIDTH, SCENES, TITLE_ART_KEY, TITLE_FONT } from '../constants';
+import { COLORS, FAN_NOTICE, GAME_HEIGHT, GAME_WIDTH, NAME_FONT, SCENES, TITLE_ART_KEY, TITLE_FONT } from '../constants';
 import { gameState } from '../../systems/GameState';
 import { saveStore, SLOTS } from '../../systems/save/SaveStore';
 import { rooms } from '../../world/rooms';
@@ -13,6 +13,9 @@ const TITLE_X_WITH_ART = GAME_WIDTH * 0.26;
 const TITLE_STROKE = 3;
 /** The lettering is drawn at this many times the game's pixels, so its curves stay smooth when the screen scales up. */
 const TITLE_TEXT_RES = 4;
+/** The name's colours: bone fading to blood, and a dark-red shadow under it. */
+const NAME_GRADIENT: [number, string][] = [[0, '#efeaf2'], [0.55, '#ddd7e6'], [0.8, '#d4283e'], [1, '#6a1524']];
+const NAME_SHADOW = '#2e0811';
 const ROMAN = ['I', 'II', 'III'];
 
 export class MenuScene extends Phaser.Scene {
@@ -26,10 +29,15 @@ export class MenuScene extends Phaser.Scene {
     if (hasArt) this.add.image(0, 0, TITLE_ART_KEY).setOrigin(0, 0);
     const cx = hasArt ? TITLE_X_WITH_ART : GAME_WIDTH / 2;
     const stroke = { stroke: '#0b0a10', strokeThickness: TITLE_STROKE };
-    this.add
-      .text(cx, GAME_HEIGHT * 0.3, 'Trinity Blood', { fontFamily: TITLE_FONT, fontSize: hasArt ? '32px' : '36px', color: COLORS.text, ...stroke })
+    const name = this.add
+      .text(cx, GAME_HEIGHT * 0.3, 'Trinity Blood', { fontFamily: NAME_FONT, fontStyle: 'bold', fontSize: hasArt ? '34px' : '38px', color: COLORS.text, ...stroke })
       .setOrigin(0.5)
-      .setResolution(TITLE_TEXT_RES);
+      .setResolution(TITLE_TEXT_RES)
+      .setShadow(0, 2, NAME_SHADOW, 0, true, false);
+    // Bone at the top of the letters bleeding into crimson at the foot.
+    const grad = name.context.createLinearGradient(0, 0, 0, name.height);
+    for (const [at, c] of NAME_GRADIENT) grad.addColorStop(at, c);
+    name.setFill(grad);
     this.add
       .text(cx, GAME_HEIGHT * 0.3 + 28, 'The Star of Sorrow', { fontFamily: TITLE_FONT, fontSize: '16px', color: COLORS.text, ...stroke })
       .setOrigin(0.5)

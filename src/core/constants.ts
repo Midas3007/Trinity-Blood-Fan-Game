@@ -33,3 +33,5 @@ export const MAX_TOUCH_POINTERS = 5;
 export const TITLE_ART_KEY = 'titleArt';
 /** Old English lettering for the title (index.html @font-face, public/assets/fonts). */
 export const TITLE_FONT = "'Blackletter', serif";
+/** The game's name: a heavier, more gothic textura (UnifrakturCook). */
+export const NAME_FONT = "'Textura', 'Blackletter', serif";
