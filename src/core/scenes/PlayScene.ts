@@ -36,7 +36,7 @@ import { installTestHook, testHookEnabled } from '../../systems/testHook';
 import controls from '../../data/controls.json';
 import effects from '../../data/effects.json';
 import physics from '../../data/physics.json';
-import { room as getRoom, START } from '../../world/rooms';
+import { room as getRoom, roomFlags, START } from '../../world/rooms';
 import { RoomRuntime } from '../../world/RoomRuntime';
 import { RoomTiles } from '../../world/RoomTiles';
 import { revealedInteriors } from '../../world/seeThrough';
@@ -201,6 +201,8 @@ export class PlayScene extends Phaser.Scene {
     // Test mode only: ?test&visited=all marks every room visited (map screenshots).
     if (testHookEnabled() && new URLSearchParams(location.search).get('visited') === 'all') for (const id of Object.keys(allRooms)) gameState.visit(id);
     gameState.visit(this.roomData.id);
+    // Rooms that open doors for good once you have been in them (also mends saves that were there before the rule).
+    for (const f of roomFlags((id) => gameState.hasVisited(id))) gameState.setFlag(f);
     const r = this.roomData;
     const { width, height } = r;
     this.physics.world.setBounds(0, 0, width, height);

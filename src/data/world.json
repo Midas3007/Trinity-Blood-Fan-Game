@@ -327,5 +327,9 @@
         "dy": 2
       }
     }
+  },
+  "roomFlags": {
+    "_note": "Entering a room sets this flag for good (doors that require it stay open after). The Spire: its door from the Star of Sorrow opens once you have stood on the roof, however you got there (owner bug: stranded below after the cheat).",
+    "imperial_spire": "arc2_open"
   }
 }

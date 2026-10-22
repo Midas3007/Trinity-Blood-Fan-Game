@@ -13,6 +13,13 @@ export const rooms: Record<string, RoomData> = Object.fromEntries(
 
 export const START: { room: string; entry: string } = world.start;
 
+/** Flags set by having entered a room (world.json roomFlags): those of every room in `visited`. */
+export function roomFlags(visited: (id: string) => boolean): string[] {
+  return Object.entries(world.roomFlags as Record<string, string>)
+    .filter(([id]) => id !== '_note' && visited(id))
+    .map(([, flag]) => flag);
+}
+
 export function room(id: string): RoomData {
   const r = rooms[id];
   if (!r) throw new Error(`unknown room "${id}"`);

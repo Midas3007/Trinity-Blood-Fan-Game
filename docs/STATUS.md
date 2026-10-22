@@ -26,7 +26,12 @@ Last updated: 2026-10-22
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — Cain and Abel at 100% redrawn; levitation; map zoom; red-box fix (2026-10-22)
+## Fixed — stranded below the Spire (2026-10-22)
+- **The bug:** the door from the Star of Sorrow up to the Imperial Spire only opened with the cheat, but the way down was always open. Walking down without the cheat left you stuck.
+- **The fix:** standing on the Spire once now opens that door for good (`world.json` `roomFlags`). Saves that were already there are mended when they load.
+- Verified in the real game: a save that has been to the Spire goes through the door; a fresh save still finds it sealed. Test added (234/234).
+
+## Done (earlier) — Cain and Abel at 100% redrawn; levitation; map zoom; red-box fix (2026-10-22)
 - **"Cain is a red box":** two causes fixed.
   1. A sprite sheet that fails to download on the phone at startup stayed a block for the whole session. Now each cutscene and each room load fetches any missing sheet again. Verified by blocking Cain's sheets at startup: the cutscene still showed him.
   2. Cain's sprite is near-white, and the boss wind-up tint turned him into a solid block of colour. Cain's wind-up is now a glow around him, and his sprite keeps its colours.
