@@ -17,13 +17,14 @@ import dietrich from '../data/bosses/dietrich.json';
 import gyula from '../data/bosses/gyula.json';
 import cain from '../data/bosses/cain.json';
 import janissary from '../data/bosses/janissary.json';
+import radu from '../data/bosses/radu.json';
 
 const TILE = 16;
 const WALL_W = 16;
 /** Abel must be this far inside the arena (and on the ground) before the walls rise. */
 const START_MARGIN = 40;
 const WALL_COLOR = 0x5a0f1e;
-const DUELISTS = { paula, kampfer, petros, dietrich, gyula, cain, janissary } as unknown as Record<string, DuelistConfig>;
+const DUELISTS = { paula, kampfer, petros, dietrich, gyula, cain, janissary, radu } as unknown as Record<string, DuelistConfig>;
 
 export interface ArenaHooks {
   /** Play a cutscene; gameplay waits until `done`. */

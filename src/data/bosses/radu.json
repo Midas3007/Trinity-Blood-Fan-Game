@@ -1,0 +1,231 @@
+{
+  "_note": "Radu Barvon (verify) - Empire arc stage 5, the flame laboratory under the palace. Ion's friend, who betrays him. Phase 1: fire-whip combos (parry), fire bolts, flames along the ground. At half health he sets himself alight (radu_burns): a body of fire, flame pillars, a flaming dive. He falls into the fire he made (radu_outro).",
+  "id": "radu",
+  "name": "Radu Barvon",
+  "maxHealth": 700,
+  "width": 16,
+  "height": 46,
+  "introMs": 1200,
+  "phaseMs": 1200,
+  "approachRange": 84,
+  "walkMaxMs": 2000,
+  "staggerMs": 1000,
+  "staggerDamageMultiplier": 2,
+  "recoverMs": 460,
+  "yields": false,
+  "deathMs": 2200,
+  "shockwave": {
+    "speed": 200,
+    "width": 16,
+    "height": 16,
+    "damage": 14,
+    "lifeMs": 2200
+  },
+  "phases": [
+    {
+      "at": 1,
+      "sprite": "radu",
+      "pattern": [
+        "whip",
+        "bolts",
+        "whip2",
+        "flames",
+        "bolts"
+      ],
+      "idleMs": 520,
+      "walkSpeed": 80
+    },
+    {
+      "at": 0.5,
+      "sprite": "radufire",
+      "pattern": [
+        "pillars",
+        "whip2",
+        "dive",
+        "pillars5",
+        "bolts5",
+        "dive"
+      ],
+      "idleMs": 360,
+      "walkSpeed": 110
+    }
+  ],
+  "moves": {
+    "whip": {
+      "type": "combo",
+      "attacks": [
+        "r_whip"
+      ],
+      "lunges": [
+        50
+      ]
+    },
+    "whip2": {
+      "type": "combo",
+      "attacks": [
+        "r_whip",
+        "r_whip"
+      ],
+      "lunges": [
+        40,
+        60
+      ]
+    },
+    "bolts": {
+      "type": "cast",
+      "windupMs": 520,
+      "recoverMs": 480,
+      "count": 3,
+      "spreadDeg": 24,
+      "aimed": true,
+      "projectile": {
+        "speed": 200,
+        "damage": 13,
+        "size": 9,
+        "lifeMs": 2800,
+        "color": "#d9963a"
+      }
+    },
+    "bolts5": {
+      "type": "cast",
+      "windupMs": 440,
+      "recoverMs": 420,
+      "count": 5,
+      "spreadDeg": 44,
+      "aimed": true,
+      "projectile": {
+        "speed": 200,
+        "damage": 13,
+        "size": 9,
+        "lifeMs": 2800,
+        "color": "#d9963a"
+      }
+    },
+    "flames": {
+      "type": "slam",
+      "attack": "r_slam",
+      "shockwaves": true
+    },
+    "pillars": {
+      "type": "beam",
+      "windupMs": 600,
+      "markMs": 650,
+      "strikeMs": 320,
+      "width": 20,
+      "damage": 20,
+      "count": 3,
+      "spacing": 72,
+      "recoverMs": 600
+    },
+    "pillars5": {
+      "type": "beam",
+      "windupMs": 700,
+      "markMs": 650,
+      "strikeMs": 320,
+      "width": 18,
+      "damage": 18,
+      "count": 5,
+      "spacing": 58,
+      "recoverMs": 700
+    },
+    "dive": {
+      "type": "leap",
+      "attack": "r_dive",
+      "height": 110,
+      "riseMs": 400,
+      "hangMs": 320,
+      "diveSpeed": 520,
+      "shockwaves": true
+    }
+  },
+  "attacks": {
+    "r_whip": {
+      "startupMs": 340,
+      "activeMs": 140,
+      "recoveryMs": 460,
+      "damage": 16,
+      "knockbackX": 180,
+      "knockbackY": 70,
+      "hitstopMs": 80,
+      "shakeMs": 110,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 46,
+        "y": -6,
+        "w": 84,
+        "h": 18
+      }
+    },
+    "r_slam": {
+      "startupMs": 560,
+      "activeMs": 120,
+      "recoveryMs": 620,
+      "damage": 18,
+      "knockbackX": 170,
+      "knockbackY": 140,
+      "hitstopMs": 80,
+      "shakeMs": 110,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 20,
+        "y": 4,
+        "w": 40,
+        "h": 30
+      },
+      "parryable": false
+    },
+    "r_dive": {
+      "startupMs": 0,
+      "activeMs": 5000,
+      "recoveryMs": 0,
+      "damage": 20,
+      "knockbackX": 200,
+      "knockbackY": 140,
+      "hitstopMs": 80,
+      "shakeMs": 110,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 0,
+        "y": 4,
+        "w": 34,
+        "h": 44
+      },
+      "parryable": false
+    }
+  },
+  "visuals": {
+    "intro": "idle",
+    "idle": "idle",
+    "walk": "idle",
+    "telegraph": "thrust",
+    "dash": "thrust",
+    "beam": "star",
+    "cast": "star",
+    "summon": "star",
+    "leap": "star",
+    "hang": "star",
+    "dive": "thrust",
+    "vanish": "hurt",
+    "recover": "idle",
+    "staggered": "hurt",
+    "phase": "star",
+    "defeated": "defeated",
+    "attack:r_whip": "slash",
+    "attack:r_slam": "star"
+  },
+  "auraColor": "#d9963a",
+  "telegraphTints": [
+    "#e8c86a",
+    "#d4283e"
+  ],
+  "beamColor": "#d9963a",
+  "beamCore": "#ffe14d",
+  "phaseScene": "radu_burns",
+  "relic": "ignis"
+}

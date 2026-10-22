@@ -258,7 +258,7 @@ def lower_cistern():
     """The lower cistern: the Magus's puppets haunt the dark water."""
     r = Room("byz_lower_cistern", "The Lower Cistern", 53, 2, 3, 1, seed=72, sky=False)
     r.wall(0, 0, r.W, r.H, "stone")
-    r.carve(1, 3, r.W - 1, 15)
+    r.carve(1, 3, r.W, 15)                                      # open to the east: the old conduit to the palace
     r.carve(28, 0, 31, 3)
     r.ladder(29, 0, 15)                                         # up to the outcasts' hall
     r.backwall(["wall_roman"], 3, 15, 1, r.W - 1)
@@ -270,11 +270,128 @@ def lower_cistern():
         r.prop("column", x, 14, 160)
     r.mark("item", 60, 7, item="heart6")
     r.mark("lore", 84, 14, lore="cistern_strings")
-    r.mark("label", 80, 8, text="the way up to the palace (still being built)")
     r.mark("enemy", 22, 14, enemy="thrall")
     r.mark("enemy", 52, 14, enemy="ironChoir")
     r.mark("enemy", 74, 14, enemy="thrall")
     r.mark("enemy", 40, 4, enemy="bat")
+    return r
+
+
+PGY = 26   # the palace's floor row (its rooms sit at world row -1, like the arcade and the barracks)
+
+
+def conduit():
+    """Stage 5: the old conduit from the cisterns to the palace. Something hot has been leaking down it."""
+    r = Room("byz_conduit", "The Old Conduit", 56, 2, 3, 1, seed=73, sky=False)
+    r.wall(0, 0, r.W, r.H, "stone")
+    r.carve(0, 3, r.W, 15)
+    r.backwall(["wall_roman"], 3, 15)
+    for x0 in (22, 54):
+        r.fill("terrain", x0, 14, x0 + 3, 15, "water")
+    for x in range(8, 88, 12):
+        r.prop("column", x, 14, 160)
+    for x in (14, 40, 70):
+        r.mark("decor", x, 14, item="fire", h=16)               # burning runoff from the laboratory
+    r.mark("lore", 46, 14, lore="conduit_runoff")
+    r.mark("enemy", 34, 14, enemy="flameBeast")
+    r.mark("enemy", 64, 14, enemy="flameBeast")
+    r.mark("enemy", 80, 6, enemy="bat")
+    return r
+
+
+def servants_stair():
+    """A tall servants' stair from the conduit up into the palace gardens."""
+    r = Room("palace_stair", "The Servants' Stair", 59, -1, 1, 4, seed=74, sky=False)
+    r.wall(0, 0, r.W, r.H, "stone")
+    r.carve(1, PGY - 6, r.W - 1, 66)                            # the shaft
+    r.carve(0, 54, 1, 66)                                       # in from the conduit (bottom left)
+    r.carve(r.W - 1, PGY - 5, r.W, PGY)                         # out to the gardens (top right)
+    r.backwall(["wall_crypt"], PGY - 6, 66)
+    r.platform(13, r.W - 1, PGY, "plank")                       # the landing at the top
+    r.ladder(15, PGY + 1, 66)
+    for y, (x0, x1) in zip(range(PGY + 8, 64, 8), ((2, 12), (18, 29), (2, 12), (18, 29), (2, 12))):
+        r.platform(x0, x1, y, "plank")                          # landings to rest on (and to fight from)
+        r.mark("decor", (x0 + x1) // 2, y - 1, item="bluelamp")
+    r.mark("item", 6, PGY + 23, item="chalice4")                # on a landing off the ladder
+    r.mark("enemy", 22, PGY + 15, enemy="zealot")
+    r.mark("enemy", 8, PGY + 39, enemy="bat")
+    return r
+
+
+def gardens():
+    """The palace's glass gardens: cherry trees in blossom under an iron-and-glass roof."""
+    r = Room("palace_gardens", "The Glass Gardens", 60, -1, 4, 2, seed=75, sky="byzantium")
+    r.ground(PGY, top="cobble")
+    r.wall(0, PGY, r.W, r.H)
+    r.wall(0, 0, 1, PGY - 5)                                    # in from the servants' stair
+    r.wall(r.W - 1, 0, r.W, PGY - 12)                           # on into the hall of mirrors
+    r.backwall(["wall_byz_arcade"], PGY - 12, PGY, 1, r.W - 1)  # the glasshouse's arcaded walls
+    for x0 in range(2, r.W - 2, 16):
+        r.platform(x0, min(x0 + 10, r.W - 2), 8, "plank")       # the glasshouse's iron ribs (a high road)
+    for x in (12, 28, 44, 66, 82, 100):
+        r.mark("decor", x, PGY - 1, item="cherry", h=60)
+    for x in (20, 36, 58, 74, 92, 110):
+        r.mark("decor", x, PGY - 1, item="bluelamp")
+    r.mark("checkpoint", 6, PGY - 1, "gardens_altar")
+    r.mark("lore", 52, PGY - 1, lore="garden_petals")
+    r.mark("enemy", 40, PGY - 1, enemy="imperialGuard")
+    r.mark("enemy", 78, PGY - 1, enemy="imperialGuard")
+    r.mark("enemy", 60, 7, enemy="zealot")
+    r.mark("enemy", 96, PGY - 1, enemy="zealot")
+    return r
+
+
+def mirrors():
+    """The hall of mirrors."""
+    r = Room("palace_mirrors", "The Hall of Mirrors", 64, -1, 3, 2, seed=76, sky=False)
+    r.wall(0, 0, r.W, r.H, "stone")
+    r.carve(0, PGY - 12, r.W, PGY)
+    r.backwall(["wall_ballroom"], PGY - 12, PGY)
+    for x in range(6, 88, 10):
+        r.mark("decor", x, PGY - 1, item="mirror", h=72)
+    for x in range(11, 88, 20):
+        r.mark("decor", x, PGY - 11, item="lantern", h=12)
+    r.mark("lore", 46, PGY - 1, lore="mirror_hall")
+    r.mark("enemy", 30, PGY - 1, enemy="imperialGuard")
+    r.mark("enemy", 54, PGY - 1, enemy="zealot")
+    r.mark("enemy", 72, PGY - 1, enemy="imperialGuard")
+    return r
+
+
+def audience():
+    """The veiled audience chamber: the Empress speaks from behind silk. A stair below leads to the laboratory."""
+    r = Room("palace_audience", "The Veiled Throne", 67, -1, 2, 2, seed=77, sky=False)
+    r.wall(0, 0, r.W, r.H, "stone")
+    r.carve(0, PGY - 12, r.W - 1, PGY)
+    r.backwall(["wall_ballroom"], PGY - 12, PGY, 0, r.W - 1)
+    r.prop("throne", 46, PGY - 1, 70)
+    r.mark("decor", 46, PGY - 1, item="veil", h=96)
+    for x in (30, 58):
+        r.mark("decor", x, PGY - 1, item="bluelamp")
+    r.mark("scene", 26, PGY - 1, scene="empress_audience")
+    # Under the dais: a stair down to Radu's laboratory, open once the audience is over.
+    r.carve(10, PGY, 13, r.H)
+    r.gate(10, PGY, 13, PGY + 1, "scene:empress_audience")
+    r.ladder(11, PGY + 1, r.H)
+    r.mark("label", 11, PGY - 5, text="a stair below the dais")
+    return r
+
+
+def laboratory():
+    """Radu's laboratory, under the palace: tanks of grown flame. Radu waits here."""
+    r = Room("palace_lab", "The Flame Laboratory", 67, 1, 3, 1, seed=78, sky=False)
+    r.wall(0, 0, r.W, r.H, "stone")
+    r.carve(1, 3, r.W - 1, 15)
+    r.carve(10, 0, 13, 3)
+    r.ladder(11, 0, 15)                                         # down from the audience chamber
+    r.backwall(["wall_crypt"], 3, 15, 1, r.W - 1)
+    for x in (22, 32, 44, 56, 68, 80):
+        r.mark("decor", x, 14, item="tank")
+    r.mark("checkpoint", 16, 14, "lab_altar")                   # just before Radu
+    r.mark("lore", 6, 14, lore="lab_notes")
+    r.mark("boss", 62, 14, boss="radu", arenaLeft=24 * 16, arenaRight=86 * 16, defeatFlag="radu_defeated",
+           intro="radu_intro", outro="radu_outro")
+    r.mark("label", 84, 8, text="a lift to the Spire roof (still being built)")
     return r
 
 
@@ -343,4 +460,4 @@ def warehouse():
 
 
 def rooms():
-    return [docks(), quay(), market(), spice_stairs(), arcade(), barracks(), cisterns(), outcasts(), lower_cistern(), rooftops(), aqueduct(), warehouse()]
+    return [docks(), quay(), market(), spice_stairs(), arcade(), barracks(), cisterns(), outcasts(), lower_cistern(), conduit(), servants_stair(), gardens(), mirrors(), audience(), laboratory(), rooftops(), aqueduct(), warehouse()]

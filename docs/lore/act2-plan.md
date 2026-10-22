@@ -59,7 +59,7 @@ someone has waited nine hundred years for Abel to come home.
 - **Ion's trial by the outcasts** (`undercity_ion`): Ion admits his family's cruelty and is forgiven.
 - Secret: a tea-set piece behind a grille. Altar: a cistern shrine.
 
-### 5. The Palace (3 rooms) and the laboratory (1 room)
+### 5. The Palace (3 rooms) and the laboratory (1 room) ✅
 - Gardens of cherry trees under glass; a hall of mirrors; the veiled audience chamber.
 - **The audience** (`empress_audience`): the Empress speaks from behind a silk screen. Never shown.
   - Empress: "Father Nightroad. You have not changed at all. That is either a comfort or a warning."

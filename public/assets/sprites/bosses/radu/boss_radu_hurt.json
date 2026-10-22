@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "hurt": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 128,
+  "columns": 1,
+  "entity": "boss_radu",
+  "palette": "requiem48.hex",
+  "pivot_x": 64,
+  "pivot_y": 96,
+  "sheet": "boss_radu_hurt.png",
+  "source_hashes": [
+    "sha256:bd83bc98005e5bb96d682070ba00ec704e34544bd61fcd67af0d0c91b89a9924"
+  ],
+  "variant_of": "bosses/gyula/boss_gyula_hurt.png"
+}

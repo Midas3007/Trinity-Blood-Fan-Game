@@ -14,6 +14,8 @@
     "fight_petros":   { "name": "The Cross-Knight",          "root": 52, "scale": "phrygian", "bpm": 138, "beats": 4, "progression": [0, 1, 0, 6],     "voice": "organ",       "arp": true,  "melody": true,  "drums": true,  "seed": 111, "gain": 0.48 },
     "fight_dietrich": { "name": "Marionette Waltz",          "root": 53, "scale": "minor",    "bpm": 126, "beats": 3, "progression": [0, 4, 5, 4],     "voice": "bells",       "arp": true,  "melody": true,  "drums": true,  "seed": 121, "gain": 0.42 },
     "byzantium":      { "name": "Lamps of Byzantium",        "root": 52, "scale": "harmonic", "bpm": 84, "beats": 4, "progression": [0, 1, 0, 6, 4, 5, 1, 0], "voice": "organ", "arp": true, "melody": true, "drums": false, "seed": 313, "gain": 0.42, "choir": false },
+    "palace":         { "name": "The Silk Screen",            "root": 55, "scale": "dorian",   "bpm": 66, "beats": 3, "progression": [0, 3, 4, 0, 5, 3, 1, 4], "voice": "strings", "arp": true, "melody": true, "drums": false, "seed": 353, "gain": 0.42 },
+    "fight_radu":     { "name": "Grown Flame",                "root": 47, "scale": "phrygian", "bpm": 140, "beats": 4, "progression": [0, 1, 0, 6, 0, 1, 5, 6], "voice": "organ", "arp": true, "melody": true, "drums": true, "seed": 359, "gain": 0.5, "choir": true },
     "fight_janissary": { "name": "Sabre and Shield",          "root": 50, "scale": "harmonic", "bpm": 132, "beats": 4, "progression": [0, 1, 0, 4, 5, 1, 4, 0], "voice": "organ", "arp": true, "melody": true, "drums": true, "seed": 337, "gain": 0.48 },
     "fight_cain":     { "name": "Two Brothers, One Sky",     "root": 50, "scale": "harmonic", "bpm": 124, "beats": 4, "progression": [0, 6, 5, 4, 0, 3, 1, 4], "voice": "organ", "arp": true, "melody": true, "drums": true, "seed": 227, "gain": 0.52, "choir": true },
     "fight_gyula":    { "name": "Eighty Percent",            "root": 49, "scale": "harmonic", "bpm": 116, "beats": 4, "progression": [0, 5, 3, 4, 0, 1, 6, 4], "voice": "organ", "arp": true, "melody": true, "drums": true, "seed": 131, "gain": 0.5, "choir": true },
@@ -35,11 +37,11 @@
     "castle_gate": "fortress", "great_hall": "fortress",
     "star_chamber": "star",
     "imperial_spire": "star",
-    "empire_docks": "byzantium", "empire_quay": "byzantium", "bazaar_lamps": "byzantium", "bazaar_stairs": "byzantium", "bazaar_arcade": "byzantium", "empire_barracks": "byzantium", "byz_cisterns": "undercity", "byz_outcasts": "undercity", "byz_lower_cistern": "undercity",
+    "empire_docks": "byzantium", "empire_quay": "byzantium", "bazaar_lamps": "byzantium", "bazaar_stairs": "byzantium", "bazaar_arcade": "byzantium", "empire_barracks": "byzantium", "byz_conduit": "undercity", "palace_stair": "undercity", "palace_gardens": "palace", "palace_mirrors": "palace", "palace_audience": "palace", "palace_lab": "undercity", "byz_cisterns": "undercity", "byz_outcasts": "undercity", "byz_lower_cistern": "undercity",
     "bazaar_rooftops": "byzantium", "empire_aqueduct": "undercity", "bazaar_warehouse": "undercity"
   },
   "defaultRoom": "streets",
-  "bosses": { "paula": "fight_paula", "kampfer": "fight_kampfer", "marchesa": "fight_marchesa", "petros": "fight_petros", "dietrich": "fight_dietrich", "gyula": "fight_gyula", "cain": "fight_cain", "janissary": "fight_janissary" },
+  "bosses": { "paula": "fight_paula", "kampfer": "fight_kampfer", "marchesa": "fight_marchesa", "petros": "fight_petros", "dietrich": "fight_dietrich", "gyula": "fight_gyula", "cain": "fight_cain", "janissary": "fight_janissary", "radu": "fight_radu" },
   "cutscenes": {
     "opening": "streets",
     "paula_intro": "scene_tense", "paula_outro": "scene_sad",
@@ -50,6 +52,6 @@
     "gyula_intro": "star", "gyula_wings": "scene_awaken", "gyula_outro": "scene_sad",
     "ending": "scene_dawn", "teaser": "scene_teaser",
     "cain_intro": "scene_tense", "cain_ascension": "scene_awaken", "cain_outro": "scene_sad",
-    "empire_arrival": "byzantium", "ion_meeting": "byzantium", "bazaar_murder": "scene_tense", "phase_step": "scene_awaken", "janissary_intro": "scene_tense", "janissary_outro": "byzantium", "cistern_child": "scene_sad", "undercity_ion": "scene_sad"
+    "empire_arrival": "byzantium", "ion_meeting": "byzantium", "bazaar_murder": "scene_tense", "phase_step": "scene_awaken", "janissary_intro": "scene_tense", "janissary_outro": "byzantium", "cistern_child": "scene_sad", "undercity_ion": "scene_sad", "empress_audience": "palace", "radu_intro": "scene_tense", "radu_burns": "scene_awaken", "radu_outro": "scene_sad"
   }
 }

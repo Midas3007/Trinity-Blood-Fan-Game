@@ -57,6 +57,13 @@
       "card": "FIDES ET HONOR",
       "gift": "Fides — a captain's word, kept. One more flask.",
       "flasks": 1
+    },
+    "ignis": {
+      "flag": "relic:ignis",
+      "name": "Ignis",
+      "card": "IGNIS ARDENS",
+      "gift": "Ignis — the fire he made, turned to your blade. Your blows strike harder.",
+      "damage": 0.15
     }
   }
 }

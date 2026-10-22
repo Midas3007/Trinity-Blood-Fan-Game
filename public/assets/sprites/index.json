@@ -2836,6 +2836,318 @@
         "sha256:298e40fe69b8364ad7581809e8182a11504f90e02d754f50de30916c341258b6"
       ]
     },
+    "bosses/radu/boss_radu_defeated.png": {
+      "animations": {
+        "defeated": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_radu",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 96,
+      "sheet": "boss_radu_defeated.png",
+      "source_hashes": [
+        "sha256:6b8898b8035e861a8e4c51b1a014d915c68ac3679308054b3dcaba8a22329a4e"
+      ],
+      "variant_of": "bosses/gyula/boss_gyula_defeated.png"
+    },
+    "bosses/radu/boss_radu_hurt.png": {
+      "animations": {
+        "hurt": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_radu",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 96,
+      "sheet": "boss_radu_hurt.png",
+      "source_hashes": [
+        "sha256:bd83bc98005e5bb96d682070ba00ec704e34544bd61fcd67af0d0c91b89a9924"
+      ],
+      "variant_of": "bosses/gyula/boss_gyula_hurt.png"
+    },
+    "bosses/radu/boss_radu_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            700
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_radu",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 96,
+      "sheet": "boss_radu_idle.png",
+      "source_hashes": [
+        "sha256:7f6e6f25dfa3fa9933bb733788e76a30e2b99a875ed6aa06627895895d9970f9"
+      ],
+      "variant_of": "bosses/gyula/boss_gyula_idle.png"
+    },
+    "bosses/radu/boss_radu_slash.png": {
+      "animations": {
+        "slash": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_radu",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 96,
+      "sheet": "boss_radu_slash.png",
+      "source_hashes": [
+        "sha256:45e9e378bdad4cac53560e7875187d8970d0ef3d64534e8bfc8c6051d46e3b5d"
+      ],
+      "variant_of": "bosses/gyula/boss_gyula_slash.png"
+    },
+    "bosses/radu/boss_radu_star.png": {
+      "animations": {
+        "star": {
+          "durations_ms": [
+            400
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_radu",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 96,
+      "sheet": "boss_radu_star.png",
+      "source_hashes": [
+        "sha256:2e5d61fe6a31fa03b79b26dfd37c330d4bd41b4971eff665fbc5dbfeedf72718"
+      ],
+      "variant_of": "bosses/gyula/boss_gyula_star.png"
+    },
+    "bosses/radu/boss_radu_thrust.png": {
+      "animations": {
+        "thrust": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_radu",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 96,
+      "sheet": "boss_radu_thrust.png",
+      "source_hashes": [
+        "sha256:c9c64f265b7f066b504e98e795ef37b2239949d7603836b89938a04d45f5ee5d"
+      ],
+      "variant_of": "bosses/gyula/boss_gyula_thrust.png"
+    },
+    "bosses/radufire/boss_radufire_defeated.png": {
+      "animations": {
+        "defeated": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_radufire",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 96,
+      "sheet": "boss_radufire_defeated.png",
+      "source_hashes": [
+        "sha256:6b8898b8035e861a8e4c51b1a014d915c68ac3679308054b3dcaba8a22329a4e"
+      ],
+      "variant_of": "bosses/gyula/boss_gyula_defeated.png"
+    },
+    "bosses/radufire/boss_radufire_hurt.png": {
+      "animations": {
+        "hurt": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_radufire",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 96,
+      "sheet": "boss_radufire_hurt.png",
+      "source_hashes": [
+        "sha256:bd83bc98005e5bb96d682070ba00ec704e34544bd61fcd67af0d0c91b89a9924"
+      ],
+      "variant_of": "bosses/gyula/boss_gyula_hurt.png"
+    },
+    "bosses/radufire/boss_radufire_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            700
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_radufire",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 96,
+      "sheet": "boss_radufire_idle.png",
+      "source_hashes": [
+        "sha256:7f6e6f25dfa3fa9933bb733788e76a30e2b99a875ed6aa06627895895d9970f9"
+      ],
+      "variant_of": "bosses/gyula/boss_gyula_idle.png"
+    },
+    "bosses/radufire/boss_radufire_slash.png": {
+      "animations": {
+        "slash": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_radufire",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 96,
+      "sheet": "boss_radufire_slash.png",
+      "source_hashes": [
+        "sha256:45e9e378bdad4cac53560e7875187d8970d0ef3d64534e8bfc8c6051d46e3b5d"
+      ],
+      "variant_of": "bosses/gyula/boss_gyula_slash.png"
+    },
+    "bosses/radufire/boss_radufire_star.png": {
+      "animations": {
+        "star": {
+          "durations_ms": [
+            400
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_radufire",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 96,
+      "sheet": "boss_radufire_star.png",
+      "source_hashes": [
+        "sha256:2e5d61fe6a31fa03b79b26dfd37c330d4bd41b4971eff665fbc5dbfeedf72718"
+      ],
+      "variant_of": "bosses/gyula/boss_gyula_star.png"
+    },
+    "bosses/radufire/boss_radufire_thrust.png": {
+      "animations": {
+        "thrust": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_radufire",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 96,
+      "sheet": "boss_radufire_thrust.png",
+      "source_hashes": [
+        "sha256:c9c64f265b7f066b504e98e795ef37b2239949d7603836b89938a04d45f5ee5d"
+      ],
+      "variant_of": "bosses/gyula/boss_gyula_thrust.png"
+    },
     "enemies/bat/enemy_bat_fly.png": {
       "animations": {
         "fly": {
@@ -3188,6 +3500,154 @@
         "sha256:0c2c6d70b426a42abae3add5b50dcd2bbe1fa9468fdfae36333520e3712bc3c9",
         "sha256:2bf4b0e5c255b0b8d16f579e6d1f5513cc8fb39bc43ea653162d977abf896f58"
       ]
+    },
+    "enemies/flame_beast/enemy_flame_beast_claw.png": {
+      "animations": {
+        "claw": {
+          "attack": "thrall_claw",
+          "durations_ms": [
+            480,
+            120,
+            520
+          ],
+          "events": [
+            {
+              "frame": 1,
+              "type": "hitbox_on"
+            },
+            {
+              "frame": 2,
+              "type": "hitbox_off"
+            }
+          ],
+          "frames": [
+            0,
+            1,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 2,
+      "entity": "enemy_flame_beast",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_flame_beast_claw.png",
+      "source_hashes": [
+        "sha256:dd94696982e3947c4e868342163f165d3feebabc40b1d699c04eb05538dc698e",
+        "sha256:d420bd80e888be5ec0e6c684b9199d9ec9054d3f46ec0351f4cfe2181c81bae6"
+      ],
+      "variant_of": "enemies/thrall/enemy_thrall_claw.png"
+    },
+    "enemies/flame_beast/enemy_flame_beast_collapse.png": {
+      "animations": {
+        "collapse": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "enemy_flame_beast",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_flame_beast_collapse.png",
+      "source_hashes": [
+        "sha256:6c82c71c935c150cffaf366a5fc273a08b1086a6570c826472563b47adf0e9ef"
+      ],
+      "variant_of": "enemies/thrall/enemy_thrall_collapse.png"
+    },
+    "enemies/flame_beast/enemy_flame_beast_hurt.png": {
+      "animations": {
+        "hurt": {
+          "durations_ms": [
+            260
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "enemy_flame_beast",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_flame_beast_hurt.png",
+      "source_hashes": [
+        "sha256:1cb7662ee8b03d8e8a55dfbe03dbd738b80f0c66ad9f5fe95c410ce5e7f16804"
+      ],
+      "variant_of": "enemies/thrall/enemy_thrall_hurt.png"
+    },
+    "enemies/flame_beast/enemy_flame_beast_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 1,
+      "entity": "enemy_flame_beast",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_flame_beast_idle.png",
+      "source_hashes": [
+        "sha256:4591f9a3ad871b2f8979cb763b4b9beddb7dad1ef2750a46be376750fbf61d40"
+      ],
+      "variant_of": "enemies/thrall/enemy_thrall_idle.png"
+    },
+    "enemies/flame_beast/enemy_flame_beast_walk.png": {
+      "animations": {
+        "walk": {
+          "durations_ms": [
+            320,
+            320
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 64,
+      "columns": 2,
+      "entity": "enemy_flame_beast",
+      "palette": "requiem48.hex",
+      "pivot_x": 32,
+      "pivot_y": 64,
+      "sheet": "enemy_flame_beast_walk.png",
+      "source_hashes": [
+        "sha256:e0e03a617cdd1ceef83a4688fc9edc6e94b40d834080fd3455e779ddc36dbe6b",
+        "sha256:51aca36b5a20b783c950ff30d2e8b5c75762128c7adbc23e3c68df950142e437"
+      ],
+      "variant_of": "enemies/thrall/enemy_thrall_walk.png"
     },
     "enemies/imperial_guard/enemy_imperial_guard_block.png": {
       "animations": {

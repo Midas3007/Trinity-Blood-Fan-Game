@@ -216,6 +216,58 @@ export class RoomRuntime {
         s.add.rectangle(x, y - 15, 6, 3, 0x7a4a1e).setDepth(DEPTH_DECOR);
         s.add.rectangle(x, y - 7, 12, 2, 0x2f4a63).setDepth(DEPTH_DECOR);
         break;
+      case 'cherry': { // a cherry tree in blossom (the palace's glass gardens), h = crown width
+        const w = h || 56;
+        const g = s.add.graphics().setDepth(DEPTH_DECOR);
+        g.fillStyle(0x3d2512, 1).fillRect(x - 2, y - 34, 4, 34).fillTriangle(x, y - 26, x - 14, y - 40, x - 10, y - 42).fillTriangle(x, y - 30, x + 14, y - 44, x + 10, y - 46);
+        for (let i = 0; i < 26; i++) {
+          const a = (i * 2.399) % (Math.PI * 2), r = Math.sqrt(i / 26) * w * 0.5;
+          const bx = x + Math.cos(a) * r, by = y - 46 + Math.sin(a) * r * 0.45;
+          g.fillStyle([0xf39a8f, 0xe85a5f, 0xefeaf2][i % 3]!, 0.95).fillCircle(bx, by, 4 + (i % 3));
+        }
+        for (let i = 0; i < 6; i++) g.fillStyle(0xf39a8f, 0.9).fillRect(x - w / 2 + ((i * 37) % w), y - 4 - ((i * 13) % 6), 2, 1); // fallen petals
+        break;
+      }
+      case 'mirror': { // a tall gilt mirror (the hall of mirrors), h = height
+        const mh = h || 64;
+        const g = s.add.graphics().setDepth(DEPTH_DECOR);
+        g.fillStyle(0x9c7a2c, 1).fillRect(x - 13, y - mh - 4, 26, mh + 4);
+        g.fillStyle(0xe8c86a, 1).fillRect(x - 11, y - mh - 2, 22, mh);
+        g.fillStyle(0x2f4a63, 1).fillRect(x - 9, y - mh, 18, mh - 4);
+        g.fillStyle(0x7fb6d6, 0.5).fillTriangle(x - 9, y - mh + 10, x - 9, y - mh + 24, x + 9, y - mh);
+        g.fillStyle(0xbfe0ef, 0.35).fillRect(x - 6, y - mh + 4, 2, mh - 16);
+        g.fillStyle(0xe8c86a, 1).fillCircle(x, y - mh - 6, 4);
+        glow(x, y - mh / 2, 18);
+        break;
+      }
+      case 'veil': { // the silk screen the Empress speaks from behind, h = width
+        const w = h || 80;
+        const g = s.add.graphics().setDepth(DEPTH_DECOR);
+        g.fillStyle(0xc4a04a, 1).fillRect(x - w / 2 - 2, y - 96, w + 4, 4);
+        for (let i = 0; i < w; i += 8) g.fillStyle(i % 16 ? 0xefeaf2 : 0xddd7e6, 0.55).fillRect(x - w / 2 + i, y - 92, 8, 92);
+        g.fillStyle(0x14111c, 0.5).fillEllipse(x, y - 40, 18, 56); // a shadow seated beyond the silk
+        g.fillStyle(0x14111c, 0.5).fillCircle(x, y - 74, 7);
+        break;
+      }
+      case 'tank': { // a glass tank of grown flame (Radu's laboratory), animated
+        const g = s.add.graphics().setDepth(DEPTH_DECOR);
+        const draw = (): void => {
+          g.clear();
+          g.fillStyle(0x2e2836, 1).fillRect(x - 12, y - 6, 24, 6).fillRect(x - 12, y - 58, 24, 5);
+          g.fillStyle(0x4a0f1b, 0.6).fillRect(x - 10, y - 53, 20, 47);
+          for (let i = 0; i < 5; i++) {
+            const fh = 10 + Math.random() * 24;
+            g.fillStyle(0xd9963a, 0.85).fillTriangle(x - 9 + i * 4, y - 6, x - 5 + i * 4, y - 6, x - 7 + i * 4, y - 6 - fh);
+            g.fillStyle(0xffe14d, 0.9).fillTriangle(x - 8 + i * 4, y - 6, x - 6 + i * 4, y - 6, x - 7 + i * 4, y - 6 - fh * 0.5);
+          }
+          g.lineStyle(1, 0xbfe0ef, 0.6).strokeRect(x - 10, y - 53, 20, 47);
+          g.fillStyle(0xbfe0ef, 0.25).fillRect(x - 8, y - 51, 2, 40);
+        };
+        draw();
+        s.time.addEvent({ delay: FIRE_FLICKER_MS, loop: true, callback: draw });
+        s.add.circle(x, y - 30, 30, 0xd9963a, 0.14).setBlendMode(Phaser.BlendModes.ADD).setDepth(DEPTH_GLOW);
+        break;
+      }
       default: // crate
         s.add.rectangle(x, y - 6, 12, 12, 0x7a4a1e).setStrokeStyle(1, 0x3d2512).setDepth(DEPTH_DECOR);
     }

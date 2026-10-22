@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "thrust": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 128,
+  "columns": 1,
+  "entity": "boss_radufire",
+  "palette": "requiem48.hex",
+  "pivot_x": 64,
+  "pivot_y": 96,
+  "sheet": "boss_radufire_thrust.png",
+  "source_hashes": [
+    "sha256:c9c64f265b7f066b504e98e795ef37b2239949d7603836b89938a04d45f5ee5d"
+  ],
+  "variant_of": "bosses/gyula/boss_gyula_thrust.png"
+}

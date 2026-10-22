@@ -212,15 +212,17 @@ export class Duelist implements ArenaFighter {
       g.fillStyle(c, 1).fillCircle(p.x, y, p.cfg.size / 2);
       g.fillStyle(0xffffff, 0.8).fillCircle(p.x, y, p.cfg.size / 5);
     }
-    // Star beams: a thin pale mark on the floor, then a blinding column.
+    // Star beams: a thin pale mark on the floor, then a blinding column (Radu: fire).
+    const bc = this.brain.cfg.beamColor ? Number(this.brain.cfg.beamColor.replace('#', '0x')) : 0xbfe0ef;
+    const core = this.brain.cfg.beamCore ? Number(this.brain.cfg.beamCore.replace('#', '0x')) : 0xffffff;
     for (const bm of this.brain.beams) {
       if (bm.ms < bm.markMs) {
         const a = 0.35 + 0.35 * Math.sin(bm.ms / 60);
-        g.fillStyle(0xbfe0ef, a).fillRect(bm.x - bm.width / 2, this.floorY - 3, bm.width, 3);
-        g.lineStyle(1, 0xbfe0ef, a * 0.6).lineBetween(bm.x, this.floorY, bm.x, this.floorY - 400);
+        g.fillStyle(bc, a).fillRect(bm.x - bm.width / 2, this.floorY - 3, bm.width, 3);
+        g.lineStyle(1, bc, a * 0.6).lineBetween(bm.x, this.floorY, bm.x, this.floorY - 400);
       } else {
-        g.fillStyle(0xbfe0ef, 0.35).fillRect(bm.x - bm.width, this.floorY - 600, bm.width * 2, 600);
-        g.fillStyle(0xffffff, 0.9).fillRect(bm.x - bm.width / 2, this.floorY - 600, bm.width, 600);
+        g.fillStyle(bc, 0.35).fillRect(bm.x - bm.width, this.floorY - 600, bm.width * 2, 600);
+        g.fillStyle(core, 0.9).fillRect(bm.x - bm.width / 2, this.floorY - 600, bm.width, 600);
       }
     }
     const w = this.brain.cfg.shockwave;

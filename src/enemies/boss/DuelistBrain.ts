@@ -89,6 +89,9 @@ export interface DuelistConfig {
   /** Show the wind-up as a coloured glow round the boss instead of tinting the sprite (a near-white sprite tinted
    * becomes a flat block of colour: Cain). */
   telegraphGlow?: boolean;
+  /** Colours of the beam move (default: Gyula's pale starlight). Radu's are pillars of fire. */
+  beamColor?: string;
+  beamCore?: string;
   /** Strength of the glow behind the boss (0..1; default 0.28). */
   auraAlpha?: number;
 }

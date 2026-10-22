@@ -11,7 +11,9 @@
     "kampfer_defeated",
     "marchesa_defeated",
     "paula_defeated",
-    "petros_defeated"
+    "petros_defeated",
+    "radu_defeated",
+    "scene:empress_audience"
   ],
   "fastTravel": {
     "_note": "Fast travel between altars (owner, 2026-10-16). An altar is a destination once you have prayed at it and the boss beyond its area is beaten (the area's flag). Stand at an unlocked altar and push up to travel. Altars sit about every 80-110 tiles of walking, with one just before every boss (owner, 2026-10-16). Byzantium's altars (the Empire arc) open with the airship (Gyula); they stay open from the airship on (the Janissary Captain guards only his barracks).",
@@ -199,6 +201,18 @@
         "name": "The Cistern Shrine"
       },
       {
+        "room": "palace_gardens",
+        "id": "gardens_altar",
+        "area": "byzantium",
+        "name": "The Glass Gardens"
+      },
+      {
+        "room": "palace_lab",
+        "id": "lab_altar",
+        "area": "byzantium",
+        "name": "The Flame Laboratory"
+      },
+      {
         "room": "bazaar_warehouse",
         "id": "warehouse_altar",
         "area": "byzantium",
@@ -289,7 +303,21 @@
           "bazaar_warehouse",
           "byz_cisterns",
           "byz_outcasts",
-          "byz_lower_cistern"
+          "byz_lower_cistern",
+          "byz_conduit"
+        ]
+      },
+      "palace": {
+        "name": "The Palace",
+        "fill": "#2a1a24",
+        "rock": "#7a4a5a",
+        "line": "#e8c86a",
+        "rooms": [
+          "palace_stair",
+          "palace_gardens",
+          "palace_mirrors",
+          "palace_audience",
+          "palace_lab"
         ]
       }
     },
@@ -309,7 +337,8 @@
         "title": "Byzantium",
         "regions": [
           "byzantium",
-          "cisterns"
+          "cisterns",
+          "palace"
         ]
       }
     ],

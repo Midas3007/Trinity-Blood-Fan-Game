@@ -307,7 +307,25 @@ def child_map():
             "14111c": "3b3444", "1c1826": "4a4252", "251f30": "5c5464", "2e2836": "6f6676", "8a5a4c": "b8826b", "b8826b": "dcb39a", "f39a8f": "dcb39a"}
 
 
+def radu_map():
+    """Gyula -> Radu Barvon: crimson trim becomes amber and gold, the cool greys (hair, lining) warm to auburn."""
+    return {"2e0811": "7a4a1e", "4a0f1b": "a86b2a", "6a1524": "d9963a", "8e1b2c": "e8c86a", "ad2a3a": "f6e3a3", "e85a5f": "f6e3a3",
+            "180f20": "2e0811", "241b2e": "4a0f1b", "32263e": "4a0f1b", "41324f": "6a1524",
+            "6f6676": "7a4a1e", "8a8392": "a86b2a", "a59fb0": "c4a04a"}
+
+
+def radufire_map():
+    """Radu burning (phase 2): the dark coat becomes fire, crimson to amber, the trim white-hot."""
+    return {"0b0a10": "2e0811", "14111c": "6a1524", "1c1826": "8e1b2c", "251f30": "ad2a3a", "2e2836": "d4283e",
+            "3b3444": "d9963a", "4a4252": "d9963a", "5c5464": "e8c86a", "6f6676": "e8c86a", "8a8392": "f6e3a3",
+            "2e0811": "d9963a", "4a0f1b": "e8c86a", "6a1524": "f6e3a3", "8e1b2c": "ffffff",
+            "180f20": "6a1524", "241b2e": "8e1b2c", "32263e": "ad2a3a", "41324f": "d4283e"}
+
+
 FOLDERS = [
+    ("bosses/gyula", "boss_gyula", "boss_radu", "bosses/radu", radu_map()),
+    ("bosses/gyula", "boss_gyula", "boss_radufire", "bosses/radufire", radufire_map(), "d9963a"),
+    ("enemies/thrall", "enemy_thrall", "enemy_flame_beast", "enemies/flame_beast", radufire_map(), "d9963a"),
     ("npcs/esther", "npc_esther", "npc_child", "npcs/child", child_map()),
     ("bosses/petros", "boss_petros", "boss_janissary", "bosses/janissary", janissary_map()),
     ("enemies/iron_choir", "enemy_iron_choir", "enemy_imperial_guard", "enemies/imperial_guard", guard_map()),

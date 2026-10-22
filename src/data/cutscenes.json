@@ -2247,6 +2247,276 @@
      ]
     }
    ]
+  },
+  "empress_audience": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "color:0x2a2030",
+     "caption": "The Veiled Throne.",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      },
+      {
+       "anim": "npc_ion_bow",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      },
+      {
+       "anim": "npc_astharoshe_idle",
+       "x": 0.18,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Ion",
+       "text": "Your Majesty. I have brought the priest from Rome, as you asked."
+      },
+      {
+       "speaker": "A voice behind the silk",
+       "text": "Father Nightroad. You have not changed at all. That is either a comfort or a warning."
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "color:0x2a2030",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "A comfort, I hope. I came to talk about peace, Majesty. Someone in your house would rather we didn't."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "color:0x2a2030",
+     "actors": [],
+     "caption": "The silk stirs. Nothing is seen.",
+     "lines": [
+      {
+       "speaker": "A voice behind the silk",
+       "text": "Then go below and find him. The stair under my dais was built for my own escape. Tonight it is yours."
+      },
+      {
+       "speaker": "A voice behind the silk",
+       "text": "Ion. Whatever you find down there, remember that you are a Fortuna, and stand up straight."
+      }
+     ]
+    }
+   ]
+  },
+  "radu_intro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "color:0x1a0a08",
+     "caption": "The Flame Laboratory.",
+     "actors": [
+      {
+       "anim": "boss_radu_idle",
+       "x": 0.7,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "right"
+      },
+      {
+       "anim": "npc_ion_stand",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Ion",
+       "text": "Radu? Radu, what is all this? Why are you down here?"
+      },
+      {
+       "speaker": "Radu",
+       "text": "Because the war ended before it was finished, Ion. I am only finishing it."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "color:0x1a0a08",
+     "tint": "0xa04020",
+     "actors": [
+      {
+       "anim": "boss_radu_star",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Radu",
+       "text": "They'll call you a hero for this peace, Ion. I'll make sure you live long enough to be one."
+      },
+      {
+       "speaker": "Radu",
+       "text": "The dagger in the arcade was yours. The priest is the Pope's. Tonight the Empress dies, and both of you hang for it."
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "color:0x1a0a08",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "Get behind me, Ion. Please."
+      }
+     ]
+    }
+   ]
+  },
+  "radu_burns": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "color:0x1a0a08",
+     "fx": "flash",
+     "actors": [
+      {
+       "anim": "boss_radufire_star",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2.6,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Radu",
+       "text": "You think I grew these flames to keep them in jars? Watch."
+      }
+     ]
+    },
+    {
+     "layout": "wide",
+     "bg": "color:0x1a0a08",
+     "tint": "0xd9963a",
+     "actors": [
+      {
+       "anim": "npc_ion_stand",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Ion",
+       "text": "Radu, stop! It's burning you alive!"
+      }
+     ]
+    }
+   ]
+  },
+  "radu_outro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "color:0x1a0a08",
+     "actors": [
+      {
+       "anim": "boss_radufire_defeated",
+       "x": 0.62,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      },
+      {
+       "anim": "npc_ion_stand",
+       "x": 0.32,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Ion",
+       "text": "Take my hand! Radu, take my hand!"
+      },
+      {
+       "speaker": "Radu",
+       "text": "...You always did reach for people, Ion. Too late, every time."
+      }
+     ]
+    },
+    {
+     "layout": "wide",
+     "bg": "color:0x14111c",
+     "caption": "Above them, in a gallery no one had noticed, someone is clapping.",
+     "actors": [
+      {
+       "anim": "boss_kampfer_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Magus",
+       "text": "A fine performance. Your brother will be so pleased, Father. He is waiting on the roof."
+      },
+      {
+       "speaker": "Abel",
+       "text": "...Cain."
+      }
+     ]
+    }
+   ]
   }
  }
 }

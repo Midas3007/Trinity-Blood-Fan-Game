@@ -305,3 +305,5 @@
 | Abel 100% built from the 80% sheets by tools/sprites/crusnik100.py (per-pose body/shoulder/chest tables; wings rebuilt as bat wings from the old wing outline) | Owner: like the 80%, no shirt, standing hair, gothic bat/gargoyle wings, double 80% scythe; no AI credits | Code-drawn wings (owner: wrong) |
 | Abel levitates at 100% (a 'levitate' state, no gravity) | Owner: float through the whole second half; Cain fights in the sky | Flap-to-fly (needed constant tapping) |
 | Map zoom/pan with one full-screen tap zone in screen coordinates; cheat shows every room | Owner request; container children's tap areas do not follow the camera | Per-room zones |
+| Radu = Gyula's sheets recoloured (amber trim; phase 2 'radufire' burning); beams take a colour (fire pillars) | No art credits; Gyula's Methuselah noble fits Radu | New sprite |
+| The palace is reached up a servants' stair from the cisterns' conduit; the lab under the throne opens after the audience (scene flag gate) | Follows the act 2 script (down with Astharoshe, then up into the palace) | A street entrance |

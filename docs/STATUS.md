@@ -26,6 +26,33 @@ Last updated: 2026-10-22
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
+## Done (latest) — Empire arc stage 5: the Palace and Radu (2026-10-22)
+- **6 new rooms.** The Lower Cistern now runs east to:
+  - **The Old Conduit:** burning runoff and flame-beasts.
+  - **The Servants' Stair:** a tall climb with landings, and a hidden chalice.
+  - **The Glass Gardens:** cherry trees in blossom, iron ribs for a high road, and an altar.
+  - **The Hall of Mirrors:** gilt mirrors.
+  - **The Veiled Throne:** the Empress speaks from behind a silk screen and is never shown. Her stair under the dais opens after the audience.
+  - **The Flame Laboratory:** glowing tanks of grown flame, an altar, and Radu.
+- **Boss: Radu Barvon** (Gyula's sprite recoloured, amber trim).
+  - Phase 1: fire-whip combos (parry them), fire bolts, flames along the floor.
+  - At half health he sets himself alight (`radu_burns`): a burning sprite, pillars of fire marked on the floor first, a flaming dive.
+  - His death scene: Ion reaches for him too late, and the Magus claps from a gallery and says Cain waits on the roof.
+- **Reward:** Ignis (+15% damage). **New enemy:** the grown flame-beast (a fiery thrall; gives no blood). **Music:** *The Silk Screen* and *Grown Flame*.
+- Also new: 4 lore notes, a chalice, and bestiary pages. The map has a new **Palace** region in gold and wine.
+- All story lines are original. The Empress's line is the one already in the act 2 script.
+- Verified: 237/237 tests (rooms connect, boss config valid). Bots in the real game:
+  - all 6 rooms load with no errors;
+  - walked Lower Cistern → conduit → stair, climbed to the gardens;
+  - took the trapdoor from the throne room to the lab;
+  - fought Radu: intro → burning scene → death scene, then `radu_defeated` and the relic were set.
+- **Not done yet:** the flame-beast does not explode when it dies (planned).
+
+## Owner must test (on phone) — the Palace and Radu
+1. From the Lower Cistern, go east through the conduit, climb the servants' stair, and pray in the Glass Gardens.
+2. Go on through the Hall of Mirrors to the Veiled Throne: the audience scene plays. Take the stair under the dais.
+3. In the laboratory, pray, then fight Radu. Does the fire phase feel fair? Can you read the pillar marks in time?
+
 ## Fixed — stranded below the Spire (2026-10-22)
 - **The bug:** the door from the Star of Sorrow up to the Imperial Spire only opened with the cheat, but the way down was always open. Walking down without the cheat left you stuck.
 - **The fix:** standing on the Spire once now opens that door for good (`world.json` `roomFlags`). Saves that were already there are mended when they load.

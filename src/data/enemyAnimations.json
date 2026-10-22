@@ -226,5 +226,32 @@
     "dead": {
       "anim": "enemy_zealot_down"
     }
+  },
+  "flameBeast": {
+    "idle": {
+      "anim": "enemy_flame_beast_idle"
+    },
+    "patrol": {
+      "anim": "enemy_flame_beast_walk"
+    },
+    "alert": {
+      "anim": "enemy_flame_beast_idle"
+    },
+    "pursue": {
+      "anim": "enemy_flame_beast_walk",
+      "timeScale": 1.9
+    },
+    "attack": {
+      "anim": "enemy_flame_beast_claw"
+    },
+    "hurt": {
+      "anim": "enemy_flame_beast_hurt"
+    },
+    "staggered": {
+      "anim": "enemy_flame_beast_hurt"
+    },
+    "dead": {
+      "anim": "enemy_flame_beast_collapse"
+    }
   }
 }
