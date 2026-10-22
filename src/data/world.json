@@ -184,6 +184,12 @@
         "id": "arcade_altar",
         "area": "byzantium",
         "name": "The Grand Arcade"
+      },
+      {
+        "room": "bazaar_warehouse",
+        "id": "warehouse_altar",
+        "area": "byzantium",
+        "name": "The Silk Warehouse"
       }
     ]
   }

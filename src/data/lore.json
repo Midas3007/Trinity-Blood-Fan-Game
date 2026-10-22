@@ -116,6 +116,18 @@
     "spice_cache": {
       "title": "A merchant's ledger",
       "text": "Saffron, cardamom, black pepper from the south. And, in a different hand: 'Twelve crates of lamp oil for the gentlemen of the Rose and Cross. Not to be stored near the stalls.'"
+    },
+    "rooftop_view": {
+      "title": "From the rooftops",
+      "text": "Domes of blue tile and gold, all the way to the palace. Somewhere under them the Empress is deciding whether the man from Rome is a guest, a hostage, or a gift."
+    },
+    "aqueduct_cache": {
+      "title": "Oil, rags and a rose",
+      "text": "Cans of lamp oil wrapped in rags, enough to burn a street. On each, a small painted rose on a cross. Someone is going to set the bazaar alight, and it isn't going to look like an accident."
+    },
+    "warehouse_manifest": {
+      "title": "A shipping manifest",
+      "text": "Silk from the east, dyes from the south, and one crate 'for Count Fortuna's household' that was never delivered. The seal on it is not the Fortuna seal."
     }
   }
 }

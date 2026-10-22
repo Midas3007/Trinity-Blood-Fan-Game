@@ -34,7 +34,8 @@
     "castle_gate": "fortress", "great_hall": "fortress",
     "star_chamber": "star",
     "imperial_spire": "star",
-    "empire_docks": "byzantium", "empire_quay": "byzantium", "bazaar_lamps": "byzantium", "bazaar_stairs": "byzantium", "bazaar_arcade": "byzantium"
+    "empire_docks": "byzantium", "empire_quay": "byzantium", "bazaar_lamps": "byzantium", "bazaar_stairs": "byzantium", "bazaar_arcade": "byzantium",
+    "bazaar_rooftops": "byzantium", "empire_aqueduct": "undercity", "bazaar_warehouse": "undercity"
   },
   "defaultRoom": "streets",
   "bosses": { "paula": "fight_paula", "kampfer": "fight_kampfer", "marchesa": "fight_marchesa", "petros": "fight_petros", "dietrich": "fight_dietrich", "gyula": "fight_gyula", "cain": "fight_cain" },

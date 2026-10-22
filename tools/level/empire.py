@@ -40,8 +40,14 @@ def quay():
     r = Room("empire_quay", "The Harbour Wall", 43, 0, 3, 2, seed=62, sky="aloft")
     r.ground(GY, top="stone")
     r.wall(0, GY, r.W, r.H)
+    r.wall(r.W - 1, 0, r.W, 1)                                  # matches the market's corner
     r.stairs(26, GY, 4)
     r.wall(30, GY - 4, 62, GY, "stone")                          # the harbour wall's terrace
+    # A grate down into the old aqueduct (press down at the ladder).
+    r.carve(10, GY, 13, r.H)
+    r.platform(10, 13, GY, "plank")
+    r.ladder(11, GY + 1, r.H)
+    r.mark("label", 11, GY - 4, text="a grate over the old aqueduct")
     r.stairs(65, GY, 4, dir=-1)
     # A stone storehouse barred with iron (the phase-step's first secret, for the way back).
     r.wall(72, GY - 5, 82, GY, "stone")
@@ -71,12 +77,20 @@ def market():
         r.mark("decor", (x0 + x1) // 2, GY - 6, item="awning", h=(x1 - x0) * 16)
         r.mark("decor", x0 + 2, GY - 1, item="urn")
         r.mark("decor", x1 - 2, GY - 1, item="crate")
-    for x in (24, 48, 74, 104):
+    for x in (24, 48, 74, 98):
         r.mark("decor", x, GY - 9, item="rug")
+    r.wall(0, 0, 1, 1)                                          # the rooftops' end walls meet the sky here
+    r.wall(r.W - 1, 0, r.W, 1)
+    # A lamp tower with a ladder up to the rooftops, and a trapdoor down to the silk warehouse.
+    r.wall(104, 6, 110, GY, "gothic_stone")
+    r.ladder(110, 0, GY)
+    r.carve(3, GY, 6, r.H)
+    r.platform(3, 6, GY, "plank")
+    r.ladder(4, GY + 1, r.H)
     lamps(r, 4, 120, GY, 10)
     r.mark("checkpoint", 20, GY - 1, "market_altar")
     r.mark("scene", 26, GY - 1, scene="ion_meeting")
-    r.mark("lore", 108, GY - 1, lore="letter_market")
+    r.mark("lore", 116, GY - 1, lore="letter_market")
     r.mark("enemy", 50, GY - 1, enemy="zealot")
     r.mark("enemy", 61, GY - 6, enemy="zealot")
     r.mark("enemy", 78, GY - 1, enemy="imperialGuard")
@@ -93,6 +107,7 @@ def spice_stairs():
     r.wall(38, 9, r.W, GY)                                       # the upper street, one screen up (the arcade)
     r.fill("terrain", 38, 9, r.W, 10, "cobble")
     r.wall(r.W - 1, 0, r.W, 4)                                  # the arcade's wall above its street
+    r.wall(0, 0, 1, 1)                                          # matches the market's corner
     for x0, x1, y in ((12, 20, GY - 4), (24, 32, GY - 8), (12, 20, GY - 12), (26, 34, GY - 15)):
         r.platform(x0, x1, y, "plank")
         r.mark("decor", (x0 + x1) // 2, y - 1, item="urn")
@@ -135,5 +150,69 @@ def arcade():
     return r
 
 
+def rooftops():
+    """Above the Lamp Market: roofs and domes, reached by the lamp tower's ladder. Gaps drop back into the market."""
+    r = Room("bazaar_rooftops", "The Market Rooftops", 46, -1, 4, 1, seed=66, sky="aloft")
+    for x0, x1, top in ((1, 18, 12), (24, 40, 10), (46, 60, 13), (66, 84, 9), (90, 108, 11), (112, 119, 12)):
+        r.wall(x0, top, x1, top + 3, "stone")                  # roofs float over the market's sky (open below)
+        r.fill("terrain", x0, top, x1, top + 1, "cobble")
+    r.wall(0, 0, 1, r.H)
+    r.wall(r.W - 1, 0, r.W, r.H)
+    r.ladder(110, 12, r.H)                                      # up from the lamp tower
+    for x in (8, 32, 75, 98):
+        r.mark("decor", x, {8: 11, 32: 9, 75: 8, 98: 10}[x], item="bluelamp")
+    r.mark("item", 6, 11, item="chalice3")                      # the far roof, across the gaps
+    r.mark("lore", 72, 8, lore="rooftop_view")
+    r.mark("enemy", 78, 8, enemy="zealot")
+    r.mark("enemy", 36, 9, enemy="zealot")
+    r.mark("enemy", 54, 4, enemy="bat")
+    r.mark("enemy", 20, 4, enemy="bat")
+    return r
+
+
+def aqueduct():
+    """Under the Harbour Wall: the old aqueduct, water in its channels, a cache behind bars."""
+    r = Room("empire_aqueduct", "The Old Aqueduct", 43, 2, 3, 1, seed=67, sky=False)
+    r.wall(0, 0, r.W, r.H, "stone")
+    r.carve(1, 3, r.W, 15)                                      # open to the east (the silk warehouse)
+    r.carve(10, 0, 13, 3)
+    r.ladder(11, 0, 15)                                         # up to the harbour grate
+    r.backwall(["wall_roman"], 3, 15, 1, r.W)
+    for x0 in (20, 44, 66):
+        r.fill("terrain", x0, 14, x0 + 3, 15, "water")           # 3 wide: an easy running jump
+    for x in (16, 34, 56, 80):
+        r.prop("column", x, 14, 160)
+    r.wall(1, 9, 8, 15, "stone")                                # a ledge with a barred cache
+    r.carve(1, 10, 7, 15)
+    r.grille(7, 10, 8, 15)
+    r.mark("lore", 4, 14, lore="aqueduct_cache")
+    r.mark("enemy", 30, 14, enemy="zealot")
+    r.mark("enemy", 60, 8, enemy="bat")
+    r.mark("enemy", 74, 14, enemy="imperialGuard")
+    return r
+
+
+def warehouse():
+    """Below the Lamp Market: bolts of silk, and a ladder up through a trapdoor into the market."""
+    r = Room("bazaar_warehouse", "The Silk Warehouse", 46, 2, 4, 1, seed=68, sky=False)
+    r.wall(0, 0, r.W, r.H, "stone")
+    r.carve(0, 3, r.W - 1, 15)                                  # open to the west (the aqueduct)
+    r.carve(3, 0, 6, 3)
+    r.ladder(4, 0, 15)                                          # up to the market trapdoor
+    r.backwall(["wall_crypt"], 3, 15, 0, r.W - 1)
+    for x0, x1, y in ((14, 24, 10), (34, 46, 8), (58, 70, 10), (82, 96, 7)):
+        r.platform(x0, x1, y, "plank")
+        r.mark("decor", (x0 + x1) // 2, y - 1, item="crate")
+    for x in (28, 52, 76, 104):
+        r.mark("decor", x, 3, item="rug")
+        r.mark("decor", x + 3, 14, item="urn")
+    r.mark("checkpoint", 110, 14, "warehouse_altar")
+    r.mark("lore", 88, 6, lore="warehouse_manifest")
+    r.mark("enemy", 40, 14, enemy="zealot")
+    r.mark("enemy", 64, 14, enemy="imperialGuard")
+    r.mark("enemy", 90, 6, enemy="zealot")
+    return r
+
+
 def rooms():
-    return [docks(), quay(), market(), spice_stairs(), arcade()]
+    return [docks(), quay(), market(), spice_stairs(), arcade(), rooftops(), aqueduct(), warehouse()]
