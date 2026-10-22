@@ -198,6 +198,7 @@ def barracks():
     # Boss: the Janissary Captain, the Empress's guard. He thinks Abel killed his friend in the arcade.
     r.mark("boss", 60, ARCADE_GY - 1, boss="janissary", arenaLeft=24 * 16, arenaRight=84 * 16,
            defeatFlag="janissary_defeated", intro="janissary_intro", outro="janissary_outro")
+    r.mark("item", 85, ARCADE_GY - 1, item="spear")              # the Captain's parting gift: the Byzantine spear
     # Beyond the arena: a well shaft down to the cisterns, its lid lifted once the Captain looks the other way.
     r.carve(86, ARCADE_GY, 89, r.H)
     r.gate(86, ARCADE_GY, 89, ARCADE_GY + 1, "janissary_defeated")
@@ -240,6 +241,7 @@ def outcasts():
         r.mark("decor", x, 14, item="bluelamp")
     r.mark("decor", 40, 14, item="fire", h=24)                  # a brazier the outcasts share
     r.mark("scene", 44, 14, scene="undercity_ion")
+    r.mark("checkpoint", 62, 14, "outcasts_altar")              # the outcasts' own shrine
     # Down into the lower cistern, where something with strings has made its nest.
     r.carve(28, 15, 31, r.H)
     r.platform(28, 31, 15, "plank")
@@ -273,7 +275,7 @@ def lower_cistern():
     r.mark("enemy", 22, 14, enemy="thrall")
     r.mark("enemy", 52, 14, enemy="ironChoir")
     r.mark("enemy", 74, 14, enemy="thrall")
-    r.mark("enemy", 40, 4, enemy="bat")
+    r.mark("enemy", 40, 4, enemy="batSwarm")
     return r
 
 
@@ -293,9 +295,10 @@ def conduit():
     for x in (14, 40, 70):
         r.mark("decor", x, 14, item="fire", h=16)               # burning runoff from the laboratory
     r.mark("lore", 46, 14, lore="conduit_runoff")
+    r.mark("checkpoint", 84, 14, "conduit_altar")               # at the foot of the servants' stair
     r.mark("enemy", 34, 14, enemy="flameBeast")
     r.mark("enemy", 64, 14, enemy="flameBeast")
-    r.mark("enemy", 80, 6, enemy="bat")
+    r.mark("enemy", 80, 6, enemy="batSwarm")
     return r
 
 
@@ -314,7 +317,7 @@ def servants_stair():
         r.mark("decor", (x0 + x1) // 2, y - 1, item="bluelamp")
     r.mark("item", 6, PGY + 23, item="chalice4")                # on a landing off the ladder
     r.mark("enemy", 22, PGY + 15, enemy="zealot")
-    r.mark("enemy", 8, PGY + 39, enemy="bat")
+    r.mark("enemy", 8, PGY + 39, enemy="batSwarm")
     return r
 
 
@@ -326,8 +329,10 @@ def gardens():
     r.wall(0, 0, 1, PGY - 5)                                    # in from the servants' stair
     r.wall(r.W - 1, 0, r.W, PGY - 12)                           # on into the hall of mirrors
     r.backwall(["wall_byz_arcade"], PGY - 12, PGY, 1, r.W - 1)  # the glasshouse's arcaded walls
-    for x0 in range(2, r.W - 2, 16):
-        r.platform(x0, min(x0 + 10, r.W - 2), 8, "plank")       # the glasshouse's iron ribs (a high road)
+    for x0 in range(2, r.W - 2, 15):
+        r.platform(x0, min(x0 + 12, r.W - 2), 8, "plank")       # the glasshouse's iron ribs (a high road)
+    r.ladder(3, 9, PGY)                                         # up to the ribs, beside the altar
+    r.mark("item", 114, 7, item="sugarbowl")                    # tea service: the far end of the ribs
     for x in (12, 28, 44, 66, 82, 100):
         r.mark("decor", x, PGY - 1, item="cherry", h=60)
     for x in (20, 36, 58, 74, 92, 110):
@@ -351,6 +356,8 @@ def mirrors():
         r.mark("decor", x, PGY - 1, item="mirror", h=72)
     for x in range(11, 88, 20):
         r.mark("decor", x, PGY - 11, item="lantern", h=12)
+    r.platform(40, 47, PGY - 4, "plank")                        # a ledge between the mirrors
+    r.mark("item", 43, PGY - 5, item="saucer")                  # tea service
     r.mark("lore", 46, PGY - 1, lore="mirror_hall")
     r.mark("enemy", 30, PGY - 1, enemy="imperialGuard")
     r.mark("enemy", 54, PGY - 1, enemy="zealot")
@@ -369,6 +376,7 @@ def audience():
     for x in (30, 58):
         r.mark("decor", x, PGY - 1, item="bluelamp")
     r.mark("scene", 26, PGY - 1, scene="empress_audience")
+    r.mark("checkpoint", 4, PGY - 1, "throne_altar")            # a chapel niche by the door
     # Under the dais: a stair down to Radu's laboratory, open once the audience is over.
     r.carve(10, PGY, 13, r.H)
     r.gate(10, PGY, 13, PGY + 1, "scene:empress_audience")
@@ -456,6 +464,7 @@ def warehouse():
         r.mark("decor", x + 3, 14, item="urn")
     r.mark("checkpoint", 110, 14, "warehouse_altar")
     r.mark("lore", 88, 6, lore="warehouse_manifest")
+    r.mark("item", 94, 6, item="teacup")                        # tea service: up on the rafters
     r.mark("enemy", 40, 14, enemy="zealot")
     r.mark("enemy", 64, 14, enemy="imperialGuard")
     r.mark("enemy", 90, 6, enemy="zealot")

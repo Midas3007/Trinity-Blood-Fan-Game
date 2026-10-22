@@ -4,7 +4,7 @@ import { DEFAULT_WEAPON, weapons } from '../combat/attackData';
 /** Hidden items (src/data/items.json): what they give, sets, and the weapons they unlock. Pure; tested. */
 export interface ItemDef {
   name: string;
-  kind: 'weapon' | 'heart' | 'chalice' | 'tea';
+  kind: 'weapon' | 'heart' | 'chalice' | 'tea' | 'porcelain';
   text: string;
   maxHealth?: number;
   flasks?: number;

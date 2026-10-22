@@ -201,10 +201,28 @@
         "name": "The Cistern Shrine"
       },
       {
+        "room": "byz_outcasts",
+        "id": "outcasts_altar",
+        "area": "byzantium",
+        "name": "The Outcasts' Shrine"
+      },
+      {
+        "room": "byz_conduit",
+        "id": "conduit_altar",
+        "area": "byzantium",
+        "name": "The Old Conduit"
+      },
+      {
         "room": "palace_gardens",
         "id": "gardens_altar",
         "area": "byzantium",
         "name": "The Glass Gardens"
+      },
+      {
+        "room": "palace_audience",
+        "id": "throne_altar",
+        "area": "byzantium",
+        "name": "The Veiled Throne"
       },
       {
         "room": "palace_lab",

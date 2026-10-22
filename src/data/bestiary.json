@@ -15,7 +15,7 @@
       "tip": "Low to the ground: crouch and strike." },
     "bat": { "name": "Cellar Bat", "kind": "creature", "anim": "enemy_bat_fly", "blood": "none",
       "text": "They roost in the shafts and towers by the thousand, and wake all at once when a stranger passes beneath.",
-      "tip": "They swoop in a straight line. Step aside, then strike as they climb." },
+      "tip": "They swoop in a straight line. Step aside, then strike as they climb. Under Byzantium they hunt in threes." },
     "fairy": { "name": "Tunnel Fairy", "kind": "creature", "anim": "enemy_fairy_hover", "blood": "none",
       "text": "Small, bright, and nothing like the stories. They live where the old water runs, and their scream can crack stone.",
       "tip": "Their scream spreads in rings. Leave the ring, or jump it, then cut them down mid-air." },

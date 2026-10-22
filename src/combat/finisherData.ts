@@ -14,7 +14,7 @@ export interface FinisherDef {
   shakeIntensity: number;
   heal: number;
   /** Only with this priest weapon in hand (absent = any). */
-  weapon?: string;
+  weapon?: string | string[];
   buff?: { damageMultiplier: number; durationMs: number };
 }
 
@@ -71,7 +71,7 @@ export function chooseFinisher(
   if (dx !== 0 && Math.sign(dx) !== facing) return null;
   for (const def of Object.values(table)) {
     if (def.form !== form) continue;
-    if (def.weapon !== undefined && def.weapon !== weapon) continue;
+    if (def.weapon !== undefined && !(Array.isArray(def.weapon) ? def.weapon.includes(weapon) : def.weapon === weapon)) continue;
     if (def.targets === 'drainable' && !t.drainable) continue;
     if (Math.abs(dx) <= def.range) return def;
   }

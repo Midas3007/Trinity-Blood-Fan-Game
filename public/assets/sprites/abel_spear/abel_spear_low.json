@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "low": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 112,
+  "columns": 1,
+  "entity": "abel_spear",
+  "palette": "requiem48.hex",
+  "pivot_x": 56,
+  "pivot_y": 64,
+  "sheet": "abel_spear_low.png",
+  "source_hashes": [
+    "sha256:8dec75b58ca5e1e6afb39f72ae1b4eb485820fac6cf017a966cb5e97e73ad9e8"
+  ],
+  "variant_of": "abel_sword/abel_sword_low.png"
+}

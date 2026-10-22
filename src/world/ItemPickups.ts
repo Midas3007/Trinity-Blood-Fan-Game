@@ -44,6 +44,10 @@ export class ItemPickups {
       case 'chalice':
         g.fillStyle(0xc9c2d6, 1).fillTriangle(-3, -4, 3, -4, 0, 0).fillRect(-0.5, 0, 1, 3).fillRect(-2, 3, 4, 1);
         break;
+      case 'porcelain': // the Byzantine tea service: blue and white
+        g.fillStyle(0xefeaf2, 1).fillEllipse(0, 0, 7, 5);
+        g.fillStyle(0x4f7c9e, 1).fillRect(-2, -1, 4, 1).fillRect(-1, 1, 2, 1);
+        break;
       case 'tea':
         g.fillStyle(0x6a1524, 1).fillRect(-2.5, -3, 5, 6);
         g.fillStyle(GOLD, 1).fillRect(-2.5, -3, 5, 1).fillRect(-1, 0, 2, 1);

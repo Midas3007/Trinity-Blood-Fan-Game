@@ -1153,6 +1153,181 @@
         "sha256:b767d92c200097e8d4c9b687e9011dc840d4c2fa468072b869adcc71ba2c8465"
       ]
     },
+    "abel_spear/abel_spear_air.png": {
+      "animations": {
+        "air": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "abel_spear",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 64,
+      "sheet": "abel_spear_air.png",
+      "source_hashes": [
+        "sha256:0173f9cefa193ca20f5d9418bbff813e076353c568962c2ad9a2e01ccaac0989"
+      ],
+      "variant_of": "abel_sword/abel_sword_air.png"
+    },
+    "abel_spear/abel_spear_low.png": {
+      "animations": {
+        "low": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "abel_spear",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 64,
+      "sheet": "abel_spear_low.png",
+      "source_hashes": [
+        "sha256:8dec75b58ca5e1e6afb39f72ae1b4eb485820fac6cf017a966cb5e97e73ad9e8"
+      ],
+      "variant_of": "abel_sword/abel_sword_low.png"
+    },
+    "abel_spear/abel_spear_spear1.png": {
+      "animations": {
+        "spear1": {
+          "attack": "sword_sword1",
+          "durations_ms": [
+            120,
+            90,
+            230
+          ],
+          "events": [
+            {
+              "frame": 1,
+              "type": "hitbox_on"
+            },
+            {
+              "frame": 2,
+              "type": "hitbox_off"
+            }
+          ],
+          "frames": [
+            0,
+            1,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 112,
+      "columns": 2,
+      "entity": "abel_spear",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 64,
+      "sheet": "abel_spear_spear1.png",
+      "source_hashes": [
+        "sha256:c5779de2b136f595760803643a9c99f81af8928145422ae730e0e632bff9aa97",
+        "sha256:af94ea935ef2668e38c2e549b78eda9756e82ceff7655249089a1afe65547476"
+      ],
+      "variant_of": "abel_sword/abel_sword_sword1.png"
+    },
+    "abel_spear/abel_spear_spear2.png": {
+      "animations": {
+        "spear2": {
+          "attack": "sword_sword2",
+          "durations_ms": [
+            120,
+            90,
+            260
+          ],
+          "events": [
+            {
+              "frame": 1,
+              "type": "hitbox_on"
+            },
+            {
+              "frame": 2,
+              "type": "hitbox_off"
+            }
+          ],
+          "frames": [
+            0,
+            1,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 112,
+      "columns": 2,
+      "entity": "abel_spear",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 64,
+      "sheet": "abel_spear_spear2.png",
+      "source_hashes": [
+        "sha256:46225a02d9d60f96f2ba42ebd207672f284c50d8da4f198672502230568c0b1f",
+        "sha256:19243ac0d968ec5d510edece2c107c8e661b60fb26df994890ee690a8e8d53f8"
+      ],
+      "variant_of": "abel_sword/abel_sword_sword2.png"
+    },
+    "abel_spear/abel_spear_spear3.png": {
+      "animations": {
+        "spear3": {
+          "attack": "sword_sword3",
+          "durations_ms": [
+            200,
+            110,
+            400
+          ],
+          "events": [
+            {
+              "frame": 1,
+              "type": "hitbox_on"
+            },
+            {
+              "frame": 2,
+              "type": "hitbox_off"
+            }
+          ],
+          "frames": [
+            0,
+            1,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 112,
+      "columns": 2,
+      "entity": "abel_spear",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 64,
+      "sheet": "abel_spear_spear3.png",
+      "source_hashes": [
+        "sha256:36fb89a35760501c8ea57af429f516a2e7b34f761b7466aadeeb822b7544ad9f",
+        "sha256:8dec75b58ca5e1e6afb39f72ae1b4eb485820fac6cf017a966cb5e97e73ad9e8"
+      ],
+      "variant_of": "abel_sword/abel_sword_sword3.png"
+    },
     "abel_sword/abel_sword_air.png": {
       "animations": {
         "air": {

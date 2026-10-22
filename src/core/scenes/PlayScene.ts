@@ -63,6 +63,7 @@ import { playerStats, relic } from '../../systems/progression';
 import { cutscene } from '../cutscenes';
 import { FlyerManager } from '../../enemies/flyers/FlyerManager';
 import { ensureSprites } from '../../systems/sprites/lateLoad';
+import { FireBursts } from '../../combat/fireBursts';
 import { isFlyer } from '../../enemies/flyers/FlyerBrain';
 
 /** The phase-step's flag (granted by the Bazaar's burning-stall scene). */
@@ -313,7 +314,7 @@ export class PlayScene extends Phaser.Scene {
     // Relics from beaten bosses: more health, flasks and damage.
     const stats = playerStats((f) => gameState.hasFlag(f));
     this.player.applyStats(stats);
-    this.player.weapon = currentWeapon((f) => gameState.hasFlag(f) || (cheat.on && f === weapons['sword']?.item));
+    this.player.weapon = currentWeapon((f) => gameState.hasFlag(f) || (cheat.on && Object.values(weapons).some((w) => w.item === f)));
     if (gameState.hp !== null) this.player.setHealth(Math.min(gameState.hp, stats.maxHealth));
     this.player.flasks = gameState.flasks ?? stats.flasks;
     this.hud = new Hud(this, stats.flasks);
@@ -356,7 +357,7 @@ export class PlayScene extends Phaser.Scene {
     };
     this.map = new MapOverlay(this);
     // The cheat also lends the sword (not saved).
-    const has = (f: string): boolean => gameState.hasFlag(f) || (cheat.on && f === weapons['sword']?.item);
+    const has = (f: string): boolean => gameState.hasFlag(f) || (cheat.on && Object.values(weapons).some((w) => w.item === f));
     const weaponLabel = (): string | null => (ownedWeapons(has).length > 1 ? `Weapon: ${weapons[this.player.weapon]?.short ?? this.player.weapon}` : null);
     this.pauseMenu = new PauseMenu(this, {
       resume: () => this.setPaused(null),
@@ -476,8 +477,11 @@ export class PlayScene extends Phaser.Scene {
       // Blood for the Crusnik meter: only Methuselah bleed it (owner's rule).
       if (byPlayer) this.player.crusnik.gain(this.bloodOf(targetId)?.hit ?? 0);
     });
-    this.bus.on('enemy:died', ({ id }) => {
+    this.bus.on('enemy:died', ({ id, x, y }) => {
       this.player.crusnik.gain(this.bloodOf(id)?.kill ?? 0);
+      // A grown flame-beast bursts into fire where it falls (after a short flare: time to step away).
+      const burst = this.enemies.active.find((en) => en.id === id)?.cfg.deathBurst;
+      if (burst) this.fireBursts.add(x, y, burst);
       // The Bestiary: the first kill of a kind writes its page.
       const type = this.enemies.active.find((en) => en.id === id)?.cfg.type ?? this.flyers.typeOf(id);
       if (type) gameState.setFlag(beastFlag(type));
@@ -565,11 +569,19 @@ export class PlayScene extends Phaser.Scene {
     this.combatSystem.step(
       [...this.dummies, ...living, ...this.runtime.levers, ...(arena?.targets ?? []), ...this.flyers.targets],
       [...living, ...(arena?.attackers ?? [])],
-      [...this.dummies, ...(arena?.hazards(p0.hurtbox()) ?? []), ...this.flyers.hazards(p0.hurtbox(), p0.x, p0.y), ...this.enemies.boltHazards(p0.hurtbox())],
+      [...this.dummies, ...(arena?.hazards(p0.hurtbox()) ?? []), ...this.flyers.hazards(p0.hurtbox(), p0.x, p0.y), ...this.enemies.boltHazards(p0.hurtbox()), ...this.fireBursts.hazards()],
     );
+    this.fireBursts.update(dt);
     this.sparks.update(dt);
     this.shotFlash.update(dt);
     this.boltFx.clear();
+    for (const f of this.fireBursts.shapes) {
+      if (f.flaring) this.boltFx.fillStyle(0xd9963a, 0.25 + 0.35 * f.t).fillCircle(f.x, f.y, f.radius * (0.3 + 0.4 * f.t));
+      else {
+        this.boltFx.fillStyle(0xd4283e, 0.55 * (1 - f.t)).fillCircle(f.x, f.y, f.radius);
+        this.boltFx.fillStyle(0xffe14d, 0.8 * (1 - f.t)).fillCircle(f.x, f.y, f.radius * 0.55);
+      }
+    }
     for (const b of this.enemies.bolts) {
       this.boltFx.lineStyle(2, 0x8a6a3a, 1).lineBetween(b.x - Math.sign(b.vx) * 8, b.y, b.x, b.y);
       this.boltFx.fillStyle(0xddd7e6, 1).fillRect(b.x - 1, b.y - 1, 2, 2);
@@ -876,6 +888,7 @@ export class PlayScene extends Phaser.Scene {
   private cutsceneOn = false;
   private cutsceneId: string | null = null;
   /** Last seen player state, attack and bolt count: their changes trigger sounds. */
+  private readonly fireBursts = new FireBursts();
   private heard: { state: string; attack: unknown; bolts: number } = { state: '', attack: null, bolts: 0 };
 
   /** Plays a cutscene over the game; gameplay waits until it ends. */

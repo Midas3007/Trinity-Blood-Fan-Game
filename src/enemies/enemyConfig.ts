@@ -36,6 +36,8 @@ export interface EnemyConfig {
   attacks: AttackTable;
   /** Shield: damage taken from the front (outside its own swing and stagger) is multiplied by this. */
   frontGuard?: number;
+  /** Bursts into fire where it dies (the grown flame-beast): src/combat/fireBursts.ts. */
+  deathBurst?: { delayMs: number; activeMs: number; radius: number; damage: number };
   /** Ranged: the attack fires a bolt when it becomes active (instead of a blade). */
   bolt?: { speed: number; damage: number; lifeMs: number };
   /** Human: knocked out instead of killed; stays down and never respawns in this visit. */

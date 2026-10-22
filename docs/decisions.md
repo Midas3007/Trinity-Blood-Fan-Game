@@ -307,3 +307,5 @@
 | Map zoom/pan with one full-screen tap zone in screen coordinates; cheat shows every room | Owner request; container children's tap areas do not follow the camera | Per-room zones |
 | Radu = Gyula's sheets recoloured (amber trim; phase 2 'radufire' burning); beams take a colour (fire pillars) | No art credits; Gyula's Methuselah noble fits Radu | New sprite |
 | The palace is reached up a servants' stair from the cisterns' conduit; the lab under the throne opens after the audience (scene flag gate) | Follows the act 2 script (down with Astharoshe, then up into the palace) | A street entrance |
+| Byzantine tea service is a new 4-piece set (teapot joins it), not more tins | Adding tins to the old set would change what existing saves need | More tins |
+| Swarm markers expand to flyers at room load (flyers.json swarms) | Keeps flyer logic untouched; data-driven | A new flock AI |

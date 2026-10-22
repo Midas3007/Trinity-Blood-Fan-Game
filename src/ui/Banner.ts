@@ -4,6 +4,8 @@ import { GAME_WIDTH } from '../core/constants';
 const DEPTH = 1400;
 const IN_MS = 400;
 const OUT_MS = 700;
+/** Long lines (item descriptions) wrap inside this width (px). */
+const WRAP_W = GAME_WIDTH - 60;
 
 /** A big centred announcement with a smaller line under it, fading in and out (ability awakened, etc.). */
 export class Banner {
@@ -19,7 +21,7 @@ export class Banner {
       .setDepth(DEPTH)
       .setAlpha(0);
     this.sub = scene.add
-      .text(GAME_WIDTH / 2, 116, '', { fontFamily: 'serif', fontSize: '10px', color: '#eadfc4', align: 'center', ...stroke, strokeThickness: 3 })
+      .text(GAME_WIDTH / 2, 116, '', { fontFamily: 'serif', fontSize: '10px', color: '#eadfc4', align: 'center', wordWrap: { width: WRAP_W }, ...stroke, strokeThickness: 3 })
       .setOrigin(0.5, 0)
       .setScrollFactor(0)
       .setDepth(DEPTH)

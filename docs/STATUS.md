@@ -26,7 +26,36 @@ Last updated: 2026-10-22
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — Empire arc stage 6: the lift, the epilogue — the arc is complete (2026-10-22)
+## Done (latest) — the arc's extras: spear, swarm, flame bursts, tea service, altars (2026-10-22)
+- **The Byzantine spear** (second priest weapon). It lies beyond the Janissary Captain's arena, as his parting gift.
+  - Two long thrusts, longer reach than the sword. Low and air thrusts. The revolver finisher.
+  - Sheets built from the sword's by `tools/sprites/spear.py`: the blade replaced by a long shaft and a leaf head.
+  - Switch weapons in the pause menu. The cheat now gives every weapon.
+- **Flame-beasts burst** when they die: a short orange flare (time to step away), then a burst of fire.
+- **Bat swarms:** one marker becomes three bats. They are in the conduit, the servants' stair and the Lower Cistern.
+- **A Byzantine tea service** (a new set; the six Istvan tins are unchanged):
+  - the outcasts' teapot;
+  - a cup on the Silk Warehouse rafters;
+  - a saucer on a ledge in the Hall of Mirrors;
+  - a sugar bowl at the far end of the glasshouse ribs (a new ladder by the gardens altar climbs up).
+  - All four: +1 flask, +10 life.
+- **Altars:** three more, in the Outcasts' Hall, at the end of the conduit, and in the Veiled Throne. All are on fast travel.
+- **Map:** altars you haven't prayed at now show as dim crosses (gold once prayed at).
+- Item and ability banners now wrap long lines (they ran off the screen).
+- Verified: 242/242 tests (new: fire bursts, swarms). Bots in the real game:
+  - picked up and thrust the spear;
+  - killed flame-beasts in the conduit;
+  - climbed to the glasshouse ribs;
+  - took the saucer.
+- **Known:** in a few spear frames the tool found no blade (a crouch frame, a wind-up), so those show the old sword or no weapon for that frame.
+
+## Owner must test (on phone) — the extras
+1. Beat the Captain, pick up the spear past his arena, and try its thrusts (pause → switch weapons).
+2. Kill a flame-beast in the conduit and step away from the flare.
+3. Find the tea service pieces (warehouse rafters, mirror ledge, glasshouse ribs) and check the bonus.
+4. Open the map: dim crosses mark altars you haven't prayed at.
+
+## Done (earlier) — Empire arc stage 6: the lift, the epilogue — the arc is complete (2026-10-22)
 - **The lift:** past Radu's arena in the Flame Laboratory, opened by beating Radu.
   - Astharoshe stays to hold the stairs against the Magus's puppets (`spire_ascent`).
   - Push up to ride to the Spire roof. The Spire has a lift door back down to the lab.

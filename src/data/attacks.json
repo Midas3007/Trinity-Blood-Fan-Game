@@ -1,5 +1,5 @@
 {
-  "_note": "Player attacks. Times in ms, distances in px, speeds in px/s. Hitbox is relative to the player's centre, x measured forward in the facing direction. Add a new attack by adding an entry; link combos with 'next'. Values are design choices (see docs/feel-spec.md). Crusnik form uses crusnikStarters (scythe for every melee press, 'ranged' = the chain lash on ABIL). Weapons (src/data/weapons.json) pick the priest's starters; the sword's attacks are the sword_* entries.",
+  "_note": "Player attacks. Times in ms, distances in px, speeds in px/s. Hitbox is relative to the player's centre, x measured forward in the facing direction. Add a new attack by adding an entry; link combos with 'next'. Values are design choices (see docs/feel-spec.md). Crusnik form uses crusnikStarters (scythe for every melee press, 'ranged' = the chain lash on ABIL). Weapons (src/data/weapons.json) pick the priest's starters; the sword's attacks are the sword_* entries. The Byzantine spear's attacks are the spear_* entries: a long reach and a two-thrust combo.",
   "attacks": {
     "priest1": {
       "startupMs": 110,
@@ -271,6 +271,83 @@
         "y": 8,
         "w": 36,
         "h": 12
+      }
+    },
+    "spear_spear1": {
+      "startupMs": 160,
+      "activeMs": 100,
+      "recoveryMs": 260,
+      "damage": 15,
+      "knockbackX": 140,
+      "knockbackY": 0,
+      "hitstopMs": 60,
+      "shakeMs": 0,
+      "shakeIntensity": 0,
+      "stepSpeed": 0,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 40,
+        "y": -4,
+        "w": 62,
+        "h": 14
+      },
+      "next": "spear_spear2"
+    },
+    "spear_spear2": {
+      "startupMs": 170,
+      "activeMs": 110,
+      "recoveryMs": 380,
+      "damage": 20,
+      "knockbackX": 190,
+      "knockbackY": 0,
+      "hitstopMs": 80,
+      "shakeMs": 80,
+      "shakeIntensity": 0.004,
+      "stepSpeed": 60,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 46,
+        "y": -4,
+        "w": 70,
+        "h": 16
+      }
+    },
+    "spear_air": {
+      "startupMs": 110,
+      "activeMs": 120,
+      "recoveryMs": 190,
+      "damage": 14,
+      "knockbackX": 110,
+      "knockbackY": 0,
+      "hitstopMs": 60,
+      "shakeMs": 0,
+      "shakeIntensity": 0,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 30,
+        "y": 2,
+        "w": 50,
+        "h": 18
+      }
+    },
+    "spear_low": {
+      "startupMs": 120,
+      "activeMs": 100,
+      "recoveryMs": 250,
+      "damage": 12,
+      "knockbackX": 120,
+      "knockbackY": 0,
+      "hitstopMs": 60,
+      "shakeMs": 0,
+      "shakeIntensity": 0,
+      "stepSpeed": 0,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 36,
+        "y": 8,
+        "w": 58,
+        "h": 10
       }
     }
   },

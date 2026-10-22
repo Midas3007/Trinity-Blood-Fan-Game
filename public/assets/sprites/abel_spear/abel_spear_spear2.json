@@ -1,0 +1,41 @@
+{
+  "animations": {
+    "spear2": {
+      "attack": "sword_sword2",
+      "durations_ms": [
+        120,
+        90,
+        260
+      ],
+      "events": [
+        {
+          "frame": 1,
+          "type": "hitbox_on"
+        },
+        {
+          "frame": 2,
+          "type": "hitbox_off"
+        }
+      ],
+      "frames": [
+        0,
+        1,
+        1
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 112,
+  "columns": 2,
+  "entity": "abel_spear",
+  "palette": "requiem48.hex",
+  "pivot_x": 56,
+  "pivot_y": 64,
+  "sheet": "abel_spear_spear2.png",
+  "source_hashes": [
+    "sha256:46225a02d9d60f96f2ba42ebd207672f284c50d8da4f198672502230568c0b1f",
+    "sha256:19243ac0d968ec5d510edece2c107c8e661b60fb26df994890ee690a8e8d53f8"
+  ],
+  "variant_of": "abel_sword/abel_sword_sword2.png"
+}

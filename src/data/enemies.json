@@ -488,6 +488,12 @@
       "blood": {
         "hit": 0,
         "kill": 0
+      },
+      "deathBurst": {
+        "delayMs": 380,
+        "activeMs": 260,
+        "radius": 34,
+        "damage": 18
       }
     }
   }

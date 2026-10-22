@@ -18,6 +18,15 @@
       "finisher": "sword_execution",
       "item": "item:sword",
       "short": "Sword"
+    },
+    "spear": {
+      "name": "The Byzantine Spear",
+      "ground": "spear_spear1",
+      "air": "spear_air",
+      "crouch": "spear_low",
+      "finisher": "revolver",
+      "item": "item:spear",
+      "short": "Spear"
     }
   }
 }

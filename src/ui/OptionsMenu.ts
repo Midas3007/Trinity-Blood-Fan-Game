@@ -134,7 +134,7 @@ export class OptionsMenu {
     });
     this.note(TOP + (ACTIONS.length + 2) * ROW_H - 6, 'Tap an action, then press its new key. Arrows / WASD always move.');
     // Owner's cheat, written small at the bottom of the deepest page (see src/systems/cheatCode.ts).
-    this.note(TOP + (ACTIONS.length + 2) * ROW_H + 18, 'In the margin: Up, Down, Left, Right, ATK, DODGE \u2014 blessed.\nNo harm, the sword, open gates and altars, flight, eighty percent.');
+    this.note(TOP + (ACTIONS.length + 2) * ROW_H + 18, 'In the margin: Up, Down, Left, Right, ATK, DODGE \u2014 blessed.\nNo harm, every weapon, open gates and altars, flight, eighty percent.');
   }
 
   private onKey(e: KeyboardEvent): void {

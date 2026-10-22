@@ -33,7 +33,7 @@ interface ShowArgs {
 /**
  * Full-screen map of the rooms visited so far in the city Abel is in, styled like the poster (tools/social/map.py):
  * each region in its own colours with the rooms' walls in miniature, ladders, gold crosses for altars you have prayed at
- * (unused altars stay hidden, as in Blasphemous' map), crimson seals for bosses, blue diamonds where something is still
+ * (altars not yet prayed at show dim), crimson seals for bosses, blue diamonds where something is still
  * hidden, and Abel as a blinking crimson dot. Tap a room to read its name.
  * + and − zoom, the arrows (or a drag) look around, CITY switches between the cities you have been to. With the cheat
  * on, every room is drawn, explored or not (owner). Taps are read from one full-screen zone in screen coordinates
@@ -210,8 +210,8 @@ export class MapOverlay {
       for (const l of r.ladders) g.fillRect(x + (l.x + l.w / 2) * sx, y + l.y * sy, 1, Math.max(1, l.h * sy));
       g.lineStyle(1, here ? HERE_LINE : (reg?.line ?? 0x6f6676), 1).strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
       for (const cp of r.checkpoints) {
-        if (!altarUsed(r.id, cp.id)) continue;
-        this.cross(marks, Math.round(x + cp.x * sx), Math.round(y + cp.y * sy) - 4);
+        // Altars you have prayed at are gold; the rest of the altars in rooms you have seen show dim (owner).
+        this.cross(marks, Math.round(x + cp.x * sx), Math.round(y + cp.y * sy) - 4, altarUsed(r.id, cp.id) ? 1 : 0.4);
       }
       if (r.boss) this.crown(marks, x + r.boss.x * sx, y + r.boss.y * sy - 5, beaten(r.boss.defeatFlag));
       if (hidden(r) > 0) this.diamond(marks, x + w - 5, y + 5);
@@ -228,10 +228,10 @@ export class MapOverlay {
     this.cityButton.setVisible(this.cities().length > 1);
   }
 
-  /** Gold cross on a dark backing (an altar you have prayed at). */
-  private cross(g: Phaser.GameObjects.Graphics, x: number, y: number): void {
-    g.fillStyle(0x0b0a10, 1).fillRect(x - 2, y - 4, 5, 9).fillRect(x - 3, y - 2, 7, 3);
-    g.fillStyle(0xf0ce6e, 1).fillRect(x - 1, y - 3, 2, 7).fillRect(x - 2, y - 1, 5, 1);
+  /** Gold cross on a dark backing: an altar (dim until you have prayed at it). */
+  private cross(g: Phaser.GameObjects.Graphics, x: number, y: number, a = 1): void {
+    g.fillStyle(0x0b0a10, a).fillRect(x - 2, y - 4, 5, 9).fillRect(x - 3, y - 2, 7, 3);
+    g.fillStyle(0xf0ce6e, a).fillRect(x - 1, y - 3, 2, 7).fillRect(x - 2, y - 1, 5, 1);
   }
 
   /** A boss: a crimson seal with a small gold crown (dim once beaten). */

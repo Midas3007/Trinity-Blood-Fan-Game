@@ -1,5 +1,6 @@
 import { parseRoom, type RoomData, type TiledMap } from './tiled';
 import world from '../data/world.json';
+import { expandSwarms } from '../enemies/flyers/swarms';
 
 // Every Tiled map in src/data/rooms, keyed by file name (without .tmj).
 const files = import.meta.glob<string>('../data/rooms/*.tmj', { eager: true, query: '?raw', import: 'default' });
@@ -7,7 +8,8 @@ const files = import.meta.glob<string>('../data/rooms/*.tmj', { eager: true, que
 export const rooms: Record<string, RoomData> = Object.fromEntries(
   Object.entries(files).map(([path, text]) => {
     const id = path.replace(/^.*\//, '').replace(/\.tmj$/, '');
-    return [id, parseRoom(id, JSON.parse(text) as TiledMap)];
+    const room = parseRoom(id, JSON.parse(text) as TiledMap);
+    return [id, { ...room, enemies: expandSwarms(room.enemies) }]; // a swarm marker becomes its flock
   }),
 );
 
