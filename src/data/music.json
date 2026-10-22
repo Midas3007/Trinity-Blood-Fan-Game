@@ -52,6 +52,6 @@
     "gyula_intro": "star", "gyula_wings": "scene_awaken", "gyula_outro": "scene_sad",
     "ending": "scene_dawn", "teaser": "scene_teaser",
     "cain_intro": "scene_tense", "cain_ascension": "scene_awaken", "cain_outro": "scene_sad",
-    "empire_arrival": "byzantium", "ion_meeting": "byzantium", "bazaar_murder": "scene_tense", "phase_step": "scene_awaken", "janissary_intro": "scene_tense", "janissary_outro": "byzantium", "cistern_child": "scene_sad", "undercity_ion": "scene_sad", "empress_audience": "palace", "radu_intro": "scene_tense", "radu_burns": "scene_awaken", "radu_outro": "scene_sad"
+    "empire_arrival": "byzantium", "ion_meeting": "byzantium", "bazaar_murder": "scene_tense", "phase_step": "scene_awaken", "janissary_intro": "scene_tense", "janissary_outro": "byzantium", "cistern_child": "scene_sad", "undercity_ion": "scene_sad", "empress_audience": "palace", "radu_intro": "scene_tense", "radu_burns": "scene_awaken", "radu_outro": "scene_sad", "spire_ascent": "scene_tense", "empire_epilogue": "scene_dawn"
   }
 }

@@ -2517,6 +2517,133 @@
      ]
     }
    ]
+  },
+  "spire_ascent": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/palace_lab_w0",
+     "caption": "The lift to the Spire.",
+     "actors": [
+      {
+       "anim": "npc_astharoshe_idle",
+       "x": 0.68,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "right"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Astharoshe",
+       "text": "The Magus's puppets are coming up the stairs. Someone has to stand here, and it will not be a priest."
+      },
+      {
+       "speaker": "Abel",
+       "text": "Duchess, he's my brother. Whatever happens up there..."
+      },
+      {
+       "speaker": "Astharoshe",
+       "text": "Then go and finish it, Terran. And come back down. That is an order from the Empire."
+      }
+     ]
+    }
+   ]
+  },
+  "empire_epilogue": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "color:0x6a4a5a",
+     "caption": "Dawn, at the Imperial Docks.",
+     "actors": [
+      {
+       "anim": "npc_ion_stand",
+       "x": 0.62,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "right"
+      },
+      {
+       "anim": "npc_astharoshe_idle",
+       "x": 0.8,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "right"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.28,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Ion",
+       "text": "The Empress sends this, sealed in her own hand. For Rome. She says it is the first letter of a long correspondence."
+      },
+      {
+       "speaker": "Abel",
+       "text": "Then I'd better not drop it in the sea. Thank you, Ion. For believing me when it would have been easier not to."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "color:0x6a4a5a",
+     "actors": [
+      {
+       "anim": "npc_astharoshe_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Astharoshe",
+       "text": "If Rome ever tires of you, the Empire has a use for frightening men who apologise to doors."
+      }
+     ]
+    },
+    {
+     "layout": "wide",
+     "bg": "color:0x2a3c54",
+     "caption": "The airship climbs into a clean sky.",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "Esther... I'm coming home. I'll tell you I'm only tired."
+      }
+     ]
+    }
+   ]
   }
  }
 }

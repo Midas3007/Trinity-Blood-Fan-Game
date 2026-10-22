@@ -391,7 +391,10 @@ def laboratory():
     r.mark("lore", 6, 14, lore="lab_notes")
     r.mark("boss", 62, 14, boss="radu", arenaLeft=24 * 16, arenaRight=86 * 16, defeatFlag="radu_defeated",
            intro="radu_intro", outro="radu_outro")
-    r.mark("label", 84, 8, text="a lift to the Spire roof (still being built)")
+    # Beyond the arena: the lift to the Spire roof, where Cain waits (stage 6). Astharoshe stays to hold the stairs.
+    r.mark("scene", 87, 14, scene="spire_ascent")
+    r.door(87, 10, 89, 15, "imperial_spire", "lift", requires="radu_defeated")
+    r.mark("entry", 86, 14, name="lift", facing=-1)
     return r
 
 

@@ -69,7 +69,7 @@ someone has waited nine hundred years for Abel to come home.
   He falls into the fire he made; Ion reaches for him too late. Reward: **Ignis** (relic: +15% damage).
 - The Magus watches from a gallery and leaves. ("A fine performance. Your brother will be so pleased.")
 
-### 6. The Imperial Spire (built) and the epilogue
+### 6. The Imperial Spire (built) and the epilogue ✅
 - The road: a lift from the laboratory to the Spire roof (`spire_ascent`, Astharoshe stays to hold the stairs).
 - **Abel vs Cain** (built): ground, then CENTUM in the sky.
 - **Epilogue** (`empire_epilogue`): dawn. Ion and Astharoshe see Abel off at the docks; a letter sealed by the Empress.

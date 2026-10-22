@@ -13,16 +13,26 @@ export class CreditsScene extends Phaser.Scene {
   private text!: Phaser.GameObjects.Text;
   private fast = false;
   private done = false;
+  /** The cutscene after the credits (Act 1: the next arc's teaser; the Empire arc's ending has none). */
+  private teaserId: string | null = 'teaser';
+  /** Replaces the credits' second line (which arc this was). */
+  private subtitle: string | null = null;
 
   constructor() {
     super(SCENES.credits);
+  }
+
+  init(data: { teaser?: string | null; subtitle?: string }): void {
+    this.teaserId = data.teaser === undefined ? 'teaser' : data.teaser;
+    this.subtitle = data.subtitle ?? null;
   }
 
   create(): void {
     audio.music(music.credits);
     this.done = false;
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x050408).setOrigin(0);
-    const lines = (credits as { lines: string[] }).lines;
+    const lines = [...(credits as { lines: string[] }).lines];
+    if (this.subtitle) lines[1] = this.subtitle;
     this.text = this.add
       .text(GAME_WIDTH / 2, GAME_HEIGHT + 10, lines.join('\n'), {
         fontFamily: 'serif',
@@ -47,9 +57,10 @@ export class CreditsScene extends Phaser.Scene {
     const next = (): void => {
       this.scene.start(SCENES.menu);
     };
-    if (!cutscene('teaser')) return next();
-    this.game.events.once('cutscene-done:teaser', next);
-    this.scene.launch(SCENES.cutscene, { id: 'teaser' });
+    const id = this.teaserId;
+    if (!id || !cutscene(id)) return next();
+    this.game.events.once(`cutscene-done:${id}`, next);
+    this.scene.launch(SCENES.cutscene, { id });
     this.scene.bringToTop(SCENES.cutscene);
   }
 }

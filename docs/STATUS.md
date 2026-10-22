@@ -26,7 +26,25 @@ Last updated: 2026-10-22
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — Empire arc stage 5: the Palace and Radu (2026-10-22)
+## Done (latest) — Empire arc stage 6: the lift, the epilogue — the arc is complete (2026-10-22)
+- **The lift:** past Radu's arena in the Flame Laboratory, opened by beating Radu.
+  - Astharoshe stays to hold the stairs against the Magus's puppets (`spire_ascent`).
+  - Push up to ride to the Spire roof. The Spire has a lift door back down to the lab.
+- **After Cain:** the **dawn epilogue** (`empire_epilogue`). At the docks, Ion hands Abel the Empress's sealed letter, and Astharoshe says goodbye. Then the airship, then the **credits** ("The Empire — an unofficial fan game"), then back to the title. No Act 1 teaser this time.
+- The old "road to Byzantium is still being built" banner is gone.
+- **The Empire arc can now be played start to finish:**
+  Istvan Station berth → docks → bazaar → Janissary Captain → cisterns → palace → Radu → lift → Cain → epilogue.
+- Verified: 237/237 tests. Bots in the real game:
+  - the lift scene plays, and the lift goes up to the Spire and back down;
+  - beating Cain reaches the credits;
+  - the epilogue and lift scenes were screenshotted.
+
+## Owner must test (on phone) — the ending
+1. Beat Radu, walk on past the arena, watch Astharoshe's scene, then push up at the lift.
+2. Beat Cain: the epilogue at dawn plays, then the credits, then the title.
+3. Optional: start a fresh save and play the whole arc from the airship berth.
+
+## Done (earlier) — Empire arc stage 5: the Palace and Radu (2026-10-22)
 - **6 new rooms.** The Lower Cistern now runs east to:
   - **The Old Conduit:** burning runoff and flame-beasts.
   - **The Servants' Stair:** a tall climb with landings, and a hidden chalice.

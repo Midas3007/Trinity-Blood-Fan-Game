@@ -852,7 +852,13 @@ export class PlayScene extends Phaser.Scene {
       this.player.endCrusnik();
       this.player.winged = false;
       saveStore.save(gameState.toSave(Date.now()));
-      this.time.delayedCall(3400, () => this.banner.show('THE EMPIRE ARC', 'Its finale, played first. The road to Byzantium is still being built.', 3600));
+      // The end of the Empire arc: dawn at the docks, then the credits (no teaser: that was Act 1's).
+      this.time.delayedCall(3400, () =>
+        this.playCutscene('empire_epilogue', () => {
+          this.scene.start(SCENES.credits, { teaser: null, subtitle: 'The Empire — an unofficial fan game' });
+        }),
+      );
+      return;
     }
     if (flag === 'gyula_defeated') {
       // The end: the ending scene, the credits, then the teaser for the next arc.
