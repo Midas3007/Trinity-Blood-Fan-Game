@@ -26,7 +26,45 @@ Last updated: 2026-10-22
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — Old English title, and the Empire arc's finale: Abel vs Cain (2026-10-22)
+## Done (latest) — Byzantium, the in-game map, Astharoshe (2026-10-22)
+- **The Empire arc, stage 2** (script in `docs/lore/act2-plan.md`): **8 rooms of Byzantium**:
+  - the street rooms: the Imperial Docks, the Harbour Wall, the Lamp Market, the Spice Stairs, the Grand Arcade;
+  - an upper loop and a lower loop: the Market Rooftops, the Old Aqueduct, the Silk Warehouse.
+- **Getting there:** after the Star of Sorrow, push up at the **airship berth** at the west end of **Istvan Station**.
+- **Look on a par with Istvan:**
+  - enterable **domed houses** with painted interiors, from a Byzantine version of the building kit: the painted fronts re-coloured, their roofs replaced by painted domes, the rooms in blue and gold (`tools/level/byz_kit.py`);
+  - a dark back row of **domed houses**, **domes and towers beyond the clouds**, blue lamps;
+  - market awnings, rugs and urns, a burning stall, a candle-lit dock chapel, a sandstone arcade;
+  - streets at the same height as Istvan's.
+- **New ability, the phase-step:**
+  - **DODGE in the air** dashes straight ahead, through blows and through **iron grilles**; once learned, rolls and slides pass grilles too.
+  - It's learned in the Grand Arcade's burning stall (a story scene).
+  - Grilles hide secrets: a heart, a merchant's ledger, an oil cache.
+- **Puzzle:** the **harbour gate** is shut; its winch is on the **customs house roof** in the docks.
+- **New enemies:** **imperial guards** (shield, spear; rich Methuselah blood) and **Rosenkreuz zealots** (fire bolts). Both have bestiary pages.
+- **Story scenes** (original lines): arrival, Ion, the murder, the phase-step. **Astharoshe** is blonde, in blue, with a bishop's mitre; **Ion** is blond, in blue. Both are recoloured stand-ins.
+- **Altars:** seven new ones, all on fast travel. **Lore:** Abel's letters to Esther. **Items:** heart5, chalice3. **Music:** *Lamps of Byzantium*.
+- **The in-game map** is now styled like the poster:
+  - region colours, room terrain, ladders;
+  - gold altar crosses, crimson boss seals, blue relic diamonds;
+  - the title in blackletter and a legend;
+  - one city per map (Istvan or Byzantium); tap a room for its name.
+- Verified: 228/228 tests (rooms connect and walk back, every grille/lever/scene/lore/altar is valid, every room is in a map region). The bot in the real game:
+  - berth → docks;
+  - the phase-step scene unlocks the dash, which passes the arcade grille;
+  - quay grate → aqueduct;
+  - all 8 rooms load with no errors.
+- **Not voiced yet:** the new scenes have no voice lines (no image/voice credits left).
+
+## Owner must test (on phone) — Byzantium
+1. Finish the Gyula fight, or turn the cheat on. At Istvan Station's west end, push up at the berth.
+2. Docks: the arrival scene. The harbour gate is shut: climb the customs house, go through the roof hatch, pull the winch.
+3. Lamp Market: Ion's scene. Climb the lamp tower to the rooftops, and drop through the trapdoor into the warehouse.
+4. Grand Arcade: the murder, then the burning stall → PHASE STEP. DODGE in the air through the bars at the end.
+5. Back at the Harbour Wall, phase through the storehouse bars for a heart.
+6. Open the map (M or the map button) in Istvan and in Byzantium.
+
+## Done (earlier) — Old English title, and the Empire arc's finale: Abel vs Cain (2026-10-22)
 - **Title**: the name in heavy gothic textura (UnifrakturCook, OFL) fading from bone to blood-red with a dark-red shadow; the subtitle in Old English (UnifrakturMaguntia). Social key art matches.
 - **The Empire arc** is approved; its **finale is built first**: **The Imperial Spire**, high above the clouds. For now it's reached through a **sealed door at the east end of the Star of Sorrow chamber** (the cheat opens it; later the arc's road leads there). An altar sits just outside the arena.
 - **Cain** (boss, 900 HP): Abel's 80% look recoloured with **white wings and coat, blond hair**, a **gold lance** (the scythe is taken out of his sprites and a lance drawn in along the same grip; a bright streak shows each thrust's reach). Phase 1 on the roof: lance combos with lunges, **red blasts** (aimed spread), an unparryable lance charge, a diving strike with shockwaves, a blink.

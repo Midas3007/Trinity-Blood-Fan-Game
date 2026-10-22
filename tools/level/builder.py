@@ -179,9 +179,10 @@ class Room:
             if self.rng.random() < 0.4:
                 self.mark("decor", x + 3, gy - 1, item=self.rng.choice(["crate", "barrel"]))
 
-    def backstreet(self, x0, x1, gy, hmin=6, hmax=13):
+    def backstreet(self, x0, x1, gy, hmin=6, hmax=13, domes=False):
         """A continuous row of houses behind the street (background only), with gabled tops and dim windows.
-        Fills only cells still empty in the back layer, so buildings in front keep their own interiors."""
+        Fills only cells still empty in the back layer, so buildings in front keep their own interiors.
+        domes=True: Byzantium's skyline, round domes (and the odd slim tower) instead of gables."""
         x = x0
         tone = 0
         while x < x1:
@@ -201,6 +202,25 @@ class Room:
                             lit = self.rng.random() < 0.35
                             name = ("back_house_b_window" if tone else "back_house_window") if lit else "back_house_dark"
                         self.put("back", cx, y, name)
+            if domes:
+                if self.rng.random() < 0.25:  # a slim tower with a pointed cap
+                    cx = x + w // 2
+                    for y in range(max(0, top - 6), top):
+                        if x0 <= cx < x1 and self.L["back"][y][cx] is None:
+                            self.put("back", cx, y, "back_roof_r" if y == top - 6 else "back_house")
+                else:  # a dome: a half circle of the house's width
+                    r_ = w / 2
+                    for i in range(w):
+                        cx = x + i
+                        d = abs(i + 0.5 - r_) / r_
+                        hgt = int(round(r_ * (1 - d * d) ** 0.5 * 0.8))
+                        for k in range(hgt):
+                            y = top - 1 - k
+                            if x0 <= cx < x1 and y >= 0 and self.L["back"][y][cx] is None:
+                                nm = "back_cornice" if k == hgt - 1 else "back_house"
+                                self.put("back", cx, y, nm)
+                x += w
+                continue
             # chimney
             cx = x + self.rng.randint(1, max(1, w - 2))
             if w >= 6 and cx < x1 and self.rng.random() < 0.6:

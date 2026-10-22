@@ -32,7 +32,7 @@ def docks():
     r.mark("scene", 10, GY - 1, scene="empire_arrival")
     for x in (2, 5):
         r.mark("decor", x, GY - 7, item="chain", h=40)          # mooring chains
-    r.backwall(["wall_roman"], GY - 12, GY, 22, 46)             # the dock chapel
+    r.backwall(["wall_nave"], GY - 12, GY, 22, 46)              # the dock chapel
     for x in (22, 45):
         r.prop("column", x, GY - 1, 160)
     r.mark("checkpoint", 34, GY - 1, "dock_altar")
@@ -49,6 +49,7 @@ def docks():
     r.mark("enemy", 60, GY - 13, enemy="zealot")              # the customs house's top floor
     r.mark("enemy", 80, GY - 1, enemy="imperialGuard")
     r.mark("enemy", 66, GY - 22, enemy="bat")
+    r.backstreet(8, r.W, GY, domes=True)
     return r
 
 
@@ -57,6 +58,7 @@ def quay():
     r.ground(GY, top="stone")
     r.wall(0, GY, r.W, r.H)
     r.wall(r.W - 1, 0, r.W, 1)                                  # matches the market's corner
+    house(r, 14, 10, GY, 2, "house_byz_tile", doors=("left", "right"), lit=0.5)
     r.gate(5, GY - 6, 7, GY, "harbour_gate")                    # opened by the winch on the customs house roof
     r.wall(5, 0, 7, GY - 6, "gothic_stone")
     r.mark("label", 3, GY - 8, text="the harbour gate is shut")
@@ -84,6 +86,7 @@ def quay():
     r.mark("enemy", 40, GY - 11, enemy="zealot")
     r.mark("enemy", 18, GY - 1, enemy="imperialGuard")
     r.mark("enemy", 86, GY - 1, enemy="imperialGuard")
+    r.backstreet(1, r.W, GY, domes=True)
     return r
 
 
@@ -94,7 +97,8 @@ def market():
     # Market stalls: canopies you can stand on.
     house(r, 38, 14, GY, 3, "house_byz_sand", doors=("left", "right"), balconies=(2,), climb="ladder", lit=0.6)
     house(r, 68, 16, GY, 3, "house_byz_tile", doors=("left", "right"), balconies=(1,), lit=0.5)
-    for x0, x1 in ((8, 18), (26, 34), (56, 64), (88, 98)):
+    house(r, 86, 14, GY, 2, "house_byz_stone", doors=("left", "right"), balconies=(1,), lit=0.4)
+    for x0, x1 in ((8, 18), (26, 34), (56, 64)):
         r.platform(x0, x1, GY - 5, "plank")
         r.mark("decor", (x0 + x1) // 2, GY - 6, item="awning", h=(x1 - x0) * 16)
         r.mark("decor", x0 + 2, GY - 1, item="urn")
@@ -116,8 +120,9 @@ def market():
     r.mark("enemy", 46, GY - 1, enemy="zealot")
     r.mark("enemy", 60, GY - 6, enemy="zealot")
     r.mark("enemy", 76, GY - 7, enemy="imperialGuard")          # the tiled house's first floor
-    r.mark("enemy", 94, GY - 1, enemy="imperialGuard")
+    r.mark("enemy", 92, GY - 1, enemy="imperialGuard")
     r.mark("enemy", 44, GY - 13, enemy="zealot")
+    r.backstreet(1, r.W, GY, domes=True)
     r.mark("enemy", 40, GY - 12, enemy="bat")
     r.mark("enemy", 90, GY - 12, enemy="bat")
     return r
@@ -151,7 +156,7 @@ def arcade():
     r.ground(ARCADE_GY, top="cobble")
     r.wall(0, ARCADE_GY, r.W, r.H)
     r.wall(0, 0, 1, ARCADE_GY - 5)                              # only the street from the spice stairs comes in
-    r.backwall(["wall_roman"], ARCADE_GY - 12, ARCADE_GY, 0, 92)
+    r.backwall(["wall_byz_arcade"], ARCADE_GY - 12, ARCADE_GY, 0, 92)
     for x in range(6, 92, 14):
         r.prop("column", x, ARCADE_GY - 1, 190)
     r.mark("scene", 22, ARCADE_GY - 1, scene="bazaar_murder")

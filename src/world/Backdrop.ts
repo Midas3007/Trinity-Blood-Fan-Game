@@ -107,7 +107,7 @@ export class Backdrop {
   /** Byzantium beyond the clouds: domes, towers and a lit window here and there, in two dim layers. */
   private domeSkyline(scene: Phaser.Scene, roomWidth: number): void {
     const r = rng(33);
-    for (const [layer, color, scroll, baseY, scale] of [[0, 0x1c2a3c, 0.06, 0.56, 0.7], [1, 0x14202e, 0.12, 0.62, 1]] as const) {
+    for (const [layer, color, scroll, baseY, scale] of [[0, 0x2a3c54, 0.06, 0.5, 0.75], [1, 0x1e2c40, 0.12, 0.56, 1.1]] as const) {
       const g = scene.add.graphics().setScrollFactor(scroll, 0.05).setDepth(DEPTH_SKY + 1.5 + layer * 0.2);
       const y0 = GAME_HEIGHT * baseY;
       const span = GAME_WIDTH + roomWidth * scroll + 80;

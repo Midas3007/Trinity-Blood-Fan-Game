@@ -77,6 +77,14 @@ def byz_house(src: str, out: str, matrix, lift=(0, 0, 0), dome_body=(46, 84, 110
     img.save(KIT / f"{out}.png")
 
 
+def byz_arcade(out: str) -> None:
+    """The Roman arcade painting without its flooded floor (the lower quarter), warmed to sandstone."""
+    img = Image.open(KIT / "wall_roman.png").convert("RGBA")
+    w, h = img.size
+    dry = img.crop((0, 0, w, int(h * 0.74))).resize((w, h), Image.Resampling.LANCZOS)
+    grade(dry, SAND, (12, 6, 0)).save(KIT / f"{out}.png")
+
+
 def byz_room(src: str, out: str) -> None:
     grade(Image.open(KIT / f"{src}.png"), INTERIOR, (6, 4, 14)).save(KIT / f"{out}.png")
 
@@ -86,6 +94,7 @@ if __name__ == "__main__":
     byz_house("house_rose", "house_byz_white", WHITE, (30, 30, 34), dome_body=(52, 96, 122))
     byz_house("house_blue", "house_byz_tile", TILE, (0, 6, 14), dome_body=(120, 92, 40))
     byz_house("house_gothic", "house_byz_stone", SAND, (4, 2, 0), dome_body=(36, 70, 90))
+    byz_arcade("wall_byz_arcade")
     for src in ("room_poor", "room_stair", "room_tavern"):
         byz_room(src, src.replace("room_", "room_byz_"))
     print("byzantine kit written")
