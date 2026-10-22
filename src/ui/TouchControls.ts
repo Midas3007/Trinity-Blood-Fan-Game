@@ -1,16 +1,18 @@
 import Phaser from 'phaser';
-import { COLORS, GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
+import { GAME_HEIGHT, GAME_WIDTH } from '../core/constants';
 import { emptyFrame, type Action, type InputFrame } from '../systems/input/actions';
 import { stickUpJump, stickVector, type Vec2 } from '../systems/input/stick';
+import { drawKnob, drawMedallion, drawStickBase } from './buttonArt';
 import { buttonAt, STICK_ZONE_TOP, STICK_ZONE_WIDTH, type ButtonLayout, type TouchLayout } from './touchLayout';
 
 const UI_DEPTH = 1000;
-const IDLE_ALPHA = 0.35;
-const PRESSED_ALPHA = 0.75;
+/** The label under each button's icon. */
+const LABEL_STYLE = { fontFamily: 'serif', fontStyle: 'bold', fontSize: '7px', color: '#eadfc4', stroke: '#0b0a10', strokeThickness: 2 };
 
 interface ButtonView {
   layout: ButtonLayout;
-  circle: Phaser.GameObjects.Arc;
+  art: Phaser.GameObjects.Graphics;
+  held: boolean;
 }
 
 /**
@@ -24,7 +26,8 @@ export class TouchControls {
   private buttonPointers = new Map<number, Action>();
   /** Buttons pressed since the last read(), so a very quick tap is never lost between frames. */
   private tappedSinceRead = new Set<Action>();
-  private knob!: Phaser.GameObjects.Arc;
+  private knob!: Phaser.GameObjects.Graphics;
+  private knobHeld = false;
   private buttons: ButtonView[] = [];
   private stickX = 0;
   private stickY = 0;
@@ -52,31 +55,25 @@ export class TouchControls {
     const { stick } = this.layout;
     this.stickX = stick.x * GAME_WIDTH;
     this.stickY = stick.y * GAME_HEIGHT;
-    const ring = scene.add
-      .circle(this.stickX, this.stickY, stick.radius, COLORS.player, 0.12)
-      .setStrokeStyle(1, COLORS.player, IDLE_ALPHA)
-      .setScrollFactor(0)
-      .setDepth(UI_DEPTH);
-    this.knob = scene.add
-      .circle(this.stickX, this.stickY, stick.knobRadius, COLORS.player, IDLE_ALPHA)
-      .setScrollFactor(0)
-      .setDepth(UI_DEPTH + 1);
+    const ring = scene.add.graphics().setPosition(this.stickX, this.stickY).setScrollFactor(0).setDepth(UI_DEPTH);
+    drawStickBase(ring, stick.radius);
+    this.knob = scene.add.graphics().setPosition(this.stickX, this.stickY).setScrollFactor(0).setDepth(UI_DEPTH + 1);
+    drawKnob(this.knob, stick.knobRadius, false);
+    this.knobHeld = false;
     this.parts = [ring, this.knob];
     this.buttons = this.layout.buttons.map((b) => {
       const x = b.x * GAME_WIDTH;
       const y = b.y * GAME_HEIGHT;
-      const circle = scene.add
-        .circle(x, y, b.radius, COLORS.accent, IDLE_ALPHA)
-        .setStrokeStyle(1, COLORS.player, IDLE_ALPHA)
-        .setScrollFactor(0)
-        .setDepth(UI_DEPTH);
+      const art = scene.add.graphics().setPosition(x, y).setScrollFactor(0).setDepth(UI_DEPTH);
+      drawMedallion(art, b.radius, b.action, false);
       const label = scene.add
-        .text(x, y, b.label, { fontFamily: 'monospace', fontSize: '8px', color: COLORS.text })
+        .text(x, y + b.radius * 0.56, b.label, LABEL_STYLE)
         .setOrigin(0.5)
         .setScrollFactor(0)
-        .setDepth(UI_DEPTH + 1);
-      this.parts.push(circle, label);
-      return { layout: b, circle };
+        .setDepth(UI_DEPTH + 1)
+        .setAlpha(0.9);
+      this.parts.push(art, label);
+      return { layout: b, art, held: false };
     });
     for (const p of this.parts) (p as unknown as Phaser.GameObjects.Components.Visible).setVisible(this.shown);
   }
@@ -191,10 +188,16 @@ export class TouchControls {
     const { radius } = this.layout.stick;
     const active = this.stickPointerId !== null;
     this.knob.setPosition(this.stickX + this.stickVec.x * radius, this.stickY + this.stickVec.y * radius);
-    this.knob.setFillStyle(COLORS.player, active ? PRESSED_ALPHA : IDLE_ALPHA);
+    if (active !== this.knobHeld) {
+      this.knobHeld = active;
+      drawKnob(this.knob, this.layout.stick.knobRadius, active);
+    }
     const held = new Set(this.buttonPointers.values());
     for (const v of this.buttons) {
-      v.circle.setFillStyle(COLORS.accent, held.has(v.layout.action) ? PRESSED_ALPHA : IDLE_ALPHA);
+      const on = held.has(v.layout.action);
+      if (on === v.held) continue; // redraw only on change
+      v.held = on;
+      drawMedallion(v.art, v.layout.radius, v.layout.action, on);
     }
   }
 

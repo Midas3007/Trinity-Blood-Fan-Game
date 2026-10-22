@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH } from '../core/constants';
+import { ART } from './buttonArt';
 
 const DEPTH = 1600;
 const R = 9;
@@ -9,7 +10,8 @@ const Y = 14;
 export class CornerButtons {
   constructor(scene: Phaser.Scene, onMap: () => void, onPause: () => void) {
     const make = (x: number, draw: (g: Phaser.GameObjects.Graphics) => void, onTap: () => void): void => {
-      const c = scene.add.circle(x, Y, R, 0x241b2e, 0.8).setStrokeStyle(1, 0xc4a04a).setScrollFactor(0).setDepth(DEPTH);
+      const c = scene.add.circle(x, Y, R, ART.plate, 0.75).setStrokeStyle(2, ART.gold).setScrollFactor(0).setDepth(DEPTH);
+      scene.add.circle(x, Y, R - 3).setStrokeStyle(1, ART.goldDark).setScrollFactor(0).setDepth(DEPTH);
       const g = scene.add.graphics().setScrollFactor(0).setDepth(DEPTH + 1);
       g.setPosition(x, Y);
       draw(g);

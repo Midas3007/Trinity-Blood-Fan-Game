@@ -309,3 +309,4 @@
 | The palace is reached up a servants' stair from the cisterns' conduit; the lab under the throne opens after the audience (scene flag gate) | Follows the act 2 script (down with Astharoshe, then up into the palace) | A street entrance |
 | Byzantine tea service is a new 4-piece set (teapot joins it), not more tins | Adding tins to the old set would change what existing saves need | More tins |
 | Swarm markers expand to flyers at room load (flyers.json swarms) | Keeps flyer logic untouched; data-driven | A new flock AI |
+| Touch controls drawn as code medallions (buttonArt.ts), not image assets | On brand with the gold/crimson UI, crisp at any size the player picks, no new art | Painted button images |

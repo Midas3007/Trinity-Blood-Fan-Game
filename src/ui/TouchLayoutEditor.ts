@@ -4,6 +4,7 @@ import { clampSpot, type TouchSpot } from '../systems/settings';
 import type { Action } from '../systems/input/actions';
 import { GOTHIC, GothicButton } from './GothicButton';
 import type { TouchLayout } from './touchLayout';
+import { drawMedallion, drawStickBase } from './buttonArt';
 
 const DEPTH = 1700;
 const STEP = 3;
@@ -16,7 +17,7 @@ type Key = Action | 'stick';
  */
 export class TouchLayoutEditor {
   private parts: Phaser.GameObjects.GameObject[] = [];
-  private spots = new Map<Key, { spot: TouchSpot; circle: Phaser.GameObjects.Arc; label: Phaser.GameObjects.Text }>();
+  private spots = new Map<Key, { spot: TouchSpot; circle: Phaser.GameObjects.Arc; label: Phaser.GameObjects.Text; art: Phaser.GameObjects.Graphics }>();
   private selected: Key = 'stick';
   private buttons: GothicButton[] = [];
   private shown = false;
@@ -44,21 +45,26 @@ export class TouchLayoutEditor {
       .setDepth(DEPTH + 1);
     this.parts.push(dim, title);
     const add = (key: Key, spot: TouchSpot, text: string): void => {
+      // the drag handle is an almost clear circle; the medallion art is drawn under it
       const circle = s.add
-        .circle(spot.x * GAME_WIDTH, spot.y * GAME_HEIGHT, spot.radius, COLORS.accent, 0.55)
-        .setStrokeStyle(2, COLORS.player, 0.8)
+        .circle(spot.x * GAME_WIDTH, spot.y * GAME_HEIGHT, spot.radius, 0xffffff, 0.01)
         .setScrollFactor(0)
-        .setDepth(DEPTH + 2)
+        .setDepth(DEPTH + 3)
         .setInteractive({ draggable: true, useHandCursor: true });
-      const label = s.add.text(circle.x, circle.y, text, { fontFamily: 'monospace', fontSize: '8px', color: COLORS.text }).setOrigin(0.5).setScrollFactor(0).setDepth(DEPTH + 3);
+      const art = s.add.graphics().setPosition(circle.x, circle.y).setScrollFactor(0).setDepth(DEPTH + 2);
+      const label = s.add
+        .text(circle.x, circle.y + spot.radius * 0.5, text, { fontFamily: 'serif', fontStyle: 'bold', fontSize: '7px', color: COLORS.text, stroke: '#0b0a10', strokeThickness: 2 })
+        .setOrigin(0.5)
+        .setScrollFactor(0)
+        .setDepth(DEPTH + 2);
       circle.on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => this.select(key));
       circle.on(Phaser.Input.Events.GAMEOBJECT_DRAG, (_p: Phaser.Input.Pointer, x: number, y: number) => {
         const e = this.spots.get(key)!;
         e.spot = clampSpot({ ...e.spot, x: x / GAME_WIDTH, y: y / GAME_HEIGHT });
         this.place(key);
       });
-      this.spots.set(key, { spot: { ...spot }, circle, label });
-      this.parts.push(circle, label);
+      this.spots.set(key, { spot: { ...spot }, circle, label, art });
+      this.parts.push(circle, label, art);
     };
     add('stick', { x: layout.stick.x, y: layout.stick.y, radius: layout.stick.radius }, 'MOVE');
     for (const b of layout.buttons) add(b.action, { x: b.x, y: b.y, radius: b.radius }, b.label);
@@ -80,12 +86,28 @@ export class TouchLayoutEditor {
     const e = this.spots.get(key);
     if (!e) return;
     e.circle.setPosition(e.spot.x * GAME_WIDTH, e.spot.y * GAME_HEIGHT).setRadius(e.spot.radius);
-    e.label.setPosition(e.circle.x, e.circle.y);
+    e.label.setPosition(e.circle.x, e.circle.y + e.spot.radius * 0.5);
+    e.art.setPosition(e.circle.x, e.circle.y);
+    this.paint(key);
+  }
+
+  /** The control as it looks in play; the selected one lit as if held. */
+  private paint(key: Key): void {
+    const e = this.spots.get(key);
+    if (!e) return;
+    if (key === 'stick') {
+      drawStickBase(e.art, e.spot.radius);
+      if (key === this.selected) e.art.lineStyle(2, 0xf0ce6e, 1).strokeCircle(0, 0, e.spot.radius + 2);
+      e.art.fillStyle(0x6a1626, key === this.selected ? 0.9 : 0.6).fillCircle(0, 0, e.spot.radius * 0.4);
+      e.art.lineStyle(2, 0xc4a04a, 1).strokeCircle(0, 0, e.spot.radius * 0.4);
+    } else {
+      drawMedallion(e.art, e.spot.radius, key, key === this.selected);
+    }
   }
 
   private select(key: Key): void {
     this.selected = key;
-    for (const [k, e] of this.spots) e.circle.setStrokeStyle(2, k === key ? 0xe8c86a : COLORS.player, 0.9);
+    for (const k of this.spots.keys()) this.paint(k);
   }
 
   private resize(d: number): void {

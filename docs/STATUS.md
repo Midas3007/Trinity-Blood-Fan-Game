@@ -26,7 +26,19 @@ Last updated: 2026-10-22
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — the arc's extras: spear, swarm, flame bursts, tea service, altars (2026-10-22)
+## Done (latest) — gothic touch buttons (2026-10-22)
+- Every on-screen button is now a gothic medallion (`src/ui/buttonArt.ts`): a dark plate in a double gold ring with four studs, a pixel icon and a small serif label.
+  - Icons: a sword (ATK), rising wings (JUMP), a dash (DODGE), a blood drop (ABIL), a holy-water flask (HEAL), a cross-shield (PARRY).
+  - Held, a button turns crimson with a gold glow.
+- The stick has a gold notched ring and a knob set with a crimson gem.
+- The touch-layout editor shows the same art, with the selected control lit. The map and pause buttons match.
+- Verified: 242/242 tests, build OK. Screenshots in the real game, at rest and with ATK held.
+
+## Owner must test (on phone) — buttons
+1. Do the icons read at a glance? Is anything too faint (JUMP's wings are the subtlest)?
+2. Options → Touch layout: drag and resize. The art follows.
+
+## Done (earlier) — the arc's extras: spear, swarm, flame bursts, tea service, altars (2026-10-22)
 - **The Byzantine spear** (second priest weapon). It lies beyond the Janissary Captain's arena, as his parting gift.
   - Two long thrusts, longer reach than the sword. Low and air thrusts. The revolver finisher.
   - Sheets built from the sword's by `tools/sprites/spear.py`: the blade replaced by a long shaft and a leaf head.
