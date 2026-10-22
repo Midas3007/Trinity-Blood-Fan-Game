@@ -42,7 +42,7 @@ describe('rooms (Tiled maps)', () => {
     const levers = new Set([...Object.values(rooms).flatMap((r) => r.levers.map((l) => l.flag)), ...world.storyFlags]);
     for (const r of Object.values(rooms)) {
       for (const e of r.enemies) expect(enemyConfigs[e.type] ?? flyerConfigs[e.type], `${r.id}: ${e.type}`).toBeDefined();
-      for (const g of r.gates) expect(levers.has(g.opens), `${r.id}: gate ${g.opens}`).toBe(true);
+      for (const g of r.gates) expect(levers.has(g.opens) || g.opens === 'grille', `${r.id}: gate ${g.opens}`).toBe(true); // grilles: only the phase-step passes
       for (const l of r.lore) expect(loreEntry(l.id), `${r.id}: lore ${l.id}`).not.toBeNull();
     }
   });

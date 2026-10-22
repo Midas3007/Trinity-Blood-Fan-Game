@@ -36,6 +36,9 @@ export interface PlayerTuning {
   flyFlapVelocity: number;
   /** Crusnik ABIL: a second tap within this long is a double tap (chain lash); one tap changes back (ms). */
   doubleTapMs: number;
+  /** Phase-step (DODGE in the air, once unlocked): speed (px/s) and how long it lasts and protects (ms). */
+  airDashSpeed: number;
+  airDashMs: number;
   /** Ledge grab: how far above/below the head a ledge top is caught, the gap allowed to the wall (px). */
   ledgeReachAbove: number;
   ledgeReachBelow: number;

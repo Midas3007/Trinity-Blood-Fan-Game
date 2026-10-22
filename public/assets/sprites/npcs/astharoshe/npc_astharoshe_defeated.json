@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "defeated": {
+      "durations_ms": [
+        600
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 112,
+  "columns": 1,
+  "entity": "npc_astharoshe",
+  "palette": "requiem48.hex",
+  "pivot_x": 56,
+  "pivot_y": 96,
+  "sheet": "npc_astharoshe_defeated.png",
+  "source_hashes": [
+    "sha256:8a4165d508638e5221977cf6136d22cb1b9a9c2c192fb791bb564f6a8a50aad9"
+  ],
+  "variant_of": "bosses/paula/boss_paula_defeated.png"
+}

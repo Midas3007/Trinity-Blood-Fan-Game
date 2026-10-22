@@ -1,0 +1,29 @@
+{
+  "animations": {
+    "walk": {
+      "durations_ms": [
+        260,
+        260
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 96,
+  "columns": 2,
+  "entity": "enemy_zealot",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 64,
+  "sheet": "enemy_zealot_walk.png",
+  "source_hashes": [
+    "sha256:18a3c7ea2bfb849ff40064af822ffc47deb394332f3eb23490d3e68528a90534",
+    "sha256:dce4baaa4580f94d3e262e459f228194629ca723710c14ce2dc9c7f03e21a15b"
+  ],
+  "variant_of": "enemies/inquisitor/enemy_inquisitor_walk.png"
+}

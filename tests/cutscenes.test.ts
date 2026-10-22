@@ -34,4 +34,8 @@ describe('cutscenes', () => {
     for (const b of [paula, kampfer, petros] as { phaseScene?: string }[]) if (b.phaseScene) expect(cutscene(b.phaseScene)).toBeDefined();
     expect(cutscene('opening')).toBeDefined();
   });
+
+  it('every story-scene marker in the rooms has its cutscene written', () => {
+    for (const r of Object.values(rooms)) for (const sc of r.scenes) expect(cutscene(sc.id), `${r.id}: ${sc.id}`).toBeDefined();
+  });
 });

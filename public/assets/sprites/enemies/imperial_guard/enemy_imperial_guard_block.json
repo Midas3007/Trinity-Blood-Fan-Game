@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "block": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 72,
+  "cell_width": 96,
+  "columns": 1,
+  "entity": "enemy_imperial_guard",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 72,
+  "sheet": "enemy_imperial_guard_block.png",
+  "source_hashes": [
+    "sha256:c3de9e3824917cfd0ebdf62f14e527e508d4a467c6d6c0f14614b7b02decf292"
+  ],
+  "variant_of": "enemies/iron_choir/enemy_iron_choir_block.png"
+}

@@ -64,6 +64,11 @@ import { cutscene } from '../cutscenes';
 import { FlyerManager } from '../../enemies/flyers/FlyerManager';
 import { isFlyer } from '../../enemies/flyers/FlyerBrain';
 
+/** The phase-step's flag (granted by the Bazaar's burning-stall scene). */
+const DASH_FLAG = 'ability:dash';
+/** How close Abel must pass a story-scene marker (px). */
+const SCENE_REACH_X = 14;
+const SCENE_REACH_Y = 40;
 /** Long frames (tab switches, hitches) are clamped so timers and states don't jump. */
 const MAX_FRAME_MS = 50;
 /** Training dummies regrow after this long (ms). */
@@ -231,7 +236,9 @@ export class PlayScene extends Phaser.Scene {
     this.player.placeAt(at.x, at.y);
     this.player.facing = at.facing;
     if (gameState.hp !== null) this.player.setHealth(gameState.hp);
-    this.physics.add.collider(this.player.sprite, solids);
+    // Iron grilles are solid, except to the phase-step.
+    this.physics.add.collider(this.player.sprite, solids, undefined, (_p, o) => !(this.player.phasing && this.runtime.grilles.has(o as Phaser.GameObjects.GameObject)));
+    this.player.dashUnlocked = gameState.hasFlag(DASH_FLAG) || cheat.on;
     this.player.stepSolids = solidRects;
     this.physics.add.collider(this.player.sprite, oneways, undefined, (_p, o) =>
       landsOnTop(this.player.body, (o as Phaser.GameObjects.Rectangle).body as Phaser.Physics.Arcade.StaticBody, this.player.dropMs > 0 || this.player.state === 'climb'),
@@ -579,6 +586,23 @@ export class PlayScene extends Phaser.Scene {
     });
   }
 
+  /** A story scene the first time Abel passes its marker (once per save); its `unlocks` flag is granted after. */
+  private storyScene(): boolean {
+    const p = this.player;
+    for (const sc of this.roomData.scenes) {
+      if (gameState.hasFlag(`seen:${sc.id}`)) continue;
+      if (Math.abs(p.x - sc.x) > SCENE_REACH_X || Math.abs(p.feetY - sc.y) > SCENE_REACH_Y) continue;
+      gameState.setFlag(`seen:${sc.id}`);
+      p.vx = 0;
+      this.playCutscene(sc.id, () => {
+        if (sc.unlocks) this.unlock(sc.unlocks);
+        saveStore.save(gameState.toSave(Date.now()));
+      });
+      return true;
+    }
+    return false;
+  }
+
   private readonly cheatCode = new CheatCode();
   /** Wings given by the cheat (not the final battle's), taken back when it is switched off. */
   private cheatWings = false;
@@ -589,6 +613,7 @@ export class PlayScene extends Phaser.Scene {
     const a = this.actions;
     if (this.cheatCode.frame(this.time.now, a.moveX, a.moveY, a.justPressed('attack'), a.justPressed('dodge'))) {
       cheat.on = !cheat.on;
+      this.player.dashUnlocked = cheat.on || gameState.hasFlag(DASH_FLAG);
       this.player.weapon = cheat.on ? 'sword' : currentWeapon((f) => gameState.hasFlag(f));
       if (cheat.on) this.runtime.liftAll();
       this.banner.show(cheat.on ? 'BLESSED' : 'MORTAL', cheat.on ? 'Cheat on: no damage, endless water, the sword, every gate and altar open.\nTap JUMP in the air to fly; ABIL for the eighty percent form.' : 'Cheat off.', 1800);
@@ -624,6 +649,7 @@ export class PlayScene extends Phaser.Scene {
     this.runtime.updateLandmarks(this.game.loop.delta, p.x, p.feetY);
     p.onOneway = p.onGround && this.standingOnOneway();
     if (this.crossEdge()) return;
+    if (this.storyScene()) return;
     const lore = p.onGround ? this.runtime.loreAt(p.x) : null;
     this.lorePanel.show(lore);
     this.pickups.update(this.game.loop.delta);
@@ -888,6 +914,12 @@ export class PlayScene extends Phaser.Scene {
   /** A progression unlock from reading lore. Today only the Crusnik form. */
   private unlock(flag: string): void {
     gameState.setFlag(flag);
+    if (flag === DASH_FLAG) {
+      this.player.dashUnlocked = true;
+      this.banner.show('PHASE STEP', 'DODGE in the air: dash straight ahead, through blows and through iron grilles.\nOn the ground, the roll passes grilles too.', 3200);
+      saveStore.save(gameState.toSave(Date.now()));
+      return;
+    }
     if (flag !== crusnikConfig.unlockFlag) return;
     const cm = this.player.crusnik;
     cm.unlocked = true;

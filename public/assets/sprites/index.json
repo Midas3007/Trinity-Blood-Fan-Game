@@ -3033,6 +3033,142 @@
         "sha256:2bf4b0e5c255b0b8d16f579e6d1f5513cc8fb39bc43ea653162d977abf896f58"
       ]
     },
+    "enemies/imperial_guard/enemy_imperial_guard_block.png": {
+      "animations": {
+        "block": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "enemy_imperial_guard",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "enemy_imperial_guard_block.png",
+      "source_hashes": [
+        "sha256:c3de9e3824917cfd0ebdf62f14e527e508d4a467c6d6c0f14614b7b02decf292"
+      ],
+      "variant_of": "enemies/iron_choir/enemy_iron_choir_block.png"
+    },
+    "enemies/imperial_guard/enemy_imperial_guard_chop.png": {
+      "animations": {
+        "chop": {
+          "durations_ms": [
+            560,
+            140
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 2,
+      "entity": "enemy_imperial_guard",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "enemy_imperial_guard_chop.png",
+      "source_hashes": [
+        "sha256:dae674bd28f3d90a7ba472a8567cce762973b82f16a827a26e5d1ea14ed46918",
+        "sha256:b956164dabeb0598b3429347198c5b96c2eef4f3d1e4b2c19b94e3a283a39d65"
+      ],
+      "variant_of": "enemies/iron_choir/enemy_iron_choir_chop.png"
+    },
+    "enemies/imperial_guard/enemy_imperial_guard_collapse.png": {
+      "animations": {
+        "collapse": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "enemy_imperial_guard",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "enemy_imperial_guard_collapse.png",
+      "source_hashes": [
+        "sha256:37970f044d9471e31cd692e10b59d3e632161064a4fe09fcd111b31c88925d69"
+      ],
+      "variant_of": "enemies/iron_choir/enemy_iron_choir_collapse.png"
+    },
+    "enemies/imperial_guard/enemy_imperial_guard_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "enemy_imperial_guard",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "enemy_imperial_guard_idle.png",
+      "source_hashes": [
+        "sha256:ca77a93fd2672e706a0700d5d1aa2fcd20a4aed71447de09e1b1927b22a7b35e"
+      ],
+      "variant_of": "enemies/iron_choir/enemy_iron_choir_idle.png"
+    },
+    "enemies/imperial_guard/enemy_imperial_guard_walk.png": {
+      "animations": {
+        "walk": {
+          "durations_ms": [
+            260,
+            260
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 2,
+      "entity": "enemy_imperial_guard",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "enemy_imperial_guard_walk.png",
+      "source_hashes": [
+        "sha256:ca77a93fd2672e706a0700d5d1aa2fcd20a4aed71447de09e1b1927b22a7b35e",
+        "sha256:fced6c4761ea946f0897b4e939fa30d236fd925ecba71fcc574718b6f5dcae7d"
+      ],
+      "variant_of": "enemies/iron_choir/enemy_iron_choir_walk.png"
+    },
     "enemies/inquisitor/enemy_inquisitor_down.png": {
       "animations": {
         "down": {
@@ -3569,6 +3705,298 @@
         "sha256:51aca36b5a20b783c950ff30d2e8b5c75762128c7adbc23e3c68df950142e437"
       ]
     },
+    "enemies/zealot/enemy_zealot_down.png": {
+      "animations": {
+        "down": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "enemy_zealot",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "enemy_zealot_down.png",
+      "source_hashes": [
+        "sha256:3269f506598f589e901aca4b898bbe529e210a4190d5e7de1a2c885ff37642d1"
+      ],
+      "variant_of": "enemies/inquisitor/enemy_inquisitor_down.png"
+    },
+    "enemies/zealot/enemy_zealot_hurt.png": {
+      "animations": {
+        "hurt": {
+          "durations_ms": [
+            300
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "enemy_zealot",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "enemy_zealot_hurt.png",
+      "source_hashes": [
+        "sha256:f71e7c6bb2768e98401db5b8bed2562a9af01c39d76e589d7359162b9925a171"
+      ],
+      "variant_of": "enemies/inquisitor/enemy_inquisitor_hurt.png"
+    },
+    "enemies/zealot/enemy_zealot_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "enemy_zealot",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "enemy_zealot_idle.png",
+      "source_hashes": [
+        "sha256:18a3c7ea2bfb849ff40064af822ffc47deb394332f3eb23490d3e68528a90534"
+      ],
+      "variant_of": "enemies/inquisitor/enemy_inquisitor_idle.png"
+    },
+    "enemies/zealot/enemy_zealot_shoot.png": {
+      "animations": {
+        "shoot": {
+          "durations_ms": [
+            520,
+            120
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 2,
+      "entity": "enemy_zealot",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "enemy_zealot_shoot.png",
+      "source_hashes": [
+        "sha256:bda30a9e3f51aeaa70661321335c3b2c875b683d32ac8589b18a079b4689dacf",
+        "sha256:519800ff20cbfbe5f22484c8ce971727c6f89e9183f90c5b098d0044843bc138"
+      ],
+      "variant_of": "enemies/inquisitor/enemy_inquisitor_shoot.png"
+    },
+    "enemies/zealot/enemy_zealot_walk.png": {
+      "animations": {
+        "walk": {
+          "durations_ms": [
+            260,
+            260
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 64,
+      "cell_width": 96,
+      "columns": 2,
+      "entity": "enemy_zealot",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 64,
+      "sheet": "enemy_zealot_walk.png",
+      "source_hashes": [
+        "sha256:18a3c7ea2bfb849ff40064af822ffc47deb394332f3eb23490d3e68528a90534",
+        "sha256:dce4baaa4580f94d3e262e459f228194629ca723710c14ce2dc9c7f03e21a15b"
+      ],
+      "variant_of": "enemies/inquisitor/enemy_inquisitor_walk.png"
+    },
+    "npcs/astharoshe/npc_astharoshe_dash.png": {
+      "animations": {
+        "dash": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "npc_astharoshe",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 96,
+      "sheet": "npc_astharoshe_dash.png",
+      "source_hashes": [
+        "sha256:3419bf05469df2f5cbc53c7da138ce9203bc4ec61d98f8d9d62b7305a34972e3"
+      ],
+      "variant_of": "bosses/paula/boss_paula_dash.png"
+    },
+    "npcs/astharoshe/npc_astharoshe_defeated.png": {
+      "animations": {
+        "defeated": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "npc_astharoshe",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 96,
+      "sheet": "npc_astharoshe_defeated.png",
+      "source_hashes": [
+        "sha256:8a4165d508638e5221977cf6136d22cb1b9a9c2c192fb791bb564f6a8a50aad9"
+      ],
+      "variant_of": "bosses/paula/boss_paula_defeated.png"
+    },
+    "npcs/astharoshe/npc_astharoshe_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "npc_astharoshe",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 96,
+      "sheet": "npc_astharoshe_idle.png",
+      "source_hashes": [
+        "sha256:7a7bc7a35ab28716ac05c1e9fa2fbd8d6c26345172d8dd22d74e524befa81b61"
+      ],
+      "variant_of": "bosses/paula/boss_paula_idle.png"
+    },
+    "npcs/astharoshe/npc_astharoshe_leap.png": {
+      "animations": {
+        "leap": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "npc_astharoshe",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 96,
+      "sheet": "npc_astharoshe_leap.png",
+      "source_hashes": [
+        "sha256:39d8b016047ee32d38669188be1515cd12246632bba38b08f87238cba33f6aa2"
+      ],
+      "variant_of": "bosses/paula/boss_paula_leap.png"
+    },
+    "npcs/astharoshe/npc_astharoshe_slash1.png": {
+      "animations": {
+        "slash1": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "npc_astharoshe",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 96,
+      "sheet": "npc_astharoshe_slash1.png",
+      "source_hashes": [
+        "sha256:5bba2d46923cbf8124cfabf2d6b33043a88d76c99a85c3a5e5aea53a416ca9f4"
+      ],
+      "variant_of": "bosses/paula/boss_paula_slash1.png"
+    },
+    "npcs/astharoshe/npc_astharoshe_slash2.png": {
+      "animations": {
+        "slash2": {
+          "durations_ms": [
+            200
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 96,
+      "cell_width": 112,
+      "columns": 1,
+      "entity": "npc_astharoshe",
+      "palette": "requiem48.hex",
+      "pivot_x": 56,
+      "pivot_y": 96,
+      "sheet": "npc_astharoshe_slash2.png",
+      "source_hashes": [
+        "sha256:9745e28f4fe396083c9db2ac41f4c0553e2489b3f241a083661c708bbb340b3d"
+      ],
+      "variant_of": "bosses/paula/boss_paula_slash2.png"
+    },
     "npcs/caterina/npc_caterina_letter.png": {
       "animations": {
         "letter": {
@@ -4018,6 +4446,162 @@
       "source_hashes": [
         "sha256:e30253e759841a4e007edc2e98407c935e1bfb264a0cc1ed9ff326a9d4064b4e"
       ]
+    },
+    "npcs/ion/npc_ion_bow.png": {
+      "animations": {
+        "bow": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_ion",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "npc_ion_bow.png",
+      "source_hashes": [
+        "sha256:21a20eb605ff41fe5a8048929ba73697fd0649af4360855c07c3e672e5803039"
+      ],
+      "variant_of": "npcs/dietrich/npc_dietrich_bow.png"
+    },
+    "npcs/ion/npc_ion_conduct.png": {
+      "animations": {
+        "conduct": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_ion",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "npc_ion_conduct.png",
+      "source_hashes": [
+        "sha256:7ba57ea42ea2a97d534e209765e57dd3a8bd4d71d722497530ea7b9d9ae91835"
+      ],
+      "variant_of": "npcs/dietrich/npc_dietrich_conduct.png"
+    },
+    "npcs/ion/npc_ion_laugh.png": {
+      "animations": {
+        "laugh": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_ion",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "npc_ion_laugh.png",
+      "source_hashes": [
+        "sha256:a14d537bb427f2763fa555074ca3f1c5bc928fb924f25b50e22ffdb2044abe05"
+      ],
+      "variant_of": "npcs/dietrich/npc_dietrich_laugh.png"
+    },
+    "npcs/ion/npc_ion_stand.png": {
+      "animations": {
+        "stand": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_ion",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "npc_ion_stand.png",
+      "source_hashes": [
+        "sha256:bef8998aaea1b44735deddaf0d2e31097c7dba530260001d4b7e001ac9a0b35e"
+      ],
+      "variant_of": "npcs/dietrich/npc_dietrich_stand.png"
+    },
+    "npcs/ion/npc_ion_threads.png": {
+      "animations": {
+        "threads": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_ion",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "npc_ion_threads.png",
+      "source_hashes": [
+        "sha256:2e56662b65fce0b7b60157227d1d586c258b8bfe930bc4620f4e4f9f6c4f47a9"
+      ],
+      "variant_of": "npcs/dietrich/npc_dietrich_threads.png"
+    },
+    "npcs/ion/npc_ion_violin.png": {
+      "animations": {
+        "violin": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 72,
+      "cell_width": 96,
+      "columns": 1,
+      "entity": "npc_ion",
+      "palette": "requiem48.hex",
+      "pivot_x": 48,
+      "pivot_y": 72,
+      "sheet": "npc_ion_violin.png",
+      "source_hashes": [
+        "sha256:8d79b57737f083a13e9d1baa943dd4ce0967e01c8f7c7111f1917f02aa9f4e94"
+      ],
+      "variant_of": "npcs/dietrich/npc_dietrich_violin.png"
     }
   }
 }

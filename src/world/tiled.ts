@@ -115,6 +115,8 @@ export interface RoomData {
   lore: { id: string; x: number; y: number }[];
   /** Hidden items (src/data/items.json), feet position. */
   items: { id: string; x: number; y: number }[];
+  /** Story scenes: a cutscene the first time Abel passes the spot; `unlocks` is set when it ends. */
+  scenes: { id: string; x: number; y: number; unlocks?: string }[];
   /** Props drawn in code: lamp, lantern, crate, barrel, banner, chain. */
   decor: { item: string; x: number; y: number; h: number }[];
   /** Open sky behind the room (false underground). */
@@ -197,6 +199,7 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
     labels: [],
     lore: [],
     items: [],
+    scenes: [],
     decor: [],
     outdoor: String(mp.sky ?? 'open') !== 'none',
     aloft: String(mp.sky ?? 'open') === 'aloft',
@@ -246,6 +249,10 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
       case 'item':
         if (!p.item) fail(`item marker ${o.id} needs an 'item' property`);
         room.items.push({ id: String(p.item), x: o.x, y: o.y });
+        break;
+      case 'scene':
+        if (!p.scene) fail(`scene marker ${o.id} needs a 'scene' property`);
+        room.scenes.push({ id: String(p.scene), x: o.x, y: o.y, ...(p.unlocks ? { unlocks: String(p.unlocks) } : {}) });
         break;
       case 'lore':
         if (!p.lore) fail(`lore marker ${o.id} needs a 'lore' property`);

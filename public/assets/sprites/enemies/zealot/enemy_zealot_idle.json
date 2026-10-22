@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "idle": {
+      "durations_ms": [
+        600
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 64,
+  "cell_width": 96,
+  "columns": 1,
+  "entity": "enemy_zealot",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 64,
+  "sheet": "enemy_zealot_idle.png",
+  "source_hashes": [
+    "sha256:18a3c7ea2bfb849ff40064af822ffc47deb394332f3eb23490d3e68528a90534"
+  ],
+  "variant_of": "enemies/inquisitor/enemy_inquisitor_idle.png"
+}

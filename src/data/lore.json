@@ -100,6 +100,22 @@
     "spire_inscription": {
       "title": "Words cut in the spire",
       "text": "Two names are carved side by side in the old stone, older than the Empire. One has been scratched out and carved again, deeper, many times."
+    },
+    "letter_docks": {
+      "title": "A letter to Rome (I)",
+      "text": "Dear Esther. The Empire's air smells of iron and roses, and nobody here has offered me tea. A duchess met me at the gangplank with a sword. I think she was pleased to see me. I think. — A."
+    },
+    "letter_market": {
+      "title": "A letter to Rome (II)",
+      "text": "Dear Esther. I met a young count today who bought me tea he could not afford and apologised for his grandmother. If there is going to be peace, it will look a little like him. — A."
+    },
+    "letter_arcade": {
+      "title": "A letter to Rome (III)",
+      "text": "Dear Esther. They say I killed a man in the bazaar. I didn't. Something in my blood carried me through iron bars to prove it, and I am trying not to think about what else it can do. — A."
+    },
+    "spice_cache": {
+      "title": "A merchant's ledger",
+      "text": "Saffron, cardamom, black pepper from the south. And, in a different hand: 'Twelve crates of lamp oil for the gentlemen of the Rose and Cross. Not to be stored near the stalls.'"
     }
   }
 }

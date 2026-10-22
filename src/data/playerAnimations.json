@@ -76,6 +76,9 @@
   },
   "ledgeClimb": {
    "anim": "abel_climb"
+  },
+  "airDash": {
+   "anim": "abel_dodge"
   }
  },
  "crusnikStates": {
@@ -150,6 +153,9 @@
   },
   "ledgeClimb": {
    "anim": "abel_crusnik40_climb"
+  },
+  "airDash": {
+   "anim": "abel_crusnik40_slide"
   }
  },
  "wingedStates": {
@@ -245,6 +251,9 @@
    "anim": "abel_crusnik100_hover"
   },
   "walk": {
+   "anim": "abel_crusnik100_fly"
+  },
+  "airDash": {
    "anim": "abel_crusnik100_fly"
   }
  }

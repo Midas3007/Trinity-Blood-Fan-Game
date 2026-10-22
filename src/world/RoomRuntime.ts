@@ -24,6 +24,14 @@ const STONE_W = 10;
 const STONE_H = 14;
 
 /** What the scene should do after a room update. */
+/** The gate flag that marks iron bars (never set; only the phase-step passes). */
+export const GRILLE = 'grille';
+const GRILLE_DEPTH = 7;
+/** Fire decor redraws its flames this often (ms). */
+const FIRE_FLICKER_MS = 90;
+/** Space between bars (px). */
+const GRILLE_GAP = 5;
+
 export type RoomEvent =
   | { type: 'exit'; exit: Exit }
   | { type: 'pray'; checkpoint: string }
@@ -45,6 +53,9 @@ export interface RoomPlayer {
 export class RoomRuntime {
   readonly levers: Lever[] = [];
   private readonly gates = new Map<string, Phaser.GameObjects.Rectangle[]>();
+  /** Grille bodies (the player's collider lets the phase-step through these). */
+  readonly grilles = new Set<Phaser.GameObjects.GameObject>();
+  private readonly grilleArt: Phaser.GameObjects.Graphics[] = [];
   /** Painted landmarks (the cathedral front) with the ledge guides drawn over them. */
   private readonly landmarks: { img: Phaser.GameObjects.Image; guides: Phaser.GameObjects.Graphics; up: number }[] = [];
 
@@ -78,6 +89,15 @@ export class RoomRuntime {
     }
     for (const d of room.decor) this.drawDecor(d.item, d.x, d.y, d.h);
     for (const g of room.gates) {
+      if (g.opens === GRILLE) {
+        // Iron bars: block everything but Abel's phase-step (not in solidRects: posture checks see through them).
+        const r = scene.add.rectangle(g.x + g.w / 2, g.y + g.h / 2, g.w, g.h, 0x000000, 0);
+        solids.add(r);
+        this.grilles.add(r);
+        this.gates.set(GRILLE, [...(this.gates.get(GRILLE) ?? []), r]);
+        this.drawGrille(g);
+        continue;
+      }
       if (state.hasFlag(g.opens)) continue;
       const r = scene.add.rectangle(g.x + g.w / 2, g.y + g.h / 2, g.w, g.h, COLORS.stone);
       solids.add(r);
@@ -87,6 +107,19 @@ export class RoomRuntime {
     for (const l of room.levers) {
       this.levers.push(new Lever(scene, l.x, l.y, state.hasFlag(l.flag), () => this.open(l.flag)));
     }
+  }
+
+  /** Iron bars with a frame and spikes on top, drawn in code. */
+  private drawGrille(g: { x: number; y: number; w: number; h: number }): void {
+    const art = this.scene.add.graphics().setDepth(GRILLE_DEPTH);
+    art.fillStyle(0x14111c, 1).fillRect(g.x, g.y, g.w, 2).fillRect(g.x, g.y + g.h - 2, g.w, 2);
+    for (let x = g.x + 2; x < g.x + g.w - 1; x += GRILLE_GAP) {
+      art.fillStyle(0x3b3444, 1).fillRect(x, g.y, 2, g.h);
+      art.fillStyle(0x6f6676, 1).fillRect(x, g.y, 1, g.h);
+      art.fillStyle(0x4a4252, 1).fillTriangle(x - 1, g.y, x + 3, g.y, x + 1, g.y - 4);
+    }
+    art.fillStyle(0x3b3444, 1).fillRect(g.x, g.y + g.h * 0.45, g.w, 2);
+    this.grilleArt.push(art);
   }
 
   /** Simple pixel props; lights glow above the time-of-day overlay. */
@@ -142,6 +175,47 @@ export class RoomRuntime {
         s.add.rectangle(x, y - 9, 10, 1, 0x3b3444).setDepth(DEPTH_DECOR);
         s.add.rectangle(x, y - 3, 10, 1, 0x3b3444).setDepth(DEPTH_DECOR);
         break;
+      case 'awning': { // a striped market canopy (Byzantium), h = width in px
+        const w = h || 48;
+        const g = s.add.graphics().setDepth(DEPTH_DECOR);
+        for (let i = 0; i < w; i += 6) g.fillStyle(i % 12 ? 0xe8c86a : 0x8e1b2c, 1).fillRect(x - w / 2 + i, y - 30, 6, 8);
+        for (let i = 0; i < w; i += 6) g.fillStyle(i % 12 ? 0xc4a04a : 0x6a1524, 1).fillTriangle(x - w / 2 + i, y - 22, x - w / 2 + i + 6, y - 22, x - w / 2 + i + 3, y - 18);
+        g.fillStyle(0x3d2512, 1).fillRect(x - w / 2, y - 30, 2, 30).fillRect(x + w / 2 - 2, y - 30, 2, 30);
+        break;
+      }
+      case 'rug': // a patterned rug hanging from a line
+        s.add.rectangle(x, y + 14, 14, 26, 0x6a1524).setStrokeStyle(1, 0xc4a04a).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y + 14, 6, 14, 0x2f4a63).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y + 14, 2, 6, 0xe8c86a).setDepth(DEPTH_DECOR);
+        break;
+      case 'bluelamp': // Byzantium's lamps burn blue
+        s.add.rectangle(x, y - 14, 2, 28, 0x1c1826).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y - 30, 6, 6, 0x251f30).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y - 30, 4, 4, this.lampGlow > 0 ? 0x7fb6d6 : 0x4f7c9e).setDepth(DEPTH_DECOR);
+        if (this.lampGlow > 0) for (const [k, a] of [[1, 0.06], [0.6, 0.1], [0.3, 0.22]] as const) s.add.circle(x, y - 30, 26 * k, 0x7fb6d6, this.lampGlow * a).setBlendMode(Phaser.BlendModes.ADD).setDepth(DEPTH_GLOW);
+        break;
+      case 'fire': { // a burning stall: flickering flames (code-drawn, animated), h = width
+        const w = h || 24;
+        const g = s.add.graphics().setDepth(DEPTH_DECOR + 0.5);
+        const draw = (): void => {
+          g.clear();
+          for (let i = 0; i < w; i += 4) {
+            const fh = 8 + Math.random() * 14;
+            g.fillStyle(0xd4283e, 0.9).fillTriangle(x - w / 2 + i, y, x - w / 2 + i + 6, y, x - w / 2 + i + 3, y - fh);
+            g.fillStyle(0xd9963a, 0.95).fillTriangle(x - w / 2 + i + 1, y, x - w / 2 + i + 5, y, x - w / 2 + i + 3, y - fh * 0.6);
+            g.fillStyle(0xffe14d, 1).fillTriangle(x - w / 2 + i + 2, y, x - w / 2 + i + 4, y, x - w / 2 + i + 3, y - fh * 0.3);
+          }
+        };
+        draw();
+        s.time.addEvent({ delay: FIRE_FLICKER_MS, loop: true, callback: draw });
+        s.add.circle(x, y - 10, w, 0xd9963a, 0.12).setBlendMode(Phaser.BlendModes.ADD).setDepth(DEPTH_GLOW);
+        break;
+      }
+      case 'urn':
+        s.add.ellipse(x, y - 7, 12, 14, 0xa86b2a).setStrokeStyle(1, 0x3d2512).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y - 15, 6, 3, 0x7a4a1e).setDepth(DEPTH_DECOR);
+        s.add.rectangle(x, y - 7, 12, 2, 0x2f4a63).setDepth(DEPTH_DECOR);
+        break;
       default: // crate
         s.add.rectangle(x, y - 6, 12, 12, 0x7a4a1e).setStrokeStyle(1, 0x3d2512).setDepth(DEPTH_DECOR);
     }
@@ -176,6 +250,7 @@ export class RoomRuntime {
       if (k >= 0) this.solidRects.splice(k, 1);
       this.scene.tweens.add({ targets: r, y: r.y - r.height, alpha: 0.3, duration: GATE_OPEN_MS });
     }
+    if (flag === GRILLE) for (const a of this.grilleArt) a.setAlpha(0.3);
     this.gates.delete(flag);
   }
 

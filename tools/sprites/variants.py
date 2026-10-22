@@ -188,7 +188,86 @@ JOBS = [
     *[(p, "abel_crusnik100", "abel_crusnik100", p, abel100_map(), "8e1b2c") for p in ("hover", "fly", "dive")],
 ]
 
+def guard_map():
+    """Iron Choir -> imperial guard: grey steel becomes blue enamel, red cloth becomes gold."""
+    return {"3b3444": "2f4a63", "4a4252": "2f4a63", "5c5464": "4f7c9e", "6f6676": "4f7c9e", "8a8392": "7fb6d6",
+            "a59fb0": "7fb6d6", "b8b1c4": "bfe0ef", "2e0811": "7a4a1e", "4a0f1b": "a86b2a", "6a1524": "c4a04a", "8e1b2c": "e8c86a"}
+
+
+def zealot_map():
+    """Inquisition hunter -> Rosenkreuz zealot: dark crimson robes become black with a hot orange trim."""
+    return {"2e0811": "14111c", "4a0f1b": "251f30", "6a1524": "d9963a", "8e1b2c": "e85a5f",
+            "180f20": "2e0811", "241b2e": "4a0f1b", "2e2836": "4a0f1b"}
+
+
+def folder_variant(src_dir: str, src_entity: str, entity: str, out_dir: str, cmap: dict, edge=None):
+    """Every sheet of an enemy, recoloured under a new entity name (animation names unchanged)."""
+    out = []
+    for src in sorted((SPR / src_dir).glob(f"{src_entity}_*.png")):
+        man = json.loads(src.with_suffix(".json").read_text())
+        dst = SPR / out_dir / src.name.replace(src_entity, entity)
+        recolor(src, dst, cmap, edge)
+        if entity == "npc_astharoshe":
+            im = Image.open(dst).convert("RGBA"); add_mitre(im, man["cell_height"]); im.save(dst)
+        man["entity"] = entity
+        man["sheet"] = dst.name
+        man["variant_of"] = str(src.relative_to(SPR))
+        dst.with_suffix(".json").write_text(json.dumps(man, indent=2, sort_keys=True) + "\n")
+        out.append(dst)
+    return out
+
+
+def ion_map():
+    """The blond young man in black -> Ion: a Methuselah noble in deep blue."""
+    return {"0b0a10": "2f4a63", "14111c": "1c1826", "1c1826": "4f7c9e", "2e2836": "4f7c9e"}
+
+
+def astharoshe_map():
+    """The duellist nun -> Astharoshe (owner: blonde, in blue): the veil becomes blonde hair, crimson becomes blue."""
+    return {"a59fb0": "c4a04a", "b8b1c4": "e8c86a", "ddd7e6": "f6e3a3", "efeaf2": "f6e3a3", "8a8392": "9c7a2c", "6f6676": "7a4a1e",
+            "2e0811": "2f4a63", "4a0f1b": "4f7c9e", "6a1524": "7fb6d6", "8e1b2c": "bfe0ef", "180f20": "1c1826", "241b2e": "2f4a63",
+            "32263e": "2f4a63", "41324f": "4f7c9e"}
+
+
+def add_mitre(im: Image.Image, cell: int) -> None:
+    """A tall pointed headdress (blue, gold-edged) on the top of each frame's head."""
+    px = im.load(); w, h = im.size
+    BLUE, LIGHT, GOLD, LINE = hx("2f4a63"), hx("4f7c9e"), hx("e8c86a"), hx("0b0a10")
+    for c in range(w // cell):
+        top = next(((x, y) for y in range(h) for x in range(c * cell, (c + 1) * cell) if px[x, y][3]), None)
+        if not top: continue
+        # centre of the head: the middle of the opaque run 3 rows below the top
+        y0 = top[1] + 3
+        xs = [x for x in range(c * cell, (c + 1) * cell) if px[x, y0][3]]
+        cx = (min(xs) + max(xs)) // 2 if xs else top[0]
+        base = top[1] + 1
+        # long blonde hair down her back (the sprites face right, so the back is the left)
+        HAIR, HAIR2 = hx("e8c86a"), hx("c4a04a")
+        for k in range(14):
+            for dx, col in ((-3, HAIR2), (-2, HAIR), (-4, HAIR2)):
+                x, y = cx + dx - k // 5, base + 1 + k
+                if 0 <= x < w and 0 <= y < h and (px[x, y][3] or dx == -4):
+                    px[x, y] = col + (255,)
+        for k in range(8):  # the mitre: 9 wide at the band, two short peaks, a gold centre band
+            half = 4 - k // 2
+            y = base - k
+            if y < 0 or half < 1: break
+            for x in range(cx - half, cx + half + 1):
+                edge = x in (cx - half, cx + half) or (k >= 5 and x == cx)
+                px[x, y] = (LINE if edge else (GOLD if k in (0, 1) or x == cx else (LIGHT if x < cx else BLUE))) + (255,)
+
+
+FOLDERS = [
+    ("enemies/iron_choir", "enemy_iron_choir", "enemy_imperial_guard", "enemies/imperial_guard", guard_map()),
+    ("enemies/inquisitor", "enemy_inquisitor", "enemy_zealot", "enemies/zealot", zealot_map()),
+    ("npcs/dietrich", "npc_dietrich", "npc_ion", "npcs/ion", ion_map(), "0b0a10"),
+    ("bosses/paula", "boss_paula", "npc_astharoshe", "npcs/astharoshe", astharoshe_map()),
+]
+
 if __name__ == "__main__":
+    for src_dir, src_entity, entity, out_dir, cmap, *edge in FOLDERS:
+        for d in folder_variant(src_dir, src_entity, entity, out_dir, cmap, *edge):
+            print(d.relative_to(ROOT))
     for pose, entity, folder, anim, cmap, edge in JOBS:
         print(variant(C80.format(pose), pose, entity, folder, anim, cmap, edge, lance=entity.startswith("boss_cain")).relative_to(ROOT))
     print(write_index(SPR).relative_to(ROOT))

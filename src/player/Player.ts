@@ -173,6 +173,32 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   /** 80% (wings): set by the final battle's scene. */
   winged = false;
+  /** The phase-step dash (Empire arc): set by the scene from the 'ability:dash' flag (or the cheat). */
+  dashUnlocked = false;
+  private airDashUsed = false;
+
+  get canAirDash(): boolean {
+    return this.dashUnlocked && !this.airDashUsed;
+  }
+
+  beginAirDash(): void {
+    this.airDashUsed = true;
+    this.body.setAllowGravity(false);
+    this.vy = 0;
+    this.timers.invulnerable = Math.max(this.timers.invulnerable, this.tuning.airDashMs);
+  }
+
+  endAirDash(): void {
+    this.body.setAllowGravity(true);
+    this.vx = Math.sign(this.vx) * Math.min(Math.abs(this.vx), this.tuning.runSpeed);
+  }
+
+  /** Passing through iron grilles: the phase-step, or a roll or slide once the phase-step is learned. */
+  get phasing(): boolean {
+    const s = this.fsm.current;
+    return this.dashUnlocked && (s === 'airDash' || s === 'dodge' || s === 'slide');
+  }
+
   /** 100% (the Cain finale): bat wings, flight, the double-sided scythe and lightning. Set by ascend(). */
   ascended = false;
   private readonly ascendedFx: AscendedFx;
@@ -625,6 +651,7 @@ export class Player implements PlayerContext, PlayerCombatant {
     if (this.fsm.current === 'run' || this.fsm.current === 'idle') this.stepUp();
     this.dropMs = Math.max(0, this.dropMs - dtMs);
     this.ledgeRegrabMs = Math.max(0, this.ledgeRegrabMs - dtMs);
+    if (this.onGround) this.airDashUsed = false;
     this.blinkMs = Math.max(0, this.blinkMs - dtMs);
     const blinkOff = this.blinkMs > 0 && Math.floor(this.blinkMs / BLINK_MS) % 2 === 0;
     this.alpha = blinkOff ? 0.2 : this.iFrames ? INVULNERABLE_ALPHA : 1;

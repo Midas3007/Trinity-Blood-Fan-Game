@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "idle": {
+      "durations_ms": [
+        600
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 112,
+  "columns": 1,
+  "entity": "npc_astharoshe",
+  "palette": "requiem48.hex",
+  "pivot_x": 56,
+  "pivot_y": 96,
+  "sheet": "npc_astharoshe_idle.png",
+  "source_hashes": [
+    "sha256:7a7bc7a35ab28716ac05c1e9fa2fbd8d6c26345172d8dd22d74e524befa81b61"
+  ],
+  "variant_of": "bosses/paula/boss_paula_idle.png"
+}

@@ -13,6 +13,7 @@
     "fight_marchesa": { "name": "Danse of the Masked Lady",  "root": 57, "scale": "harmonic", "bpm": 168, "beats": 3, "progression": [0, 3, 4, 0, 5, 1, 4, 4], "voice": "strings", "arp": true, "melody": true, "drums": true, "seed": 101, "gain": 0.45 },
     "fight_petros":   { "name": "The Cross-Knight",          "root": 52, "scale": "phrygian", "bpm": 138, "beats": 4, "progression": [0, 1, 0, 6],     "voice": "organ",       "arp": true,  "melody": true,  "drums": true,  "seed": 111, "gain": 0.48 },
     "fight_dietrich": { "name": "Marionette Waltz",          "root": 53, "scale": "minor",    "bpm": 126, "beats": 3, "progression": [0, 4, 5, 4],     "voice": "bells",       "arp": true,  "melody": true,  "drums": true,  "seed": 121, "gain": 0.42 },
+    "byzantium":      { "name": "Lamps of Byzantium",        "root": 52, "scale": "harmonic", "bpm": 84, "beats": 4, "progression": [0, 1, 0, 6, 4, 5, 1, 0], "voice": "organ", "arp": true, "melody": true, "drums": false, "seed": 313, "gain": 0.42, "choir": false },
     "fight_cain":     { "name": "Two Brothers, One Sky",     "root": 50, "scale": "harmonic", "bpm": 124, "beats": 4, "progression": [0, 6, 5, 4, 0, 3, 1, 4], "voice": "organ", "arp": true, "melody": true, "drums": true, "seed": 227, "gain": 0.52, "choir": true },
     "fight_gyula":    { "name": "Eighty Percent",            "root": 49, "scale": "harmonic", "bpm": 116, "beats": 4, "progression": [0, 5, 3, 4, 0, 1, 6, 4], "voice": "organ", "arp": true, "melody": true, "drums": true, "seed": 131, "gain": 0.5, "choir": true },
     "scene_sad":      { "name": "Requiem for the Fallen",    "root": 46, "scale": "minor",    "bpm": 56,  "beats": 4, "progression": [0, 3, 5, 4],     "voice": "strings",     "arp": false, "melody": true,  "drums": false, "seed": 141, "gain": 0.42 },
@@ -32,7 +33,8 @@
     "cathedral_nave": "cathedral", "bell_tower": "cathedral",
     "castle_gate": "fortress", "great_hall": "fortress",
     "star_chamber": "star",
-    "imperial_spire": "star"
+    "imperial_spire": "star",
+    "empire_docks": "byzantium", "empire_quay": "byzantium", "bazaar_lamps": "byzantium", "bazaar_stairs": "byzantium", "bazaar_arcade": "byzantium"
   },
   "defaultRoom": "streets",
   "bosses": { "paula": "fight_paula", "kampfer": "fight_kampfer", "marchesa": "fight_marchesa", "petros": "fight_petros", "dietrich": "fight_dietrich", "gyula": "fight_gyula", "cain": "fight_cain" },
@@ -45,6 +47,7 @@
     "dietrich_intro": "scene_tense", "dietrich_unmasked": "scene_awaken", "dietrich_outro": "scene_sad",
     "gyula_intro": "star", "gyula_wings": "scene_awaken", "gyula_outro": "scene_sad",
     "ending": "scene_dawn", "teaser": "scene_teaser",
-    "cain_intro": "scene_tense", "cain_ascension": "scene_awaken", "cain_outro": "scene_sad"
+    "cain_intro": "scene_tense", "cain_ascension": "scene_awaken", "cain_outro": "scene_sad",
+    "empire_arrival": "byzantium", "ion_meeting": "byzantium", "bazaar_murder": "scene_tense", "phase_step": "scene_awaken"
   }
 }

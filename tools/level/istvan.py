@@ -46,6 +46,9 @@ def station():
     house(r, 70, 14, GY, floors=3, doors=("left", "right"), balconies=(1, 2), lit=0.5)
     r.street_props(50, 88, GY)
     r.mark("entry", 10, GY - 1, "start", facing=1)
+    # The airship berth (Act 2): after the Star of Sorrow, a ship waits to carry Abel to Byzantium.
+    r.door(1, GY - 5, 5, GY, "empire_docks", "airship", requires="gyula_defeated")
+    r.mark("entry", 3, GY - 1, name="berth", facing=1)
     r.mark("checkpoint", 40, GY - 1, "station_altar")              # altars about every 80-110 tiles (owner)
     r.mark("lore", 14, GY - 1, lore="ax_orders")
     r.mark("dummy", 24, GY - 1, maxHealth=60, contactDamage=0)
@@ -251,11 +254,11 @@ def sewer_shaft():
 
 if __name__ == "__main__":
     from tools.level import undercity
-    from tools.level import region2, region3
-    rooms = [station(), old_town(), clock_alley(), square(), cathedral_square(), hill_street(), bridge(), sewer_shaft()] + undercity.rooms() + region2.rooms() + region3.rooms()
+    from tools.level import region2, region3, empire
+    rooms = [station(), old_town(), clock_alley(), square(), cathedral_square(), hill_street(), bridge(), sewer_shaft()] + undercity.rooms() + region2.rooms() + region3.rooms() + empire.rooms()
     for r in rooms:
         r.horizon = street_row(r)
-        if r.sky and r.id not in ("danube_bridge", "imperial_spire"):
+        if r.sky is True and r.id not in ("danube_bridge",):
             r.backstreet(1, r.W - 1, r.horizon)
     write(rooms, "src/data/rooms")
     raise SystemExit

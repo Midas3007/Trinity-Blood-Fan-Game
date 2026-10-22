@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "bow": {
+      "durations_ms": [
+        600
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 72,
+  "cell_width": 96,
+  "columns": 1,
+  "entity": "npc_ion",
+  "palette": "requiem48.hex",
+  "pivot_x": 48,
+  "pivot_y": 72,
+  "sheet": "npc_ion_bow.png",
+  "source_hashes": [
+    "sha256:21a20eb605ff41fe5a8048929ba73697fd0649af4360855c07c3e672e5803039"
+  ],
+  "variant_of": "npcs/dietrich/npc_dietrich_bow.png"
+}

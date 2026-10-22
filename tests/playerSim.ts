@@ -63,6 +63,18 @@ export class SimPlayer implements PlayerContext {
   }
   moveY = 0;
   canFly = false;
+  dashUnlocked = false;
+  private dashUsed = false;
+  get canAirDash(): boolean {
+    return this.dashUnlocked && !this.dashUsed;
+  }
+  beginAirDash(): void {
+    this.dashUsed = true;
+    this.climbing = true; // no gravity in the sim while dashing
+  }
+  endAirDash(): void {
+    this.climbing = false;
+  }
   ascended = false;
   abilityTap: Tap = null;
   private readonly taps = new TapCounter(playerTuning.doubleTapMs);
@@ -216,6 +228,7 @@ export class SimPlayer implements PlayerContext {
     this.timers.tick({ dtMs: DT, jumpPressed: this.jumpPressedThisFrame, onGround: this.onGround, velocityY: this.vy });
     this.fsm.update(DT);
     this.regrabMs = Math.max(0, this.regrabMs - DT);
+    if (this.onGround) this.dashUsed = false;
     if (this.crusnik.tick(DT)) this.form = 'priest';
     if (this.onGround) this.airTopY = this.y;
 

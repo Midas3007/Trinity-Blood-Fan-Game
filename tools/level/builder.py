@@ -224,6 +224,10 @@ class Room:
         """A portcullis (solid until a lever sets `flag`). Tiles x0..x1-1, y0..y1-1."""
         self.gates.append((x0, y0, x1, y1, flag))
 
+    def grille(self, x0, y0, x1, y1):
+        """Iron bars: solid, except to Abel's phase-step (the 'grille' gate never opens; the dash goes through)."""
+        self.gates.append((x0, y0, x1, y1, "grille"))
+
     def door(self, x0, y0, x1, y1, to, entry, requires=""):
         """A doorway into another room (not on the street grid, e.g. inside the cathedral): stand in it and press up.
         `requires` = a flag that must be set first (the door is sealed until then)."""

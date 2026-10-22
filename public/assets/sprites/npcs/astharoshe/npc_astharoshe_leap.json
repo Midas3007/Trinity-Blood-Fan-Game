@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "leap": {
+      "durations_ms": [
+        200
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 96,
+  "cell_width": 112,
+  "columns": 1,
+  "entity": "npc_astharoshe",
+  "palette": "requiem48.hex",
+  "pivot_x": 56,
+  "pivot_y": 96,
+  "sheet": "npc_astharoshe_leap.png",
+  "source_hashes": [
+    "sha256:39d8b016047ee32d38669188be1515cd12246632bba38b08f87238cba33f6aa2"
+  ],
+  "variant_of": "bosses/paula/boss_paula_leap.png"
+}

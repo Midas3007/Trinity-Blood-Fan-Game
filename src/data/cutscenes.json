@@ -1680,6 +1680,291 @@
      ]
     }
    ]
+  },
+  "empire_arrival": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "color:0x1c1826",
+     "tint": "0x8e1b2c",
+     "caption": "Byzantium, capital of the New Human Empire.",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "I'm told the Empire doesn't serve tea to Terrans. I brought my own. Just in case."
+      }
+     ]
+    },
+    {
+     "layout": "tr",
+     "bg": "color:0x14111c",
+     "actors": [
+      {
+       "anim": "npc_astharoshe_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Astharoshe",
+       "text": "You are the Atoner? Rome sent me a scarecrow."
+      },
+      {
+       "speaker": "Astharoshe",
+       "text": "Walk behind me, priest. If you touch anything, I will cut off the hand that did it."
+      }
+     ]
+    },
+    {
+     "layout": "bottom",
+     "bg": "color:0x0b0a10",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      },
+      {
+       "anim": "npc_astharoshe_idle",
+       "x": 0.72,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "Understood. May I touch the railing? The gangplank is very... ah."
+      },
+      {
+       "speaker": "Astharoshe",
+       "text": "...Go on ahead to the market. I have to report that you have arrived. Somehow."
+      }
+     ]
+    }
+   ]
+  },
+  "ion_meeting": {
+   "panels": [
+    {
+     "layout": "tl",
+     "bg": "color:0x1c1826",
+     "tint": "0x2f4a63",
+     "actors": [
+      {
+       "anim": "npc_ion_stand",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Ion",
+       "text": "You're the Roman priest! Everyone is staring at you. Here, have some tea. Don't tell anyone a count paid for it."
+      }
+     ]
+    },
+    {
+     "layout": "tr",
+     "bg": "color:0x14111c",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "That is the kindest thing anyone has done for me in three countries."
+      }
+     ]
+    },
+    {
+     "layout": "bottom",
+     "bg": "color:0x0b0a10",
+     "actors": [
+      {
+       "anim": "npc_ion_bow",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Ion",
+       "text": "My grandmother says Terrans are cattle. My grandmother has never met one who apologised to a door."
+      },
+      {
+       "speaker": "Ion",
+       "text": "Come to the arcade later. My friend Radu wants to meet you too."
+      }
+     ]
+    }
+   ]
+  },
+  "bazaar_murder": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "color:0x1a0408",
+     "fx": "redflash",
+     "caption": "The Grand Arcade.",
+     "actors": [
+      {
+       "anim": "enemy_imperial_guard_collapse",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2.4,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Someone in the crowd",
+       "text": "The captain of the guard! Murdered! That's the Fortuna boy's dagger!"
+      }
+     ]
+    },
+    {
+     "layout": "tl",
+     "bg": "color:0x14111c",
+     "actors": [
+      {
+       "anim": "npc_ion_stand",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Ion",
+       "text": "It's mine, but I didn't... I lost it this morning. I swear it!"
+      }
+     ]
+    },
+    {
+     "layout": "tr",
+     "bg": "color:0x14111c",
+     "actors": [
+      {
+       "anim": "npc_astharoshe_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Astharoshe",
+       "text": "Run, both of you. I will find out who held that knife. Then I will find you."
+      }
+     ]
+    }
+   ]
+  },
+  "phase_step": {
+   "panels": [
+    {
+     "layout": "tl",
+     "bg": "color:0x1a0408",
+     "tint": "0xd9963a",
+     "actors": [
+      {
+       "anim": "abel_crusnik40_kneel",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "The stall is burning, the guards are behind me, and the only way out is through iron."
+      }
+     ]
+    },
+    {
+     "layout": "tr",
+     "bg": "color:0x0b0a10",
+     "fx": "redflash",
+     "actors": [
+      {
+       "anim": "abel_dodge",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2.2,
+       "flip": false,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "...Crusnik 02, limited release. Just a step. Just one."
+      }
+     ]
+    },
+    {
+     "layout": "bottom",
+     "bg": "color:0x101828",
+     "tint": "0x4f7c9e",
+     "caption": "PHASE STEP",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "I went through the bars like they were mist. I really wish I hadn't enjoyed that."
+      }
+     ]
+    }
+   ]
   }
  }
 }

@@ -13,13 +13,14 @@
     "petros_defeated"
   ],
   "fastTravel": {
-    "_note": "Fast travel between altars (owner, 2026-10-16). An altar is a destination once you have prayed at it and the boss beyond its area is beaten (the area's flag). Stand at an unlocked altar and push up to travel. Altars sit about every 80-110 tiles of walking, with one just before every boss (owner, 2026-10-16).",
+    "_note": "Fast travel between altars (owner, 2026-10-16). An altar is a destination once you have prayed at it and the boss beyond its area is beaten (the area's flag). Stand at an unlocked altar and push up to travel. Altars sit about every 80-110 tiles of walking, with one just before every boss (owner, 2026-10-16). Byzantium's altars (the Empire arc) open with the airship (Gyula); when the Janissary Captain is built they will wait for him.",
     "areas": {
       "town": "paula_defeated",
       "undercity": "petros_defeated",
       "cathedral": "dietrich_defeated",
       "fortress": "gyula_defeated",
-      "empire": "cain_defeated"
+      "empire": "cain_defeated",
+      "byzantium": "gyula_defeated"
     },
     "altars": [
       {
@@ -153,6 +154,36 @@
         "id": "spire_altar",
         "area": "empire",
         "name": "The Imperial Spire"
+      },
+      {
+        "room": "empire_docks",
+        "id": "dock_altar",
+        "area": "byzantium",
+        "name": "The Imperial Docks"
+      },
+      {
+        "room": "empire_quay",
+        "id": "quay_altar",
+        "area": "byzantium",
+        "name": "The Harbour Wall"
+      },
+      {
+        "room": "bazaar_lamps",
+        "id": "market_altar",
+        "area": "byzantium",
+        "name": "The Lamp Market"
+      },
+      {
+        "room": "bazaar_stairs",
+        "id": "stairs_altar",
+        "area": "byzantium",
+        "name": "The Spice Stairs"
+      },
+      {
+        "room": "bazaar_arcade",
+        "id": "arcade_altar",
+        "area": "byzantium",
+        "name": "The Grand Arcade"
       }
     ]
   }

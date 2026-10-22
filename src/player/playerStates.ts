@@ -26,6 +26,7 @@ export type PlayerStateKey =
   | 'climb'
   | 'ledgeHang'
   | 'ledgeClimb'
+  | 'airDash'
   | 'heal'
   | 'transform'
   | 'lash'
@@ -65,6 +66,11 @@ export interface PlayerContext {
   /** ABIL as the Crusnik: double tap = chain lash, single tap = change back (owner, both modes). */
   readonly abilityTap: Tap;
   revertForm(): void;
+  /** The phase-step is unlocked and not yet used in this jump. */
+  readonly canAirDash: boolean;
+  /** Start / end the phase-step (no gravity, straight ahead, untouchable; passes through iron grilles). */
+  beginAirDash(): void;
+  endAirDash(): void;
   /** The cheat: JUMP in the air beats upward again (flight). */
   readonly canFly: boolean;
   /** A ladder overlaps the body (stick up grabs it). */
@@ -221,6 +227,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
         ctx.vy *= ctx.tuning.jumpCutMultiplier;
         ctx.jumpCut = true;
       }
+      if (ctx.dodgePressed && ctx.canAirDash) return 'airDash';
       if (ctx.attackPressed) return 'airAttack';
       const ability = abilityState(ctx);
       if (ability) return ability;
@@ -237,6 +244,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       if (flap(ctx)) return 'jump';
       if (ctx.onGround) return landingState(ctx);
       if (ctx.ledgeAhead) return 'ledgeHang';
+      if (ctx.dodgePressed && ctx.canAirDash) return 'airDash';
       if (ctx.attackPressed) return 'airAttack';
       const ability = abilityState(ctx);
       if (ability) return ability;
@@ -464,6 +472,23 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     },
     exit(ctx) {
       ctx.releaseLedge();
+    },
+  },
+
+  // The phase-step: a short straight dash through the air (and through iron grilles and blows).
+  airDash: {
+    enter(ctx) {
+      faceInput(ctx);
+      ctx.beginAirDash();
+    },
+    update(ctx, _dtMs, stateMs) {
+      ctx.vx = ctx.facing * ctx.tuning.airDashSpeed;
+      ctx.vy = 0;
+      if (stateMs < ctx.tuning.airDashMs) return undefined;
+      return ctx.onGround ? (ctx.moveX !== 0 ? 'run' : 'idle') : 'fall';
+    },
+    exit(ctx) {
+      ctx.endAirDash();
     },
   },
 
