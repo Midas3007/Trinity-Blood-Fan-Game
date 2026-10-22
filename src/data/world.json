@@ -18,7 +18,8 @@
       "town": "paula_defeated",
       "undercity": "petros_defeated",
       "cathedral": "dietrich_defeated",
-      "fortress": "gyula_defeated"
+      "fortress": "gyula_defeated",
+      "empire": "cain_defeated"
     },
     "altars": [
       {
@@ -146,6 +147,12 @@
         "id": "hall_altar",
         "area": "fortress",
         "name": "The Great Hall"
+      },
+      {
+        "room": "imperial_spire",
+        "id": "spire_altar",
+        "area": "empire",
+        "name": "The Imperial Spire"
       }
     ]
   }

@@ -251,11 +251,11 @@ def sewer_shaft():
 
 if __name__ == "__main__":
     from tools.level import undercity
-    from tools.level import region2
-    rooms = [station(), old_town(), clock_alley(), square(), cathedral_square(), hill_street(), bridge(), sewer_shaft()] + undercity.rooms() + region2.rooms()
+    from tools.level import region2, region3
+    rooms = [station(), old_town(), clock_alley(), square(), cathedral_square(), hill_street(), bridge(), sewer_shaft()] + undercity.rooms() + region2.rooms() + region3.rooms()
     for r in rooms:
         r.horizon = street_row(r)
-        if r.sky and r.id not in ("danube_bridge",):
+        if r.sky and r.id not in ("danube_bridge", "imperial_spire"):
             r.backstreet(1, r.W - 1, r.horizon)
     write(rooms, "src/data/rooms")
     raise SystemExit

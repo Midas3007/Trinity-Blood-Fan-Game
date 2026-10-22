@@ -4,6 +4,13 @@
 
 ---
 
+## Next arc — the Empire arc (owner approved 2026-10-22)
+
+- **Story (draft, from the anime, details to verify):** the Empress's envoy asks Rome for "the Atoner"; Abel goes to **Byzantium** with **Astharoshe Asran**; **Ion Fortuna** is framed; a **Rosenkreuz** traitor close to Ion is behind it; the Empress stays veiled.
+- **Map (planned):** imperial docks, the bazaar, an underground Methuselah city, the palace gardens and halls, a Rosenkreuz laboratory. New ability: the **phase-step dash** (sealed grilles).
+- **Finale (owner, 2026-10-22): Abel vs Cain.** Cain looks like Abel's 80% form with **white wings and blond hair**; he uses a **lance** and **red blasts**. Abel takes **100%**: **bat-style wings, lightning and a double-sided scythe**. They fight **on the ground first, then rise into the sky**, take their full forms and finish there. *Built first* (the Imperial Spire), before the rest of the arc; dialogue is original.
+- **Spoiler note:** the owner chose to show Cain; his history stays hinted, not explained.
+
 ## Main plot — UPDATED 2026-10-15 (owner approved): adapt the Istvan arc
 
 The owner chose to follow a storyline that exists in **both the manga and the anime**, so the game looks and plays like the source. This replaces "Requiem for Rome" as the main plot; its designs (thralls, Death Hunters, the Marchesa, Dietrich as puppeteer) are reused where they fit. Details below are from memory and marked **(verify)** until checked against the source.

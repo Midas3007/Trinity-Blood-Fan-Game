@@ -5,7 +5,7 @@
       "flag": "relic:lacrima",
       "name": "Lacrima",
       "card": "MISERERE NOBIS",
-      "gift": "Lacrima \u2014 one more holy water flask.",
+      "gift": "Lacrima — one more holy water flask.",
       "flasks": 1
     },
     "crusnik": {
@@ -19,14 +19,14 @@
       "flag": "relic:sanguis",
       "name": "Sanguis",
       "card": "REQUIESCAT IN PACE",
-      "gift": "Sanguis \u2014 your blows strike harder.",
+      "gift": "Sanguis — your blows strike harder.",
       "damage": 0.15
     },
     "corLeonis": {
       "flag": "relic:cor_leonis",
       "name": "Cor Leonis",
       "card": "DOMINUS VOBISCUM",
-      "gift": "Cor Leonis \u2014 your life grows stronger.",
+      "gift": "Cor Leonis — your life grows stronger.",
       "maxHealth": 25
     },
     "vox": {
@@ -43,6 +43,13 @@
       "card": "CONSUMMATUM EST",
       "gift": "It is finished.",
       "flasks": 0
+    },
+    "frater": {
+      "flag": "relic:frater",
+      "name": "Frater",
+      "card": "REQUIEM AETERNAM",
+      "gift": "Frater — a brother's lance, broken. Your life grows stronger.",
+      "maxHealth": 25
     }
   }
 }

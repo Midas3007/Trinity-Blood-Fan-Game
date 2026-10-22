@@ -1,5 +1,5 @@
 {
- "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's or finisher's id (priest1/priest2/priest3, revolver), so each plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built. Extra visual keys (not player states): walk (slow run), pray (at an altar), climbStill (on a ladder, not moving). crusnikStates: the same keys for the Crusnik 40% form. Priest parry: the attack wind-up frame stands in for a guard pose. wingedStates: the 80% form's wings (final battle only) override these air states. ledgeHang/ledgeClimb (hanging from and pulling up onto a ledge) reuse the ladder climb art until a dedicated pose exists.",
+ "_note": "Which sprite animation each player state shows. 'frame' freezes one frame. '{attack}' in a name is replaced by the running attack's or finisher's id (priest1/priest2/priest3, revolver), so each plays its own animation. null = placeholder rectangle (body shorter than the art). Update as new pose sets are built. Extra visual keys (not player states): walk (slow run), pray (at an altar), climbStill (on a ladder, not moving). crusnikStates: the same keys for the Crusnik 40% form. Priest parry: the attack wind-up frame stands in for a guard pose. wingedStates: the 80% form's wings (final battle only) override these air states. ledgeHang/ledgeClimb (hanging from and pulling up onto a ledge) reuse the ladder climb art until a dedicated pose exists. ascendedStates: Abel at 100% (the Cain finale) floats in every state: hover, fly or dive (recoloured 80% sheets); bat wings, scythe and lightning are drawn by AscendedFx.",
  "entity": "abel",
  "states": {
   "idle": {
@@ -175,6 +175,77 @@
   },
   "crouchAttack": {
    "anim": "abel_sword_low"
+  }
+ },
+ "ascendedStates": {
+  "airAttack": {
+   "anim": "abel_crusnik100_dive"
+  },
+  "attack": {
+   "anim": "abel_crusnik100_dive"
+  },
+  "climb": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "climbStill": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "crouch": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "crouchAttack": {
+   "anim": "abel_crusnik100_dive"
+  },
+  "dodge": {
+   "anim": "abel_crusnik100_fly"
+  },
+  "fall": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "finisher": {
+   "anim": "abel_crusnik100_dive"
+  },
+  "hardLand": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "heal": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "hurt": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "idle": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "jump": {
+   "anim": "abel_crusnik100_fly"
+  },
+  "lash": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "ledgeClimb": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "ledgeHang": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "parry": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "pray": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "run": {
+   "anim": "abel_crusnik100_fly"
+  },
+  "slide": {
+   "anim": "abel_crusnik100_fly"
+  },
+  "transform": {
+   "anim": "abel_crusnik100_hover"
+  },
+  "walk": {
+   "anim": "abel_crusnik100_fly"
   }
  }
 }

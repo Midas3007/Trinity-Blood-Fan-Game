@@ -69,10 +69,10 @@ describe('attack data', () => {
       /loops/,
     );
     expect(() =>
-      buildAttackTable({ attacks: { a: base }, groundStarter: 'a', airStarter: 'nope', crouchStarter: 'a', crusnikStarters: crusnikA }),
+      buildAttackTable({ attacks: { a: base }, groundStarter: 'a', airStarter: 'nope', crouchStarter: 'a', crusnikStarters: crusnikA, ascendedStarters: crusnikA }),
     ).toThrow(/starter/);
     expect(() =>
-      buildAttackTable({ attacks: { a: base }, groundStarter: 'a', airStarter: 'a', crouchStarter: 'a', crusnikStarters: { ...crusnikA, ranged: 'nope' } }),
+      buildAttackTable({ attacks: { a: base }, groundStarter: 'a', airStarter: 'a', crouchStarter: 'a', crusnikStarters: { ...crusnikA, ranged: 'nope' }, ascendedStarters: crusnikA }),
     ).toThrow(/starter/);
   });
 });

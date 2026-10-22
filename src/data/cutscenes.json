@@ -1426,6 +1426,260 @@
      "caption": "NEXT: THE EMPIRE ARC — to be continued"
     }
    ]
+  },
+  "cain_intro": {
+   "panels": [
+    {
+     "layout": "tl",
+     "bg": "color:0x14111c",
+     "tint": "0x4f7c9e",
+     "actors": [
+      {
+       "anim": "abel_crusnik40_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "The Empress's letter asked for the Atoner. I should have known who was really asking."
+      }
+     ]
+    },
+    {
+     "layout": "tr",
+     "bg": "color:0x1c1826",
+     "fx": "shake",
+     "actors": [
+      {
+       "anim": "boss_cain_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "up"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Cain",
+       "text": "Brother. You still carry that toy cross. Still pretending to be one of them."
+      },
+      {
+       "speaker": "Cain",
+       "text": "Nine hundred years, and you never once came looking for me."
+      }
+     ]
+    },
+    {
+     "layout": "bottom",
+     "bg": "color:0x0b0a10",
+     "tint": "0xa03040",
+     "actors": [
+      {
+       "anim": "abel_crusnik40_idle",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      },
+      {
+       "anim": "boss_cain_idle",
+       "x": 0.72,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "I buried what you did. I have been paying for it ever since."
+      },
+      {
+       "speaker": "Cain",
+       "text": "Then let me collect the rest of the debt."
+      }
+     ]
+    }
+   ]
+  },
+  "cain_ascension": {
+   "panels": [
+    {
+     "layout": "tl",
+     "bg": "color:0x1a0408",
+     "actors": [
+      {
+       "anim": "abel_crusnik40_kneel",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Cain",
+       "text": "Forty percent? You insult me. Show me what you really are."
+      }
+     ]
+    },
+    {
+     "layout": "tr",
+     "bg": "color:0x14111c",
+     "fx": "redflash",
+     "actors": [
+      {
+       "anim": "boss_cainfull_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2.2,
+       "flip": true,
+       "enter": "up"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Cain",
+       "text": "Come up, little brother. The ground is too small for us."
+      }
+     ]
+    },
+    {
+     "layout": "bottom",
+     "bg": "color:0x0b0a10",
+     "fx": "redflash",
+     "actors": [
+      {
+       "anim": "abel_crusnik100_hover",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2.2,
+       "flip": false,
+       "enter": "up"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "...Nanomachines, one hundred percent. Full release."
+      },
+      {
+       "speaker": "Abel",
+       "text": "No one is left to see this. Good."
+      }
+     ]
+    },
+    {
+     "layout": "full",
+     "bg": "color:0x101828",
+     "tint": "0x2f4a63",
+     "fx": "shake",
+     "caption": "CENTUM",
+     "actors": [
+      {
+       "anim": "abel_crusnik100_fly",
+       "x": 0.32,
+       "y": 0.96,
+       "scale": 2.4,
+       "flip": false,
+       "enter": "up"
+      },
+      {
+       "anim": "boss_cainfull_fly",
+       "x": 0.72,
+       "y": 0.96,
+       "scale": 2.4,
+       "flip": true,
+       "enter": "up"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Cain",
+       "text": "There you are. Black wings and lightning. You were always the frightening one."
+      }
+     ]
+    }
+   ]
+  },
+  "cain_outro": {
+   "panels": [
+    {
+     "layout": "tl",
+     "bg": "color:0x101828",
+     "actors": [
+      {
+       "anim": "boss_cainfull_hurt",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Cain",
+       "text": "Ha... You hesitated. At the very end, you hesitated."
+      }
+     ]
+    },
+    {
+     "layout": "tr",
+     "bg": "color:0x14111c",
+     "actors": [
+      {
+       "anim": "abel_crusnik100_hover",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "Go, Cain. Before I stop hesitating."
+      }
+     ]
+    },
+    {
+     "layout": "bottom",
+     "bg": "color:0x0b0a10",
+     "tint": "0xa03040",
+     "caption": "The sky over Byzantium. Dawn.",
+     "actors": [
+      {
+       "anim": "abel_crusnik40_kneel",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "He will come back. He always comes back."
+      },
+      {
+       "speaker": "Abel",
+       "text": "...Esther. I'm sorry. I still have to go home and pretend."
+      }
+     ]
+    }
+   ]
   }
  }
 }

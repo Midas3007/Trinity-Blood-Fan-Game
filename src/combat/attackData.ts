@@ -18,6 +18,8 @@ interface RawAttackFile {
   airStarter: string;
   crouchStarter: string;
   crusnikStarters: Omit<Starters, 'ranged'> & { ranged: string };
+  /** Abel at 100% (the Cain finale): the double-sided scythe and lightning. */
+  ascendedStarters: Omit<Starters, 'ranged'> & { ranged: string };
 }
 
 /** Throws with a readable message if attack data is inconsistent. */
@@ -53,7 +55,8 @@ export function tableFromRecord(rec: Record<string, Omit<AttackDef, 'id'>>): Att
 export function buildAttackTable(file: RawAttackFile): AttackTable {
   const table = tableFromRecord(file.attacks);
   const c = file.crusnikStarters;
-  for (const starter of [file.groundStarter, file.airStarter, file.crouchStarter, c.ground, c.air, c.crouch, c.ranged]) {
+  const u = file.ascendedStarters;
+  for (const starter of [file.groundStarter, file.airStarter, file.crouchStarter, c.ground, c.air, c.crouch, c.ranged, u.ground, u.air, u.crouch, u.ranged]) {
     if (!(starter in table)) throw new Error(`starter attack "${starter}" does not exist`);
   }
   return table;
@@ -65,9 +68,10 @@ export const GROUND_STARTER = file.groundStarter;
 export const AIR_STARTER = file.airStarter;
 export const CROUCH_STARTER = file.crouchStarter;
 
-export const STARTERS: Record<'priest' | 'crusnik', Starters> = {
+export const STARTERS: Record<'priest' | 'crusnik' | 'ascended', Starters> = {
   priest: { ground: file.groundStarter, air: file.airStarter, crouch: file.crouchStarter, ranged: null },
   crusnik: { ...file.crusnikStarters },
+  ascended: { ...file.ascendedStarters },
 };
 
 /** A priest weapon: the attacks each press starts and its finisher (src/data/weapons.json). */
@@ -93,8 +97,8 @@ export const weapons: Record<string, WeaponDef> = Object.fromEntries(
 export const DEFAULT_WEAPON = 'fists';
 
 /** The starters for a form; the priest's depend on the weapon in hand (the Crusnik always uses the scythe). */
-export function startersFor(form: 'priest' | 'crusnik', weapon: string = DEFAULT_WEAPON): Starters {
-  if (form === 'crusnik') return STARTERS.crusnik;
+export function startersFor(form: 'priest' | 'crusnik', weapon: string = DEFAULT_WEAPON, ascended = false): Starters {
+  if (form === 'crusnik') return ascended ? STARTERS.ascended : STARTERS.crusnik;
   const w = weapons[weapon] ?? weapons[DEFAULT_WEAPON]!;
   return { ground: w.ground, air: w.air, crouch: w.crouch, ranged: null };
 }

@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "idle": {
+      "durations_ms": [
+        600
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 128,
+  "cell_width": 128,
+  "columns": 1,
+  "entity": "boss_cainfull",
+  "palette": "requiem48.hex",
+  "pivot_x": 64,
+  "pivot_y": 128,
+  "sheet": "boss_cainfull_idle.png",
+  "source_hashes": [
+    "sha256:b767d92c200097e8d4c9b687e9011dc840d4c2fa468072b869adcc71ba2c8465"
+  ],
+  "variant_of": "abel_crusnik80/abel_crusnik80_hover.png"
+}

@@ -60,6 +60,8 @@ export interface PlayerContext {
   drinkFlask(): void;
   /** Stick vertical (-1 up .. 1 down). */
   readonly moveY: number;
+  /** Abel at 100% (the Cain finale): double-sided scythe, ABIL = lightning, flight. */
+  readonly ascended: boolean;
   /** ABIL as the Crusnik: double tap = chain lash, single tap = change back (owner, both modes). */
   readonly abilityTap: Tap;
   revertForm(): void;
@@ -144,6 +146,7 @@ function brake(ctx: PlayerContext, dtMs: number): void {
 
 /** ABIL: take the Crusnik form when it is ready; as the Crusnik, double tap = chain lash, single tap = change back. */
 function abilityState(ctx: PlayerContext): PlayerStateKey | null {
+  if (ctx.form === 'crusnik' && ctx.ascended) return ctx.abilityPressed ? 'lash' : null; // lightning, at once
   if (ctx.form === 'crusnik') {
     if (ctx.abilityTap === 'double') return 'lash';
     if (ctx.abilityTap === 'single') ctx.revertForm();
@@ -151,7 +154,7 @@ function abilityState(ctx: PlayerContext): PlayerStateKey | null {
   }
   if (!ctx.abilityPressed) return null;
   if (ctx.transformReady) return 'transform'; // in the air too (owner: ABIL must just work)
-  if (startersFor(ctx.form, ctx.weapon).ranged) return 'lash';
+  if (startersFor(ctx.form, ctx.weapon, ctx.ascended).ranged) return 'lash';
   return null;
 }
 
@@ -274,7 +277,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
   attack: {
     enter(ctx) {
       faceInput(ctx);
-      ctx.combat.begin(startersFor(ctx.form, ctx.weapon).ground);
+      ctx.combat.begin(startersFor(ctx.form, ctx.weapon, ctx.ascended).ground);
     },
     update(ctx, dtMs) {
       if (ctx.attackPressed) ctx.combat.pressAttack();
@@ -300,7 +303,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
 
   airAttack: {
     enter(ctx) {
-      ctx.combat.begin(startersFor(ctx.form, ctx.weapon).air);
+      ctx.combat.begin(startersFor(ctx.form, ctx.weapon, ctx.ascended).air);
     },
     update(ctx, dtMs) {
       // Steering continues, but facing is locked for the swing.
@@ -482,7 +485,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
   lash: {
     enter(ctx) {
       faceInput(ctx);
-      ctx.combat.begin(startersFor(ctx.form, ctx.weapon).ranged ?? STARTERS.crusnik.ranged!);
+      ctx.combat.begin(startersFor(ctx.form, ctx.weapon, ctx.ascended).ranged ?? STARTERS.crusnik.ranged!);
     },
     update(ctx, dtMs) {
       const phase = ctx.combat.tick(dtMs);
@@ -520,7 +523,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
   crouchAttack: {
     enter(ctx) {
       faceInput(ctx);
-      ctx.combat.begin(startersFor(ctx.form, ctx.weapon).crouch);
+      ctx.combat.begin(startersFor(ctx.form, ctx.weapon, ctx.ascended).crouch);
     },
     update(ctx, dtMs) {
       const phase = ctx.combat.tick(dtMs);

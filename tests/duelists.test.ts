@@ -5,12 +5,13 @@ import kampfer from '../src/data/bosses/kampfer.json';
 import petros from '../src/data/bosses/petros.json';
 import dietrich from '../src/data/bosses/dietrich.json';
 import gyula from '../src/data/bosses/gyula.json';
+import cain from '../src/data/bosses/cain.json';
 import { relics } from '../src/systems/progression';
 
 const DT = 1000 / 60;
 const L = 0;
 const R = 480;
-const all = { paula, kampfer, petros, dietrich, gyula } as unknown as Record<string, DuelistConfig>;
+const all = { paula, kampfer, petros, dietrich, gyula, cain } as unknown as Record<string, DuelistConfig>;
 
 function fight(cfg: DuelistConfig, ms: number, hurtAfter = Infinity) {
   const b = new DuelistBrain(cfg, 380, L, R);
@@ -111,5 +112,29 @@ describe('mini bosses (data-driven duelists)', () => {
     for (let t = 0; t < 8000 && k.state !== 'cast'; t += DT) k.update(DT, 100);
     k.parried();
     expect(k.state).toBe('cast');
+  });
+
+  it('Cain: on the ground first; in phase 2 he hovers, swoops to Abel\'s height and aims his blasts up at him', () => {
+    const cfg = cain as unknown as DuelistConfig;
+    const b = new DuelistBrain(cfg, 380, L, R);
+    for (let t = 0; t < 3000; t += DT) b.update(DT, 120, 0);
+    expect(b.baseLift).toBe(0);
+    b.takeDamage(cfg.maxHealth * 0.55); // into phase 2
+    let maxLift = 0;
+    let lowest = Infinity;
+    let upward = false;
+    for (let t = 0; t < 30000; t += DT) {
+      b.update(DT, 120, 60); // Abel flying 60 px up
+      if (b.state === 'idle' || b.state === 'cast') maxLift = Math.max(maxLift, b.lift);
+      if (b.state === 'dive') lowest = Math.min(lowest, b.lift);
+    }
+    for (let t = 0; t < 20000; t += DT) {
+      b.update(DT, 120, 220); // Abel above him
+      if (b.projectiles.some((p) => p.vy > 0)) upward = true;
+    }
+    expect(b.baseLift).toBeGreaterThan(0);
+    expect(maxLift).toBeGreaterThan(b.baseLift * 0.8); // floats up there between moves
+    expect(lowest).toBeGreaterThanOrEqual(59); // the swoop stops at Abel's height, not the floor
+    expect(upward).toBe(true);
   });
 });

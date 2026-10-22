@@ -194,3 +194,20 @@ describe('Crusnik visuals', () => {
     }
   });
 });
+
+describe('one hundred percent (the Cain finale)', () => {
+  it('the double-sided scythe hits on both sides; ABIL is lightning with a long reach; it can fly', async () => {
+    const { startersFor, attackTable } = await import('../src/combat/attackData');
+    const s = startersFor('crusnik', 'fists', true);
+    const scythe = attackTable[s.ground]!;
+    expect(scythe.hitbox.x - scythe.hitbox.w / 2).toBeLessThan(-20); // reaches behind him
+    expect(scythe.hitbox.x + scythe.hitbox.w / 2).toBeGreaterThan(20);
+    const bolt = attackTable[s.ranged!]!;
+    expect(bolt.hitbox.x + bolt.hitbox.w / 2).toBeGreaterThan(150);
+    const p = transformed();
+    p.ascended = true;
+    p.step({ ability: true });
+    expect(p.state).toBe('lash'); // lightning at once (no double tap needed)
+    expect(p.combat.current?.id).toBe(s.ranged);
+  });
+});

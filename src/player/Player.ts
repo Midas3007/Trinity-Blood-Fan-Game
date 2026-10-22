@@ -17,6 +17,7 @@ import { playerStates, postureFor, type PlayerContext, type PlayerStateKey, type
 import { playerTuning, type PlayerTuning } from './tuning';
 import { PlayerView, type VisualKey } from './PlayerView';
 import { TapCounter, type Tap } from '../systems/input/doubleTap';
+import { AscendedFx } from './AscendedFx';
 import { findLedge, hangCentre, standCentre, type Ledge } from './ledge';
 import { FinisherRunner } from '../combat/FinisherRunner';
 import { StrengthBuff } from '../combat/StrengthBuff';
@@ -104,6 +105,8 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.airTopY = y;
     this.fsm = new StateMachine(playerStates, 'idle', this as PlayerContext);
     this.view = new PlayerView(scene, this.sprite, this.facingMark);
+    this.ascendedFx = new AscendedFx(scene);
+    this.ascendedFx.setVisible(false);
     // Draw after Arcade has copied this step's body position onto the game object (POST_UPDATE), so the
     // sprite never trails the body by a frame at roll/slide speeds.
     scene.events.on(Phaser.Scenes.Events.POST_UPDATE, this.syncView, this);
@@ -170,6 +173,17 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   /** 80% (wings): set by the final battle's scene. */
   winged = false;
+  /** 100% (the Cain finale): bat wings, flight, the double-sided scythe and lightning. Set by ascend(). */
+  ascended = false;
+  private readonly ascendedFx: AscendedFx;
+
+  /** Scripted (the Cain finale): straight to one hundred percent. */
+  ascend(): void {
+    this.crusnik.unlocked = true;
+    this.forceTransform();
+    this.winged = true;
+    this.ascended = true;
+  }
 
   /** Scripted: become the Crusnik at once (the meter must be unlocked; it starts draining). */
   forceTransform(): void {
@@ -186,6 +200,7 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   /** Back to the priest at once (death, respawn). */
   endCrusnik(): void {
+    this.ascended = false;
     this.crusnik.end();
     this.setForm('priest');
   }
@@ -305,7 +320,7 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   /** Flight for the cheat: each JUMP in the air is a wing beat. */
   get canFly(): boolean {
-    return this.godMode && this.form === 'crusnik'; // owner: never as the priest
+    return this.ascended || (this.godMode && this.form === 'crusnik'); // owner: never as the priest
   }
 
   private readonly abilityTaps = new TapCounter(playerTuning.doubleTapMs);
@@ -315,8 +330,9 @@ export class Player implements PlayerContext, PlayerCombatant {
   /** A single ABIL tap as the Crusnik: back to the priest (the blood left stays). The final battle's scripted
    * wings stay unless the cheat gave them. */
   revertForm(): void {
-    if (this.winged && !this.godMode) return;
+    if ((this.winged || this.ascended) && !this.godMode) return;
     this.winged = false;
+    this.ascended = false;
     this.endCrusnik();
   }
 
@@ -629,6 +645,9 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   private syncView(): void {
     this.facingMark.setPosition(this.sprite.x + this.facing * (this.tuning.width / 2 - 2), this.sprite.y - this.height / 2 + 7);
-    this.view.update(this.visualKey(), this.combat.current?.id ?? this.finishing.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha, this.form, this.winged, this.weapon);
+    this.view.update(this.visualKey(), this.combat.current?.id ?? this.finishing.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha, this.form, this.winged, this.weapon, this.ascended);
+    const at100 = this.ascended && this.form === 'crusnik';
+    this.ascendedFx.setVisible(at100);
+    if (at100) this.ascendedFx.update(this.sprite.scene.game.loop.delta, this.sprite.x, this.sprite.y, this.facing, !this.onGround, this.combat, this.alpha);
   }
 }

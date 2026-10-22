@@ -15,13 +15,14 @@ import kampfer from '../data/bosses/kampfer.json';
 import petros from '../data/bosses/petros.json';
 import dietrich from '../data/bosses/dietrich.json';
 import gyula from '../data/bosses/gyula.json';
+import cain from '../data/bosses/cain.json';
 
 const TILE = 16;
 const WALL_W = 16;
 /** Abel must be this far inside the arena (and on the ground) before the walls rise. */
 const START_MARGIN = 40;
 const WALL_COLOR = 0x5a0f1e;
-const DUELISTS = { paula, kampfer, petros, dietrich, gyula } as unknown as Record<string, DuelistConfig>;
+const DUELISTS = { paula, kampfer, petros, dietrich, gyula, cain } as unknown as Record<string, DuelistConfig>;
 
 export interface ArenaHooks {
   /** Play a cutscene; gameplay waits until `done`. */
@@ -107,9 +108,9 @@ export class BossArena {
     return this.active ? this.boss.hazards(playerBox) : [];
   }
 
-  update(dtMs: number, playerX: number, playerOnGround: boolean): void {
+  update(dtMs: number, playerX: number, playerOnGround: boolean, playerFeetY = this.floorY): void {
     if (!this.started && playerOnGround && playerX > this.left + START_MARGIN && playerX < this.right - START_MARGIN) this.start();
-    this.boss.update(dtMs, playerX, this.active);
+    this.boss.update(dtMs, playerX, this.active, Math.max(0, this.floorY - playerFeetY));
     if (!this.started) return;
     this.bar.set(this.boss.healthFraction);
     this.bar.update(dtMs);

@@ -96,6 +96,10 @@
     "star_of_sorrow": {
       "title": "Brass plate on the machine",
       "text": "An instrument older than the war, built to bring down the light of a star. Someone has recently cleaned every gear by hand, and written beneath the controls: 'For her. For all of them.'"
+    },
+    "spire_inscription": {
+      "title": "Words cut in the spire",
+      "text": "Two names are carved side by side in the old stone, older than the Empire. One has been scratched out and carved again, deeper, many times."
     }
   }
 }

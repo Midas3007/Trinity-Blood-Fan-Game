@@ -135,6 +135,9 @@ def star_chamber():
     r.prop("machine_core", 8, F - 1, 140)
     r.prop("machine_core", 52, F - 1, 140)
     r.mark("lore", 6, F - 1, lore="star_of_sorrow")
+    # The Empire arc's finale (for now): a sealed door up to the Imperial Spire ('arc2_open'; the cheat opens it).
+    r.door(53, F - 5, 57, F, "imperial_spire", "arrive", requires="arc2_open")
+    r.mark("entry", 55, F - 1, name="spire_door", facing=-1)
     r.mark("boss", 32, F - 1, boss="gyula", arenaLeft=15 * T, arenaRight=45 * T, defeatFlag="gyula_defeated",
            intro="gyula_intro", outro="gyula_outro")
     return r

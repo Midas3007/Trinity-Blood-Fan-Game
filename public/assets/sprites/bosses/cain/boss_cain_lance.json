@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "lance": {
+      "durations_ms": [
+        400
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 128,
+  "cell_width": 128,
+  "columns": 1,
+  "entity": "boss_cain",
+  "palette": "requiem48.hex",
+  "pivot_x": 64,
+  "pivot_y": 128,
+  "sheet": "boss_cain_lance.png",
+  "source_hashes": [
+    "sha256:da738faa508ff537581cef6c0d112b376dbe83ec5f3d4bc0ef64c8c25a91ca00"
+  ],
+  "variant_of": "abel_crusnik80/abel_crusnik80_dive.png"
+}

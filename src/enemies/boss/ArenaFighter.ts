@@ -23,7 +23,7 @@ export interface ArenaFighter extends Damageable, Attacker {
   /** True once when the second phase begins. */
   drainPhaseChange(): boolean;
   hazards(playerBox: Rect): ContactHazard[];
-  /** `active` false = before the fight starts (idle pose only). */
-  update(dtMs: number, playerX: number, active: boolean): void;
+  /** `active` false = before the fight starts (idle pose only). `playerLift`: Abel's feet above the arena floor. */
+  update(dtMs: number, playerX: number, active: boolean, playerLift?: number): void;
   destroy(): void;
 }

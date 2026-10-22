@@ -198,7 +198,7 @@ export class PlayScene extends Phaser.Scene {
     // Test mode only: ?test&time=day|dusk|night.
     const forcedTime = testHookEnabled() ? new URLSearchParams(location.search).get('time') : null;
     if (forcedTime === 'day' || forcedTime === 'dusk' || forcedTime === 'night') gameState.time = forcedTime as TimeOfDay;
-    this.backdrop = new Backdrop(this, gameState.time, r.width, r.outdoor, r.horizon);
+    this.backdrop = new Backdrop(this, gameState.time, r.width, r.outdoor, r.horizon, r.aloft);
     this.tiles = new RoomTiles(this, r);
     const tiled = r.layers.terrain.length > 0;
     const solids = this.physics.add.staticGroup();
@@ -533,6 +533,8 @@ export class PlayScene extends Phaser.Scene {
     this.backdrop.update(dt);
     this.senseLadders();
     this.player.update(dt);
+    // Flight (100% form, or the cheat) stops at the room's top unless another room lies above.
+    if (this.player.canFly && !roomAtPixel(allRooms, this.roomData.originX + this.player.x, this.roomData.originY - 1, TILE)) this.player.holdBelow(0);
     this.listen();
     if (this.leaving) return;
     this.updateRoom();
@@ -541,7 +543,7 @@ export class PlayScene extends Phaser.Scene {
     const living = this.enemies.alive;
     const arena = this.arena;
     if (arena) {
-      arena.update(dt, this.player.x, this.player.onGround);
+      arena.update(dt, this.player.x, this.player.onGround, this.player.feetY);
     }
     const p0 = this.player;
     this.flyers.update(dt, p0.x, p0.y);
@@ -559,7 +561,7 @@ export class PlayScene extends Phaser.Scene {
     }
     const p = this.player;
     this.hud.setCrusnik(p.crusnik.fraction, p.crusnik.shown, p.crusnik.ready);
-    this.chain.update(p.state === 'lash' ? activeHitbox(p.combat, p.x, p.y, p.facing) : null, p.x + p.facing * 8, p.y - 4, p.facing);
+    this.chain.update(p.state === 'lash' && !p.ascended ? activeHitbox(p.combat, p.x, p.y, p.facing) : null, p.x + p.facing * 8, p.y - 4, p.facing);
 
     const boxes: Rect[] = [];
     for (const a of [this.player, ...living, ...(this.arena?.attackers ?? [])]) {
@@ -599,9 +601,6 @@ export class PlayScene extends Phaser.Scene {
       cm.awake = true;
       cm.unlocked = true;
       cm.fill();
-      // Flight stops at the room's top unless another room lies above.
-      const r = this.roomData;
-      if (!roomAtPixel(allRooms, r.originX + p.x, r.originY - 1, TILE)) p.holdBelow(0);
       if (p.form === 'crusnik' && !p.winged) {
         p.winged = true;
         this.cheatWings = true;
@@ -813,6 +812,14 @@ export class PlayScene extends Phaser.Scene {
       this.player.crusnik.unlocked = gameState.hasFlag(crusnikConfig.unlockFlag);
       this.time.delayedCall(3400, () => this.banner.show('SANGUIS', 'The bar under your health is blood. Only Methuselah blood fills it.\nFull and glowing: ABIL becomes the Crusnik. Then double-tap ABIL for the chain.', 3200));
     }
+    if (flag === 'cain_defeated') {
+      // The Empire arc's finale (built first): Abel comes down as himself.
+      this.player.revertForm();
+      this.player.endCrusnik();
+      this.player.winged = false;
+      saveStore.save(gameState.toSave(Date.now()));
+      this.time.delayedCall(3400, () => this.banner.show('THE EMPIRE ARC', 'Its finale, played first. The road to Byzantium is still being built.', 3600));
+    }
     if (flag === 'gyula_defeated') {
       // The end: the ending scene, the credits, then the teaser for the next arc.
       saveStore.save(gameState.toSave(Date.now()));
@@ -853,6 +860,13 @@ export class PlayScene extends Phaser.Scene {
 
   /** A boss's mid-fight cutscene ended. Kampfer's is Abel's first transformation: the Crusnik wakes, now. */
   private phaseSceneDone(id: string): void {
+    if (id === 'cain_ascension') {
+      // The Cain finale: both brothers rise into the sky. Abel at one hundred percent.
+      gameState.setFlag(crusnikConfig.unlockFlag);
+      this.player.ascend();
+      this.banner.show('CENTUM', 'One hundred percent. Tap JUMP to fly.\nATK: the double scythe. ABIL: lightning.', 2800);
+      return;
+    }
     if (id === 'gyula_wings') {
       // The final battle: eighty percent. Wings, and the blood no longer runs out.
       gameState.setFlag(crusnikConfig.unlockFlag);
@@ -967,7 +981,7 @@ export class PlayScene extends Phaser.Scene {
       enemies: this.enemies.active.map((e) => ({ type: e.cfg.type, state: e.state, view: e.viewLabel, x: e.x, y: e.y, hp: e.health.hp })),
       dummies: this.dummies.map((d) => ({ x: d.x, hp: d.health.hp, alive: d.alive })),
       boss: this.arena
-        ? { state: this.arena.fighter.stateLabel, hp: this.arena.fighter.healthFraction, phase: this.arena.fighter.phaseNumber, x: this.arena.fighter.x, active: this.arena.active, cutscene: this.cutsceneOn }
+        ? { state: this.arena.fighter.stateLabel, hp: this.arena.fighter.healthFraction, phase: this.arena.fighter.phaseNumber, x: this.arena.fighter.x, y: this.arena.fighter.y, active: this.arena.active, cutscene: this.cutsceneOn }
         : null,
     };
   }

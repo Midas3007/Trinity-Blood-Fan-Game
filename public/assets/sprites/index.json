@@ -552,6 +552,87 @@
         "sha256:318b5bb5bad417b84e299331020aa4f730fb5af0088bb0093fd81e66301e3e67"
       ]
     },
+    "abel_crusnik100/abel_crusnik100_dive.png": {
+      "animations": {
+        "dive": {
+          "durations_ms": [
+            400
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "abel_crusnik100",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "abel_crusnik100_dive.png",
+      "source_hashes": [
+        "sha256:da738faa508ff537581cef6c0d112b376dbe83ec5f3d4bc0ef64c8c25a91ca00"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_dive.png"
+    },
+    "abel_crusnik100/abel_crusnik100_fly.png": {
+      "animations": {
+        "fly": {
+          "durations_ms": [
+            160,
+            160
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 2,
+      "entity": "abel_crusnik100",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "abel_crusnik100_fly.png",
+      "source_hashes": [
+        "sha256:6e7cb3e92368bda06adb068654806108c153e621c774045951d00c193cf6fd6c",
+        "sha256:dfc423c1d5f5a8bb2baa0f75942c0e6ecf2aa5ac1fd6a4001a78022746eef35d"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_fly.png"
+    },
+    "abel_crusnik100/abel_crusnik100_hover.png": {
+      "animations": {
+        "hover": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "abel_crusnik100",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "abel_crusnik100_hover.png",
+      "source_hashes": [
+        "sha256:b767d92c200097e8d4c9b687e9011dc840d4c2fa468072b869adcc71ba2c8465"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_hover.png"
+    },
     "abel_crusnik40/abel_crusnik40_climb.png": {
       "animations": {
         "climb": {
@@ -1277,6 +1358,324 @@
         "sha256:36fb89a35760501c8ea57af429f516a2e7b34f761b7466aadeeb822b7544ad9f",
         "sha256:8dec75b58ca5e1e6afb39f72ae1b4eb485820fac6cf017a966cb5e97e73ad9e8"
       ]
+    },
+    "bosses/cain/boss_cain_cast.png": {
+      "animations": {
+        "cast": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_cain",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_cain_cast.png",
+      "source_hashes": [
+        "sha256:b767d92c200097e8d4c9b687e9011dc840d4c2fa468072b869adcc71ba2c8465"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_hover.png"
+    },
+    "bosses/cain/boss_cain_defeated.png": {
+      "animations": {
+        "defeated": {
+          "durations_ms": [
+            400
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_cain",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_cain_defeated.png",
+      "source_hashes": [
+        "sha256:da738faa508ff537581cef6c0d112b376dbe83ec5f3d4bc0ef64c8c25a91ca00"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_dive.png"
+    },
+    "bosses/cain/boss_cain_fly.png": {
+      "animations": {
+        "fly": {
+          "durations_ms": [
+            160,
+            160
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 2,
+      "entity": "boss_cain",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_cain_fly.png",
+      "source_hashes": [
+        "sha256:6e7cb3e92368bda06adb068654806108c153e621c774045951d00c193cf6fd6c",
+        "sha256:dfc423c1d5f5a8bb2baa0f75942c0e6ecf2aa5ac1fd6a4001a78022746eef35d"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_fly.png"
+    },
+    "bosses/cain/boss_cain_hurt.png": {
+      "animations": {
+        "hurt": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_cain",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_cain_hurt.png",
+      "source_hashes": [
+        "sha256:b767d92c200097e8d4c9b687e9011dc840d4c2fa468072b869adcc71ba2c8465"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_hover.png"
+    },
+    "bosses/cain/boss_cain_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_cain",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_cain_idle.png",
+      "source_hashes": [
+        "sha256:b767d92c200097e8d4c9b687e9011dc840d4c2fa468072b869adcc71ba2c8465"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_hover.png"
+    },
+    "bosses/cain/boss_cain_lance.png": {
+      "animations": {
+        "lance": {
+          "durations_ms": [
+            400
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_cain",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_cain_lance.png",
+      "source_hashes": [
+        "sha256:da738faa508ff537581cef6c0d112b376dbe83ec5f3d4bc0ef64c8c25a91ca00"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_dive.png"
+    },
+    "bosses/cainfull/boss_cainfull_cast.png": {
+      "animations": {
+        "cast": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_cainfull",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_cainfull_cast.png",
+      "source_hashes": [
+        "sha256:b767d92c200097e8d4c9b687e9011dc840d4c2fa468072b869adcc71ba2c8465"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_hover.png"
+    },
+    "bosses/cainfull/boss_cainfull_defeated.png": {
+      "animations": {
+        "defeated": {
+          "durations_ms": [
+            400
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_cainfull",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_cainfull_defeated.png",
+      "source_hashes": [
+        "sha256:da738faa508ff537581cef6c0d112b376dbe83ec5f3d4bc0ef64c8c25a91ca00"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_dive.png"
+    },
+    "bosses/cainfull/boss_cainfull_fly.png": {
+      "animations": {
+        "fly": {
+          "durations_ms": [
+            160,
+            160
+          ],
+          "events": [],
+          "frames": [
+            0,
+            1
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 2,
+      "entity": "boss_cainfull",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_cainfull_fly.png",
+      "source_hashes": [
+        "sha256:6e7cb3e92368bda06adb068654806108c153e621c774045951d00c193cf6fd6c",
+        "sha256:dfc423c1d5f5a8bb2baa0f75942c0e6ecf2aa5ac1fd6a4001a78022746eef35d"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_fly.png"
+    },
+    "bosses/cainfull/boss_cainfull_hurt.png": {
+      "animations": {
+        "hurt": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_cainfull",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_cainfull_hurt.png",
+      "source_hashes": [
+        "sha256:b767d92c200097e8d4c9b687e9011dc840d4c2fa468072b869adcc71ba2c8465"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_hover.png"
+    },
+    "bosses/cainfull/boss_cainfull_idle.png": {
+      "animations": {
+        "idle": {
+          "durations_ms": [
+            600
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": true
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_cainfull",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_cainfull_idle.png",
+      "source_hashes": [
+        "sha256:b767d92c200097e8d4c9b687e9011dc840d4c2fa468072b869adcc71ba2c8465"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_hover.png"
+    },
+    "bosses/cainfull/boss_cainfull_lance.png": {
+      "animations": {
+        "lance": {
+          "durations_ms": [
+            400
+          ],
+          "events": [],
+          "frames": [
+            0
+          ],
+          "loop": false
+        }
+      },
+      "cell_height": 128,
+      "cell_width": 128,
+      "columns": 1,
+      "entity": "boss_cainfull",
+      "palette": "requiem48.hex",
+      "pivot_x": 64,
+      "pivot_y": 128,
+      "sheet": "boss_cainfull_lance.png",
+      "source_hashes": [
+        "sha256:da738faa508ff537581cef6c0d112b376dbe83ec5f3d4bc0ef64c8c25a91ca00"
+      ],
+      "variant_of": "abel_crusnik80/abel_crusnik80_dive.png"
     },
     "bosses/gyula/boss_gyula_defeated.png": {
       "animations": {

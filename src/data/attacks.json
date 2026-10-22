@@ -117,6 +117,46 @@
         "h": 30
       }
     },
+    "c100_scythe": {
+      "_note": "Abel at 100% (the Cain finale): a double-sided scythe spun all the way round, so it hits on both sides.",
+      "startupMs": 120,
+      "activeMs": 140,
+      "recoveryMs": 220,
+      "damage": 26,
+      "knockbackX": 220,
+      "knockbackY": 90,
+      "hitstopMs": 80,
+      "shakeMs": 100,
+      "shakeIntensity": 0.006,
+      "stepSpeed": 0,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 0,
+        "y": -4,
+        "w": 104,
+        "h": 48
+      }
+    },
+    "c100_lightning": {
+      "_note": "Abel at 100%: ABIL calls lightning in a straight line ahead (drawn by AscendedFx to the hitbox's reach).",
+      "startupMs": 200,
+      "activeMs": 140,
+      "recoveryMs": 260,
+      "damage": 22,
+      "knockbackX": 120,
+      "knockbackY": 40,
+      "hitstopMs": 70,
+      "shakeMs": 120,
+      "shakeIntensity": 0.006,
+      "stepSpeed": 0,
+      "cancelIntoDodge": true,
+      "hitbox": {
+        "x": 92,
+        "y": -6,
+        "w": 160,
+        "h": 22
+      }
+    },
     "lash": {
       "startupMs": 180,
       "activeMs": 120,
@@ -242,5 +282,11 @@
     "air": "scythe",
     "crouch": "scythe",
     "ranged": "lash"
+  },
+  "ascendedStarters": {
+    "ground": "c100_scythe",
+    "air": "c100_scythe",
+    "crouch": "c100_scythe",
+    "ranged": "c100_lightning"
   }
 }

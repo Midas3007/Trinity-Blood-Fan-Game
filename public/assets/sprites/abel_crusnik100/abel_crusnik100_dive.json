@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "dive": {
+      "durations_ms": [
+        400
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 128,
+  "cell_width": 128,
+  "columns": 1,
+  "entity": "abel_crusnik100",
+  "palette": "requiem48.hex",
+  "pivot_x": 64,
+  "pivot_y": 128,
+  "sheet": "abel_crusnik100_dive.png",
+  "source_hashes": [
+    "sha256:da738faa508ff537581cef6c0d112b376dbe83ec5f3d4bc0ef64c8c25a91ca00"
+  ],
+  "variant_of": "abel_crusnik80/abel_crusnik80_dive.png"
+}

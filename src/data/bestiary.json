@@ -42,6 +42,9 @@
       "tip": "Jump the red shockwaves, parry the amber sweeps, and keep moving under the falling threads." },
     "gyula": { "name": "Gyula Kádár", "kind": "boss", "anim": "boss_gyula_idle", "blood": "rich",
       "text": "Lord of Istvan, a Methuselah who loved a human woman and watched the city burn her. The Star of Sorrow is his grief made into a weapon.",
-      "tip": "Light columns are marked on the floor before they strike. Move. At half health, the wings." }
+      "tip": "Light columns are marked on the floor before they strike. Move. At half health, the wings." },
+    "cain": { "name": "Cain", "kind": "boss", "anim": "boss_cain_idle", "blood": "rich",
+      "text": "The first of them, and the strongest. He wears white and smiles like a saint, and he has waited a very long time for his brother to come home.",
+      "tip": "Red blasts fly where you stand: move between them. The lance charge cannot be parried. In the sky, keep beating your wings; his dive comes to your height." }
   }
 }

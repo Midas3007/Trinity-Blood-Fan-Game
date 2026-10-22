@@ -12,6 +12,12 @@ const DEPTH = 9.5;
 const AMBER = 0xd9963a;
 const RED = 0xd4283e;
 const FLASH_MS = 90;
+/** Hover bob: period (ms per radian) and height (px). */
+const BOB_PERIOD = 260;
+const BOB_PX = 3;
+/** Lance: how far it reaches when not striking, and how far behind the hands the butt sits (px). */
+const LANCE_REST = 30;
+const LANCE_BACK = 14;
 
 /** A one-off hazard (a spell bolt or a floor shockwave) that can't be parried. */
 class Blast implements ContactHazard {
@@ -39,6 +45,7 @@ export class Duelist implements ArenaFighter {
   private readonly fx: Phaser.GameObjects.Graphics;
   private readonly aura: Phaser.GameObjects.Ellipse;
   private flashMs = 0;
+  private t = 0;
   private phaseChanged = false;
   private summons: { creature: string; count: number }[] = [];
 
@@ -54,7 +61,7 @@ export class Duelist implements ArenaFighter {
     this.view = new SpriteView(scene, `boss_${cfg.phases[0]?.sprite ?? cfg.id}_idle`, DEPTH);
     this.placeholder = scene.add.rectangle(0, 0, cfg.width, cfg.height, 0x5a1424).setDepth(DEPTH).setVisible(false);
     this.fx = scene.add.graphics().setDepth(DEPTH + 0.1);
-    this.aura = scene.add.ellipse(0, 0, cfg.width * 3, cfg.height * 1.5, 0x6a2a4a, 0.28).setDepth(DEPTH - 0.1).setBlendMode(Phaser.BlendModes.ADD);
+    this.aura = scene.add.ellipse(0, 0, cfg.width * 3, cfg.height * 1.5, cfg.auraColor ? Number(cfg.auraColor.replace('#', '0x')) : 0x6a2a4a, 0.28).setDepth(DEPTH - 0.1).setBlendMode(Phaser.BlendModes.ADD);
   }
 
   get name(): string {
@@ -136,15 +143,18 @@ export class Duelist implements ArenaFighter {
     return out;
   }
 
-  update(dtMs: number, playerX: number, active: boolean): void {
+  update(dtMs: number, playerX: number, active: boolean, playerLift = 0): void {
     this.flashMs = Math.max(0, this.flashMs - dtMs);
+    this.t += dtMs;
     const b = this.brain;
-    if (active) b.update(dtMs, playerX);
+    if (active) b.update(dtMs, playerX, playerLift);
     for (const e of b.drainEvents()) {
       if (e.type === 'phase') this.phaseChanged = true;
       if (e.type === 'summon') this.summons.push({ creature: e.creature, count: e.count });
     }
-    const feetY = this.floorY - b.lift;
+    // Floating: a slow bob (drawn only; hits use the brain's position).
+    const bob = b.baseLift > 0 && b.state !== 'dive' ? Math.round(Math.sin(this.t / BOB_PERIOD) * BOB_PX) : 0;
+    const feetY = this.floorY - b.lift + bob;
     this.placeholder.setSize(b.width, b.height);
     const key = b.state === 'attack' ? `attack:${b.attackId}` : b.state;
     const vis = b.phase.visuals ?? b.cfg.visuals;
@@ -162,9 +172,29 @@ export class Duelist implements ArenaFighter {
       const def = b.combat.current;
       const unparryable = def?.parryable === false || b.state === 'telegraph';
       if (this.flashMs > 0) s.setTintFill(COLORS.flash);
-      else if (b.telegraphing) s.setTint(unparryable ? RED : AMBER);
+      else if (b.telegraphing) {
+        const t = b.cfg.telegraphTints;
+        s.setTint(t ? Number(t[unparryable ? 1 : 0].replace('#', '0x')) : unparryable ? RED : AMBER);
+      }
     }
     this.draw();
+    this.drawWeapon(feetY);
+  }
+
+  /** Cain's lance: a long shaft and a bright head, out to the far end of the attack's hitbox. */
+  private drawWeapon(feetY: number): void {
+    const w = this.brain.cfg.weaponFx;
+    const b = this.brain;
+    if (!w || !b.visible || (b.state !== 'attack' && b.state !== 'dash' && b.state !== 'telegraph' && b.state !== 'dive')) return;
+    const def = b.combat.current;
+    const reach = def ? def.hitbox.x + def.hitbox.w / 2 : LANCE_REST;
+    const y = feetY - b.height * 0.55;
+    const back = b.x - b.facing * LANCE_BACK;
+    const tip = b.x + b.facing * reach;
+    const g = this.fx;
+    g.lineStyle(2, Number(w.color.replace('#', '0x')), 1).lineBetween(back, y, tip, y);
+    g.fillStyle(Number(w.tip.replace('#', '0x')), 1).fillTriangle(tip + b.facing * 7, y, tip - b.facing * 2, y - 3, tip - b.facing * 2, y + 3);
+    if (b.state === 'dash' || b.combat.phase === 'active') g.fillStyle(Number(w.tip.replace('#', '0x')), 0.35).fillCircle(tip, y, 5);
   }
 
   private draw(): void {

@@ -327,7 +327,7 @@ class Room:
                 "layers": layers,
                 "properties": [{"name": "title", "type": "string", "value": self.title},
                                {"name": "gridX", "type": "int", "value": self.gx}, {"name": "gridY", "type": "int", "value": self.gy},
-                               {"name": "sky", "type": "string", "value": "open" if self.sky else "none"},
+                               {"name": "sky", "type": "string", "value": self.sky if isinstance(self.sky, str) else ("open" if self.sky else "none")},
                                {"name": "horizon", "type": "int", "value": self.horizon * T}]}
 
 

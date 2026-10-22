@@ -1,0 +1,29 @@
+{
+  "animations": {
+    "fly": {
+      "durations_ms": [
+        160,
+        160
+      ],
+      "events": [],
+      "frames": [
+        0,
+        1
+      ],
+      "loop": true
+    }
+  },
+  "cell_height": 128,
+  "cell_width": 128,
+  "columns": 2,
+  "entity": "abel_crusnik100",
+  "palette": "requiem48.hex",
+  "pivot_x": 64,
+  "pivot_y": 128,
+  "sheet": "abel_crusnik100_fly.png",
+  "source_hashes": [
+    "sha256:6e7cb3e92368bda06adb068654806108c153e621c774045951d00c193cf6fd6c",
+    "sha256:dfc423c1d5f5a8bb2baa0f75942c0e6ecf2aa5ac1fd6a4001a78022746eef35d"
+  ],
+  "variant_of": "abel_crusnik80/abel_crusnik80_fly.png"
+}

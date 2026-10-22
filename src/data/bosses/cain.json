@@ -1,0 +1,273 @@
+{
+  "_note": "Cain (the Empire arc finale, owner 2026-10-22): Abel's brother, the first Crusnik. Looks like Abel's 80% form with white wings and blond hair (a recolour: tools/sprites/variants.py). Phase 1 on the ground: lance combos, red blasts, a lance charge, a dive. At half health the cutscene 'cain_ascension' plays: both rise into the sky and take their full forms (Abel 100%: bat wings, lightning, a double-sided scythe). Phase 2 is fought in the air: Cain hovers ('hover'), swoops to Abel's height, fires spreads of red blasts and calls down red judgement.",
+  "id": "cain",
+  "name": "Cain Nightroad",
+  "maxHealth": 900,
+  "width": 18,
+  "height": 50,
+  "introMs": 1200,
+  "phaseMs": 1400,
+  "approachRange": 70,
+  "walkMaxMs": 1800,
+  "staggerMs": 900,
+  "staggerDamageMultiplier": 2,
+  "recoverMs": 420,
+  "yields": false,
+  "deathMs": 2600,
+  "shockwave": {
+    "speed": 240,
+    "width": 14,
+    "height": 12,
+    "damage": 14,
+    "lifeMs": 2200
+  },
+  "phases": [
+    {
+      "at": 1,
+      "pattern": [
+        "lance",
+        "blasts",
+        "charge",
+        "lance2",
+        "dive",
+        "blasts",
+        "blink"
+      ],
+      "idleMs": 460,
+      "walkSpeed": 110
+    },
+    {
+      "at": 0.5,
+      "sprite": "cainfull",
+      "hover": 110,
+      "pattern": [
+        "spread",
+        "swoop",
+        "judgement",
+        "skycharge",
+        "spread",
+        "blink",
+        "swoop"
+      ],
+      "idleMs": 380,
+      "walkSpeed": 140
+    }
+  ],
+  "moves": {
+    "lance": {
+      "type": "combo",
+      "attacks": [
+        "c_thrust",
+        "c_sweep"
+      ],
+      "lunges": [
+        90,
+        0
+      ]
+    },
+    "lance2": {
+      "type": "combo",
+      "attacks": [
+        "c_thrust",
+        "c_thrust",
+        "c_sweep"
+      ],
+      "lunges": [
+        80,
+        80,
+        0
+      ]
+    },
+    "blasts": {
+      "type": "cast",
+      "windupMs": 520,
+      "recoverMs": 480,
+      "projectile": {
+        "speed": 230,
+        "damage": 14,
+        "size": 8,
+        "lifeMs": 2600,
+        "color": "#d4283e"
+      },
+      "count": 3,
+      "spreadDeg": 18,
+      "aimed": true
+    },
+    "charge": {
+      "type": "dash",
+      "attack": "c_charge",
+      "distance": 9999,
+      "speed": 440,
+      "fromEdge": true,
+      "telegraphMs": 560
+    },
+    "dive": {
+      "type": "leap",
+      "attack": "c_dive",
+      "height": 120,
+      "riseMs": 420,
+      "hangMs": 380,
+      "diveSpeed": 520,
+      "shockwaves": true
+    },
+    "blink": {
+      "type": "teleport",
+      "attack": "c_thrust",
+      "vanishMs": 360
+    },
+    "spread": {
+      "type": "cast",
+      "windupMs": 480,
+      "recoverMs": 420,
+      "projectile": {
+        "speed": 250,
+        "damage": 14,
+        "size": 8,
+        "lifeMs": 2600,
+        "color": "#d4283e"
+      },
+      "count": 5,
+      "spreadDeg": 46,
+      "aimed": true
+    },
+    "swoop": {
+      "type": "leap",
+      "attack": "c_dive",
+      "height": 60,
+      "riseMs": 320,
+      "hangMs": 300,
+      "diveSpeed": 560
+    },
+    "skycharge": {
+      "type": "dash",
+      "attack": "c_charge",
+      "distance": 9999,
+      "speed": 480,
+      "fromEdge": true,
+      "telegraphMs": 480
+    },
+    "judgement": {
+      "type": "beam",
+      "windupMs": 600,
+      "markMs": 640,
+      "strikeMs": 300,
+      "width": 16,
+      "damage": 18,
+      "count": 3,
+      "spacing": 70,
+      "recoverMs": 600
+    }
+  },
+  "attacks": {
+    "c_thrust": {
+      "startupMs": 300,
+      "activeMs": 110,
+      "recoveryMs": 240,
+      "damage": 18,
+      "knockbackX": 200,
+      "knockbackY": 60,
+      "hitstopMs": 80,
+      "shakeMs": 110,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 40,
+        "y": -6,
+        "w": 64,
+        "h": 14
+      }
+    },
+    "c_sweep": {
+      "startupMs": 280,
+      "activeMs": 140,
+      "recoveryMs": 420,
+      "damage": 16,
+      "knockbackX": 170,
+      "knockbackY": 90,
+      "hitstopMs": 80,
+      "shakeMs": 110,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 30,
+        "y": -4,
+        "w": 56,
+        "h": 34
+      }
+    },
+    "c_charge": {
+      "startupMs": 0,
+      "activeMs": 5000,
+      "recoveryMs": 0,
+      "damage": 20,
+      "knockbackX": 230,
+      "knockbackY": 100,
+      "hitstopMs": 80,
+      "shakeMs": 110,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 24,
+        "y": -4,
+        "w": 48,
+        "h": 30
+      },
+      "parryable": false
+    },
+    "c_dive": {
+      "startupMs": 0,
+      "activeMs": 5000,
+      "recoveryMs": 0,
+      "damage": 20,
+      "knockbackX": 180,
+      "knockbackY": 120,
+      "hitstopMs": 80,
+      "shakeMs": 110,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 0,
+        "y": 10,
+        "w": 30,
+        "h": 40
+      },
+      "parryable": false
+    }
+  },
+  "visuals": {
+    "intro": "idle",
+    "idle": "idle",
+    "walk": "fly",
+    "telegraph": "lance",
+    "dash": "lance",
+    "leap": "fly",
+    "hang": "fly",
+    "dive": "lance",
+    "vanish": "hurt",
+    "cast": "cast",
+    "summon": "cast",
+    "beam": "cast",
+    "recover": "idle",
+    "staggered": "hurt",
+    "phase": "idle",
+    "defeated": "defeated",
+    "attack:c_thrust": "lance",
+    "attack:c_sweep": "lance"
+  },
+  "weaponFx": {
+    "kind": "lance",
+    "color": "#e8c86a",
+    "tip": "#ffffff"
+  },
+  "auraColor": "#bfe0ef",
+  "phaseScene": "cain_ascension",
+  "relic": "frater",
+  "telegraphTints": [
+    "#f6e3a3",
+    "#f39a8f"
+  ]
+}

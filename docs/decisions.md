@@ -294,3 +294,6 @@
 | Missing sprite sheets are re-requested once at boot; enemies fall back to another of their poses | A dropped phone request left an enemy as a block all session | Placeholder only |
 | Crusnik ABIL: double tap = chain lash, single tap = revert (both modes) | Owner request; a single tap is confirmed after a 280 ms window, so reverting waits that long | Hold ABIL to revert |
 | Title lettering: UnifrakturMaguntia blackletter (OFL), loaded before the game starts (2.5 s cap) | Owner: 'make the font Old English'; OFL allows bundling | Draw lettering as a sprite |
+| Empire arc: build its finale (Abel vs Cain on the Imperial Spire) first, reached by a sealed door in the Star chamber until the arc's rooms exist | Owner wants the ending; it reuses the duel system; the door keeps the world graph whole | Wait until the arc is built |
+| Cain and Abel 100% are recolours of the 80% sheets (tools/sprites/variants.py, palette-locked); bat wings, lance, double scythe and lightning are drawn in code | No AI art available; code-drawn parts match their hitboxes | New sprite sheets |
+| The duel brain flies: a phase may 'hover' (px); dives swoop to Abel's height; aim follows his height | One flag gives sky fights to any boss; ground bosses unchanged (tested) | A separate flying-boss class |

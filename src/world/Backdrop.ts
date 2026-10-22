@@ -100,12 +100,31 @@ interface Ship {
 }
 
 /** Sky, skylines, airships and the time-of-day light over the world. Only for outdoor rooms. */
+/** Cloud bands below the Imperial Spire. */
+const CLOUD_ROWS = 3;
+
 export class Backdrop {
+  /** High above the city: rows of cloud drifting below, lit faintly from beneath (pixel-art bands, no textures). */
+  private clouds(scene: Phaser.Scene): void {
+    const r = rng(21);
+    for (let i = 0; i < CLOUD_ROWS; i++) {
+      const y = GAME_HEIGHT * (0.55 + i * 0.12);
+      const color = [0x41324f, 0x32263e, 0x241b2e][i % 3]!;
+      const g = scene.add.graphics().setScrollFactor(0.15 + i * 0.12, 0.1).setDepth(DEPTH_SKY + 2 + i);
+      g.fillStyle(color, 1).fillRect(-GAME_WIDTH, y + 10, GAME_WIDTH * 4, GAME_HEIGHT);
+      for (let x = -GAME_WIDTH; x < GAME_WIDTH * 3; x += 18 + r() * 26) {
+        const w = 26 + r() * 50, h = 10 + r() * 14;
+        g.fillStyle(color, 1).fillEllipse(x, y + 10, w, h);
+        g.fillStyle(0x6f6676, 0.25).fillEllipse(x - w * 0.15, y + 6, w * 0.5, h * 0.35); // moonlit tops
+      }
+    }
+  }
+
   private readonly ships: Ship[] = [];
   private t = 0;
 
   /** `horizon`: room y (px) where the skylines stand (the street level). */
-  constructor(scene: Phaser.Scene, readonly time: TimeOfDay, roomWidth: number, outdoor: boolean, horizon = GAME_HEIGHT) {
+  constructor(scene: Phaser.Scene, readonly time: TimeOfDay, roomWidth: number, outdoor: boolean, horizon = GAME_HEIGHT, aloft = false) {
     const look = timeLook(time);
     const col = (h: string): number => Number(h);
     if (outdoor) {
@@ -130,6 +149,12 @@ export class Backdrop {
         scene.add.circle(GAME_WIDTH * 0.78, 40, 10, 0xddd7e6).setScrollFactor(0).setDepth(DEPTH_SKY + 1);
         scene.add.circle(GAME_WIDTH * 0.78 + 3, 37, 3, 0xb8b1c4).setScrollFactor(0).setDepth(DEPTH_SKY + 1);
       }
+      if (aloft) {
+        this.clouds(scene);
+        outdoor = false; // no skylines, ships or ground: only sky and cloud
+      }
+    }
+    if (outdoor) {
       skylineTexture(scene, 'skyline_far', 180, 21, true, false);
       skylineTexture(scene, 'skyline_mid', 120, 42, false, true);
       const strips = Math.ceil((roomWidth * FAR_SCROLL + GAME_WIDTH) / SKYLINE_W) + 1;

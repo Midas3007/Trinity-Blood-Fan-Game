@@ -63,6 +63,7 @@ export class SimPlayer implements PlayerContext {
   }
   moveY = 0;
   canFly = false;
+  ascended = false;
   abilityTap: Tap = null;
   private readonly taps = new TapCounter(playerTuning.doubleTapMs);
   revertForm(): void {

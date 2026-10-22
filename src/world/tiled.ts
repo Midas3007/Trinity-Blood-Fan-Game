@@ -119,6 +119,8 @@ export interface RoomData {
   decor: { item: string; x: number; y: number; h: number }[];
   /** Open sky behind the room (false underground). */
   outdoor: boolean;
+  /** High above the city (the Imperial Spire): a sea of clouds below instead of skylines. */
+  aloft: boolean;
   /** Street level (px): skylines stand on it. */
   horizon: number;
   /** Painted art (house fronts, interiors) at bottom-left x,y; loaded from assets/rooms/<key>.png. */
@@ -197,6 +199,7 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
     items: [],
     decor: [],
     outdoor: String(mp.sky ?? 'open') !== 'none',
+    aloft: String(mp.sky ?? 'open') === 'aloft',
     horizon: Number(mp.horizon ?? rows * map.tileheight),
     images: [],
     boss: null,

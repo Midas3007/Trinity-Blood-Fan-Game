@@ -15,6 +15,11 @@ import type { AttackDef } from '../../combat/types';
  *   summon    call creatures (the scene spawns them)
  *   slam      one heavy attack, then floor shockwaves both ways
  */
+/** Aiming: Abel's centre is about this far above his feet (px). */
+const AIM_ABOVE_FEET = 15;
+/** How fast a flying boss floats back to her hover height (px/s). */
+const HOVER_SPEED = 260;
+
 export type DuelMove =
   | { type: 'combo'; attacks: string[]; lunges?: number[] }
   | { type: 'dash'; attack: string; distance: number; speed: number; fromEdge?: boolean; telegraphMs?: number }
@@ -44,6 +49,8 @@ export interface DuelPhase {
   pattern: string[];
   idleMs: number;
   walkSpeed: number;
+  /** A fight in the air: this high above the floor (px) is where she floats between moves; dives swoop to Abel's height. */
+  hover?: number;
 }
 
 export interface DuelistConfig {
@@ -73,6 +80,12 @@ export interface DuelistConfig {
   phaseScene?: string;
   /** Relic granted on victory (src/data/relics.json). */
   relic: string;
+  /** A weapon drawn in code over the sprite while she attacks (Cain's lance): colour and length past the hitbox. */
+  weaponFx?: { kind: 'lance'; color: string; tip: string };
+  /** Colour of the glow behind her (default a dim violet). */
+  auraColor?: string;
+  /** Wind-up tints [parryable, unparryable] (default amber and red); a white boss needs softer ones. */
+  telegraphTints?: [string, string];
 }
 
 export type DuelState =
@@ -150,6 +163,7 @@ export class DuelistBrain {
   private dashFrom = 0;
   private lungeFrom = 0;
   private target = 0;
+  private leapFrom = 0;
   private events: DuelEvent[] = [];
   /** Whether the next phase change pauses (the scene clears this flag when its cutscene ends). */
   holdForScene = false;
@@ -159,8 +173,8 @@ export class DuelistBrain {
     x: number,
     private readonly arenaLeft: number,
     private readonly arenaRight: number,
-    /** Height of Abel's centre above the floor, to aim projectiles. */
-    private readonly aimHeight = 15,
+    /** Height of Abel's centre above the floor, to aim projectiles (updated each frame from where Abel flies). */
+    private aimHeight = 15,
   ) {
     this.x = x;
     this.health = new Health(cfg.maxHealth);
@@ -234,8 +248,19 @@ export class DuelistBrain {
     this.events.push({ type: 'parried' });
   }
 
-  update(dtMs: number, playerX: number): void {
+  /** Where she floats between moves (0 on the ground). */
+  get baseLift(): number {
+    return this.phase.hover ?? 0;
+  }
+
+  /** `playerLift`: how high Abel's feet are above the floor (he may be flying). */
+  update(dtMs: number, playerX: number, playerLift = 0): void {
+    this.aimHeight = playerLift + AIM_ABOVE_FEET;
     this.stateMs += dtMs;
+    if (this.baseLift > 0 && this.state !== 'leap' && this.state !== 'hang' && this.state !== 'dive' && this.state !== 'defeated') {
+      const step = (HOVER_SPEED * dtMs) / 1000;
+      this.lift = this.lift < this.baseLift ? Math.min(this.baseLift, this.lift + step) : Math.max(this.baseLift, this.lift - step);
+    }
     this.combat.tick(dtMs);
     this.updateProjectiles(dtMs);
     this.updateWaves(dtMs);
@@ -300,7 +325,7 @@ export class DuelistBrain {
       case 'leap': {
         if (move?.type !== 'leap') break;
         const t = Math.min(1, this.stateMs / move.riseMs);
-        this.lift = move.height * Math.sin((t * Math.PI) / 2);
+        this.lift = this.leapFrom + move.height * Math.sin((t * Math.PI) / 2);
         if (t >= 1) {
           this.target = this.clampX(playerX);
           this.to('hang');
@@ -318,8 +343,10 @@ export class DuelistBrain {
       }
       case 'dive': {
         if (move?.type !== 'leap') break;
-        this.lift = Math.max(0, this.lift - move.diveSpeed * s);
-        if (this.lift === 0) {
+        // On the ground she dives to the floor; in the air she swoops to Abel's height.
+        const bottom = this.baseLift > 0 ? Math.max(0, this.aimHeight - AIM_ABOVE_FEET) : 0;
+        this.lift = Math.max(bottom, this.lift - move.diveSpeed * s);
+        if (this.lift === bottom) {
           this.combat.stop();
           if (move.shockwaves) this.spawnWaves();
           this.events.push({ type: 'landed' });
@@ -417,6 +444,7 @@ export class DuelistBrain {
         this.to('telegraph');
         break;
       case 'leap':
+        this.leapFrom = this.lift;
         this.to('leap');
         break;
       case 'teleport':
@@ -535,7 +563,8 @@ export class DuelistBrain {
 
   private to(state: DuelState): void {
     this.combat.stop();
-    if (state !== 'leap' && state !== 'hang' && state !== 'dive' && state !== 'defeated') this.lift = 0;
+    // On the ground she is always on the floor between moves; in the air update() floats her back to baseLift.
+    if (this.baseLift === 0 && state !== 'leap' && state !== 'hang' && state !== 'dive' && state !== 'defeated') this.lift = 0;
     this.state = state;
     this.stateMs = 0;
   }

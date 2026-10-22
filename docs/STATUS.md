@@ -1,6 +1,6 @@
 # STATUS
 
-Last updated: 2026-10-16 (night)
+Last updated: 2026-10-22
 
 ## Milestone tracker (CLAUDE.md Part 10)
 | # | Milestone | State |
@@ -25,6 +25,23 @@ Last updated: 2026-10-16 (night)
 | 16 | Bestiary and Lore book | **done:** pause → *Bestiary & Lore*: 14 creature/boss pages (portrait, original text, blood, tip) unlocked on first defeat; every lore page you've read |
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
+
+## Done (latest) — Old English title, and the Empire arc's finale: Abel vs Cain (2026-10-22)
+- **Title** in Old English lettering (UnifrakturMaguntia, free OFL font, bundled and precached). Social key art uses it too.
+- **The Empire arc** is approved; its **finale is built first**: **The Imperial Spire**, high above the clouds. For now it's reached through a **sealed door at the east end of the Star of Sorrow chamber** (the cheat opens it; later the arc's road leads there). An altar sits just outside the arena.
+- **Cain** (boss, 900 HP): Abel's 80% look recoloured with **white wings and coat, blond hair**, a **code-drawn gold lance**. Phase 1 on the roof: lance combos with lunges, **red blasts** (aimed spread), an unparryable lance charge, a diving strike with shockwaves, a blink.
+- At half health the scene **"CENTUM"** plays: both rise into the sky. **Abel goes 100%**: recoloured black-and-crimson body with **bat wings drawn in code** (bones and a scalloped membrane, flapping), **flight** (tap JUMP), **ATK = a double-sided scythe** spun all the way round (hits both sides), **ABIL = lightning** straight ahead. **Cain's full form** hovers, swoops to Abel's height, fires 5-blast spreads, calls down red judgement columns and charges across the sky.
+- Win: the outro, the relic **Frater** (+25 max health), Abel comes back down as himself. Cain has a bestiary page; the fight has its own music, *Two Brothers, One Sky*.
+- No new AI art: all sprites are colour/style variants of existing sheets (`tools/sprites/variants.py`, inside the palette).
+- Verified: 226/226 tests (the boss logic hovers, swoops to Abel's height, aims up at him; the 100% scythe hits both sides; Cain never gets stuck over 2 minutes). Bot in the real game: door sealed normally and open with the cheat; full fight intro → ground → CENTUM → sky (Abel flying, Cain hovering) → defeat → outro → relic, no errors.
+
+## Owner must test (on phone) — the Cain finale
+1. Title screen: the title is in Old English lettering.
+2. Turn the cheat on in the Star of Sorrow chamber, walk to its far right end and push up at the door; or, after the fight is open to you, it's there for good.
+3. On the spire roof: pray at the altar, then walk right. Cain's intro plays.
+4. Phase 1: watch for red blasts (jump or move between them) and the lance charge (dodge, it can't be parried).
+5. At half health: CENTUM. Tap JUMP repeatedly to fly; ATK spins the double scythe; ABIL throws lightning. Tell me if flying feels too floaty or too heavy.
+6. Win: outro, Frater relic, "THE EMPIRE ARC" banner.
 
 ## ABIL double tap (2026-10-16, night)
 - As the Crusnik, in both normal and cheat mode: **double-tap ABIL = chain lash**, **one tap = change back to the priest** (the blood left in the meter stays; to transform again it must be full, or the cheat keeps it full). The double-tap window is `doubleTapMs` (280 ms) in `src/data/player.json`. The final battle's scripted wings can't be undone by a tap (unless the cheat gave them). The bot checked it in the game: double tap threw the lash, a single tap changed him back. 222/222 tests.
