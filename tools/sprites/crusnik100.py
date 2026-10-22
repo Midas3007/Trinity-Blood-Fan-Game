@@ -22,8 +22,38 @@ def hx(h): return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
 REDS = {hx(h) for h in ("2e0811", "4a0f1b", "6a1524", "8e1b2c", "ad2a3a", "d4283e", "e85a5f", "f39a8f")}
 INK, DARK, MEM, MEM2, RIM = hx("0b0a10"), hx("0b0a10"), hx("1c1826"), hx("251f30"), hx("6a1524")
 BONE, BONE_HI, CLAW = hx("3b3444"), hx("6f6676"), hx("b8b1c4")
-SKIN, SKIN_HI, SKIN_LO = hx("b8826b"), hx("dcb39a"), hx("8a5a4c")
-HAIR, HAIR_HI = hx("b8b1c4"), hx("ddd7e6")
+SKIN, SKIN_HI, SKIN_LO = hx("dcb39a"), hx("efeaf2"), hx("b8826b")     # pale (owner: more pale)
+EYE = hx("d4283e")
+ABEL_HAIR = [hx("0b0a10"), hx("14111c"), hx("251f30"), hx("3b3444")]   # black, darkest first (owner)
+CAIN_HAIR = [hx("7a4a1e"), hx("9c7a2c"), hx("c4a04a"), hx("e8c86a")]   # blond (owner)
+
+# The head in each pose (cell coords): its box, the face inside it and the eyes; facing 1 = right, 0 = toward us.
+# The 80% head is a tiny silver blob; it is repainted as hair and face (owner: "I can't see his face").
+HEADS = {
+    "hover": [dict(box=(61, 74, 67, 81), face=(62, 77, 66, 81), eyes=[(63, 78), (65, 78)], facing=0)],
+    "fly": [dict(box=(74, 83, 81, 91), face=(78, 86, 81, 90), eyes=[(80, 87)], facing=1),
+            dict(box=(73, 83, 81, 91), face=(78, 86, 81, 90), eyes=[(80, 87)], facing=1)],
+    "dive": [dict(box=(77, 88, 83, 95), face=(80, 91, 83, 95), eyes=[(82, 92)], facing=1)],
+}
+
+
+def paint_head(im, h, hair, dx=0):
+    """Repaints the head blob: hair (shaded by the old greys) round a pale face with red eyes."""
+    px = im.load(); w, hh = im.size
+    x0, y0, x1, y1 = h["box"]; fx0, fy0, fx1, fy1 = h["face"]
+    for y in range(y0, y1 + 1):
+        for x in range(x0 + dx, x1 + dx + 1):
+            if not (0 <= x < w and 0 <= y < hh) or not px[x, y][3]: continue
+            r, g, b = px[x, y][:3]
+            lum = (r + g + b) / 3
+            if fx0 + dx <= x <= fx1 + dx and fy0 <= y <= fy1:
+                if lum < 30: continue                               # keep the outline
+                px[x, y] = (SKIN_HI if lum > 200 else SKIN if lum > 120 else SKIN_LO) + (255,)
+            else:
+                px[x, y] = hair[min(3, int(lum / 64))] + (255,)
+    for ex, ey in h["eyes"]:
+        if 0 <= ex + dx < w: px[ex + dx, ey] = EYE + (255,)
+
 
 # Per pose and cell: body polygon (cell coords; kept as drawn), shoulders (wing roots), head top (for the hair),
 # chest polygon (bared). Read off zoomed frames. Everything outside the body that is not the scythe is wing.
@@ -134,23 +164,35 @@ def bare_chest(im, chest):
             px[x, y] = col + (255,)
 
 
-def standing_hair(im, head):
-    """Hair standing on end: a crown of silver spikes rising off the head, lit from the left, outlined outside."""
-    x0, y0 = head
+def standing_hair(im, h):
+    """Black hair standing up in spikes (owner: black, conical, spiky): a fan of cone-shaped spikes off the crown,
+    the tallest in the middle, swept back away from where he faces."""
+    x0, y0, x1, _ = h["box"]
+    back = -1 if h["facing"] == 1 else 0
+    cx = (x0 + x1) / 2
     mask = Image.new("L", im.size, 0); d = ImageDraw.Draw(mask)
-    for bx, hgt, lean in ((-4, 5, -3), (-2, 8, -1), (0, 9, 0), (2, 7, 2), (4, 5, 3)):   # (base x, height, lean)
-        d.polygon([(x0 + bx - 1.5, y0 + 3), (x0 + bx + 1.5, y0 + 3), (x0 + bx + lean, y0 + 3 - hgt)], fill=255)
-    mk = mask.load(); px = im.load(); w, h = im.size
-    for y in range(h):
+    d.rectangle([x0, y0, x1, y0 + 2], fill=255)                 # the crown under the spikes
+    for k, (deg, length) in enumerate(((-55, 6), (-28, 9), (0, 12), (28, 9), (55, 6))):
+        a = math.radians(deg + back * 22)
+        bx = cx + (k - 2) * 1.6
+        tip = (bx + math.sin(a) * length, y0 + 1 - math.cos(a) * length)
+        nx, ny = math.cos(a) * 1.6, math.sin(a) * 1.6
+        d.polygon([(bx - nx, y0 + 2 - ny), (bx + nx, y0 + 2 + ny), tip], fill=255)
+    mk = mask.load(); px = im.load(); w, hh = im.size
+    fx0, fy0, fx1, fy1 = h["face"]
+    for y in range(hh):
         for x in range(w):
-            if mk[x, y]:
-                px[x, y] = (HAIR_HI if x < x0 - 1 else HAIR if y < y0 else hx("8a8392")) + (255,)
-            elif not px[x, y][3] and any(0 <= x + dx < w and 0 <= y + dy < h and mk[x + dx, y + dy]
-                                         for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
-                px[x, y] = INK + (255,)
+            if not mk[x, y] or (fx0 <= x <= fx1 and fy0 <= y <= fy1): continue
+            lit = 0 < x < w - 1 and not mk[x - 1, y] and y < y0          # lit edge on each spike's left side
+            px[x, y] = (ABEL_HAIR[3] if lit else ABEL_HAIR[1]) + (255,)
+    for y in range(hh):                                         # crimson rim round the spikes (the 100% glow)
+        for x in range(w):
+            if mk[x, y] or y >= y0 + 1: continue
+            if any(0 <= x + ddx < w and 0 <= y + ddy < hh and mk[x + ddx, y + ddy] for ddx, ddy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                px[x, y] = RIM + (255,)
 
 
-def build_cell(cell, cfg):
+def build_cell(cell, cfg, head):
     im = cell.copy(); px = im.load(); w, h = im.size
     body = poly_mask(im.size, cfg["body"]).load()
     red = [(x, y) for y in range(h) for x in range(w) if px[x, y][3] and px[x, y][:3] in REDS]
@@ -168,7 +210,8 @@ def build_cell(cell, cfg):
     out.alpha_composite(im)
     double_scythe(out, red)
     bare_chest(out, cfg["chest"])
-    standing_hair(out, cfg["head"])
+    paint_head(out, head, ABEL_HAIR)
+    standing_hair(out, head)
     return out
 
 
@@ -177,8 +220,8 @@ def build():
         src = SPR / f"abel_crusnik80/abel_crusnik80_{pose}.png"
         sheet = Image.open(src).convert("RGBA"); cw = sheet.height
         out = Image.new("RGBA", sheet.size, (0, 0, 0, 0))
-        for i, (c, cfg) in enumerate(zip(cells(sheet, cw), cfgs)):
-            out.alpha_composite(build_cell(c, cfg), (i * cw, 0))
+        for i, (c, cfg, head) in enumerate(zip(cells(sheet, cw), cfgs, HEADS[pose])):
+            out.alpha_composite(build_cell(c, cfg, head), (i * cw, 0))
         dst = SPR / f"abel_crusnik100/abel_crusnik100_{pose}.png"
         dst.parent.mkdir(parents=True, exist_ok=True); out.save(dst)
         man = json.loads(src.with_suffix(".json").read_text())
@@ -191,12 +234,8 @@ def debug(out):
     rows = []
     for pose, cfgs in POSES.items():
         src = Image.open(SPR / f"abel_crusnik80/abel_crusnik80_{pose}.png").convert("RGBA")
-        for c, cfg in zip(cells(src, src.height), cfgs):
-            a = c.copy(); d = ImageDraw.Draw(a)
-            d.polygon(cfg["body"], outline=(0, 255, 0, 255))
-            for s in cfg["shoulders"]: d.point(s, fill=(255, 255, 0, 255))
-            d.point(cfg["head"], fill=(0, 255, 255, 255)); d.polygon(cfg["chest"], outline=(255, 0, 255, 255))
-            rows += [a, build_cell(c, cfg)]
+        for c, cfg, head in zip(cells(src, src.height), cfgs, HEADS[pose]):
+            rows += [build_cell(c, cfg, head)]
     W = sum(r.width for r in rows); sheet = Image.new("RGBA", (W, 80), (90, 90, 100, 255)); x = 0
     for r in rows: sheet.alpha_composite(r.crop((0, 48, r.width, 128)), (x, 0)); x += r.width
     sheet = sheet.crop((0, 0, W, 80)).resize((W * 4, 320), Image.NEAREST)

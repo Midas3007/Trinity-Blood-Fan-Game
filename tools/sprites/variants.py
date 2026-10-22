@@ -193,6 +193,12 @@ def variant(src_sheet: str, src_anim: str, entity: str, out_dir: str, anim: str,
     man["animations"] = {anim: man["animations"][src_anim]}
     man["variant_of"] = src_sheet
     if lance:
+        # Cain's face, and his hair blond (owner): the head blob repainted per pose (tools/sprites/crusnik100.py).
+        from tools.sprites.crusnik100 import CAIN_HAIR, HEADS, paint_head
+        im = Image.open(dst).convert("RGBA"); cw = man["cell_height"] + 2 * LANCE_PAD
+        for i, head in enumerate(HEADS[src_anim]):
+            paint_head(im, head, CAIN_HAIR, dx=i * cw + LANCE_PAD)
+        im.save(dst)
         man["cell_width"] = man["cell_height"] + 2 * LANCE_PAD
         man["pivot_x"] = man["pivot_x"] + LANCE_PAD
     dst.with_suffix(".json").write_text(json.dumps(man, indent=2, sort_keys=True) + "\n")

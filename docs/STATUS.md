@@ -49,6 +49,11 @@ Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git his
   - the new Cain in a cutscene and in the fight;
   - map zoom, pan and CITY, with the cheat showing all 13 Byzantium and 22 Istvan rooms.
 
+- **Follow-up (owner):**
+  - Abel at 100%: black hair in a fan of spikes, a visible pale face with red eyes, paler skin.
+  - Cain: blond hair round a pale face.
+  - Both heads are repainted per pose from a head table in `tools/sprites/crusnik100.py`.
+
 ## Owner must test (on phone) — Cain finale and map
 1. The Cain fight (cheat, or fast travel to the Spire): is Cain white with a grey lance, in cutscenes and the fight? Any red box left?
 2. Phase 2: Abel at 100% has bat wings, bare chest, spiky hair and the double scythe. Does he float the whole time? Hold the stick up to rise level with Cain, then press ABIL for lightning.
