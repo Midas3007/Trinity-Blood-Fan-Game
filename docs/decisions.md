@@ -300,3 +300,4 @@
 | Byzantine look from the approved kit: re-coloured fronts with painted domes, blue-gold rooms, dome backstreets and skyline (tools/level/byz_kit.py) | Owner: 'same level as the OG game' with no AI credits; derived art keeps the painted style | New AI art (no credits) |
 | In-game map per city, styled like the poster; region colours and map-only offsets in world.json 'map' | Owner request; one map for two cities far apart would be unreadable on a phone | One map of everything |
 | Phase-step: DODGE in the air (once per jump); grilles are gates that never open, passed only while phasing | Fits the existing buttons; grilles reuse the gate machinery | A separate DASH button |
+| Janissary Captain = Brother Petros's sheets recoloured (blue/gold), new data-driven moves; he yields | No art credits; Petros's armoured swordsman fits a guard captain | A new sprite (needs art) |

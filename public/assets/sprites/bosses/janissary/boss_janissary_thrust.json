@@ -1,0 +1,26 @@
+{
+  "animations": {
+    "thrust": {
+      "durations_ms": [
+        300
+      ],
+      "events": [],
+      "frames": [
+        0
+      ],
+      "loop": false
+    }
+  },
+  "cell_height": 112,
+  "cell_width": 176,
+  "columns": 1,
+  "entity": "boss_janissary",
+  "palette": "requiem48.hex",
+  "pivot_x": 88,
+  "pivot_y": 112,
+  "sheet": "boss_janissary_thrust.png",
+  "source_hashes": [
+    "sha256:e88adf8e6479d2a02ebb6bfa82509dbc44baadc8e3b27a308ea98b3d1c9f872e"
+  ],
+  "variant_of": "bosses/petros/boss_petros_thrust.png"
+}

@@ -26,7 +26,23 @@ Last updated: 2026-10-22
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — Byzantium, the in-game map, Astharoshe (2026-10-22)
+## Done (latest) — Empire arc stage 3: the Janissary Captain (2026-10-22)
+- **New room: the Janissary Barracks**, east of the Grand Arcade along the street. It has a guardhouse altar just before the arena, and a dark barracks back row with lit windows.
+- **New boss: the Janissary Captain** (original). He is the Empress's guard and believes Abel killed his friend in the arcade.
+  - Moves: sabre cuts (parry them), a short shield bash, and an unparryable charge from the arena edge (jump it). Phase 2 is faster.
+  - He yields rather than dies. Original intro/outro lines; the outro sets up stage 4 (the cisterns).
+  - Sprite: Brother Petros recoloured to imperial blue with gold trim.
+  - Music: *Sabre and Shield*. Bestiary page.
+- **Reward: Fides**, a relic that gives one more healing flask.
+- Verified: 230/230 tests (boss config valid, the boss room has its altar). In the real game, a bot ran the fight: intro scene, both phases, outro, then `janissary_defeated` and `relic:fides` were set.
+
+## Owner must test (on phone) — the Janissary Captain
+1. From the Grand Arcade, go east past the barred house along the street into the Janissary Barracks.
+2. Pray at the guardhouse altar, then walk on: the intro scene plays and the walls rise.
+3. Parry his sabre cuts; jump his charge when he glows at the edge. Does it feel fair? Too hard or too easy?
+4. After he yields: the outro scene plays, then "Fides" appears and you have one more flask.
+
+## Done (earlier) — Byzantium, the in-game map, Astharoshe (2026-10-22)
 - **The Empire arc, stage 2** (script in `docs/lore/act2-plan.md`): **8 rooms of Byzantium**:
   - the street rooms: the Imperial Docks, the Harbour Wall, the Lamp Market, the Spice Stairs, the Grand Arcade;
   - an upper loop and a lower loop: the Market Rooftops, the Old Aqueduct, the Silk Warehouse.

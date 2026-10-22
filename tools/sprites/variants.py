@@ -271,7 +271,13 @@ def add_mitre(im: Image.Image, anim: str) -> None:
                 px[x, y] = cols[ch] + (255,)
 
 
+def janissary_map():
+    """Brother Petros -> the Janissary Captain: the crimson cloak becomes imperial blue with gold trim; the steel stays."""
+    return {"2e0811": "1c1826", "4a0f1b": "2f4a63", "6a1524": "4f7c9e", "8e1b2c": "c4a04a", "ad2a3a": "e8c86a"}
+
+
 FOLDERS = [
+    ("bosses/petros", "boss_petros", "boss_janissary", "bosses/janissary", janissary_map()),
     ("enemies/iron_choir", "enemy_iron_choir", "enemy_imperial_guard", "enemies/imperial_guard", guard_map()),
     ("enemies/inquisitor", "enemy_inquisitor", "enemy_zealot", "enemies/zealot", zealot_map()),
     ("npcs/dietrich", "npc_dietrich", "npc_ion", "npcs/ion", ion_map(), "0b0a10"),

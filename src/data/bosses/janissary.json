@@ -1,0 +1,201 @@
+{
+  "_note": "The Janissary Captain (original) - Empire arc stage 3, the Janissary Barracks. The Empress's guard, honest and deadly: fast sabre combos (parry), a shield bash, an unparryable charge from the arena edge (jump it). Believes Abel killed his friend; yields when beaten (non-lethal).",
+  "id": "janissary",
+  "name": "The Janissary Captain",
+  "maxHealth": 560,
+  "width": 22,
+  "height": 50,
+  "introMs": 1200,
+  "phaseMs": 1000,
+  "approachRange": 70,
+  "walkMaxMs": 2200,
+  "staggerMs": 1100,
+  "staggerDamageMultiplier": 2,
+  "recoverMs": 520,
+  "yields": true,
+  "deathMs": 1800,
+  "shockwave": {
+    "speed": 210,
+    "width": 16,
+    "height": 12,
+    "damage": 14,
+    "lifeMs": 2400
+  },
+  "phases": [
+    {
+      "at": 1,
+      "pattern": [
+        "sabre",
+        "bash",
+        "sabre2",
+        "charge",
+        "sabre"
+      ],
+      "idleMs": 560,
+      "walkSpeed": 70
+    },
+    {
+      "at": 0.5,
+      "pattern": [
+        "sabre3",
+        "bash",
+        "charge",
+        "sabre2",
+        "bash",
+        "charge"
+      ],
+      "idleMs": 360,
+      "walkSpeed": 96
+    }
+  ],
+  "moves": {
+    "sabre": {
+      "type": "combo",
+      "attacks": [
+        "j_cut"
+      ],
+      "lunges": [
+        60
+      ]
+    },
+    "sabre2": {
+      "type": "combo",
+      "attacks": [
+        "j_cut",
+        "j_cut"
+      ],
+      "lunges": [
+        50,
+        60
+      ]
+    },
+    "sabre3": {
+      "type": "combo",
+      "attacks": [
+        "j_cut",
+        "j_cut",
+        "j_thrust"
+      ],
+      "lunges": [
+        46,
+        46,
+        80
+      ]
+    },
+    "bash": {
+      "type": "dash",
+      "attack": "j_bash",
+      "distance": 110,
+      "speed": 360,
+      "telegraphMs": 360
+    },
+    "charge": {
+      "type": "dash",
+      "attack": "j_charge",
+      "distance": 9999,
+      "speed": 360,
+      "fromEdge": true,
+      "telegraphMs": 650
+    }
+  },
+  "attacks": {
+    "j_cut": {
+      "startupMs": 300,
+      "activeMs": 120,
+      "recoveryMs": 420,
+      "damage": 16,
+      "knockbackX": 170,
+      "knockbackY": 80,
+      "hitstopMs": 80,
+      "shakeMs": 110,
+      "shakeIntensity": 0.005,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 40,
+        "y": -6,
+        "w": 58,
+        "h": 24
+      }
+    },
+    "j_thrust": {
+      "startupMs": 420,
+      "activeMs": 140,
+      "recoveryMs": 520,
+      "damage": 20,
+      "knockbackX": 220,
+      "knockbackY": 80,
+      "hitstopMs": 90,
+      "shakeMs": 120,
+      "shakeIntensity": 0.006,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 46,
+        "y": -6,
+        "w": 66,
+        "h": 16
+      }
+    },
+    "j_bash": {
+      "startupMs": 0,
+      "activeMs": 2000,
+      "recoveryMs": 260,
+      "damage": 14,
+      "knockbackX": 260,
+      "knockbackY": 120,
+      "hitstopMs": 100,
+      "shakeMs": 140,
+      "shakeIntensity": 0.007,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 12,
+        "y": 0,
+        "w": 28,
+        "h": 44
+      }
+    },
+    "j_charge": {
+      "startupMs": 0,
+      "activeMs": 5000,
+      "recoveryMs": 0,
+      "damage": 22,
+      "knockbackX": 240,
+      "knockbackY": 120,
+      "hitstopMs": 100,
+      "shakeMs": 160,
+      "shakeIntensity": 0.008,
+      "stepSpeed": 0,
+      "cancelIntoDodge": false,
+      "hitbox": {
+        "x": 14,
+        "y": 0,
+        "w": 34,
+        "h": 44
+      },
+      "parryable": false
+    }
+  },
+  "visuals": {
+    "intro": "idle",
+    "idle": "idle",
+    "walk": "walk",
+    "telegraph": "windup",
+    "dash": "charge",
+    "recover": "idle",
+    "staggered": "windup",
+    "phase": "defeated",
+    "defeated": "defeated",
+    "attack:j_cut": "thrust",
+    "attack:j_thrust": "thrust",
+    "leap": "idle",
+    "hang": "idle",
+    "dive": "idle"
+  },
+  "telegraphTints": [
+    "#7fb6d6",
+    "#e8c86a"
+  ],
+  "relic": "fides"
+}

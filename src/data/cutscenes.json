@@ -1965,6 +1965,146 @@
      ]
     }
    ]
+  },
+  "janissary_intro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/empire_barracks_w0",
+     "caption": "The Janissary Barracks.",
+     "actors": [
+      {
+       "anim": "boss_janissary_walk",
+       "x": 0.7,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "right"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.25,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Janissary Captain",
+       "text": "A priest of Rome, in the heart of the Empire, with blood on his sleeve."
+      },
+      {
+       "speaker": "The Janissary Captain",
+       "text": "Kemal stood at my side for two hundred years. This morning he died in the arcade, and you ran."
+      }
+     ]
+    },
+    {
+     "layout": "left",
+     "bg": "rooms/empire_barracks_w0",
+     "actors": [
+      {
+       "anim": "abel_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Abel",
+       "text": "I didn't kill him, Captain. But I think I know who wants you to believe I did."
+      }
+     ]
+    },
+    {
+     "layout": "right",
+     "bg": "rooms/empire_barracks_w0",
+     "tint": "0x4f7c9e",
+     "fx": "speedlines",
+     "actors": [
+      {
+       "anim": "boss_janissary_windup",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 3,
+       "flip": true,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Janissary Captain",
+       "text": "Then prove it with steel. Draw."
+      }
+     ]
+    }
+   ]
+  },
+  "janissary_outro": {
+   "panels": [
+    {
+     "layout": "full",
+     "bg": "rooms/empire_barracks_w0",
+     "actors": [
+      {
+       "anim": "boss_janissary_defeated",
+       "x": 0.65,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "fade"
+      },
+      {
+       "anim": "abel_idle",
+       "x": 0.3,
+       "y": 0.96,
+       "scale": 2,
+       "flip": false,
+       "enter": "fade"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "The Janissary Captain",
+       "text": "...You had my throat, and you stepped back."
+      },
+      {
+       "speaker": "The Janissary Captain",
+       "text": "A murderer does not step back. Go. I will look the other way, and I will find the one who held that knife."
+      },
+      {
+       "speaker": "Abel",
+       "text": "When you do, Captain, don't face him alone."
+      }
+     ]
+    },
+    {
+     "layout": "wide",
+     "bg": "color:0x14111c",
+     "caption": "Below the barracks, the old cisterns breathe in the dark.",
+     "actors": [
+      {
+       "anim": "npc_astharoshe_idle",
+       "x": 0.5,
+       "y": 0.96,
+       "scale": 2,
+       "flip": true,
+       "enter": "left"
+      }
+     ],
+     "lines": [
+      {
+       "speaker": "Astharoshe",
+       "text": "The knife came from under the city, priest. If you want your name back, follow me down."
+      }
+     ]
+    }
+   ]
   }
  }
 }

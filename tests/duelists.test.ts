@@ -6,12 +6,13 @@ import petros from '../src/data/bosses/petros.json';
 import dietrich from '../src/data/bosses/dietrich.json';
 import gyula from '../src/data/bosses/gyula.json';
 import cain from '../src/data/bosses/cain.json';
+import janissary from '../src/data/bosses/janissary.json';
 import { relics } from '../src/systems/progression';
 
 const DT = 1000 / 60;
 const L = 0;
 const R = 480;
-const all = { paula, kampfer, petros, dietrich, gyula, cain } as unknown as Record<string, DuelistConfig>;
+const all = { paula, kampfer, petros, dietrich, gyula, cain, janissary } as unknown as Record<string, DuelistConfig>;
 
 function fight(cfg: DuelistConfig, ms: number, hurtAfter = Infinity) {
   const b = new DuelistBrain(cfg, 380, L, R);

@@ -28,7 +28,7 @@ COL = {  # fill, rock, outline
 }
 region_of = {rid: k for k, ids in REGION.items() for rid in ids}
 BOSSES = {"paula": "Sister Paula", "kampfer": "The Magus", "marchesa": "The Marchesa", "petros": "Brother Petros",
-          "dietrich": "Dietrich", "gyula": "Gyula"}
+          "dietrich": "Dietrich", "gyula": "Gyula", "cain": "Cain", "janissary": "The Janissary Captain"}
 
 # The cathedral sits far above the street grid (entered through its portal): bring it down just above the town.
 by = {r["id"]: r for r in rooms}

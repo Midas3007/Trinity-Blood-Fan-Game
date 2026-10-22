@@ -170,12 +170,35 @@ def arcade():
     house(r, 98, 16, ARCADE_GY, 3, "house_byz_white", doors=("left",), climb="ladder", lit=0.7)
     r.mark("checkpoint", 103, ARCADE_GY - 1, "arcade_altar")    # inside the house beyond the bars
     r.mark("lore", 109, ARCADE_GY - 1, lore="letter_arcade")
-    r.wall(r.W - 1, 0, r.W, ARCADE_GY)
-    r.mark("label", 106, ARCADE_GY - 21, text="the road to the barracks (still being built)")
+    r.wall(r.W - 1, 0, r.W, ARCADE_GY - 5)                     # the street goes on east, to the barracks
     lamps(r, 2, 92, ARCADE_GY, 13)
     r.mark("enemy", 44, ARCADE_GY - 1, enemy="imperialGuard")
     r.mark("enemy", 56, ARCADE_GY - 1, enemy="zealot")
     r.mark("enemy", 70, ARCADE_GY - 1, enemy="imperialGuard")
+    return r
+
+
+def barracks():
+    """Stage 3: the Janissary Barracks. A parade ground under the Empress's banners, where her guard captain waits."""
+    r = Room("empire_barracks", "The Janissary Barracks", 56, -1, 3, 2, seed=69, sky="byzantium")
+    r.ground(ARCADE_GY, top="stone")
+    r.wall(0, ARCADE_GY, r.W, r.H)
+    r.wall(0, 0, 1, ARCADE_GY - 5)                              # in from the arcade along the street
+    r.wall(r.W - 1, 0, r.W, ARCADE_GY)
+    r.backwall(["wall_byz_arcade"], ARCADE_GY - 12, ARCADE_GY, 0, 18)
+    r.backstreet(18, r.W, ARCADE_GY, domes=True)
+    house(r, 2, 14, ARCADE_GY, 2, "house_byz_stone", doors=("left", "right"), lit=0.5)
+    r.mark("checkpoint", 8, ARCADE_GY - 1, "barracks_altar")     # the guardhouse chapel, just before the Captain
+    for x in (22, 46, 70):
+        r.prop("column", x, ARCADE_GY - 1, 190)
+    for x in (30, 40, 56, 62):
+        r.mark("decor", x, ARCADE_GY - 1, item="bluelamp")
+    r.mark("decor", 34, ARCADE_GY - 1, item="rug")
+    r.mark("decor", 58, ARCADE_GY - 1, item="rug")
+    # Boss: the Janissary Captain, the Empress's guard. He thinks Abel killed his friend in the arcade.
+    r.mark("boss", 60, ARCADE_GY - 1, boss="janissary", arenaLeft=24 * 16, arenaRight=84 * 16,
+           defeatFlag="janissary_defeated", intro="janissary_intro", outro="janissary_outro")
+    r.mark("label", 80, ARCADE_GY - 12, text="the way down to the cisterns (still being built)")
     return r
 
 
@@ -244,4 +267,4 @@ def warehouse():
 
 
 def rooms():
-    return [docks(), quay(), market(), spice_stairs(), arcade(), rooftops(), aqueduct(), warehouse()]
+    return [docks(), quay(), market(), spice_stairs(), arcade(), barracks(), rooftops(), aqueduct(), warehouse()]

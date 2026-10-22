@@ -13,7 +13,7 @@
     "petros_defeated"
   ],
   "fastTravel": {
-    "_note": "Fast travel between altars (owner, 2026-10-16). An altar is a destination once you have prayed at it and the boss beyond its area is beaten (the area's flag). Stand at an unlocked altar and push up to travel. Altars sit about every 80-110 tiles of walking, with one just before every boss (owner, 2026-10-16). Byzantium's altars (the Empire arc) open with the airship (Gyula); when the Janissary Captain is built they will wait for him.",
+    "_note": "Fast travel between altars (owner, 2026-10-16). An altar is a destination once you have prayed at it and the boss beyond its area is beaten (the area's flag). Stand at an unlocked altar and push up to travel. Altars sit about every 80-110 tiles of walking, with one just before every boss (owner, 2026-10-16). Byzantium's altars (the Empire arc) open with the airship (Gyula); they stay open from the airship on (the Janissary Captain guards only his barracks).",
     "areas": {
       "town": "paula_defeated",
       "undercity": "petros_defeated",
@@ -186,6 +186,12 @@
         "name": "The Grand Arcade"
       },
       {
+        "room": "empire_barracks",
+        "id": "barracks_altar",
+        "area": "byzantium",
+        "name": "The Guardhouse"
+      },
+      {
         "room": "bazaar_warehouse",
         "id": "warehouse_altar",
         "area": "byzantium",
@@ -261,6 +267,7 @@
           "bazaar_lamps",
           "bazaar_stairs",
           "bazaar_arcade",
+          "empire_barracks",
           "bazaar_rooftops",
           "imperial_spire"
         ]

@@ -50,6 +50,13 @@
       "card": "REQUIEM AETERNAM",
       "gift": "Frater — a brother's lance, broken. Your life grows stronger.",
       "maxHealth": 25
+    },
+    "fides": {
+      "flag": "relic:fides",
+      "name": "Fides",
+      "card": "FIDES ET HONOR",
+      "gift": "Fides — a captain's word, kept. One more flask.",
+      "flasks": 1
     }
   }
 }
