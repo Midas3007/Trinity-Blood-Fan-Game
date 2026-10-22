@@ -26,7 +26,11 @@ Last updated: 2026-10-22
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — gothic touch buttons (2026-10-22)
+## Done (latest) — scrolling fast-travel list (2026-10-22)
+- The TRAVEL TO list now fits the screen and scrolls. Drag it with a finger, use the ▲/▼ arrows beside it, or the mouse wheel. Stay stays at the bottom, and a counter shows e.g. "6–13 of 34".
+- Verified: 243/243 tests (new: scroll limits). Real game, with the cheat (34 altars): drag scrolled, the wheel reached the end, and tapping a row travelled.
+
+## Done (earlier) — gothic touch buttons (2026-10-22)
 - Every on-screen button is now a gothic medallion (`src/ui/buttonArt.ts`): a dark plate in a double gold ring with four studs, a pixel icon and a small serif label.
   - Icons: a sword (ATK), rising wings (JUMP), a dash (DODGE), a blood drop (ABIL), a holy-water flask (HEAL), a cross-shield (PARRY).
   - Held, a button turns crimson with a gold glow.
