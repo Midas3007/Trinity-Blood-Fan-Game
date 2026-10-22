@@ -208,7 +208,7 @@ def folder_variant(src_dir: str, src_entity: str, entity: str, out_dir: str, cma
         dst = SPR / out_dir / src.name.replace(src_entity, entity)
         recolor(src, dst, cmap, edge)
         if entity == "npc_astharoshe":
-            im = Image.open(dst).convert("RGBA"); add_mitre(im, man["cell_height"]); im.save(dst)
+            im = Image.open(dst).convert("RGBA"); add_mitre(im, man["cell_width"]); im.save(dst)
         man["entity"] = entity
         man["sheet"] = dst.name
         man["variant_of"] = str(src.relative_to(SPR))
@@ -234,12 +234,24 @@ def add_mitre(im: Image.Image, cell: int) -> None:
     px = im.load(); w, h = im.size
     BLUE, LIGHT, GOLD, LINE = hx("2f4a63"), hx("4f7c9e"), hx("e8c86a"), hx("0b0a10")
     for c in range(w // cell):
-        top = next(((x, y) for y in range(h) for x in range(c * cell, (c + 1) * cell) if px[x, y][3]), None)
+        x0, x1 = c * cell, (c + 1) * cell
+        # The head: the highest solid blob (a 3x4 block of opaque pixels), so a raised blade or arm doesn't count.
+        def solid(x, y):
+            return all(0 <= x + dx < w and 0 <= y + dy < h and px[x + dx, y + dy][3] for dx in range(3) for dy in range(4))
+        top = next(((x + 1, y) for y in range(h) for x in range(x0, x1 - 2) if solid(x, y)), None)
         if not top: continue
-        # centre of the head: the middle of the opaque run 3 rows below the top
-        y0 = top[1] + 3
-        xs = [x for x in range(c * cell, (c + 1) * cell) if px[x, y0][3]]
-        cx = (min(xs) + max(xs)) // 2 if xs else top[0]
+        # centre of the head: the middle of the opaque run through the blob, 2 rows down
+        y0 = top[1] + 2
+        run = [top[0]]
+        x = top[0]
+        while x - 1 >= x0 and px[x - 1, y0][3]: x -= 1; run.append(x)
+        x = top[0]
+        while x + 1 < x1 and px[x + 1, y0][3]: x += 1; run.append(x)
+        cx = (min(run) + max(run)) // 2
+        # the blob's real top in that column (the veil/hair may rise a pixel or two above the solid block)
+        ty = top[1]
+        while ty - 1 >= 0 and px[cx, ty - 1][3]: ty -= 1
+        top = (cx, ty)
         base = top[1] + 1
         # long blonde hair down her back (the sprites face right, so the back is the left)
         HAIR, HAIR2 = hx("e8c86a"), hx("c4a04a")
