@@ -5,7 +5,15 @@ const FL = {
   marchesa: 'marchesa_defeated,relic:sanguis',
   petros: 'petros_defeated,relic:cor_leonis',
   dietrich: 'dietrich_defeated,relic:vox',
+  gyula: 'gyula_defeated,relic:finis,item:sword',
+  arrival: 'scene:empire_arrival,harbour_gate',
+  market: 'scene:ion_meeting,scene:bazaar_murder,scene:phase_step,ability:dash',
+  janissary: 'janissary_defeated,relic:fides,item:spear',
+  under: 'scene:cistern_child,scene:undercity_ion',
+  palace: 'scene:empress_audience',
+  radu: 'radu_defeated,relic:ignis',
 };
+const ACT1 = ['paula', 'kampfer', 'marchesa', 'petros', 'dietrich', 'gyula'];
 const flags = (...keys) => 'flags=' + keys.map((k) => FL[k]).join(',');
 
 const chapters = {
@@ -133,7 +141,7 @@ const chapters = {
     while (Date.now() - t < 300000) {
       const scenes = await b.page.evaluate(() => window.__tbScenes()).catch(() => []);
       if (scenes.includes('Menu')) { b.note('title again'); break; }
-      if (scenes.includes('Cutscene')) { await b.wait(5200); await b.click(); continue; }
+      if (scenes.includes('Cutscene')) { await b.wait(5200); await b.tapLine('end'); continue; }
       await b.wait(1000);
     }
     await b.wait(5000);
@@ -199,8 +207,148 @@ const chapters = {
     await g(240, 28 + 64); await b.wait(800); // resume
     await b.walkTo(1304, 4, 30000); await b.wait(800);
     await b.key('ArrowUp', true); await b.wait(300); await b.key('ArrowUp', false); await b.wait(2200);
-    await b.page.mouse.click(480, 2 * (72 + 42 + 1 * 22)); await b.wait(3000);
+    // the travel list (2 destinations): frame h = 30 + 2*22 + 34, centred in 14..256; rows from top + 41
+    await b.page.mouse.click(480, 2 * (14 + (242 - 108) / 2 + 41 + 1 * 22)); await b.wait(3000);
     b.note('travel ' + (await b.snap()).room);
+  },
+  // ---------------- The Empire arc ----------------
+  // E1. The airship berth at Istvan Station, the docks of Byzantium, the harbour gate's winch on the customs roof.
+  async e01(b) {
+    await b.open('room=istvan_station&' + flags(...ACT1));
+    await b.click(); await b.wait(400); await b.startRec(); await b.wait(800);
+    await b.walkTo(56, 6, 20000);
+    await b.key('ArrowUp', true); await b.wait(900); await b.key('ArrowUp', false); await b.wait(1800);
+    b.note('berth -> ' + (await b.snap()).room);
+    await b.explore(1, { maxMs: 30000, until: (s) => s.player.x > 600 });
+    await b.watchCutscene();
+    // pray at the dock altar, then up the customs house to the winch
+    await b.walkTo(34 * 16 + 8, 6); await b.key('ArrowUp', true); await b.wait(400); await b.key('ArrowUp', false); await b.wait(2500);
+    await b.brawl({ maxMs: 25000, until: (s) => !s.enemies.some((e) => e.hp > 0 && Math.abs(e.x - s.player.x) < 160 && Math.abs(e.y - s.player.y) < 50) });
+    // the customs house: ladders alternate floor by floor (columns 54, 63, 54) up to the roof hatch; then the winch
+    for (const [col, floorY] of [[54, 25 * 16], [63, 19 * 16], [54, 13 * 16]]) {
+      for (let k = 0; k < 12; k++) {
+        const s = await b.snap();
+        if (s.player.y < floorY && s.player.state !== 'climb') break;
+        if (s.enemies.some((e) => e.hp > 0 && Math.abs(e.x - s.player.x) < 60 && Math.abs(e.y - s.player.y) < 40)) { await b.brawl({ maxMs: 8000 }); continue; }
+        if (Math.abs(s.player.x - (col * 16 + 8)) > 4 && s.player.state !== 'climb') { await b.walkTo(col * 16 + 8, 3, 8000); continue; }
+        await b.hold('ArrowUp', 700);
+      }
+      b.note('floor y' + Math.round((await b.snap()).player.y));
+    }
+    b.note('roof y' + Math.round((await b.snap()).player.y));
+    await b.walkTo(920, 4, 10000);
+    await b.key('ArrowRight', true); await b.wait(40); await b.key('ArrowRight', false);
+    for (let i = 0; i < 4 && !(await b.snap()).flags.includes('harbour_gate'); i++) { await b.press('x'); await b.wait(350); }
+    b.note('gate ' + (await b.snap()).flags.includes('harbour_gate'));
+    await b.wait(1500);
+  },
+  // E2. The Harbour Wall and the Lamp Market: guards and zealots, and Ion.
+  async e02(b) {
+    await b.open('room=empire_quay&' + flags(...ACT1, 'arrival'));
+    await b.click(); await b.wait(400); await b.startRec(); await b.wait(800);
+    await b.advance(1, { maxMs: 200000, until: (s) => s.room === 'bazaar_lamps' && s.flags.includes('scene:ion_meeting') && !s.cutscene });
+    b.note('market ' + (await b.snap()).room);
+    await b.brawl({ maxMs: 20000 });
+  },
+  // E3. The Grand Arcade: the murder, the burning stall and the phase-step through iron bars.
+  async e03(b) {
+    await b.open('room=bazaar_arcade&' + flags(...ACT1, 'arrival') + ',scene:ion_meeting');
+    await b.click(); await b.wait(400); await b.startRec(); await b.wait(800);
+    await b.explore(1, { maxMs: 120000, until: (s) => s.flags.includes('ability:dash') && !s.cutscene && s.player.x > 1300 });
+    // through the bars at the arcade's end: jump, then DODGE in the air
+    for (let k = 0; k < 6; k++) {
+      const s = await b.snap();
+      if (s.player.x > 94 * 16) break;
+      await b.walkTo(89 * 16, 6, 8000);
+      await b.key('ArrowRight', true); await b.press('Space', 160); await b.wait(120); await b.press('c'); await b.wait(500); await b.key('ArrowRight', false);
+    }
+    b.note('beyond the bars x' + Math.round((await b.snap()).player.x));
+    await b.walkTo(103 * 16 + 8, 6); await b.key('ArrowUp', true); await b.wait(400); await b.key('ArrowUp', false); await b.wait(3000);
+  },
+  // E4. The Janissary Captain; his parting gift, the Byzantine spear.
+  async e04(b) {
+    await b.open('room=empire_barracks&bossHp=220&' + flags(...ACT1, 'arrival', 'market'));
+    await b.click(); await b.wait(400); await b.startRec(); await b.wait(500);
+    const r = await b.fight({ lash: true });
+    b.note('captain ' + r);
+    await b.wait(6000);
+    await b.walkTo(85 * 16 + 8, 4, 20000); await b.wait(4500);
+    for (let i = 0; i < 2; i++) { await b.press('x'); await b.wait(260); }
+    await b.wait(900);
+    await b.key('ArrowLeft', true); await b.wait(200); await b.key('ArrowLeft', false);
+    for (let i = 0; i < 2; i++) { await b.press('x'); await b.wait(260); }
+    b.note('spear ' + (await b.snap()).player.weapon);
+    await b.wait(1500);
+  },
+  // E5. Down the well: the cisterns, a child of the outcasts, Ion's trial.
+  async e05(b) {
+    await b.open('room=byz_cisterns&' + flags(...ACT1, 'arrival', 'market', 'janissary') + '&at=1400,239');
+    await b.click(); await b.wait(400); await b.startRec(); await b.wait(800);
+    await b.explore(-1, { maxMs: 200000, until: (s) => s.room === 'byz_outcasts' && s.flags.includes('scene:undercity_ion') && !s.cutscene });
+    b.note('outcasts ' + (await b.snap()).room);
+    await b.wait(2000);
+  },
+  // E6. Up into the palace: the glass gardens, the hall of mirrors, the veiled throne.
+  async e06(b) {
+    await b.open('room=palace_gardens&' + flags(...ACT1, 'arrival', 'market', 'janissary', 'under') + '&at=60,415');
+    await b.click(); await b.wait(400); await b.startRec(); await b.wait(800);
+    await b.explore(1, { maxMs: 180000, until: (s) => s.room === 'palace_audience' && s.flags.includes('scene:empress_audience') && !s.cutscene });
+    b.note('throne ' + (await b.snap()).room);
+    await b.walkTo(11 * 16 + 8, 4, 20000);
+    await b.key('ArrowDown', true); await b.wait(3500); await b.key('ArrowDown', false); await b.wait(1500);
+    b.note('below ' + (await b.snap()).room);
+  },
+  // E7. Radu Barvon in the flame laboratory.
+  async e07(b) {
+    await b.open('room=palace_lab&bossHp=200&' + flags(...ACT1, 'arrival', 'market', 'janissary', 'under', 'palace') + '&at=330,239');
+    await b.click(); await b.wait(400); await b.startRec(); await b.wait(500);
+    const r = await b.fight({ lash: true, maxMs: 300000 });
+    b.note('radu ' + r);
+    await b.wait(8000);
+  },
+  // E8. The lift to the Spire; Cain; one hundred percent; the epilogue, the credits.
+  async e08(b) {
+    const all = flags(...ACT1, 'arrival', 'market', 'janissary', 'under', 'palace', 'radu');
+    await b.open('room=palace_lab&bossHp=470&' + all + '&at=1300,239');
+    await b.click(); await b.wait(400); await b.startRec(); await b.wait(800);
+    await b.walkTo(88 * 16, 4, 20000); await b.watchCutscene();
+    await b.walkTo(88 * 16, 4, 8000);
+    await b.key('ArrowUp', true); await b.wait(700); await b.key('ArrowUp', false); await b.wait(2000);
+    b.note('lift -> ' + (await b.snap()).room);
+    // Cain: on the ground the usual fight; in the sky Abel levitates to Cain's height and throws lightning.
+    const t = Date.now();
+    let res = 'timeout';
+    while (Date.now() - t < 360000) {
+      const s = await b.snap();
+      if (!s) { res = 'nosnap'; break; }
+      if (s.cutscene) { await b.watchCutscene(); continue; }
+      const boss = s.boss;
+      if (!boss) { res = 'won'; break; }
+      if (boss.state === 'defeated' || boss.hp <= 0) { await b.wait(500); continue; }
+      const p = s.player;
+      const dx = boss.x - p.x, dy = boss.y - p.y;
+      const toward = dx > 0 ? 'ArrowRight' : 'ArrowLeft';
+      if (!boss.active) { await b.hold(toward, 200); continue; }
+      if (p.hp < p.maxHp * 0.45 && p.flasks > 0) { await b.drink(); continue; }
+      if (p.ascended) {
+        if (Math.abs(dy) > 14) { await b.hold(dy < 0 ? 'ArrowUp' : 'ArrowDown', 140); continue; }
+        if (Math.abs(dx) > 150) { await b.hold(toward, 160); continue; }
+        if (Math.abs(dx) < 50) { await b.press('x'); await b.wait(160); continue; }
+        await b.key(toward, true); await b.wait(30); await b.key(toward, false);
+        await b.press('v'); await b.wait(420); continue;
+      }
+      if (Math.abs(dx) > 34) { await b.hold(toward, Math.abs(dx) > 80 ? 160 : 70); continue; }
+      await b.press('x'); await b.wait(110);
+    }
+    b.note('cain ' + res);
+    const t2 = Date.now();
+    while (Date.now() - t2 < 300000) {
+      const scenes = await b.page.evaluate(() => window.__tbScenes()).catch(() => []);
+      if (scenes.includes('Menu')) { b.note('title again'); break; }
+      if (scenes.includes('Cutscene')) { await b.wait(5200); await b.tapLine('end'); continue; }
+      await b.wait(1000);
+    }
+    await b.wait(4000);
   },
 };
 

@@ -49,15 +49,27 @@ class Bot {
   async hold(key, ms) { await this.page.keyboard.down(key); await this.wait(ms); await this.page.keyboard.up(key); }
   async press(key, ms = 60) { await this.hold(key, ms); }
   async click() { await this.page.mouse.click(480, 200); }
+  /** Marks where a cutscene begins (no tap). */
+  async tapLineMark(scene) {
+    const t = await this.page.evaluate(() => Date.now()).catch(() => null);
+    (this.cuts = this.cuts || []).push({ t, scene, start: true });
+  }
+  /** A tap that turns a cutscene line, logged with its page time (the montage cuts on these, so no line is cut short). */
+  async tapLine(scene) {
+    const t = await this.page.evaluate(() => Date.now()).catch(() => null);
+    (this.cuts = this.cuts || []).push({ t, scene });
+    await this.click();
+  }
   /** Plays out a cutscene: waits for each line's voice, then taps on. */
   async watchCutscene(maxMs = 120000) {
     const t = Date.now();
     while (Date.now() - t < maxMs) {
       const s = await this.snap();
       if (!s || !s.cutscene) return;
+      if (!this.cuts || this.cuts.at(-1)?.scene !== s.cutscene) await this.tapLineMark(s.cutscene);
       // One tap every few seconds: lines finish typing and their voices finish before the page turns.
       await this.wait(5200);
-      await this.click();
+      await this.tapLine(s.cutscene);
     }
   }
   async walk(dir, ms) { await this.hold(dir > 0 ? 'ArrowRight' : 'ArrowLeft', ms); }
@@ -79,17 +91,31 @@ class Bot {
     let lastX = null, stuck = 0;
     await this.key(k, true);
     while (Date.now() - t < maxMs) {
-      await this.wait(150);
+      await this.wait(50); // fine-grained: running jumps over water have a narrow take-off window
       const s = await this.snap();
       if (!s) continue;
       if (until && until(s)) break;
       if (s.cutscene) { await this.key(k, false); await this.watchCutscene(); await this.key(k, true); continue; }
-      if (s.room !== this.lastRoom) { this.lastRoom = s.room; await this.key(k, false); await this.wait(150); await this.key(k, true); lastX = null; continue; }
+      if (s.room !== this.lastRoom) { this.note(`  -> ${s.room} hp${s.player.hp}`); this.lastRoom = s.room; await this.key(k, false); await this.wait(150); await this.key(k, true); lastX = null; continue; }
       if (lastX !== null && Math.abs(s.player.x - lastX) < 2) stuck++; else stuck = 0;
       lastX = s.player.x;
-      if (stuck >= 2 || s.player.gapAhead) { await this.press('Space', stuck > 4 ? 260 : 180); stuck = 0; }
+      if (stuck >= 2 || s.player.gapAhead) { await this.press('Space', stuck > 4 || s.player.gapAhead ? 280 : 180); stuck = 0; }
     }
     await this.key(k, false);
+  }
+  /** Walks on in `dir`, stopping to fight anything close on the same level, until `until` holds. */
+  async advance(dir, { maxMs = 120000, until = null } = {}) {
+    const t = Date.now();
+    const near = (s) => s.enemies.some((e) => e.hp > 0 && Math.abs(e.x - s.player.x) < 130 && Math.abs(e.y - s.player.y) < 50);
+    while (Date.now() - t < maxMs) {
+      const s = await this.snap();
+      if (!s) continue;
+      if (until && until(s)) return true;
+      if (s.cutscene) { await this.watchCutscene(); continue; }
+      if (near(s)) { await this.brawl({ maxMs: 15000, until: (q) => !near(q) }); continue; }
+      await this.explore(dir, { maxMs: 2500, until: (q) => (until && until(q)) || near(q) || !!q.cutscene });
+    }
+    return false;
   }
   /** Fights the room's ordinary enemies; with `arts`, cycles through every move the current form has. */
   async brawl({ maxMs = 60000, arts = false, until = null } = {}) {

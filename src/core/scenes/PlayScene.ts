@@ -1029,11 +1029,16 @@ export class PlayScene extends Phaser.Scene {
         flasks: p.flasks,
         weapon: p.weapon,
         strength: p.damageMultiplier,
-        // For playtest bots: is there no floor a short way ahead (a pit or hole)?
-        gapAhead: !this.roomData.solids.concat(this.roomData.oneways).some((g) => {
-          const ax = p.x + p.facing * 22;
-          return ax >= g.x && ax <= g.x + g.w && p.feetY + 2 >= g.y && p.feetY + 2 <= g.y + g.h;
-        }),
+        // For playtest bots: is there no floor a short way ahead (a pit or hole), or water or spikes to jump?
+        gapAhead:
+          !this.roomData.solids.concat(this.roomData.oneways).some((g) => {
+            const ax = p.x + p.facing * 22;
+            return ax >= g.x && ax <= g.x + g.w && p.feetY + 2 >= g.y && p.feetY + 2 <= g.y + g.h;
+          }) ||
+          this.roomData.hazards.some((h) => {
+            const ax = p.x + p.facing * 20;
+            return ax >= h.x && ax <= h.x + h.w && p.feetY >= h.y - 4 && p.feetY - 20 <= h.y + h.h;
+          }),
       },
       music: audio.current,
       cutscene: this.cutsceneId,
