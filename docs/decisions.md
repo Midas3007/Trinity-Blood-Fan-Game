@@ -293,3 +293,4 @@
 | Cheat ↑↓←→ ATK DODGE toggles god mode (no damage, endless flasks, full meter, ABIL = 80%), session only | Owner request; not saved so a save can't get stuck in it | A menu switch |
 | Missing sprite sheets are re-requested once at boot; enemies fall back to another of their poses | A dropped phone request left an enemy as a block all session | Placeholder only |
 | Crusnik ABIL: double tap = chain lash, single tap = revert (both modes) | Owner request; a single tap is confirmed after a 280 ms window, so reverting waits that long | Hold ABIL to revert |
+| Title lettering: UnifrakturMaguntia blackletter (OFL), loaded before the game starts (2.5 s cap) | Owner: 'make the font Old English'; OFL allows bundling | Draw lettering as a sprite |

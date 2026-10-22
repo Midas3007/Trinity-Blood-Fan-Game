@@ -31,3 +31,5 @@ export const MAX_TOUCH_POINTERS = 5;
 
 /** Texture key of the title-screen painting. */
 export const TITLE_ART_KEY = 'titleArt';
+/** Old English lettering for the title (index.html @font-face, public/assets/fonts). */
+export const TITLE_FONT = "'Blackletter', serif";

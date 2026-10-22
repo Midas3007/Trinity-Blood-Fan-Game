@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { audio } from '../../systems/audio/AudioManager';
 import { music } from '../../systems/audio/music';
-import { COLORS, FAN_NOTICE, GAME_HEIGHT, GAME_WIDTH, SCENES, TITLE_ART_KEY } from '../constants';
+import { COLORS, FAN_NOTICE, GAME_HEIGHT, GAME_WIDTH, SCENES, TITLE_ART_KEY, TITLE_FONT } from '../constants';
 import { gameState } from '../../systems/GameState';
 import { saveStore, SLOTS } from '../../systems/save/SaveStore';
 import { rooms } from '../../world/rooms';
@@ -11,6 +11,8 @@ import { gameProgress } from '../../systems/gameProgress';
 /** Title block sits in the painting's empty left third. */
 const TITLE_X_WITH_ART = GAME_WIDTH * 0.26;
 const TITLE_STROKE = 3;
+/** The lettering is drawn at this many times the game's pixels, so its curves stay smooth when the screen scales up. */
+const TITLE_TEXT_RES = 4;
 const ROMAN = ['I', 'II', 'III'];
 
 export class MenuScene extends Phaser.Scene {
@@ -25,11 +27,13 @@ export class MenuScene extends Phaser.Scene {
     const cx = hasArt ? TITLE_X_WITH_ART : GAME_WIDTH / 2;
     const stroke = { stroke: '#0b0a10', strokeThickness: TITLE_STROKE };
     this.add
-      .text(cx, GAME_HEIGHT * 0.3, 'TRINITY BLOOD', { fontFamily: 'serif', fontSize: hasArt ? '24px' : '28px', color: COLORS.text, ...stroke })
-      .setOrigin(0.5);
+      .text(cx, GAME_HEIGHT * 0.3, 'Trinity Blood', { fontFamily: TITLE_FONT, fontSize: hasArt ? '32px' : '36px', color: COLORS.text, ...stroke })
+      .setOrigin(0.5)
+      .setResolution(TITLE_TEXT_RES);
     this.add
-      .text(cx, GAME_HEIGHT * 0.3 + 26, 'The Star of Sorrow', { fontFamily: 'serif', fontSize: '14px', color: COLORS.text, ...stroke })
-      .setOrigin(0.5);
+      .text(cx, GAME_HEIGHT * 0.3 + 28, 'The Star of Sorrow', { fontFamily: TITLE_FONT, fontSize: '16px', color: COLORS.text, ...stroke })
+      .setOrigin(0.5)
+      .setResolution(TITLE_TEXT_RES);
     this.add
       .text(cx, GAME_HEIGHT * 0.3 + 44, 'a fan-made Metroidvania', {
         fontFamily: 'serif',

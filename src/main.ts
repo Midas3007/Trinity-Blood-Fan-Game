@@ -3,6 +3,7 @@ import { audio } from './systems/audio/AudioManager';
 import { testHookEnabled } from './systems/testHook';
 import { registerSW } from 'virtual:pwa-register';
 import { createGameConfig } from './core/gameConfig';
+import { TITLE_FONT } from './core/constants';
 import { preventBrowserGestures } from './systems/browserGuards';
 
 preventBrowserGestures();
@@ -68,6 +69,16 @@ registerSW({
   },
 });
 
-const game = new Phaser.Game(createGameConfig('game'));
-// Test mode only: which scenes are running (the recording bot waits for the title after the credits).
-if (testHookEnabled()) (window as unknown as { __tbScenes: () => string[] }).__tbScenes = () => game.scene.getScenes(true).map((sc) => sc.scene.key);
+/** Longest the game waits for the title's Old English font before starting anyway (ms). */
+const FONT_WAIT_MS = 2500;
+
+function start(): void {
+  const game = new Phaser.Game(createGameConfig('game'));
+  // Test mode only: which scenes are running (the recording bot waits for the title after the credits).
+  if (testHookEnabled()) (window as unknown as { __tbScenes: () => string[] }).__tbScenes = () => game.scene.getScenes(true).map((sc) => sc.scene.key);
+}
+
+// The title lettering must be loaded before the first canvas text uses it (otherwise it falls back to plain serif).
+Promise.race([document.fonts.load(`24px ${TITLE_FONT}`), new Promise((r) => setTimeout(r, FONT_WAIT_MS))])
+  .catch(() => undefined)
+  .then(start);

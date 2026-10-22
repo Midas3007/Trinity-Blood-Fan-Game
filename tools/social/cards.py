@@ -4,6 +4,8 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 TITLE_ART, SHOTS, OUT = sys.argv[1], sys.argv[2], sys.argv[3]
 F = "/usr/share/fonts/truetype/freefont/"
+import os
+BLACKLETTER = os.environ.get("BLACKLETTER", "/home/user/Trinity-Blood-Fan-Game/public/assets/fonts/UnifrakturMaguntia-Book.ttf")
 def font(n, s): return ImageFont.truetype(F + n, s)
 BG = (12, 10, 16)
 CREAM, ROSE, DIM = (242, 230, 218), (222, 164, 172), (150, 140, 160)
@@ -36,9 +38,9 @@ art = Image.open(TITLE_ART).convert("RGB")
 for w, h, name in ((1600, 900, "keyart_16x9"), (1080, 1350, "keyart_4x5")):
     im = shade(cover(art, w, h, 0.5, 0.35), 0.0, 0.85, 0.42)
     d = ImageDraw.Draw(im)
-    big = font("FreeSerifBold.ttf", int(w * 0.085)); sub = font("FreeSerifItalic.ttf", int(w * 0.03)); small = font("FreeSerifItalic.ttf", int(w * 0.0165))
-    y = h * (0.68 if h < w else 0.66)
-    text(d, (w / 2, y), "TRINITY BLOOD", big, CREAM)
+    big = ImageFont.truetype(BLACKLETTER, int(w * 0.105)); sub = font("FreeSerifItalic.ttf", int(w * 0.03)); small = font("FreeSerifItalic.ttf", int(w * 0.0165))
+    y = h * (0.58 if h < w else 0.6)
+    text(d, (w / 2, y - big.size * 0.15), "Trinity Blood", big, CREAM)
     text(d, (w / 2, y + big.size * 1.15), "a fan-made gothic Metroidvania  ·  playable in your browser", sub, ROSE, stroke=3)
     text(d, (w / 2, h - small.size * 2.4), NOTICE, small, DIM, stroke=2)
     im.save(f"{OUT}/{name}.png", optimize=True)
