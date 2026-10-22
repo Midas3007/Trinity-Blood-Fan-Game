@@ -34,6 +34,9 @@ export interface PlayerTuning {
   climbSpeed: number;
   /** Cheat flight: upward speed of each wing beat (JUMP in the air), px/s. */
   flyFlapVelocity: number;
+  /** Abel at 100% levitates: top vertical speed with the stick (px/s) and how fast he reaches it (px/s²). */
+  levitateSpeed: number;
+  levitateAccel: number;
   /** Crusnik ABIL: a second tap within this long is a double tap (chain lash); one tap changes back (ms). */
   doubleTapMs: number;
   /** Phase-step (DODGE in the air, once unlocked): speed (px/s) and how long it lasts and protects (ms). */

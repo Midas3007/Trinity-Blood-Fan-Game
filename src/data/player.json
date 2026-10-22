@@ -31,6 +31,8 @@
   "crawlSpeed": 40,
   "climbSpeed": 80,
   "flyFlapVelocity": 300,
+  "levitateSpeed": 150,
+  "levitateAccel": 900,
   "doubleTapMs": 280,
   "airDashSpeed": 300,
   "airDashMs": 190,

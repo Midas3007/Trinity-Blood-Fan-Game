@@ -12,11 +12,11 @@
     }
   },
   "cell_height": 128,
-  "cell_width": 128,
+  "cell_width": 208,
   "columns": 1,
   "entity": "boss_cainfull",
   "palette": "requiem48.hex",
-  "pivot_x": 64,
+  "pivot_x": 104,
   "pivot_y": 128,
   "sheet": "boss_cainfull_cast.png",
   "source_hashes": [

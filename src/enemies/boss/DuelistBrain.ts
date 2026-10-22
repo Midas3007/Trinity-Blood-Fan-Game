@@ -86,6 +86,11 @@ export interface DuelistConfig {
   auraColor?: string;
   /** Wind-up tints [parryable, unparryable] (default amber and red); a white boss needs softer ones. */
   telegraphTints?: [string, string];
+  /** Show the wind-up as a coloured glow round the boss instead of tinting the sprite (a near-white sprite tinted
+   * becomes a flat block of colour: Cain). */
+  telegraphGlow?: boolean;
+  /** Strength of the glow behind the boss (0..1; default 0.28). */
+  auraAlpha?: number;
 }
 
 export type DuelState =

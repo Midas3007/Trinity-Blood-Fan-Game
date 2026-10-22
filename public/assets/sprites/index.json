@@ -1373,11 +1373,11 @@
         }
       },
       "cell_height": 128,
-      "cell_width": 128,
+      "cell_width": 208,
       "columns": 1,
       "entity": "boss_cain",
       "palette": "requiem48.hex",
-      "pivot_x": 64,
+      "pivot_x": 104,
       "pivot_y": 128,
       "sheet": "boss_cain_cast.png",
       "source_hashes": [
@@ -1399,11 +1399,11 @@
         }
       },
       "cell_height": 128,
-      "cell_width": 128,
+      "cell_width": 208,
       "columns": 1,
       "entity": "boss_cain",
       "palette": "requiem48.hex",
-      "pivot_x": 64,
+      "pivot_x": 104,
       "pivot_y": 128,
       "sheet": "boss_cain_defeated.png",
       "source_hashes": [
@@ -1427,11 +1427,11 @@
         }
       },
       "cell_height": 128,
-      "cell_width": 128,
+      "cell_width": 208,
       "columns": 2,
       "entity": "boss_cain",
       "palette": "requiem48.hex",
-      "pivot_x": 64,
+      "pivot_x": 104,
       "pivot_y": 128,
       "sheet": "boss_cain_fly.png",
       "source_hashes": [
@@ -1454,11 +1454,11 @@
         }
       },
       "cell_height": 128,
-      "cell_width": 128,
+      "cell_width": 208,
       "columns": 1,
       "entity": "boss_cain",
       "palette": "requiem48.hex",
-      "pivot_x": 64,
+      "pivot_x": 104,
       "pivot_y": 128,
       "sheet": "boss_cain_hurt.png",
       "source_hashes": [
@@ -1480,11 +1480,11 @@
         }
       },
       "cell_height": 128,
-      "cell_width": 128,
+      "cell_width": 208,
       "columns": 1,
       "entity": "boss_cain",
       "palette": "requiem48.hex",
-      "pivot_x": 64,
+      "pivot_x": 104,
       "pivot_y": 128,
       "sheet": "boss_cain_idle.png",
       "source_hashes": [
@@ -1506,11 +1506,11 @@
         }
       },
       "cell_height": 128,
-      "cell_width": 128,
+      "cell_width": 208,
       "columns": 1,
       "entity": "boss_cain",
       "palette": "requiem48.hex",
-      "pivot_x": 64,
+      "pivot_x": 104,
       "pivot_y": 128,
       "sheet": "boss_cain_lance.png",
       "source_hashes": [
@@ -1532,11 +1532,11 @@
         }
       },
       "cell_height": 128,
-      "cell_width": 128,
+      "cell_width": 208,
       "columns": 1,
       "entity": "boss_cainfull",
       "palette": "requiem48.hex",
-      "pivot_x": 64,
+      "pivot_x": 104,
       "pivot_y": 128,
       "sheet": "boss_cainfull_cast.png",
       "source_hashes": [
@@ -1558,11 +1558,11 @@
         }
       },
       "cell_height": 128,
-      "cell_width": 128,
+      "cell_width": 208,
       "columns": 1,
       "entity": "boss_cainfull",
       "palette": "requiem48.hex",
-      "pivot_x": 64,
+      "pivot_x": 104,
       "pivot_y": 128,
       "sheet": "boss_cainfull_defeated.png",
       "source_hashes": [
@@ -1586,11 +1586,11 @@
         }
       },
       "cell_height": 128,
-      "cell_width": 128,
+      "cell_width": 208,
       "columns": 2,
       "entity": "boss_cainfull",
       "palette": "requiem48.hex",
-      "pivot_x": 64,
+      "pivot_x": 104,
       "pivot_y": 128,
       "sheet": "boss_cainfull_fly.png",
       "source_hashes": [
@@ -1613,11 +1613,11 @@
         }
       },
       "cell_height": 128,
-      "cell_width": 128,
+      "cell_width": 208,
       "columns": 1,
       "entity": "boss_cainfull",
       "palette": "requiem48.hex",
-      "pivot_x": 64,
+      "pivot_x": 104,
       "pivot_y": 128,
       "sheet": "boss_cainfull_hurt.png",
       "source_hashes": [
@@ -1639,11 +1639,11 @@
         }
       },
       "cell_height": 128,
-      "cell_width": 128,
+      "cell_width": 208,
       "columns": 1,
       "entity": "boss_cainfull",
       "palette": "requiem48.hex",
-      "pivot_x": 64,
+      "pivot_x": 104,
       "pivot_y": 128,
       "sheet": "boss_cainfull_idle.png",
       "source_hashes": [
@@ -1665,11 +1665,11 @@
         }
       },
       "cell_height": 128,
-      "cell_width": 128,
+      "cell_width": 208,
       "columns": 1,
       "entity": "boss_cainfull",
       "palette": "requiem48.hex",
-      "pivot_x": 64,
+      "pivot_x": 104,
       "pivot_y": 128,
       "sheet": "boss_cainfull_lance.png",
       "source_hashes": [

@@ -27,6 +27,7 @@ export type PlayerStateKey =
   | 'ledgeHang'
   | 'ledgeClimb'
   | 'airDash'
+  | 'levitate'
   | 'heal'
   | 'transform'
   | 'lash'
@@ -503,6 +504,22 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       if (stateMs < crusnikConfig.transformMs) return undefined;
       ctx.completeTransform();
       return ctx.onGround ? 'idle' : 'fall';
+    },
+  },
+
+  // Abel at 100% (the Cain finale) floats: no gravity, the stick (or JUMP) moves him in every direction, and he
+  // lifts off again whenever he touches the ground. The Player routes ground and air states here while ascended.
+  levitate: {
+    update(ctx, dtMs) {
+      airControl(ctx, dtMs);
+      const speed = ctx.tuning.levitateSpeed;
+      let target = Math.abs(ctx.moveY) < 0.3 ? 0 : Math.sign(ctx.moveY) * speed;
+      if (ctx.jumpHeld) target = -speed;
+      if (ctx.onGround && target >= 0) target = -speed * 0.6;
+      ctx.vy = approach(ctx.vy, target, (ctx.tuning.levitateAccel * dtMs) / 1000);
+      if (ctx.dodgePressed && ctx.canAirDash) return 'airDash';
+      if (ctx.attackPressed) return 'airAttack';
+      return abilityState(ctx) ?? undefined;
     },
   },
 

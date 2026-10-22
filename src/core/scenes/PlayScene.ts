@@ -62,6 +62,7 @@ import { BossArena } from '../../world/BossArena';
 import { playerStats, relic } from '../../systems/progression';
 import { cutscene } from '../cutscenes';
 import { FlyerManager } from '../../enemies/flyers/FlyerManager';
+import { ensureSprites } from '../../systems/sprites/lateLoad';
 import { isFlyer } from '../../enemies/flyers/FlyerBrain';
 
 /** The phase-step's flag (granted by the Bazaar's burning-stall scene). */
@@ -191,6 +192,9 @@ export class PlayScene extends Phaser.Scene {
   }
 
   create(): void {
+    // Any sheet that failed to download at boot (a dropped request on a phone) is fetched again on each room load;
+    // sprites showing a placeholder block pick it up as soon as it arrives.
+    ensureSprites(this, ['*']);
     this.roomData = getRoom(this.start.room);
     // Test mode only: ?test&flags=a,b starts with story flags set (recorded playthrough chapters).
     if (testHookEnabled()) for (const f of (new URLSearchParams(location.search).get('flags') ?? '').split(',')) if (f) gameState.setFlag(f);
@@ -892,7 +896,7 @@ export class PlayScene extends Phaser.Scene {
       // The Cain finale: both brothers rise into the sky. Abel at one hundred percent.
       gameState.setFlag(crusnikConfig.unlockFlag);
       this.player.ascend();
-      this.banner.show('CENTUM', 'One hundred percent. Tap JUMP to fly.\nATK: the double scythe. ABIL: lightning.', 2800);
+      this.banner.show('CENTUM', 'One hundred percent. You float: the stick moves you anywhere.\nATK: the double scythe. ABIL: lightning.', 2800);
       return;
     }
     if (id === 'gyula_wings') {
@@ -944,7 +948,7 @@ export class PlayScene extends Phaser.Scene {
     if (what === 'codex') this.codex.show();
     if (what === 'options') this.options.show();
     if (what === 'touch') this.layoutEditor.show(this.touch.currentLayout);
-    if (what === 'map') this.map.show(allRooms, (id) => gameState.hasVisited(id), (room, id) => gameState.altarUsed(room, id), this.roomData, this.player.x, this.player.y, (rm) => (gameState.hasVisited(rm.id) ? rm.items.filter((i) => !gameState.hasFlag(itemFlag(i.id))).length : 0), (flag) => gameState.hasFlag(flag));
+    if (what === 'map') this.map.show(allRooms, (id) => gameState.hasVisited(id), (room, id) => gameState.altarUsed(room, id), this.roomData, this.player.x, this.player.y, (rm) => (gameState.hasVisited(rm.id) ? rm.items.filter((i) => !gameState.hasFlag(itemFlag(i.id))).length : 0), (flag) => gameState.hasFlag(flag), cheat.on);
     if (what === 'pause') this.pauseMenu.show();
     if (what) {
       this.physics.world.pause();
@@ -998,6 +1002,7 @@ export class PlayScene extends Phaser.Scene {
         crusnik: p.crusnik.fraction,
         crusnikReady: p.crusnik.ready,
         winged: p.winged,
+        ascended: p.ascended,
         cheat: cheat.on,
         maxHp: p.health.max,
         flasks: p.flasks,

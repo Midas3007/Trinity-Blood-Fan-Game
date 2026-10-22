@@ -3,9 +3,8 @@ import { TITLE_ART_KEY } from '../constants';
 import { TILESET_KEY } from '../../world/RoomTiles';
 import tileDefs from '../../data/tiles.json';
 import { SCENES } from '../constants';
-import { animDefs, sheetLoads, SPRITES_BASE, type SpriteIndex } from '../../systems/sprites/spriteIndex';
-
-const INDEX_KEY = 'spriteIndex';
+import { sheetLoads, SPRITES_BASE, type SpriteIndex } from '../../systems/sprites/spriteIndex';
+import { createAnims, SPRITE_INDEX_KEY as INDEX_KEY } from '../../systems/sprites/lateLoad';
 
 /** Loads the sprite index written by tools/spritegen, then every sheet it lists, and creates the animations.
  * If anything is missing the game still runs with placeholder shapes. */
@@ -46,16 +45,7 @@ export class BootScene extends Phaser.Scene {
   }
 
   private finish(index: SpriteIndex | undefined): void {
-    if (index) {
-      for (const a of animDefs(index)) {
-        if (!this.textures.exists(a.texture) || this.anims.exists(a.key)) continue;
-        this.anims.create({
-          key: a.key,
-          frames: a.frames.map((f) => ({ key: a.texture, frame: f.frame, duration: f.duration })),
-          repeat: a.repeat,
-        });
-      }
-    }
+    if (index) createAnims(this, index);
     this.scene.start(SCENES.menu);
   }
 }

@@ -14,11 +14,11 @@
     }
   },
   "cell_height": 128,
-  "cell_width": 128,
+  "cell_width": 208,
   "columns": 2,
   "entity": "boss_cain",
   "palette": "requiem48.hex",
-  "pivot_x": 64,
+  "pivot_x": 104,
   "pivot_y": 128,
   "sheet": "boss_cain_fly.png",
   "source_hashes": [

@@ -260,14 +260,16 @@
   },
   "weaponFx": {
     "kind": "lance",
-    "color": "#e8c86a",
-    "tip": "#ffffff"
+    "color": "#8a8392",
+    "tip": "#b8b1c4"
   },
   "auraColor": "#bfe0ef",
   "phaseScene": "cain_ascension",
   "relic": "frater",
   "telegraphTints": [
-    "#f6e3a3",
-    "#f39a8f"
-  ]
+    "#e8c86a",
+    "#d4283e"
+  ],
+  "telegraphGlow": true,
+  "auraAlpha": 0.14
 }

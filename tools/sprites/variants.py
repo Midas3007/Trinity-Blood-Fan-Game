@@ -3,7 +3,7 @@ Usage: python3 -I tools/sprites/variants.py   (from the repo root; rewrites the 
 
   boss_cain       Cain, ground form: Abel's 80% look with white wings and coat, blond hair; the scythe is replaced by a gold lance.
   boss_cainfull   Cain's full form (the sky): the same, radiant, with crimson edges.
-  abel_crusnik100 Abel at 100%: black, with crimson membranes and a blazing red edge (bat wings are drawn in code).
+  abel_crusnik100 is built by tools/sprites/crusnik100.py (bat wings, bare chest, standing hair, double scythe).
 """
 import json, sys
 from pathlib import Path
@@ -109,11 +109,17 @@ def keep_largest(im: Image.Image, cell: int) -> None:
             for p in part: px[p] = (0, 0, 0, 0)
 
 
-def draw_lance(im: Image.Image, scythes: list[list[tuple[int, int]]], length=74):
-    """A gold lance along the line the scythe was held (its main axis), head toward the facing side (right)."""
+LANCE_PAD = 40     # Cain's sheets are widened by this much on each side so the long lance fits
+GRIP, CONE = 38, 74
+
+
+def draw_lance(im: Image.Image, scythes: list[list[tuple[int, int]]], cw: int):
+    """Cain's lance, after Brother Petros's knight's lance (owner): grey, long, with a long wrapped grip, a cone-shaped
+    hand guard (vamplate) and a long fluted cone, laid along the line the scythe was held, point toward the facing side."""
     from math import atan2, cos, sin
     px = im.load(); h = im.size[1]
-    SHAFT, SHADE, HEAD, LINE = hx("e8c86a"), hx("9c7a2c"), hx("ffffff"), hx("3b3444")
+    INK, GRIP_C, WRAP, POMMEL = hx("0b0a10"), hx("3b3444"), hx("5c5464"), hx("8a8392")
+    LIT, MID, SHADE, FLUTE, GUARD_LIT, GUARD = hx("b8b1c4"), hx("8a8392"), hx("5c5464"), hx("6f6676"), hx("a59fb0"), hx("6f6676")
     for i, pts in enumerate(scythes):
         if len(pts) < 6: continue
         cx = sum(p[0] for p in pts) / len(pts); cy = sum(p[1] for p in pts) / len(pts)
@@ -122,24 +128,28 @@ def draw_lance(im: Image.Image, scythes: list[list[tuple[int, int]]], length=74)
         a = 0.5 * atan2(2 * sxy, sxx - syy)
         dx, dy = cos(a), sin(a)
         if dx < 0: dx, dy = -dx, -dy
-        x0, x1 = i * h, (i + 1) * h
+        nx, ny = -dy, dx                                  # "up" side of the lance (lit) is -n
+        x0, x1 = i * cw, (i + 1) * cw
         def put(x, y, c):
             x, y = int(round(x)), int(round(y))
             if x0 <= x < x1 and 0 <= y < h: px[x, y] = c + (255,)
-        for t in range(-length // 2, length // 2):
-            x, y = cx + dx * t, cy + dy * t
-            put(x, y + 1, LINE); put(x, y - 1, LINE)
-        for t in range(-length // 2, length // 2):
-            x, y = cx + dx * t, cy + dy * t
-            put(x, y, SHAFT if t % 6 else SHADE)
-        tx, ty = cx + dx * length / 2, cy + dy * length / 2  # the spearhead
-        nx, ny = -dy, dx
-        for k in range(8):
-            wdt = 3 - k * 3 / 8
-            for j in range(-int(wdt), int(wdt) + 1):
-                put(tx + dx * k + nx * j, ty + dy * k + ny * j, HEAD if abs(j) < wdt - 0.5 else LINE)
-        for j in (-3, -2, 2, 3):  # a small crossguard
-            put(tx + nx * j, ty + ny * j, SHAFT)
+        def band(t, half, col_of):
+            for jj in range(-int(half * 2) - 2, int(half * 2) + 3):
+                j = jj / 2
+                if abs(j) > half + 1: continue
+                c = INK if abs(j) > half else col_of(j)
+                put(cx + dx * t + nx * j, cy + dy * t + ny * j, c)
+        for k in range(-GRIP * 2, 0):                    # the grip, wrapped every few pixels
+            t = k / 2
+            band(t, 1, lambda j, t=t: WRAP if int(t) % 3 == 0 else GRIP_C)
+        for k in range(-4, 2): band(-GRIP + k / 2, 2, lambda j: POMMEL)   # pommel
+        for k in range(0, 16):                           # the vamplate: a cone flaring toward the point
+            t = k / 2
+            band(t, 1.5 + t * 0.6, lambda j: GUARD_LIT if j < 0 else GUARD)
+        for k in range(16, 16 + CONE * 2):               # the long cone, tapering to a point
+            t = k / 2
+            half = max(0.4, 4.2 * (1 - (t - 8) / CONE))
+            band(t, half, lambda j, t=t: FLUTE if int(t) % 7 == 0 and abs(j) < half - 0.5 else LIT if j < -half / 3 else SHADE if j > half / 3 else MID)
 
 
 def recolor(src: Path, dst: Path, cmap: dict, edge: str | None, lance: bool = False):
@@ -161,7 +171,14 @@ def recolor(src: Path, dst: Path, cmap: dict, edge: str | None, lance: bool = Fa
                 if any(not (0 <= x + dx < w and 0 <= y + dy < h) or px[x + dx, y + dy][3] == 0
                        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
                     po[x, y] = e + (255,)
-    if scythes: draw_lance(out, scythes)
+    if scythes:
+        cw = h + 2 * LANCE_PAD                          # widen every cell so the lance fits
+        wide = Image.new("RGBA", (cw * (w // h), h), (0, 0, 0, 0))
+        for i in range(w // h):
+            wide.alpha_composite(out.crop((i * h, 0, (i + 1) * h, h)), (i * cw + LANCE_PAD, 0))
+        moved = [[(x + LANCE_PAD + (x // h) * 2 * LANCE_PAD, y) for x, y in pts] for pts in scythes]
+        draw_lance(wide, moved, cw)
+        out = wide
     dst.parent.mkdir(parents=True, exist_ok=True)
     out.save(dst)
 
@@ -175,6 +192,9 @@ def variant(src_sheet: str, src_anim: str, entity: str, out_dir: str, anim: str,
     man["sheet"] = dst.name
     man["animations"] = {anim: man["animations"][src_anim]}
     man["variant_of"] = src_sheet
+    if lance:
+        man["cell_width"] = man["cell_height"] + 2 * LANCE_PAD
+        man["pivot_x"] = man["pivot_x"] + LANCE_PAD
     dst.with_suffix(".json").write_text(json.dumps(man, indent=2, sort_keys=True) + "\n")
     return dst
 
@@ -185,7 +205,6 @@ JOBS = [
       (("hover", "idle"), ("fly", "fly"), ("dive", "lance"), ("hover", "cast"), ("hover", "hurt"), ("dive", "defeated"))],
     *[(p, "boss_cainfull", "bosses/cainfull", a, cain_map(True), "ad2a3a") for p, a in
       (("hover", "idle"), ("fly", "fly"), ("dive", "lance"), ("hover", "cast"), ("hover", "hurt"), ("dive", "defeated"))],
-    *[(p, "abel_crusnik100", "abel_crusnik100", p, abel100_map(), "8e1b2c") for p in ("hover", "fly", "dive")],
 ]
 
 def guard_map():

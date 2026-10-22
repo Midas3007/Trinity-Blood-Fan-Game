@@ -11,6 +11,9 @@ import { DuelistBrain, type DuelistConfig } from './DuelistBrain';
 const DEPTH = 9.5;
 const AMBER = 0xd9963a;
 const RED = 0xd4283e;
+const AURA_ALPHA = 0.28;
+/** The glow when it shows a wind-up (telegraphGlow). */
+const GLOW_ALPHA = 0.32;
 const FLASH_MS = 90;
 /** Hover bob: period (ms per radian) and height (px). */
 const BOB_PERIOD = 260;
@@ -43,6 +46,7 @@ export class Duelist implements ArenaFighter {
   private readonly placeholder: Phaser.GameObjects.Rectangle;
   private readonly fx: Phaser.GameObjects.Graphics;
   private readonly aura: Phaser.GameObjects.Ellipse;
+  private readonly auraColor: number;
   private flashMs = 0;
   private t = 0;
   private phaseChanged = false;
@@ -60,7 +64,8 @@ export class Duelist implements ArenaFighter {
     this.view = new SpriteView(scene, `boss_${cfg.phases[0]?.sprite ?? cfg.id}_idle`, DEPTH);
     this.placeholder = scene.add.rectangle(0, 0, cfg.width, cfg.height, 0x5a1424).setDepth(DEPTH).setVisible(false);
     this.fx = scene.add.graphics().setDepth(DEPTH + 0.1);
-    this.aura = scene.add.ellipse(0, 0, cfg.width * 3, cfg.height * 1.5, cfg.auraColor ? Number(cfg.auraColor.replace('#', '0x')) : 0x6a2a4a, 0.28).setDepth(DEPTH - 0.1).setBlendMode(Phaser.BlendModes.ADD);
+    this.auraColor = cfg.auraColor ? Number(cfg.auraColor.replace('#', '0x')) : 0x6a2a4a;
+    this.aura = scene.add.ellipse(0, 0, cfg.width * 3, cfg.height * 1.5, this.auraColor, cfg.auraAlpha ?? AURA_ALPHA).setDepth(DEPTH - 0.1).setBlendMode(Phaser.BlendModes.ADD);
   }
 
   get name(): string {
@@ -170,11 +175,12 @@ export class Duelist implements ArenaFighter {
       s.clearTint();
       const def = b.combat.current;
       const unparryable = def?.parryable === false || b.state === 'telegraph';
+      const t = b.cfg.telegraphTints;
+      const warn = t ? Number(t[unparryable ? 1 : 0].replace('#', '0x')) : unparryable ? RED : AMBER;
+      const glow = b.cfg.telegraphGlow === true && b.telegraphing && this.flashMs <= 0;
+      this.aura.setFillStyle(glow ? warn : this.auraColor, glow ? GLOW_ALPHA : (b.cfg.auraAlpha ?? AURA_ALPHA));
       if (this.flashMs > 0) s.setTintFill(COLORS.flash);
-      else if (b.telegraphing) {
-        const t = b.cfg.telegraphTints;
-        s.setTint(t ? Number(t[unparryable ? 1 : 0].replace('#', '0x')) : unparryable ? RED : AMBER);
-      }
+      else if (b.telegraphing && !b.cfg.telegraphGlow) s.setTint(warn);
     }
     this.draw();
     this.drawWeapon(feetY);

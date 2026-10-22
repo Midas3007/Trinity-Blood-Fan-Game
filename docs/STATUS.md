@@ -26,7 +26,35 @@ Last updated: 2026-10-22
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — Empire arc stage 4: the Cisterns under Byzantium (2026-10-22)
+## Done (latest) — Cain and Abel at 100% redrawn; levitation; map zoom; red-box fix (2026-10-22)
+- **"Cain is a red box":** two causes fixed.
+  1. A sprite sheet that fails to download on the phone at startup stayed a block for the whole session. Now each cutscene and each room load fetches any missing sheet again. Verified by blocking Cain's sheets at startup: the cutscene still showed him.
+  2. Cain's sprite is near-white, and the boss wind-up tint turned him into a solid block of colour. Cain's wind-up is now a glow around him, and his sprite keeps its colours.
+- **Cain's lance:** grey and longer, after Brother Petros's knight's lance, with a long wrapped grip, a cone hand guard and a long fluted point. His sheets are 40 px wider on each side to fit it.
+- **Abel at 100%** (`tools/sprites/crusnik100.py`): the 80% look, but:
+  - no shirt (bare chest under the open coat);
+  - hair standing up;
+  - the 80% scythe made double-sided;
+  - the feathered wings turned gargoyle/bat: same pose, with an arm bone, finger bones, a scalloped membrane, claws and a wrist horn.
+  - The old code-drawn wings are gone.
+- **Levitation:** for the whole second half of the Cain fight Abel floats. There is no gravity; the stick (or holding JUMP) moves him anywhere, and he lifts off whenever he touches the ground.
+- **Lightning** (ABIL at 100%): it did fire before, but for 0.14 s and only straight ahead, while Cain fights from the sky. Now it lasts longer, hits a taller area, and is brighter. Rise to Cain's height and fire.
+- **Map:**
+  - **+ / −** zoom (up to 4×); **arrow buttons** or a drag look around; mouse wheel zooms on desktop;
+  - **CITY** switches between the cities you've been to;
+  - tapping a room for its name now works anywhere.
+  - **With the cheat on, every room of every city is shown**, explored or not.
+- Verified: 233/233 tests (new: map zoom/pan maths), build OK. In the real game, bots checked:
+  - levitation (lift-off, holding height, rising with the stick) and the bolt firing;
+  - the new Cain in a cutscene and in the fight;
+  - map zoom, pan and CITY, with the cheat showing all 13 Byzantium and 22 Istvan rooms.
+
+## Owner must test (on phone) — Cain finale and map
+1. The Cain fight (cheat, or fast travel to the Spire): is Cain white with a grey lance, in cutscenes and the fight? Any red box left?
+2. Phase 2: Abel at 100% has bat wings, bare chest, spiky hair and the double scythe. Does he float the whole time? Hold the stick up to rise level with Cain, then press ABIL for lightning.
+3. Open the map: + / − zoom, the arrows and dragging move it, CITY switches city. Turn the cheat on: every room appears.
+
+## Done (earlier) — Empire arc stage 4: the Cisterns under Byzantium (2026-10-22)
 - **3 new rooms under the city**, reached by a well shaft at the barracks' east end. Its lid opens once the Janissary Captain yields.
   - **The Cisterns:** drowned columns, pools, blue lamps, and the **Cistern Shrine** altar (on fast travel).
   - **The Outcasts' Hall:** poor Methuselah living away from the court. No fighting here.

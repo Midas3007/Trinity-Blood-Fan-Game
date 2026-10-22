@@ -6,6 +6,8 @@ import { GAME_HEIGHT, GAME_WIDTH, SCENES } from '../constants';
 import { DialogueBox } from '../../ui/DialogueBox';
 import { cutscene, cutsceneImages, type CutsceneActor, type CutsceneData, type CutscenePanel, type PanelLayout } from '../cutscenes';
 import { GothicButton } from '../../ui/GothicButton';
+import { createAnims, queueMissing, SPRITE_INDEX_KEY } from '../../systems/sprites/lateLoad';
+import type { SpriteIndex } from '../../systems/sprites/spriteIndex';
 
 /**
  * Cutscenes as moving manga panels (owner's choice): panels slide onto a black page one by one, each with a
@@ -76,9 +78,14 @@ export class CutsceneScene extends Phaser.Scene {
       if (this.textures.exists(key)) continue;
       if (key.startsWith('rooms/')) this.load.image(key, `assets/${key}.png`);
     }
+    // Actors whose sheets failed at boot are fetched again now (they would show as blocks).
+    const actors = this.data_.panels.flatMap((p) => (p.actors ?? []).map((a) => a.anim)).filter((k) => !this.anims.exists(k));
+    queueMissing(this, actors);
   }
 
   create(): void {
+    const index = this.cache.json.get(SPRITE_INDEX_KEY) as SpriteIndex | undefined;
+    if (index) createAnims(this, index);
     this.add.rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT, 0x050408).setOrigin(0);
     this.dialogue = new DialogueBox(this);
     this.dialogue.onLine = (line) => audio.voice(line.voice);

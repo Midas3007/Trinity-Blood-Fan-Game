@@ -301,3 +301,7 @@
 | In-game map per city, styled like the poster; region colours and map-only offsets in world.json 'map' | Owner request; one map for two cities far apart would be unreadable on a phone | One map of everything |
 | Phase-step: DODGE in the air (once per jump); grilles are gates that never open, passed only while phasing | Fits the existing buttons; grilles reuse the gate machinery | A separate DASH button |
 | Janissary Captain = Brother Petros's sheets recoloured (blue/gold), new data-driven moves; he yields | No art credits; Petros's armoured swordsman fits a guard captain | A new sprite (needs art) |
+| Missing sprite sheets are re-fetched on each room load and before each cutscene (src/systems/sprites/lateLoad.ts) | Owner saw Cain as a red box on the phone; one dropped download left a block for the whole session | Retrying only once at boot |
+| Abel 100% built from the 80% sheets by tools/sprites/crusnik100.py (per-pose body/shoulder/chest tables; wings rebuilt as bat wings from the old wing outline) | Owner: like the 80%, no shirt, standing hair, gothic bat/gargoyle wings, double 80% scythe; no AI credits | Code-drawn wings (owner: wrong) |
+| Abel levitates at 100% (a 'levitate' state, no gravity) | Owner: float through the whole second half; Cain fights in the sky | Flap-to-fly (needed constant tapping) |
+| Map zoom/pan with one full-screen tap zone in screen coordinates; cheat shows every room | Owner request; container children's tap areas do not follow the camera | Per-room zones |

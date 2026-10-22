@@ -44,6 +44,9 @@ const WALK_LOOK_FRACTION = 0.6;
 const BLINK_MS = 80;
 
 /** Placeholder player: a rectangle with an Arcade body driven by the player state machine. */
+/** States that give way to levitation at 100% (attacks, the dash and hurt run their course first). */
+const LEVITATE_FROM = new Set<PlayerStateKey>(['idle', 'run', 'jump', 'fall', 'hardLand', 'crouch', 'climb', 'ledgeHang']);
+
 export class Player implements PlayerContext, PlayerCombatant {
   readonly id = nextEntityId();
   readonly sprite: Phaser.GameObjects.Rectangle;
@@ -201,6 +204,7 @@ export class Player implements PlayerContext, PlayerCombatant {
 
   /** 100% (the Cain finale): bat wings, flight, the double-sided scythe and lightning. Set by ascend(). */
   ascended = false;
+  private wasLevitating = false;
   private readonly ascendedFx: AscendedFx;
 
   /** Scripted (the Cain finale): straight to one hundred percent. */
@@ -639,8 +643,14 @@ export class Player implements PlayerContext, PlayerCombatant {
       this.abilityTaps.reset();
       this.abilityTap = null;
     }
+    // Abel at 100% levitates for the rest of the fight (owner): ground and air states give way to floating.
+    const levitating = this.ascended && this.form === 'crusnik';
+    if (levitating && LEVITATE_FROM.has(this.fsm.current)) this.fsm.transition('levitate');
     this.fsm.update(dtMs);
     this.applyPosture(postureFor(this.fsm.current));
+    if (levitating) this.body.setAllowGravity(false);
+    else if (this.wasLevitating) this.body.setAllowGravity(true);
+    this.wasLevitating = levitating;
 
     if (this.onGround) this.airTopY = y;
     // World gravity is already applied; add the difference for the current phase of the jump.
@@ -675,6 +685,6 @@ export class Player implements PlayerContext, PlayerCombatant {
     this.view.update(this.visualKey(), this.combat.current?.id ?? this.finishing.current?.id ?? null, this.sprite.x, this.feetY, this.facing, this.alpha, this.form, this.winged, this.weapon, this.ascended);
     const at100 = this.ascended && this.form === 'crusnik';
     this.ascendedFx.setVisible(at100);
-    if (at100) this.ascendedFx.update(this.sprite.scene.game.loop.delta, this.sprite.x, this.sprite.y, this.facing, !this.onGround, this.combat, this.alpha);
+    if (at100) this.ascendedFx.update(this.sprite.scene.game.loop.delta, this.sprite.x, this.sprite.y, this.facing, this.combat, this.alpha);
   }
 }
