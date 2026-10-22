@@ -104,6 +104,28 @@ interface Ship {
 const CLOUD_ROWS = 3;
 
 export class Backdrop {
+  /** Byzantium beyond the clouds: domes, towers and a lit window here and there, in two dim layers. */
+  private domeSkyline(scene: Phaser.Scene, roomWidth: number): void {
+    const r = rng(33);
+    for (const [layer, color, scroll, baseY, scale] of [[0, 0x1c2a3c, 0.06, 0.56, 0.7], [1, 0x14202e, 0.12, 0.62, 1]] as const) {
+      const g = scene.add.graphics().setScrollFactor(scroll, 0.05).setDepth(DEPTH_SKY + 1.5 + layer * 0.2);
+      const y0 = GAME_HEIGHT * baseY;
+      const span = GAME_WIDTH + roomWidth * scroll + 80;
+      for (let x = -40; x < span; x += (26 + r() * 40) * scale) {
+        const w = (18 + r() * 26) * scale;
+        const h = (12 + r() * 22) * scale;
+        g.fillStyle(color, 1).fillRect(x - w / 2, y0 - h, w, h + 40);
+        if (r() < 0.65) {
+          g.fillEllipse(x, y0 - h, w * 0.9, w * 0.8); // a dome
+          g.fillRect(x - 0.5, y0 - h - w * 0.55, 1, w * 0.2); // its finial
+        } else {
+          g.fillTriangle(x - w * 0.3, y0 - h, x + w * 0.3, y0 - h, x, y0 - h - w * 0.9); // a tower's spire
+        }
+        if (r() < 0.5) g.fillStyle(0xd9963a, 0.5 + layer * 0.2).fillRect(x - 2 + r() * 4, y0 - h * 0.5, 1, 1);
+      }
+    }
+  }
+
   /** High above the city: rows of cloud drifting below, lit faintly from beneath (pixel-art bands, no textures). */
   private clouds(scene: Phaser.Scene): void {
     const r = rng(21);
@@ -124,7 +146,7 @@ export class Backdrop {
   private t = 0;
 
   /** `horizon`: room y (px) where the skylines stand (the street level). */
-  constructor(scene: Phaser.Scene, readonly time: TimeOfDay, roomWidth: number, outdoor: boolean, horizon = GAME_HEIGHT, aloft = false) {
+  constructor(scene: Phaser.Scene, readonly time: TimeOfDay, roomWidth: number, outdoor: boolean, horizon = GAME_HEIGHT, aloft = false, domes = false) {
     const look = timeLook(time);
     const col = (h: string): number => Number(h);
     if (outdoor) {
@@ -150,6 +172,7 @@ export class Backdrop {
         scene.add.circle(GAME_WIDTH * 0.78 + 3, 37, 3, 0xb8b1c4).setScrollFactor(0).setDepth(DEPTH_SKY + 1);
       }
       if (aloft) {
+        if (domes) this.domeSkyline(scene, roomWidth);
         this.clouds(scene);
         outdoor = false; // no skylines, ships or ground: only sky and cloud
       }

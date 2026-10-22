@@ -208,7 +208,7 @@ def folder_variant(src_dir: str, src_entity: str, entity: str, out_dir: str, cma
         dst = SPR / out_dir / src.name.replace(src_entity, entity)
         recolor(src, dst, cmap, edge)
         if entity == "npc_astharoshe":
-            im = Image.open(dst).convert("RGBA"); add_mitre(im, man["cell_width"]); im.save(dst)
+            im = Image.open(dst).convert("RGBA"); add_mitre(im, next(iter(man["animations"]))); im.save(dst)
         man["entity"] = entity
         man["sheet"] = dst.name
         man["variant_of"] = str(src.relative_to(SPR))
@@ -229,44 +229,46 @@ def astharoshe_map():
             "32263e": "2f4a63", "41324f": "4f7c9e"}
 
 
-def add_mitre(im: Image.Image, cell: int) -> None:
-    """A tall pointed headdress (blue, gold-edged) on the top of each frame's head."""
+# Where her head is in each pose (centre x, top y of the hood), read off zoomed frames; the fallen pose has none.
+HEADS = {"dash": (69, 58), "idle": (55, 50), "leap": (54, 44), "slash1": (59, 52), "slash2": (55, 51)}
+
+
+def add_mitre(im: Image.Image, anim: str) -> None:
+    """Astharoshe (owner: blonde, in blue, with a mitre): blonde locks under a bishop's mitre on her head."""
+    if anim not in HEADS:
+        return
     px = im.load(); w, h = im.size
+    cx, ty = HEADS[anim]
     BLUE, LIGHT, GOLD, LINE = hx("2f4a63"), hx("4f7c9e"), hx("e8c86a"), hx("0b0a10")
-    for c in range(w // cell):
-        x0, x1 = c * cell, (c + 1) * cell
-        # The head: the highest solid blob (a 3x4 block of opaque pixels), so a raised blade or arm doesn't count.
-        def solid(x, y):
-            return all(0 <= x + dx < w and 0 <= y + dy < h and px[x + dx, y + dy][3] for dx in range(3) for dy in range(4))
-        top = next(((x + 1, y) for y in range(h) for x in range(x0, x1 - 2) if solid(x, y)), None)
-        if not top: continue
-        # centre of the head: the middle of the opaque run through the blob, 2 rows down
-        y0 = top[1] + 2
-        run = [top[0]]
-        x = top[0]
-        while x - 1 >= x0 and px[x - 1, y0][3]: x -= 1; run.append(x)
-        x = top[0]
-        while x + 1 < x1 and px[x + 1, y0][3]: x += 1; run.append(x)
-        cx = (min(run) + max(run)) // 2
-        # the blob's real top in that column (the veil/hair may rise a pixel or two above the solid block)
-        ty = top[1]
-        while ty - 1 >= 0 and px[cx, ty - 1][3]: ty -= 1
-        top = (cx, ty)
-        base = top[1] + 1
-        # long blonde hair down her back (the sprites face right, so the back is the left)
-        HAIR, HAIR2 = hx("e8c86a"), hx("c4a04a")
-        for k in range(14):
-            for dx, col in ((-3, HAIR2), (-2, HAIR), (-4, HAIR2)):
-                x, y = cx + dx - k // 5, base + 1 + k
-                if 0 <= x < w and 0 <= y < h and (px[x, y][3] or dx == -4):
-                    px[x, y] = col + (255,)
-        for k in range(8):  # the mitre: 9 wide at the band, two short peaks, a gold centre band
-            half = 4 - k // 2
-            y = base - k
-            if y < 0 or half < 1: break
-            for x in range(cx - half, cx + half + 1):
-                edge = x in (cx - half, cx + half) or (k >= 5 and x == cx)
-                px[x, y] = (LINE if edge else (GOLD if k in (0, 1) or x == cx else (LIGHT if x < cx else BLUE))) + (255,)
+    HAIR, HAIR2 = hx("e8c86a"), hx("c4a04a")
+    # blonde: the hood just under the mitre and one long lock down her back (the sprites face right)
+    for y in range(ty + 1, min(h, ty + 11)):
+        for x in range(cx - 4, cx + 3):
+            if not (0 <= x < w) or not px[x, y][3]: continue
+            r_, g_, b_ = px[x, y][:3]
+            if r_ + g_ + b_ > 150: continue                       # the face and veil stay
+            under_mitre = y <= ty + 3
+            lock = x in (cx - 4, cx - 3) and y > ty + 3
+            if under_mitre or lock:
+                px[x, y] = (HAIR if (x + y) % 2 else HAIR2) + (255,)
+    # the mitre: pointed arch, gold centre stripe, gold band on the brow; K outline, D shade side
+    MITRE = [
+        "...KK...",
+        "..KGGK..",
+        ".KLGGBK.",
+        ".KLGGBK.",
+        "KLLGGBDK",
+        "KLLGGBDK",
+        "KGGGGGGK",
+    ]
+    cols = {"K": LINE, "B": BLUE, "D": hx("1c1826"), "L": LIGHT, "G": GOLD}
+    mx = cx - len(MITRE[0]) // 2
+    my = ty - len(MITRE) + 2
+    for j, row in enumerate(MITRE):
+        for i, ch in enumerate(row):
+            x, y = mx + i, my + j
+            if ch != "." and 0 <= x < w and 0 <= y < h:
+                px[x, y] = cols[ch] + (255,)
 
 
 FOLDERS = [

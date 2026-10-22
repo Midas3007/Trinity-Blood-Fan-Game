@@ -205,7 +205,7 @@ export class PlayScene extends Phaser.Scene {
     // Test mode only: ?test&time=day|dusk|night.
     const forcedTime = testHookEnabled() ? new URLSearchParams(location.search).get('time') : null;
     if (forcedTime === 'day' || forcedTime === 'dusk' || forcedTime === 'night') gameState.time = forcedTime as TimeOfDay;
-    this.backdrop = new Backdrop(this, gameState.time, r.width, r.outdoor, r.horizon, r.aloft);
+    this.backdrop = new Backdrop(this, gameState.time, r.width, r.outdoor, r.horizon, r.aloft, r.domes);
     this.tiles = new RoomTiles(this, r);
     const tiled = r.layers.terrain.length > 0;
     const solids = this.physics.add.staticGroup();

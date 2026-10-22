@@ -123,6 +123,8 @@ export interface RoomData {
   outdoor: boolean;
   /** High above the city (the Imperial Spire): a sea of clouds below instead of skylines. */
   aloft: boolean;
+  /** Byzantium: a skyline of domes and towers stands beyond the clouds. */
+  domes: boolean;
   /** Street level (px): skylines stand on it. */
   horizon: number;
   /** Painted art (house fronts, interiors) at bottom-left x,y; loaded from assets/rooms/<key>.png. */
@@ -202,7 +204,8 @@ export function parseRoom(id: string, map: TiledMap): RoomData {
     scenes: [],
     decor: [],
     outdoor: String(mp.sky ?? 'open') !== 'none',
-    aloft: String(mp.sky ?? 'open') === 'aloft',
+    aloft: ['aloft', 'byzantium'].includes(String(mp.sky ?? 'open')),
+    domes: String(mp.sky ?? 'open') === 'byzantium',
     horizon: Number(mp.horizon ?? rows * map.tileheight),
     images: [],
     boss: null,
