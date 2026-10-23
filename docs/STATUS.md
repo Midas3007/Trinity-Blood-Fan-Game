@@ -26,7 +26,16 @@ Last updated: 2026-10-22
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — scrolling fast-travel list (2026-10-22)
+## Done (latest) — full playthrough of both arcs + 1-minute montage (2026-10-23)
+- **Full playthrough:** 21 chapters with title and act cards, 35 min, recorded by a bot in the real game. Not committed (large files).
+  - Act I: arrival, the sewers, the sword, Paula, the arts, the Magus, the Crusnik, the Marchesa, Petros, rest and travel, the cathedral, Gyula, the ending.
+  - Act II: the berth and the customs-house winch, the market, the arcade's phase-step, the Captain and the spear, the cisterns, the palace, Radu, the lift, Cain at 100%, the epilogue and credits.
+  - Bosses start part-way down; Cain's sky phase uses a test-only `phaseHp` switch.
+- **Montage:** 60 s, game sound throughout. Six dialogue shots, each a complete line (from when it starts typing until the page turns): three voiced (the opening, "Forty percent", "Black wings") and three Empire lines.
+- **Found and fixed while recording:** Abel at 100% could not drink holy water while levitating. He now hovers and drinks.
+- **Bot tooling:** jumps water, fights on its way, logs line turns for montage cuts.
+
+## Done (earlier) — scrolling fast-travel list (2026-10-22)
 - The TRAVEL TO list now fits the screen and scrolls. Drag it with a finger, use the ▲/▼ arrows beside it, or the mouse wheel. Stay stays at the bottom, and a counter shows e.g. "6–13 of 34".
 - Verified: 243/243 tests (new: scroll limits). Real game, with the cheat (34 altars): drag scrolled, the wheel reached the end, and tapping a row travelled.
 

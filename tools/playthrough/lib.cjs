@@ -33,7 +33,7 @@ class Bot {
   async close() {
     try { await this.page.evaluate(() => window.__tbRec.stop()); } catch (e) { this.errors.push('rec stop ' + e); }
     await this.ctx.close();
-    fs.writeFileSync(`${OUT}/${this.name}.json`, JSON.stringify({ times: this.times, errors: this.errors, log: this.log }, null, 1));
+    fs.writeFileSync(`${OUT}/${this.name}.json`, JSON.stringify({ times: this.times, errors: this.errors, log: this.log, cuts: this.cuts || [] }, null, 1));
     console.log(this.name, 'errors', JSON.stringify(this.errors.slice(0, 5)), 'bytes', fs.statSync(this.files.video).size, fs.statSync(this.files.audio).size);
   }
   note(s) { this.log.push(s); console.log(this.name, s); }
