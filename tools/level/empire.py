@@ -108,7 +108,7 @@ def market():
     r.wall(0, 0, 1, 1)                                          # the rooftops' end walls meet the sky here
     r.wall(r.W - 1, 0, r.W, 1)
     # A lamp tower with a ladder up to the rooftops, and a trapdoor down to the silk warehouse.
-    r.wall(104, 6, 110, GY, "gothic_stone")
+    r.wall(104, 6, 110, GY - 5, "gothic_stone")                # an archway: the street runs on beneath it
     r.ladder(110, 0, GY)
     r.carve(3, GY, 6, r.H)
     r.platform(3, 6, GY, "plank")
@@ -167,7 +167,7 @@ def arcade():
     r.mark("scene", 80, ARCADE_GY - 1, scene="phase_step", unlocks="ability:dash")
     r.wall(92, 0, 94, ARCADE_GY - 7, "gothic_stone")            # the arcade's end: an arch, barred below
     r.grille(92, ARCADE_GY - 7, 94, ARCADE_GY)
-    house(r, 98, 16, ARCADE_GY, 3, "house_byz_white", doors=("left",), climb="ladder", lit=0.7)
+    house(r, 98, 16, ARCADE_GY, 3, "house_byz_white", doors=("left", "right"), climb="ladder", lit=0.7)
     r.mark("checkpoint", 103, ARCADE_GY - 1, "arcade_altar")    # inside the house beyond the bars
     r.mark("lore", 109, ARCADE_GY - 1, lore="letter_arcade")
     r.wall(r.W - 1, 0, r.W, ARCADE_GY - 5)                     # the street goes on east, to the barracks

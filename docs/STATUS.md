@@ -26,7 +26,16 @@ Last updated: 2026-10-22
 
 Older detail (milestones 1–4, sprite pipeline, finishers, title) is in git history (`git show cc792dd:docs/STATUS.md`) and `docs/decisions.md`.
 
-## Done (latest) — full playthrough of both arcs + 1-minute montage (2026-10-23)
+## Done (latest) — Lamp Market dead end fixed; every room walk-tested (2026-10-23)
+- **Lamp Market:** the lamp tower was solid down to the street and its ladder was on the far side, so coming from the quay you hit a wall (that is where the bot stood). It is now an archway; the street runs under it and the ladder is still there.
+- **Bazaar Arcade:** the house at the east end had no back door, so coming in from the barracks side you couldn't get past it. It now has a door on both sides.
+- **New test** (`src/world/walkability.ts`, `tests/walkability.test.ts`): walks every room on the tile grid (walk, step, jump 4 up / 6 across, ledge catch, fall, ladders, drop through planks) and fails if any way in can't reach every way out. The only exemption is the Crusnik-leap bone wall between the Chapel of Bones and the Ballroom, which is a deliberate ability gate.
+
+## Owner must test (on phone) — dead ends
+1. Lamp Market, from the quay: walk east under the lamp tower to the Spice Stairs. Expected: no wall; the ladder up the tower still works.
+2. Bazaar Arcade, from the barracks: walk west through the white house at the east end. Expected: doors both sides.
+
+## Done (earlier) — full playthrough of both arcs + 1-minute montage (2026-10-23)
 - **Full playthrough:** 21 chapters with title and act cards, 35 min, recorded by a bot in the real game. Not committed (large files).
   - Act I: arrival, the sewers, the sword, Paula, the arts, the Magus, the Crusnik, the Marchesa, Petros, rest and travel, the cathedral, Gyula, the ending.
   - Act II: the berth and the customs-house winch, the market, the arcade's phase-step, the Captain and the spear, the cisterns, the palace, Radu, the lift, Cain at 100%, the epilogue and credits.
