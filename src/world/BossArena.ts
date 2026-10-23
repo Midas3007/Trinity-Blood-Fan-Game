@@ -83,12 +83,16 @@ export class BossArena {
     // Test mode only: ?test&bossHp=N starts the boss with N health (victory-flow playtests).
     const testHp = testHookEnabled() ? Number(new URLSearchParams(location.search).get('bossHp') ?? NaN) : NaN;
     if (testHp > 0) this.setHealth(testHp);
+    // Test mode only: ?test&phaseHp=N drops the boss to N health when its second phase begins (recordings).
+    this.testPhaseHp = testHookEnabled() ? Number(new URLSearchParams(location.search).get('phaseHp') ?? NaN) : NaN;
     this.bar = new BossBar(scene, this.boss.name);
   }
 
+  private readonly testPhaseHp: number;
+
   private setHealth(hp: number): void {
-    const f = this.boss as unknown as { brain: { health: { damage(n: number): number; max: number } } };
-    f.brain.health.damage(f.brain.health.max - hp);
+    const f = this.boss as unknown as { brain: { health: { damage(n: number): number; hp: number } } };
+    f.brain.health.damage(f.brain.health.hp - hp);
   }
 
   /** The fight is on (walls up, boss acting). */
@@ -120,7 +124,11 @@ export class BossArena {
     for (const s of this.boss.drainSummons()) {
       for (let i = 0; i < s.count; i++) this.flyers.spawn(s.creature, this.left + 40 + Math.random() * (this.right - this.left - 80), this.floorY - 70);
     }
-    if (this.boss.drainPhaseChange() && this.boss.phaseScene) {
+    const phaseChanged = this.boss.drainPhaseChange();
+    if (phaseChanged && this.testPhaseHp > 0) {
+      this.setHealth(Math.min(this.testPhaseHp, (this.boss as unknown as { brain: { health: { hp: number } } }).brain.health.hp));
+    }
+    if (phaseChanged && this.boss.phaseScene) {
       const id = this.boss.phaseScene;
       this.boss.holdPhase(true);
       this.hooks.playCutscene(id, () => {

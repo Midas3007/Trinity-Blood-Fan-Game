@@ -174,7 +174,7 @@ class Bot {
   async drink() {
     for (let k = 0; k < 12; k++) {
       const s = await this.snap();
-      if (['idle', 'run'].includes(s.player.state)) { await this.press('f', 80); await this.wait(900); return true; }
+      if (['idle', 'run', 'levitate'].includes(s.player.state)) { await this.press('f', 80); await this.wait(900); return true; }
       await this.wait(80);
     }
     return false;

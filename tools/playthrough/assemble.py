@@ -18,7 +18,16 @@ CH = [
     ("c08t", "XI", "Rest and Travel", "the map's hidden items, weapons, options, keys, the touch layout - fast travel between altars"),
     ("c09", "XII", "The Cathedral", "the portal, the nave - Dietrich and his Grand Marionette"),
     ("c10", "XIII", "The Star of Sorrow", "Gyula - eighty percent - the ending, the credits, the next arc"),
+    ("e01", "XIV", "Across the Sky", "the airship berth, the docks of Byzantium, the harbour gate's winch on the customs roof"),
+    ("e02", "XV", "The Lamp Market", "the Harbour Wall, imperial guards and zealots, Ion Fortuna"),
+    ("e03", "XVI", "The Grand Arcade", "a murder, a burning stall, the phase-step through iron bars"),
+    ("e04", "XVII", "The Janissary Captain", "a duel of honour, and his parting gift: the Byzantine spear"),
+    ("e05", "XVIII", "Beneath Byzantium", "the cisterns, a child of the outcasts, Ion's trial"),
+    ("e06", "XIX", "The Palace", "the glass gardens, the hall of mirrors, the veiled throne"),
+    ("e07", "XX", "Radu Barvon", "the flame laboratory"),
+    ("e08", "XXI", "Brothers", "the lift to the Spire - Cain - one hundred percent - the epilogue, the credits"),
 ]
+ACTS = {"c01": ("ACT I", "The Star of Sorrow", "Istvan"), "e01": ("ACT II", "The Empire", "Byzantium")}
 ENC = ["-c:v", "libx264", "-preset", "veryfast", "-crf", "22", "-pix_fmt", "yuv420p", "-r", "30", "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-ac", "2"]
 
 def esc(t):
@@ -34,13 +43,17 @@ def card(name, lines, secs):
 
 card("card_intro", [
     ("TRINITY BLOOD", 54, 150, "0xeadfc4", FONT),
-    ("The Star of Sorrow", 28, 218, "0xc4a04a", FONT2),
-    ("a full playthrough, played and recorded by a bot", 20, 290, "0xeadfc4", FONT2),
+    ("Act I: The Star of Sorrow  -  Act II: The Empire", 26, 218, "0xc4a04a", FONT2),
+    ("a full playthrough of both arcs, played and recorded by a bot", 20, 290, "0xeadfc4", FONT2),
     ("Each chapter starts in its own room with the story so far; bosses start part-way down.", 15, 360, "0x8a8392", FONT2),
     ("Unofficial fan-made project. Not affiliated with or endorsed by the rights holders of Trinity Blood.", 13, 470, "0x8a8392", FONT2),
 ], 7)
 parts = ["card_intro"]
 for cid, num, title, sub in CH:
+    if cid in ACTS:
+        act, name, place = ACTS[cid]
+        card(f"act_{cid}", [(act, 40, 170, "0xd4283e", FONT), (name, 52, 230, "0xeadfc4", FONT), (place, 22, 310, "0xc4a04a", FONT2)], 4)
+        parts.append(f"act_{cid}")
     card(f"card_{cid}", [(num, 30, 170, "0xd4283e", FONT), (title, 44, 220, "0xeadfc4", FONT), (sub, 17, 300, "0xc4a04a", FONT2)], 3.5)
     parts += [f"card_{cid}", cid]
 # normalise every part, then concat

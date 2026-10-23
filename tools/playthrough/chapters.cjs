@@ -309,31 +309,41 @@ const chapters = {
   // E8. The lift to the Spire; Cain; one hundred percent; the epilogue, the credits.
   async e08(b) {
     const all = flags(...ACT1, 'arrival', 'market', 'janissary', 'under', 'palace', 'radu');
-    await b.open('room=palace_lab&bossHp=470&' + all + '&at=1300,239');
+    await b.open('room=palace_lab&bossHp=460&phaseHp=120&' + all + '&at=1300,239');
     await b.click(); await b.wait(400); await b.startRec(); await b.wait(800);
     await b.walkTo(88 * 16, 4, 20000); await b.watchCutscene();
     await b.walkTo(88 * 16, 4, 8000);
     await b.key('ArrowUp', true); await b.wait(700); await b.key('ArrowUp', false); await b.wait(2000);
     b.note('lift -> ' + (await b.snap()).room);
-    // Cain: on the ground the usual fight; in the sky Abel levitates to Cain's height and throws lightning.
+    // pray at the Spire's altar first (a fall respawns here), then Cain: on the ground the usual fight; in the sky
+    // Abel levitates to Cain's height, keeps a little distance and throws lightning.
+    await b.walkTo(15 * 16 + 8, 4, 10000);
+    await b.key('ArrowUp', true); await b.wait(400); await b.key('ArrowUp', false); await b.wait(2500);
     const t = Date.now();
-    let res = 'timeout';
-    while (Date.now() - t < 360000) {
+    let res = 'timeout', lastLog = 0;
+    while (Date.now() - t < 420000) {
       const s = await b.snap();
       if (!s) { res = 'nosnap'; break; }
       if (s.cutscene) { await b.watchCutscene(); continue; }
+      if (s.room !== 'imperial_spire') { res = 'left ' + s.room; break; }
       const boss = s.boss;
-      if (!boss) { res = 'won'; break; }
-      if (boss.state === 'defeated' || boss.hp <= 0) { await b.wait(500); continue; }
+      if (!boss) { res = s.flags.includes('cain_defeated') ? 'won' : 'no boss'; break; }
       const p = s.player;
+      if (Date.now() - lastLog > 10000) { lastLog = Date.now(); b.note(`  hp${p.hp}/${p.maxHp} flasks${p.flasks} asc${p.ascended} boss ${boss.state} ${boss.hp.toFixed(2)} p${boss.phase}`); }
+      if (boss.state === 'defeated' || boss.hp <= 0) { await b.wait(500); continue; }
       const dx = boss.x - p.x, dy = boss.y - p.y;
-      const toward = dx > 0 ? 'ArrowRight' : 'ArrowLeft';
-      if (!boss.active) { await b.hold(toward, 200); continue; }
-      if (p.hp < p.maxHp * 0.45 && p.flasks > 0) { await b.drink(); continue; }
+      const toward = dx > 0 ? 'ArrowRight' : 'ArrowLeft', away = dx > 0 ? 'ArrowLeft' : 'ArrowRight';
+      if (!boss.active) {
+        if (p.x < 18 * 16) { await b.hold('ArrowRight', 200); continue; }
+        // a fall: walk back into the arena (the fight starts again)
+        await b.hold(toward, 200); continue;
+      }
+      if (p.hp < p.maxHp * 0.5 && p.flasks > 0) { await b.drink(); continue; }
       if (p.ascended) {
-        if (Math.abs(dy) > 14) { await b.hold(dy < 0 ? 'ArrowUp' : 'ArrowDown', 140); continue; }
-        if (Math.abs(dx) > 150) { await b.hold(toward, 160); continue; }
-        if (Math.abs(dx) < 50) { await b.press('x'); await b.wait(160); continue; }
+        if (['telegraph', 'dash', 'dive', 'leap'].includes(boss.state) && Math.abs(dx) < 120) { await b.hold(dy > 0 ? 'ArrowUp' : 'ArrowDown', 220); await b.hold(away, 200); continue; }
+        if (Math.abs(dy) > 14) { await b.hold(dy < 0 ? 'ArrowUp' : 'ArrowDown', 120); continue; }
+        if (Math.abs(dx) > 160) { await b.hold(toward, 160); continue; }
+        if (Math.abs(dx) < 70) { await b.hold(away, 140); continue; }
         await b.key(toward, true); await b.wait(30); await b.key(toward, false);
         await b.press('v'); await b.wait(420); continue;
       }

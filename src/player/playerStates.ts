@@ -401,8 +401,9 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
     // Drinking holy water: stand still; the health arrives part-way through. Getting hit interrupts it (hurt).
     update(ctx, dtMs, stateMs) {
       brake(ctx, dtMs);
+      if (ctx.ascended) ctx.vy = 0; // at 100% he hovers while he drinks
       if (stateMs >= ctx.tuning.drinkHealAtMs && stateMs - dtMs < ctx.tuning.drinkHealAtMs) ctx.drinkFlask();
-      if (!ctx.onGround) return 'fall';
+      if (!ctx.onGround && !ctx.ascended) return 'fall';
       if (stateMs >= ctx.tuning.drinkMs) return ctx.moveX !== 0 ? 'run' : 'idle';
       return undefined;
     },
@@ -517,6 +518,7 @@ export const playerStates: Record<PlayerStateKey, State<PlayerStateKey, PlayerCo
       if (ctx.jumpHeld) target = -speed;
       if (ctx.onGround && target >= 0) target = -speed * 0.6;
       ctx.vy = approach(ctx.vy, target, (ctx.tuning.levitateAccel * dtMs) / 1000);
+      if (ctx.healWanted) return 'heal'; // holy water in the sky too
       if (ctx.dodgePressed && ctx.canAirDash) return 'airDash';
       if (ctx.attackPressed) return 'airAttack';
       return abilityState(ctx) ?? undefined;
